@@ -2,9 +2,14 @@
   (:gen-class)
   (:require [opa4j.parser :as parser]))
 
+(defn run-first-plan [plans]
+  (let [[name plan] (first plans)]
+    (println "running plan" name)
+    (plan "x")))
+
 (defn -main
   "Parses and the runs a plan"
-  ([] ((parser/parse-file "rego/simple/plan.json") "x"))
+  ([] (run-first-plan (parser/parse-file "rego/simple/plan.json")))
   ([& args]
    (println "Welcome to my project! These are your args:" args)
-   ((parser/parse-file (first args)) "x")))
+   (run-first-plan (parser/parse-file (first args)))))

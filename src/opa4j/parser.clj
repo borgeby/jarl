@@ -117,15 +117,21 @@
     (log-trace "static: %s" static)
     (log-trace "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info static)]
-      (fn [vars]
+      [name (fn [vars]
         (log-debug "executing plan '%s'" name)
-        (blocks vars)))))
+        (blocks vars))])))
+
+(defn make-plans [plans-info static]
+  (log-debug "making plans")
+  (let [plans (doall (for [plan-info plans-info]
+                       (make-plan plan-info static)))]
+    plans))
 
 (defn parse
   "Parses the incoming string"
   [str] (let [ir (json/read-str str)]
           (let [static (get ir "static") plans (get (get ir "plans") "plans")]
-            (make-plan (first plans) static))))
+            (make-plans plans static))))
 
 (defn parse-file
   "Reads and parses the incoming file"
