@@ -1,11 +1,12 @@
 (ns opa4j.parser
-  (:require [clojure.data.json :as json]))
+  (:require [clojure.data.json :as json])
+  (:import (java.time Instant)))
 
 (declare make-blocks)
 
 (defn log
   ([level msg]
-   (let [now (java.time.Instant/now)]
+   (let [now (Instant/now)]
      (println (format "%s: %s %s" now level msg))))
   ([level msg & args]
    (log level (apply format msg args))))
