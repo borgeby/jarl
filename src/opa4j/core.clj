@@ -5,7 +5,7 @@
 (defn run-first-plan [plans]
   (let [[name plan] (first plans)]
     (println "running plan" name)
-    (plan "x")))
+    (plan)))
 
 (defn -main
   "Parses and the runs a plan"
