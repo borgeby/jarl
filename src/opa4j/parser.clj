@@ -48,9 +48,10 @@
 (defn make-CallStmt [stmt-info static]
   "TODO"
   (log-debug "making CallStmt stmt")
-  (fn [vars]
-    (log-debug "executing CallStmt statement")
-    vars))
+  (let [target (get stmt-info "result")]
+    (fn [vars]
+      (log-debug "executing CallStmt statement")
+      (assoc vars target 42))))
 
 (defn make-DotStmt [stmt-info static]
   "TODO"
@@ -60,7 +61,6 @@
     vars))
 
 (defn make-MakeObjectStmt [stmt-info static]
-  "TODO"
   (log-debug "making MakeObjectStmt stmt: %s" stmt-info)
   (let [target (get stmt-info "target")]
     (fn [vars]
@@ -68,12 +68,26 @@
       (log-debug "MakeObjectStmt - assigning empty object to local var %d" target)
       (assoc vars target {}))))
 
+(defn get-value [key static local]
+  (let [key-type (get key "type")
+        key-value (get key "value")]
+    (case key-type
+      "local" (get local key-value)
+      "string_index" (let [strings (get static "strings")]
+                       (get (get strings key-value) "value"))
+      (throw (Exception. (format "unknown value type ''" key-type))))))
+
 (defn make-ObjectInsertStmt [stmt-info static]
-  "TODO"
   (log-debug "making ObjectInsertStmt stmt")
-  (fn [vars]
-    (log-debug "executing ObjectInsertStmt statement")
-    vars))
+  (let [key-index (get stmt-info "key")
+        value-index (get stmt-info "value")
+        object-index (get stmt-info "object")]
+    (fn [vars]
+      (log-debug "executing ObjectInsertStmt statement")
+      (let [object (get vars object-index)
+            key (get-value key-index static vars)
+            value (get-value value-index static vars)]
+        (assoc vars object-index (assoc object key value))))))
 
 (defn make-ObjectMergeStmt [stmt-info static]
   "TODO"
