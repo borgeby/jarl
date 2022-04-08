@@ -2,10 +2,10 @@
   (:gen-class)
   (:require [opa4j.parser :as parser]))
 
-(defn run-first-plan [plans]
-  (let [[name plan] (first plans)]
+(defn run-first-plan [data]
+  (let [[name plan] (first (get data :plans))]
     (println "running plan" name)
-    (plan)))
+    (plan data)))
 
 (defn -main
   "Parses and the runs a plan"
