@@ -23,19 +23,19 @@
   ([msg] (log "TRACE" msg))
   ([msg & args] (apply log "TRACE" msg args)))
 
-(defn get-local [data-map index]
-  (get (get data-map :local) index))
+(defn get-local [state index]
+  (get (get state :local) index))
 
-(defn set-local [data-map index value]
-  (let [local (get data-map :local)]
-    (assoc data-map :local (assoc local index value))))
+(defn set-local [state index value]
+  (let [local (get state :local)]
+    (assoc state :local (assoc local index value))))
 
-(defn get-data [data-map key]
-  (let [static (get data-map :static)
+(defn get-data [state key]
+  (let [static (get state :static)
         key-type (get key "type")
         key-value (get key "value")]
     (case key-type
-      "local" (get-local data-map key-value)
+      "local" (get-local state key-value)
       "string_index" (let [strings (get static "strings")]
                        (get (get strings key-value) "value"))
       (throw (Exception. (format "unknown value type ''" key-type))))))
@@ -43,31 +43,31 @@
 (defn make-AssignVarStmt [stmt-info]
   "TODO"
   (log-debug "making AssignVarStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing AssignVarStmt statement")
-    data))
+    state))
 
 (defn make-AssignVarOnceStmt [stmt-info]
   "TODO"
   (log-debug "making AssignVarOnceStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing AssignVarOnceStmt statement")
-    data))
+    state))
 
 (defn make-BlockStmt [stmt-info]
   (log-debug "making BlockStmt stmt")
   (log-trace "info: %s" stmt-info)
   (let [blocks (make-blocks (get stmt-info "blocks"))]
-    (fn [data]
-      (log-trace "BlockStmt - local vars: %s" (get data :local))
-      (blocks data))))
+    (fn [state]
+      (log-trace "BlockStmt - local vars: %s" (get state :local))
+      (blocks state))))
 
 (defn make-BreakStmt [stmt-info]
-  "TODO"
   (log-debug "making BreakStmt stmt")
-  (fn [data]
-    (log-debug "executing BreakStmt statement")
-    data))
+  (let [index (get stmt-info "index")]
+    (fn [state]
+      (log-debug "BreakStmt - index: %s", index)
+      (assoc state :break-index index))))
 
 (defn map-by-index [array]
   (loop [array array
@@ -81,101 +81,101 @@
   (log-debug "making CallStmt stmt")
   (let [target (get stmt-info "result")]
     (let [func-name (get stmt-info "func")]
-      (fn [data]
+      (fn [state]
         (log-debug "CallStmt - calling func '%s'" func-name)
-        (let [func (get (get data :funcs) func-name)]
-          (let [local (map-by-index (map (fn [arg] (get-data data arg)) (get stmt-info "args")))]
-            (let [func-data {:static (get data :static)
-                             :funcs  (get data :funcs)
-                             :local  local}]
-              (let [result (func func-data)]
+        (let [func (get (get state :funcs) func-name)]
+          (let [local (map-by-index (map (fn [arg] (get-data state arg)) (get stmt-info "args")))]
+            (let [func-state {:static (get state :static)
+                              :funcs  (get state :funcs)
+                              :local  local}]
+              (let [result (func func-state)]
                 (log-debug "CallStmt - returning: %s" result)
-                (set-local data target result)))))))))
+                (set-local state target result)))))))))
 
 (defn make-DotStmt [stmt-info]
   (let [source-index (get stmt-info "source")
         key-index (get stmt-info "key")
         target (get stmt-info "target")]
     (log-debug "making DotStmt stmt")
-    (fn [data]
-      (let [source (get-data data source-index)
-            key (get-data data key-index)]
+    (fn [state]
+      (let [source (get-data state source-index)
+            key (get-data state key-index)]
         (log-trace "DotStmt - getting '%s' from '%s' to var %s" key source target)
-        (let [val (get (get-data data source-index) key)]
+        (let [val (get (get-data state source-index) key)]
           (log-debug "DotStmt - got '%s' from ('%s' in '%s') to var %s" val key source target)
-          (set-local data target val))))))
+          (set-local state target val))))))
 
 (defn make-IsDefinedStmt [stmt-info]
   "TODO"
   (log-debug "making IsDefinedStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing IsDefinedStmt statement")
-    data))
+    state))
 
 (defn make-MakeNumberRefStmt [stmt-info]
   "TODO"
   (log-debug "making MakeNumberRefStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing MakeNumberRefStmt statement")
-    data))
+    state))
 
 (defn make-MakeObjectStmt [stmt-info]
   (log-debug "making MakeObjectStmt stmt: %s" stmt-info)
   (let [target (get stmt-info "target")]
-    (fn [data]
+    (fn [state]
       (log-trace "MakeObjectStmt - info: %s" stmt-info)
       (log-debug "MakeObjectStmt - assigning empty object to local var %d" target)
-      (set-local data target {}))))
+      (set-local state target {}))))
 
 (defn make-NotEqualStmt [stmt-info]
   "TODO"
   (log-debug "making NotEqualStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing NotEqualStmt statement")
-    data))
+    state))
 
 (defn make-ObjectInsertStmt [stmt-info]
   (log-debug "making ObjectInsertStmt stmt")
   (let [key-index (get stmt-info "key")
         value-index (get stmt-info "value")
         object-index (get stmt-info "object")]
-    (fn [data]
+    (fn [state]
       (log-trace "ObjectInsertStmt - info: %s" stmt-info)
-      (let [object (get-local data object-index)
-            key (get-data data key-index)
-            value (get-data data value-index)]
+      (let [object (get-local state object-index)
+            key (get-data state key-index)
+            value (get-data state value-index)]
         (log-debug "ObjectInsertStmt - inserting '%s' at '%s' to var %d" value key object-index)
-        (set-local data object-index (assoc object key value))))))
+        (set-local state object-index (assoc object key value))))))
 
 (defn make-ObjectMergeStmt [stmt-info]
   (log-debug "making ObjectMergeStmt stmt")
-  (fn [data]
+  (fn [state]
     (let [to-key (get stmt-info "a")
           from-key (get stmt-info "b")
           target-key (get stmt-info "target")]
       (log-debug "ObjectMergeStmt - merging %d and %d into %d" to-key from-key target-key)
-      (set-local data target-key (merge (get-local data to-key) (get-local data from-key))))))
+      (set-local state target-key (merge (get-local state to-key) (get-local state from-key))))))
 
 (defn make-ResetLocalStmt [stmt-info]
   "TODO"
   (log-debug "making ResetLocalStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing ResetLocalStmt statement")
-    data))
+    state))
 
 (defn make-ResultSetAddStmt [stmt-info]
   "TODO"
   (log-debug "making ResultSetAddStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing ResultSetAddStmt statement")
-    data))
+    state))
 
 (defn make-ReturnLocalStmt [stmt-info]
   "TODO"
   (log-debug "making ReturnLocalStmt stmt")
-  (fn [data]
+  (fn [state]
     (log-debug "executing ReturnLocalStmt statement")
-    data))
+    state))
 
 (defn make-stmt [stmt-info]
   (log-debug "making stmt" stmt-info)
@@ -198,41 +198,53 @@
                  "ResultSetAddStmt" (make-ResultSetAddStmt stmt-info)
                  "ReturnLocalStmt" (make-ReturnLocalStmt stmt-info)
                  (throw (Exception. (format "%s statement type not implemented" type))))]
-      (fn [data]
-        (log-trace "%s - statement called with local vars: %s" type (get data :local))
-        (stmt data)))))
+      (fn [state]
+        (log-trace "%s - statement called with local vars: %s" type (get state :local))
+        (stmt state)))))
 
 (defn make-stmts [stmts-info]
   (log-debug "making stmts")
   (let [stmts (doall (for [stmt-info stmts-info]
                        (make-stmt stmt-info)))]
-    (fn [data]
+    (fn [state]
       (log-debug "executing statements")
       (loop [stmts stmts
-             data data]
-        (if (== (count stmts) 0)
-          data
-          (recur (next stmts) ((first stmts) data)))))))
+             state state]
+        (let [stmts-count (count stmts)]
+          (if (or (== stmts-count 0) (contains? state :break-index))
+            (do
+              (if (> stmts-count 0)
+                (log-trace "skipping %d statement(s)" stmts-count))
+              state)
+            (recur (next stmts) ((first stmts) state))))))))
 
 (defn make-block [block-info]
   (log-debug "making block")
   (let [stmts-info (get block-info "stmts")]
     (let [stmts (make-stmts stmts-info)]
-      (fn [data]
+      (fn [state]
         (log-debug "executing block")
-        (stmts data)))))
+        (stmts state)))))
 
 (defn make-blocks [blocks-info]
   (log-debug "making blocks")
   (let [blocks (doall (for [block-info blocks-info]
                         (make-block block-info)))]
-    (fn [data]
+    (fn [state]
       (log-debug "executing blocks")
       (loop [blocks blocks
-             vars data]
-        (if (== (count blocks) 0)
-          vars
-          (recur (next blocks) ((first blocks) vars)))))))
+             state state]
+        (let [break-index (get state :break-index)]
+          (if (not (nil? break-index))
+            (do
+              (log-trace "breaking out of block; index: %d" break-index)
+              (let [new-break-index (- break-index 1)]
+                (if (>= new-break-index 0)
+                  (assoc state :break-index new-break-index)
+                  (dissoc state :break-index))))
+            (if (empty? blocks)
+              state
+              (recur (next blocks) ((first blocks) state)))))))))
 
 (defn make-plan [plan-info]
   (let [name (get plan-info "name")
@@ -240,10 +252,10 @@
     (log-debug "making plan '%s'" name)
     (log-trace "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info)]
-      [name (fn [data]
-              (let [data (assoc data :local {0 {} 1 { "simple" {}}})]
+      [name (fn [state]
+              (let [state (assoc state :local {0 {} 1 {"simple" {}}})]
                 (log-debug "executing plan '%s'" name)
-                (blocks data)))])))
+                (blocks state)))])))
 
 (defn make-plans [plans-info]
   (log-debug "making plans")
@@ -256,9 +268,9 @@
         return (get func-info "return")
         blocks-info (get func-info "blocks")]
     (let [blocks (make-blocks blocks-info)]
-      [name (fn [data]
+      [name (fn [state]
               (log-debug "executing func '%s'" name)
-              (blocks data)
+              (blocks state)
               42)])))
 
 (defn make-funcs [funcs-info]
