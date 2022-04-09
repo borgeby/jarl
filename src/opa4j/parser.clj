@@ -41,11 +41,13 @@
       (throw (Exception. (format "unknown value type ''" key-type))))))
 
 (defn make-AssignVarStmt [stmt-info]
-  "TODO"
   (log-debug "making AssignVarStmt stmt")
-  (fn [state]
-    (log-debug "executing AssignVarStmt statement")
-    state))
+  (let [source-index (get stmt-info "source")
+        target (get stmt-info "target")]
+    (fn [state]
+      (let [val (get-data state source-index)]
+        (log-debug "AssignVarStmt - assigning '%s' from %s to %s" val source-index target)
+        (assoc state target val)))))
 
 (defn make-AssignVarOnceStmt [stmt-info]
   "TODO"
@@ -199,7 +201,7 @@
                  "ReturnLocalStmt" (make-ReturnLocalStmt stmt-info)
                  (throw (Exception. (format "%s statement type not implemented" type))))]
       (fn [state]
-        (log-trace "%s - statement called with local vars: %s" type (get state :local))
+        (log-trace "%s - calling with info: %s, vars: %s" type stmt-info (get state :local))
         (stmt state)))))
 
 (defn make-stmts [stmts-info]
