@@ -30,7 +30,7 @@
   (let [local (get data-map :local)]
     (assoc data-map :local (assoc local index value))))
 
-(defn get-value [data-map key]
+(defn get-data [data-map key]
   (let [static (get data-map :static)
         key-type (get key "type")
         key-value (get key "value")]
@@ -84,26 +84,26 @@
       (fn [data]
         (log-debug "CallStmt - calling func '%s'" func-name)
         (let [func (get (get data :funcs) func-name)]
-          (let [local (map-by-index (map (fn [arg] (get-value data arg)) (get stmt-info "args")))]
+          (let [local (map-by-index (map (fn [arg] (get-data data arg)) (get stmt-info "args")))]
             (let [func-data {:static (get data :static)
                              :funcs  (get data :funcs)
                              :local  local}]
               (let [result (func func-data)]
-                (log-debug "CallStmt - returning")
-                (log-trace "CallStmt - result: %s" result)
+                (log-debug "CallStmt - returning: %s" result)
                 (set-local data target result)))))))))
 
 (defn make-DotStmt [stmt-info]
-  "TODO"
   (let [source-index (get stmt-info "source")
         key-index (get stmt-info "key")
         target (get stmt-info "target")]
     (log-debug "making DotStmt stmt")
     (fn [data]
-      (let [source (get-value data source-index)
-            key (get-value data key-index)]
-        (log-debug "DotStmt - getting '%s' from '%s' to var %s" key source target)
-        data))))
+      (let [source (get-data data source-index)
+            key (get-data data key-index)]
+        (log-trace "DotStmt - getting '%s' from '%s' to var %s" key source target)
+        (let [val (get (get-data data source-index) key)]
+          (log-debug "DotStmt - got '%s' from ('%s' in '%s') to var %s" val key source target)
+          (set-local data target val))))))
 
 (defn make-IsDefinedStmt [stmt-info]
   "TODO"
@@ -142,20 +142,19 @@
     (fn [data]
       (log-trace "ObjectInsertStmt - info: %s" stmt-info)
       (let [object (get-local data object-index)
-            key (get-value data key-index)
-            value (get-value data value-index)]
+            key (get-data data key-index)
+            value (get-data data value-index)]
         (log-debug "ObjectInsertStmt - inserting '%s' at '%s' to var %d" value key object-index)
         (set-local data object-index (assoc object key value))))))
 
 (defn make-ObjectMergeStmt [stmt-info]
-  "TODO"
   (log-debug "making ObjectMergeStmt stmt")
   (fn [data]
-    (let [to (get stmt-info "a")
-          from (get stmt-info "b")
-          target (get stmt-info "target")]
-      (log-debug "executing ObjectMergeStmt statement")
-      data)))
+    (let [to-key (get stmt-info "a")
+          from-key (get stmt-info "b")
+          target-key (get stmt-info "target")]
+      (log-debug "ObjectMergeStmt - merging %d and %d into %d" to-key from-key target-key)
+      (set-local data target-key (merge (get-local data to-key) (get-local data from-key))))))
 
 (defn make-ResetLocalStmt [stmt-info]
   "TODO"
@@ -242,13 +241,13 @@
     (log-trace "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info)]
       [name (fn [data]
-              (let [data (assoc data :local {0 {} 1 {}})]
+              (let [data (assoc data :local {0 {} 1 { "simple" {}}})]
                 (log-debug "executing plan '%s'" name)
                 (blocks data)))])))
 
 (defn make-plans [plans-info]
   (log-debug "making plans")
-  (doall (for [plan-info plans-info]
+  (doall (for [plan-info (get plans-info "plans")]
            (make-plan plan-info))))
 
 (defn make-func [func-info]
@@ -275,7 +274,7 @@
   "Parses the incoming string"
   [str] (let [ir (json/read-str str)]
           (let [static (get ir "static")
-                plans-info (get (get ir "plans") "plans")
+                plans-info (get ir "plans")
                 funcs-info (get ir "funcs")]
             {:plans  (make-plans plans-info)
              :funcs  (make-funcs funcs-info)
