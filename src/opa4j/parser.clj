@@ -1,5 +1,6 @@
 (ns opa4j.parser
   (:require [clojure.data.json :as json])
+  (:require [clojure.edn :as edn])
   (:import (java.time Instant)))
 
 (declare make-blocks)
@@ -120,11 +121,13 @@
     state))
 
 (defn make-MakeNumberRefStmt [stmt-info]
-  "TODO"
   (log-debug "making MakeNumberRefStmt stmt")
-  (fn [state]
-    (log-debug "MakeNumberRefStmt - TODO")
-    state))
+  (let [index (get stmt-info "Index")
+        target (get stmt-info "target")]
+    (fn [state]
+      (let [val (edn/read-string (get-value state {"type" "string_index" "value" index}))]
+        (log-debug "MakeNumberRefStmt - parsed number: %s" val)
+        (set-local state target val)))))
 
 (defn make-MakeObjectStmt [stmt-info]
   (log-debug "making MakeObjectStmt stmt: %s" stmt-info)
