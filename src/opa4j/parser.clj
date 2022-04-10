@@ -134,7 +134,7 @@
 
 (defn make-MakeNumberRefStmt [stmt-info]
   (log-debug "making MakeNumberRefStmt stmt")
-  (let [index (get stmt-info "Index")                       ; NOTE 'Index' is capitalized
+  (let [index (get stmt-info "Index")                       ; NOTE: 'Index' is capitalized
         target (get stmt-info "target")]
     (fn [state]
       (let [val (edn/read-string (get-static-string state index))]
@@ -199,11 +199,10 @@
     state))
 
 (defn make-ReturnLocalStmt [stmt-info]
-  "TODO"
   (log-debug "making ReturnLocalStmt stmt")
   (fn [state]
-    (log-debug "ReturnLocalStmt - TODO")
-    state))
+    (log-debug "ReturnLocalStmt - exiting function")        ; TODO: Do we need to recursively break out of all nested blocks to exit the function?
+    state))                                                 ; No-op, the function itself knows what local var is the result
 
 (defn make-stmt [stmt-info]
   (log-debug "making stmt" stmt-info)
@@ -298,8 +297,10 @@
     (let [blocks (make-blocks blocks-info)]
       [name (fn [state]
               (log-debug "executing func '%s'" name)
-              (blocks state)
-              42)])))
+              (let [state (blocks state)]
+                (let [result (get-local state return)]
+                  (log-debug "function '%s' returning '%s'" name result)
+                  result)))])))
 
 (defn make-funcs [funcs-info]
   (log-debug "making funcs")
