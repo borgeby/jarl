@@ -67,7 +67,7 @@
         (throw (Exception. (format "local %s already assigned" target))))
       (let [val (get-value state source-index)]
         (log-debug "AssignVarStmt - assigning '%s' from %s to %s" val source-index target)
-        (assoc state target val)))))
+        (set-local state target val)))))
 
 (defn make-BlockStmt [stmt-info]
   (log-debug "making BlockStmt stmt")
@@ -121,11 +121,16 @@
           (set-local state target val))))))
 
 (defn make-IsDefinedStmt [stmt-info]
-  "TODO"
   (log-debug "making IsDefinedStmt stmt")
-  (fn [state]
-    (log-debug "IsDefinedStmt - TODO")
-    state))
+  (let [source (get stmt-info "source")]
+    (fn [state]
+      (if (contains? (get state :local) source)
+        (do
+          (log-debug "%d is defined" source)
+          state)
+        (do
+          (log-debug "%d is not defined" source)
+          (break state))))))
 
 (defn make-MakeNumberRefStmt [stmt-info]
   (log-debug "making MakeNumberRefStmt stmt")
