@@ -49,6 +49,10 @@
   ([state] (assoc state :break-index 0))
   ([state break-index] (assoc state :break-index break-index)))
 
+(defn add-result [state value]
+  (let [result-set (get state :result)]
+    (assoc state :result-set (conj result-set value))))
+
 (defn make-AssignVarStmt [stmt-info]
   (log-debug "making AssignVarStmt stmt")
   (let [source-index (get stmt-info "source")
@@ -56,7 +60,7 @@
     (fn [state]
       (let [val (get-value state source-index)]
         (log-debug "AssignVarStmt - assigning '%s' from %s to %s" val source-index target)
-        (assoc state target val)))))
+        (set-local state target val)))))
 
 (defn make-AssignVarOnceStmt [stmt-info]
   (log-debug "making AssignVarOnceStmt stmt")
@@ -192,11 +196,17 @@
       (dissoc state target))))
 
 (defn make-ResultSetAddStmt [stmt-info]
-  "TODO"
   (log-debug "making ResultSetAddStmt stmt")
-  (fn [state]
-    (log-debug "ResultSetAddStmt - TODO")
-    state))
+  (let [value (get stmt-info "value")]
+    (fn [state]
+      (let [val (get-local state value)]
+        (if (nil? val)
+          (do
+            (log-debug "ResultSetAddStmt - nothing to add to result set")
+            state)
+          (do
+            (log-debug "ResultSetAddStmt - adding %s to resultset" val)
+            (add-result state val)))))))
 
 (defn make-ReturnLocalStmt [stmt-info]
   (log-debug "making ReturnLocalStmt stmt")

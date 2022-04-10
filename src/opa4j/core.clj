@@ -5,7 +5,10 @@
 (defn run-first-plan [data]
   (let [[name plan] (first (get data :plans))]
     (println "running plan" name)
-    (plan data)))
+    (let [result (plan data)]
+      (let [result-set (get result :result-set)]
+        (println "Result-set:" result-set)
+        result-set))))
 
 (defn -main
   "Parses and the runs a plan"
