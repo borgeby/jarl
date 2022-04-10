@@ -42,6 +42,9 @@
       "bool" key-value
       (throw (Exception. (format "unknown value type ''" key-type))))))
 
+(defn get-static-string [state index]
+  (get-value state {"type" "string_index" "value" index}))
+
 (defn break
   ([state] (assoc state :break-index 0))
   ([state break-index] (assoc state :break-index break-index)))
@@ -56,11 +59,15 @@
         (assoc state target val)))))
 
 (defn make-AssignVarOnceStmt [stmt-info]
-  "TODO"
   (log-debug "making AssignVarOnceStmt stmt")
-  (fn [state]
-    (log-debug "AssignVarOnceStmt - TODO")
-    state))
+  (let [source-index (get stmt-info "source")
+        target (get stmt-info "target")]
+    (fn [state]
+      (if (not (nil? (get-local state target)))
+        (throw (Exception. (format "local %s already assigned" target))))
+      (let [val (get-value state source-index)]
+        (log-debug "AssignVarStmt - assigning '%s' from %s to %s" val source-index target)
+        (assoc state target val)))))
 
 (defn make-BlockStmt [stmt-info]
   (log-debug "making BlockStmt stmt")
@@ -122,10 +129,10 @@
 
 (defn make-MakeNumberRefStmt [stmt-info]
   (log-debug "making MakeNumberRefStmt stmt")
-  (let [index (get stmt-info "Index")
+  (let [index (get stmt-info "Index")                       ; NOTE 'Index' is capitalized
         target (get stmt-info "target")]
     (fn [state]
-      (let [val (edn/read-string (get-value state {"type" "string_index" "value" index}))]
+      (let [val (edn/read-string (get-static-string state index))]
         (log-debug "MakeNumberRefStmt - parsed number: %s" val)
         (set-local state target val)))))
 
