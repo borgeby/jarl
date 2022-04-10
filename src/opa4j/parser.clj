@@ -290,7 +290,7 @@
     (log-trace "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info)]
       [name (fn [state]
-              (let [state (assoc state :local {0 {} 1 {"simple" {}}})]
+              (let [state (assoc state :local {0 {} 1 {"simple" {}}})] ;TODO: populate input (0) and data (1) local vars
                 (log-debug "executing plan '%s'" name)
                 (blocks state)))])))
 
