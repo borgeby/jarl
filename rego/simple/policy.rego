@@ -1,13 +1,9 @@
 package simple
 
-x := 42
-
-y := 1337
-
 p {
-	input.x = x
+	input.x = 42
 }
 
-q {
-	input.y = 1337
+p {
+	input.x = 1337
 }

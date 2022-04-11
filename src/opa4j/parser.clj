@@ -4,6 +4,7 @@
   (:require [clojure.string :as str])
   (:import (java.time Instant)))
 
+(declare make-block)
 (declare make-blocks)
 
 (defn log
@@ -53,6 +54,25 @@
 (defn add-result [state value]
   (let [result-set (get state :result)]
     (assoc state :result-set (conj result-set value))))
+
+(defn make-ArrayAppendStmt [stmt-info]
+  (log-debug "making ArrayAppendStmt stmt")
+  (let [array-index (get stmt-info "array")
+        value-index (get stmt-info "value")]
+    (fn [state]
+      (let [array (get-local state array-index)]
+        (if (nil? array)
+          (do
+            (log-debug "ArrayAppendStmt - <%s> is not a local var" array-index)
+            (break state))
+          (let [val (get-value state value-index)]
+            (if (nil? val)
+              (do
+                (log-debug "ArrayAppendStmt - value <%s> not present" value-index)
+                (break state))
+              (do
+                (log-debug "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
+                (set-local state array-index (conj array val))))))))))
 
 (defn make-AssignVarStmt [stmt-info]
   (log-debug "making AssignVarStmt stmt")
@@ -175,13 +195,26 @@
         (log-debug "MakeNumberRefStmt - parsed number: %s" val)
         (set-local state target val)))))
 
+(defn make-MakeArrayStmt [stmt-info]
+  (log-debug "making MakeArrayStmt stmt: %s" stmt-info)
+  (let [target (get stmt-info "target")]
+    (fn [state]
+      (log-debug "MakeArrayStmt - assigning empty array to local var %d" target)
+      (set-local state target []))))
+
 (defn make-MakeObjectStmt [stmt-info]
   (log-debug "making MakeObjectStmt stmt: %s" stmt-info)
   (let [target (get stmt-info "target")]
     (fn [state]
-      (log-trace "MakeObjectStmt - info: %s" stmt-info)
       (log-debug "MakeObjectStmt - assigning empty object to local var %d" target)
       (set-local state target {}))))
+
+(defn make-MakeSetStmt [stmt-info]
+  (log-debug "making MakeSetStmt stmt: %s" stmt-info)
+  (let [target (get stmt-info "target")]
+    (fn [state]
+      (log-debug "MakeSetStmt - assigning empty set to local var %d" target)
+      (set-local state target #{}))))
 
 (defn make-NotEqualStmt [stmt-info]
   (log-debug "making NotEqualStmt stmt")
@@ -244,11 +277,65 @@
     (log-debug "ReturnLocalStmt - exiting function")        ; TODO: Do we need to recursively break out of all nested blocks to exit the function?
     state))                                                 ; No-op, the function itself knows what local var is the result
 
+(defn make-SetAddStmt [stmt-info]
+  (log-debug "making SetAddStmt stmt")
+  (let [set-index (get stmt-info "set")
+        value-index (get stmt-info "value")]
+    (fn [state]
+      (let [set (get-local state set-index)]
+        (if (nil? set)
+          (do
+            (log-debug "SetAddStmt - <%s> is not a local var" set-index)
+            (break state))
+          (let [val (get-value state value-index)]
+            (if (nil? val)
+              (do
+                (log-debug "SetAddStmt - value <%s> not present" value-index)
+                (break state))
+              (do
+                (log-debug "SetAddStmt - Adding '%s' to <%s>" val set-index)
+                (set-local state set-index (conj set val))))))))))
+
+(defn make-ScanStmt [stmt-info]
+  (log-debug "making ScanStmt stmt")
+  (let [source-index (get stmt-info "source")
+        key-index (get stmt-info "key")
+        value-index (get stmt-info "value")
+        block-stmt (make-block (get stmt-info "block"))]
+    (fn [state]
+      (log-debug "ScanStmt - scanning <%d>" source-index)
+      (let [source (get-local state source-index)]
+        (if (or (nil? source) (not (coll? source)) (empty? source))
+          (do
+            (log-debug "ScanStmt - '%s' is not a collection" source-index)
+            (break state))
+          (if (map? source)
+            (do
+              (log-trace "ScanStmt - source is map")
+              (throw (Exception. (format "ScanStmt not implemented for maps"))))
+            (do
+              (log-trace "ScanStmt - source is list")
+              (loop [source-indexed (do (map-indexed (fn [i v] [i v]) source))
+                     state state]
+                (if (empty? source-indexed)
+                  (do
+                    (log-trace "ScanStmt - done")
+                    (break state))
+                  (let [entry (first source-indexed)]
+                    (let [key (get entry 0)
+                          value (get entry 1)
+                          state (set-local state key-index key)]
+                      (let [state (set-local state value-index value)]
+                        (recur (next source-indexed) (block-stmt state))))))))))))))
+
+
+
 (defn make-stmt [stmt-info]
   (log-debug "making stmt" stmt-info)
   (let [type (get stmt-info "type")
         stmt-info (get stmt-info "stmt")]
     (let [stmt (case type
+                 "ArrayAppendStmt" (make-ArrayAppendStmt stmt-info)
                  "AssignVarStmt" (make-AssignVarStmt stmt-info)
                  "AssignVarOnceStmt" (make-AssignVarOnceStmt stmt-info)
                  "BlockStmt" (make-BlockStmt stmt-info)
@@ -257,14 +344,18 @@
                  "DotStmt" (make-DotStmt stmt-info)
                  "EqualStmt" (make-EqualStmt stmt-info)
                  "IsDefinedStmt" (make-IsDefinedStmt stmt-info)
+                 "MakeArrayStmt" (make-MakeArrayStmt stmt-info)
                  "MakeNumberRefStmt" (make-MakeNumberRefStmt stmt-info)
                  "MakeObjectStmt" (make-MakeObjectStmt stmt-info)
+                 "MakeSetStmt" (make-MakeSetStmt stmt-info)
                  "NotEqualStmt" (make-NotEqualStmt stmt-info)
                  "ObjectInsertStmt" (make-ObjectInsertStmt stmt-info)
                  "ObjectMergeStmt" (make-ObjectMergeStmt stmt-info)
                  "ResetLocalStmt" (make-ResetLocalStmt stmt-info)
                  "ResultSetAddStmt" (make-ResultSetAddStmt stmt-info)
                  "ReturnLocalStmt" (make-ReturnLocalStmt stmt-info)
+                 "ScanStmt" (make-ScanStmt stmt-info)
+                 "SetAddStmt" (make-SetAddStmt stmt-info)
                  (throw (Exception. (format "%s statement type not implemented" type))))]
       (fn [state]
         (log-trace "%s - calling with info: %s, vars: %s" type stmt-info (get state :local))
@@ -380,7 +471,6 @@
 
 (defn parse-file
   "Reads and parses the incoming file"
-  ([] (println "No file provided!"))
   ([file]
    (log-debug "Parsing file '%s'" file)
    (parse (slurp file))))
