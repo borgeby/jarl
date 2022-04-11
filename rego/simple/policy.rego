@@ -1,7 +1,7 @@
 package simple
 
-x := 1
+#x := 1
 
-# p {
-# 	x == 1
-# }
+p {
+	input.x = 42
+}

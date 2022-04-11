@@ -59,8 +59,13 @@
         target (get stmt-info "target")]
     (fn [state]
       (let [val (get-value state source-index)]
-        (log-debug "AssignVarStmt - assigning '%s' from %s to %s" val source-index target)
-        (set-local state target val)))))
+        (if (nil? val)
+          (do
+            (log-debug "AssignVarStmt - <%s> not present" source-index)
+            (break state))
+          (do
+            (log-debug "AssignVarStmt - assigning '%s' from <%s> to <%s>" val source-index target)
+            (set-local state target val)))))))
 
 (defn make-AssignVarOnceStmt [stmt-info]
   (log-debug "making AssignVarOnceStmt stmt")
@@ -101,15 +106,17 @@
   (let [target (get stmt-info "result")]
     (let [func-name (get stmt-info "func")]
       (fn [state]
-        (log-debug "CallStmt - calling func '%s'" func-name)
+        (log-debug "CallStmt - calling func <%s>" func-name)
         (let [func (get (get state :funcs) func-name)]
           (let [local (map-by-index (map (fn [arg] (get-value state arg)) (get stmt-info "args")))]
             (let [func-state {:static (get state :static)
                               :funcs  (get state :funcs)
                               :local  local}]
               (let [result (func func-state)]
-                (log-debug "CallStmt - '%s' returning: %s" func-name result)
-                (set-local state target result)))))))))
+                (log-debug "CallStmt - <%s> returning: '%s'" func-name result)
+                (if (nil? result)
+                  (break state)
+                  (set-local state target result))))))))))
 
 (defn make-DotStmt [stmt-info]
   (let [source-index (get stmt-info "source")
@@ -119,10 +126,32 @@
     (fn [state]
       (let [source (get-value state source-index)
             key (get-value state key-index)]
-        (log-trace "DotStmt - getting '%s' from '%s' to var %s" key source target)
-        (let [val (get (get-value state source-index) key)]
-          (log-debug "DotStmt - got '%s' from ('%s' in '%s') to var %s" val key source target)
-          (set-local state target val))))))
+        (if (not (nil? source))
+          (do
+            (let [val (get (get-value state source-index) key)]
+              (if (not (nil? val))
+                (do
+                  (log-debug "DotStmt - got '%s' to var <%s>" val target)
+                  (set-local state target val))
+                (do
+                  (log-debug "DotStmt - <%s> not present in <%s>" key source-index)
+                  (break state)))))
+          (do
+            (log-debug "DotStmt - <%s> not present" source-index)
+            (break state)))))))
+
+(defn make-EqualStmt [stmt-info]
+  (log-debug "making EqualStmt stmt")
+  (let [a-index (get stmt-info "a")
+        b-index (get stmt-info "b")]
+    (fn [state]
+      (let [a (get-value state a-index)
+            b (get-value state b-index)]
+        (let [result (= a b)]
+          (log-debug "EqualStmt - '%s' != '%s' == %s" a b result)
+          (if result
+            state
+            (break state)))))))
 
 (defn make-IsDefinedStmt [stmt-info]
   (log-debug "making IsDefinedStmt stmt")
@@ -225,6 +254,7 @@
                  "BreakStmt" (make-BreakStmt stmt-info)
                  "CallStmt" (make-CallStmt stmt-info)
                  "DotStmt" (make-DotStmt stmt-info)
+                 "EqualStmt" (make-EqualStmt stmt-info)
                  "IsDefinedStmt" (make-IsDefinedStmt stmt-info)
                  "MakeNumberRefStmt" (make-MakeNumberRefStmt stmt-info)
                  "MakeObjectStmt" (make-MakeObjectStmt stmt-info)
