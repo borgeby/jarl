@@ -126,7 +126,10 @@
     (fn [state]
       (let [source (get-value state source-index)
             key (get-value state key-index)]
-        (if (not (nil? source))
+        (if (nil? source)
+          (do
+            (log-debug "DotStmt - <%s> not present" source-index)
+            (break state))
           (do
             (let [val (get (get-value state source-index) key)]
               (if (not (nil? val))
@@ -135,10 +138,7 @@
                   (set-local state target val))
                 (do
                   (log-debug "DotStmt - <%s> not present in <%s>" key source-index)
-                  (break state)))))
-          (do
-            (log-debug "DotStmt - <%s> not present" source-index)
-            (break state)))))))
+                  (break state))))))))))
 
 (defn make-EqualStmt [stmt-info]
   (log-debug "making EqualStmt stmt")
@@ -319,8 +319,8 @@
     (log-debug "making plan '%s'" name)
     (log-trace "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info)]
-      [name (fn [state]
-              (let [state (assoc state :local {0 {} 1 {"simple" {}}})] ;TODO: populate input (0) and data (1) local vars
+      [name (fn [data input]
+              (let [state (assoc data :local {0 input 1 {"simple" {}}})] ;TODO: populate input (0) and data (1) local vars
                 (log-debug "executing plan '%s'" name)
                 (blocks state)))])))
 
