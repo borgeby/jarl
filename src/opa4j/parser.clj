@@ -1,6 +1,7 @@
 (ns opa4j.parser
   (:require [clojure.data.json :as json])
   (:require [clojure.edn :as edn])
+  (:require [clojure.string :as str])
   (:import (java.time Instant)))
 
 (declare make-blocks)
@@ -313,16 +314,32 @@
               state
               (recur (next blocks) ((first blocks) state)))))))))
 
+; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
+(defn populate-data [plan-info]
+  (let [plan-name (get plan-info "name")]
+    (if (> (count plan-name) 0)
+      (do
+        (loop [components (reverse (str/split plan-name #"/"))
+               result {}]
+          (if (empty? components)
+            result
+            (recur (next components) {(first components) result}))))
+      {})))
+
 (defn make-plan [plan-info]
   (let [name (get plan-info "name")
         blocks-info (get plan-info "blocks")]
     (log-debug "making plan '%s'" name)
     (log-trace "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info)]
-      [name (fn [data input]
-              (let [state (assoc data :local {0 input 1 {"simple" {}}})] ;TODO: populate input (0) and data (1) local vars
-                (log-debug "executing plan '%s'" name)
-                (blocks state)))])))
+      [name (fn [info input]
+              (let [state (assoc info :local {0 input
+                                              1 (populate-data plan-info)})]
+                (log-debug "Plan - executing '%s'" name)
+                (let [state (blocks state)]
+                  (let [result-set (get state :result-set)]
+                    (log-debug "Plan - result-set: %s" result-set)
+                    result-set))))])))
 
 (defn make-plans [plans-info]
   (log-debug "making plans")
