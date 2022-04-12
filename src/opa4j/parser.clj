@@ -42,7 +42,7 @@
       "string_index" (let [strings (get static "strings")]
                        (get (get strings key-value) "value"))
       "bool" key-value
-      (throw (Exception. (format "unknown value type ''" key-type))))))
+      (throw (Exception. (format "unknown value type '%s'" key-type))))))
 
 (defn get-static-string [state index]
   (get-value state {"type" "string_index" "value" index}))
@@ -120,7 +120,7 @@
          i 0]
     (if (empty? array)
       map
-      (recur (next array) (assoc map i (first array)) (+ i 1)))))
+      (recur (next array) (assoc map i (first array)) (inc i)))))
 
 (defn make-CallStmt [stmt-info]
   (log-debug "making CallStmt stmt")
@@ -151,15 +151,14 @@
           (do
             (log-debug "DotStmt - <%s> not present" source-index)
             (break state))
-          (do
-            (let [val (get (get-value state source-index) key)]
-              (if (not (nil? val))
-                (do
-                  (log-debug "DotStmt - got '%s' to var <%s>" val target)
-                  (set-local state target val))
-                (do
-                  (log-debug "DotStmt - <%s> not present in <%s>" key source-index)
-                  (break state))))))))))
+          (let [val (get (get-value state source-index) key)]
+            (if-not (nil? val)
+              (do
+                (log-debug "DotStmt - got '%s' to var <%s>" val target)
+                (set-local state target val))
+              (do
+                (log-debug "DotStmt - <%s> not present in <%s>" key source-index)
+                (break state)))))))))
 
 (defn make-EqualStmt [stmt-info]
   (log-debug "making EqualStmt stmt")
@@ -223,7 +222,7 @@
     (fn [state]
       (let [a (get-value state a-index)
             b (get-value state b-index)]
-        (let [result (not (= a b))]
+        (let [result (not= a b)]
           (log-debug "NotEqualStmt - '%s' != '%s' == %s" a b result)
           (if result
             state
@@ -315,7 +314,7 @@
               (throw (Exception. (format "ScanStmt not implemented for maps"))))
             (do
               (log-trace "ScanStmt - source is list")
-              (loop [source-indexed (do (map-indexed (fn [i v] [i v]) source))
+              (loop [source-indexed (map-indexed (fn [i v] [i v]) source)
                      state state]
                 (if (empty? source-indexed)
                   (do
@@ -370,9 +369,9 @@
       (loop [stmts stmts
              state state]
         (let [stmts-count (count stmts)]
-          (if (or (== stmts-count 0) (contains? state :break-index))
+          (if (or (zero? stmts-count) (contains? state :break-index))
             (do
-              (if (> stmts-count 0)
+              (if (pos? stmts-count)
                 (log-trace "skipping %d statement(s)" stmts-count))
               state)
             (recur (next stmts) ((first stmts) state))))))))
@@ -394,10 +393,10 @@
       (loop [blocks blocks
              state state]
         (let [break-index (get state :break-index)]
-          (if (not (nil? break-index))
+          (if-not (nil? break-index)
             (do
               (log-trace "breaking out of block; index: %d" break-index)
-              (let [new-break-index (- break-index 1)]
+              (let [new-break-index (dec break-index)]
                 (if (>= new-break-index 0)
                   (assoc state :break-index new-break-index)
                   (dissoc state :break-index))))
@@ -408,13 +407,12 @@
 ; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
 (defn populate-data [plan-info]
   (let [plan-name (get plan-info "name")]
-    (if (> (count plan-name) 0)
-      (do
-        (loop [components (reverse (str/split plan-name #"/"))
-               result {}]
-          (if (empty? components)
-            result
-            (recur (next components) {(first components) result}))))
+    (if (pos? (count plan-name))
+      (loop [components (reverse (str/split plan-name #"/"))
+             result {}]
+        (if (empty? components)
+          result
+          (recur (next components) {(first components) result})))
       {})))
 
 (defn make-plan [plan-info]
