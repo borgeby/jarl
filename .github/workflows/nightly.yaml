@@ -1,0 +1,17 @@
+name: Check Dependencies
+
+on:
+  schedule:
+  - cron: '0 0 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  check-dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Check outdated
+      run: lein ancient
