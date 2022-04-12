@@ -6,6 +6,15 @@ A Clojure library designed to ... well, that part is up to you.
 
 FIXME
 
+## Development
+
+### Linters
+
+* `lein kibit` to run [kibit](https://github.com/jonase/kibit)
+* `lein eastwood` ro run [eastwood](https://github.com/jonase/eastwood)
+* `lein clj-kondo --lint src test` to run [clj-kondo](https://github.com/clj-kondo/clj-kondo)
+* `lein lint` to run all linters
+
 ## License
 
 Copyright © 2022 FIXME
