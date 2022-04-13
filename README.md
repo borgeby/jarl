@@ -2,6 +2,8 @@
 
 An OPA evaluator for the JVM, written in Clojure.
 
+Project name is subject to change.
+
 ## Usage
 
 FIXME
