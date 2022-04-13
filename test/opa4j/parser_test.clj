@@ -1,4 +1,4 @@
-;Copyright 2022 Johan Fylling
+;Copyright 2022 Johan Fylling, Anders Eknert
 ;
 ;Licensed under the Apache License, Version 2.0 (the "License");
 ;you may not use this file except in compliance with the License.
@@ -31,3 +31,13 @@
       (is (= name "test"))
       (let [result-set (plan data {})]
         (is (= result-set '({"result" {"p" #{"a" "b" "c"}}})))))))
+
+(deftest object-composition-test
+  (testing "A policy with object-composition"
+    (let [data (parse-file "rego/object-composition/plan.json")
+          [name plan] (first (get data :plans))]
+      (is (= name "test"))
+      (let [result-set (plan data {})]
+        (is (= result-set '({"result" {"p" {0 "a"
+                                            1 "b"
+                                            2 "c"}}})))))))
