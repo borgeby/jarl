@@ -110,8 +110,13 @@
       (if-not (nil? (get-local state target))
         (throw (Exception. (format "local %s already assigned" target)))
         (let [val (get-value state source-index)]
-          (log-debug "AssignVarStmt - assigning '%s' from %s to %s" val source-index target)
-          (set-local state target val))))))
+          (if (nil? val)
+            (do
+              (log-debug "AssignVarOnceStmt - <%s> not present" source-index)
+              (break state))
+            (do
+              (log-debug "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" val source-index target)
+              (set-local state target val))))))))
 
 (defn make-BlockStmt [stmt-info]
   (log-debug "making BlockStmt stmt")
@@ -242,18 +247,44 @@
           state
           (break state))))))
 
+(defn make-ObjectInsertOnceStmt [stmt-info]
+  (log-debug "making ObjectInsertOnceStmt stmt")
+  (let [key-index (get stmt-info "key")
+        value-index (get stmt-info "value")
+        object-index (get stmt-info "object")]
+    (fn [state]
+      (let [object (get-local state object-index)
+            key (get-value state key-index)
+            value (get-value state value-index)]
+        (if (nil? object)
+          (do
+            (log-debug "ObjectInsertOnceStmt - <%s> not present" object-index)
+            (break state))
+          (let [old-value (get object key)]
+            (if (and (not (nil? old-value)) (not= old-value value))
+              (do
+                (log-debug "ObjectInsertOnceStmt - object <%s> already contains key <%s> with different value" object-index key-index)
+                (break state))
+              (do
+                (log-debug "ObjectInsertOnceStmt - inserting '%s' at <%s> to var <%d>" value key object-index)
+                (set-local state object-index (assoc object key value))))))))))
+
 (defn make-ObjectInsertStmt [stmt-info]
   (log-debug "making ObjectInsertStmt stmt")
   (let [key-index (get stmt-info "key")
         value-index (get stmt-info "value")
         object-index (get stmt-info "object")]
     (fn [state]
-      (log-trace "ObjectInsertStmt - info: %s" stmt-info)
       (let [object (get-local state object-index)
             key (get-value state key-index)
             value (get-value state value-index)]
-        (log-debug "ObjectInsertStmt - inserting '%s' at '%s' to var %d" value key object-index)
-        (set-local state object-index (assoc object key value))))))
+        (if (nil? object)
+          (do
+            (log-debug "ObjectInsertStmt - <%s> not present" object-index)
+            (break state))
+          (do
+            (log-debug "ObjectInsertStmt - inserting '%s' at <%s> to var <%d>" value key object-index)
+            (set-local state object-index (assoc object key value))))))))
 
 (defn make-ObjectMergeStmt [stmt-info]
   (log-debug "making ObjectMergeStmt stmt")
@@ -360,6 +391,7 @@
                "MakeObjectStmt" (make-MakeObjectStmt stmt-info)
                "MakeSetStmt" (make-MakeSetStmt stmt-info)
                "NotEqualStmt" (make-NotEqualStmt stmt-info)
+               "ObjectInsertOnceStmt" (make-ObjectInsertOnceStmt stmt-info)
                "ObjectInsertStmt" (make-ObjectInsertStmt stmt-info)
                "ObjectMergeStmt" (make-ObjectMergeStmt stmt-info)
                "ResetLocalStmt" (make-ResetLocalStmt stmt-info)
