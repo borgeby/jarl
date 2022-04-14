@@ -233,6 +233,10 @@
       (log-debug "MakeSetStmt - assigning empty set to local var %d" target)
       (set-local state target #{}))))
 
+(defn make-NopStmt [stmt-info]
+  (log-debug "making NopStmt stmt: %s" stmt-info)
+  (fn [state] state))
+
 (defn make-NotEqualStmt [stmt-info]
   (log-debug "making NotEqualStmt stmt")
   (let [a-index (get stmt-info "a")
@@ -377,19 +381,29 @@
         stmt-info (get stmt-info "stmt")
         stmt (case type
                "ArrayAppendStmt" (make-ArrayAppendStmt stmt-info)
-               "AssignVarStmt" (make-AssignVarStmt stmt-info)
+               ;"AssignIntStmt"
                "AssignVarOnceStmt" (make-AssignVarOnceStmt stmt-info)
+               "AssignVarStmt" (make-AssignVarStmt stmt-info)
                "BlockStmt" (make-BlockStmt stmt-info)
                "BreakStmt" (make-BreakStmt stmt-info)
+               ;"CallDynamicStmt"
                "CallStmt" (make-CallStmt stmt-info)
                "DotStmt" (make-DotStmt stmt-info)
                "EqualStmt" (make-EqualStmt stmt-info)
+               ;"IsArrayStmt"
                "IsDefinedStmt" (make-IsDefinedStmt stmt-info)
+               ;"IsObjectStmt"
+               ;"IsUndefinedStmt"
+               ;"LenStmt"
                "MakeArrayStmt" (make-MakeArrayStmt stmt-info)
+               ;"MakeNullStmt"
+               ;"MakeNumberIntStmt"
                "MakeNumberRefStmt" (make-MakeNumberRefStmt stmt-info)
                "MakeObjectStmt" (make-MakeObjectStmt stmt-info)
                "MakeSetStmt" (make-MakeSetStmt stmt-info)
+               "NopStmt" (make-NopStmt stmt-info)
                "NotEqualStmt" (make-NotEqualStmt stmt-info)
+               ;"NotStmt"
                "ObjectInsertOnceStmt" (make-ObjectInsertOnceStmt stmt-info)
                "ObjectInsertStmt" (make-ObjectInsertStmt stmt-info)
                "ObjectMergeStmt" (make-ObjectMergeStmt stmt-info)
@@ -398,6 +412,7 @@
                "ReturnLocalStmt" (make-ReturnLocalStmt stmt-info)
                "ScanStmt" (make-ScanStmt stmt-info)
                "SetAddStmt" (make-SetAddStmt stmt-info)
+               ;"WithStmt"
                (throw (Exception. (format "%s statement type not implemented" type))))]
     (fn [state]
       (log-trace "%s - calling with info: %s, vars: %s" type stmt-info (get state :local))
