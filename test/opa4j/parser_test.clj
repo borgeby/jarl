@@ -57,3 +57,13 @@
       (is (= name "set_comprehension/p"))
       (let [result-set (plan data {})]
         (is (= result-set '({"result" #{"a" "b" "c"}})))))))
+
+(deftest object-comprehension-test
+  (testing "A policy with object-comprehension"
+    (let [data (parse-file "rego/object-comprehension/plan.json")
+          [name plan] (first (get data :plans))]
+      (is (= name "object_comprehension/p"))
+      (let [result-set (plan data {})]
+        (is (= result-set '({"result" {0 "a"
+                                       1 "b"
+                                       2 "c"}})))))))
