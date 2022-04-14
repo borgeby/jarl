@@ -123,7 +123,6 @@
   (log-trace "info: %s" stmt-info)
   (let [blocks (make-blocks (get stmt-info "blocks"))]
     (fn [state]
-      (log-trace "BlockStmt - local vars: %s" (get state :local))
       (blocks state))))
 
 (defn make-BreakStmt [stmt-info]
@@ -415,9 +414,8 @@
         (let [stmts-count (count stmts)]
           (if (or (zero? stmts-count) (contains? state :break-index))
             (do
-              (if (pos? stmts-count)
-                (log-trace "skipping %d statement(s)" stmts-count)
-                "no-op")
+              (when (pos? stmts-count)
+                (log-trace "skipping %d statement(s)" stmts-count))
               state)
             (recur (next stmts) ((first stmts) state))))))))
 

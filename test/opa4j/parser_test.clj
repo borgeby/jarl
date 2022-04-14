@@ -41,3 +41,11 @@
         (is (= result-set '({"result" {"p" {0 "a"
                                             1 "b"
                                             2 "c"}}})))))))
+
+(deftest array-comprehension-test
+  (testing "A policy with array-comprehension"
+    (let [data (parse-file "rego/array-comprehension/plan.json")
+          [name plan] (first (get data :plans))]
+      (is (= name "test/p"))
+      (let [result-set (plan data {})]
+        (is (= result-set '({"result" ["a" "b" "b" "c"]})))))))
