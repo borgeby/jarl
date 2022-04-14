@@ -19,10 +19,15 @@
 (deftest simple-test
   (testing "A simple policy"
     (let [data (parse-file "rego/simple/plan.json")
-          [name plan] (first (get data :plans))]
-      (is (= name "simple"))
-      (let [result-set (plan data {"x" 42})]
-        (is (= result-set '({"result" {"p" true}})))))))
+          plans (get data :plans)]
+      (let [[name plan] (get plans 0)]
+        (is (= name "simple/p"))
+        (let [result-set (plan data {"x" 42})]
+          (is (= result-set '({"result" true})))))
+      (let [[name plan] (get plans 1)]
+        (is (= name "simple/q"))
+        (let [result-set (plan data {"x" 42})]
+          (is (= result-set '({"result" "bar"}))))))))
 
 (deftest set-composition-test
   (testing "A policy with set-composition"

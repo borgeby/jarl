@@ -43,19 +43,39 @@
 (defn get-local [state index]
   (get (get state :local) index))
 
+(defn contains-local? [state index]
+  (contains? (get state :local) index))
+
+(defn dissoc-local [state index]
+  (let [local (get state :local)]
+    (assoc state :local (dissoc local index))))
+
+(defn get-string [state index]
+  (get (get (get (get state :static) "strings") index) "value"))
+
+(defn contains-string? [state index]
+  (contains? (get (get state :static) "strings") index))
+
 (defn set-local [state index value]
   (let [local (get state :local)]
     (assoc state :local (assoc local index value))))
 
 (defn get-value [state key]
-  (let [static (get state :static)
-        key-type (get key "type")
+  (let [key-type (get key "type")
         key-value (get key "value")]
     (case key-type
       "local" (get-local state key-value)
-      "string_index" (let [strings (get static "strings")]
-                       (get (get strings key-value) "value"))
+      "string_index" (get-string state key-value)
       "bool" key-value
+      (throw (Exception. (format "unknown value type '%s'" key-type))))))
+
+(defn contains-value? [state key]
+  (let [key-type (get key "type")
+        key-value (get key "value")]
+    (case key-type
+      "local" (contains-local? state key-value)
+      "string_index" (contains-string? state key-value)
+      "bool" true
       (throw (Exception. (format "unknown value type '%s'" key-type))))))
 
 (defn get-static-string [state index]
@@ -74,55 +94,54 @@
   (let [array-index (get stmt-info "array")
         value-index (get stmt-info "value")]
     (fn [state]
-      (let [array (get-local state array-index)]
-        (if (nil? array)
-          (do
-            (log-debug "ArrayAppendStmt - <%s> is not a local var" array-index)
-            (break state))
-          (let [val (get-value state value-index)]
-            (if (nil? val)
-              (do
-                (log-debug "ArrayAppendStmt - value <%s> not present" value-index)
-                (break state))
-              (do
-                (log-debug "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
-                (set-local state array-index (conj array val))))))))))
+      (if-not (contains-local? state array-index)
+        (do
+          (log-debug "ArrayAppendStmt - <%s> is not a local var" array-index)
+          (break state))
+        (let [val (get-value state value-index)]
+          (if (nil? val)
+            (do
+              (log-debug "ArrayAppendStmt - value <%s> not present" value-index)
+              (break state))
+            (let [array (get-local state array-index)]
+              (log-debug "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
+
+              (set-local state array-index (conj array val)))))))))
 
 (defn make-AssignVarStmt [stmt-info]
   (log-debug "making AssignVarStmt stmt")
   (let [source-index (get stmt-info "source")
         target (get stmt-info "target")]
     (fn [state]
-      (let [val (get-value state source-index)]
-        (if (nil? val)
-          (do
-            (log-debug "AssignVarStmt - <%s> not present" source-index)
-            (break state))
-          (do
-            (log-debug "AssignVarStmt - assigning '%s' from <%s> to <%s>" val source-index target)
-            (set-local state target val)))))))
+      (if-not (contains-value? state source-index)
+        (do
+          (log-debug "AssignVarStmt - <%s> not present" source-index)
+          (break state))
+        (let [val (get-value state source-index)]
+          (log-debug "AssignVarStmt - assigning '%s' from <%s> to <%s>" val source-index target)
+          (set-local state target val))))))
 
 (defn make-AssignVarOnceStmt [stmt-info]
   (log-debug "making AssignVarOnceStmt stmt")
   (let [source-index (get stmt-info "source")
         target (get stmt-info "target")]
     (fn [state]
-      (if-not (nil? (get-local state target))
+      (if (contains-local? state target)
         (throw (Exception. (format "local %s already assigned" target)))
-        (let [val (get-value state source-index)]
-          (if (nil? val)
-            (do
-              (log-debug "AssignVarOnceStmt - <%s> not present" source-index)
-              (break state))
-            (do
-              (log-debug "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" val source-index target)
-              (set-local state target val))))))))
+        (if-not (contains-value? state source-index)
+          (do
+            (log-debug "AssignVarOnceStmt - <%s> not present" source-index)
+            (break state))
+          (let [val (get-value state source-index)]
+            (log-debug "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" val source-index target)
+            (set-local state target val)))))))
 
 (defn make-BlockStmt [stmt-info]
   (log-debug "making BlockStmt stmt")
   (log-trace "info: %s" stmt-info)
   (let [blocks (make-blocks (get stmt-info "blocks"))]
     (fn [state]
+      (log-debug "BlockStmt - ")
       (blocks state))))
 
 (defn make-BreakStmt [stmt-info]
@@ -152,10 +171,13 @@
                         :funcs  (get state :funcs)
                         :local  local}
             result (func func-state)]
-        (log-debug "CallStmt - <%s> returning: '%s'" func-name result)
-        (if (nil? result)
-          (break state)
-          (set-local state target result))))))
+        (if (contains? result :result)
+          (do
+            (log-debug "CallStmt - <%s> returning: '%s'" func-name result)
+            (set-local state target (get result :result)))
+          (do
+            (log-debug "CallStmt - <%s> undefined" func-name)
+            (break state)))))))
 
 (defn make-DotStmt [stmt-info]
   (let [source-index (get stmt-info "source")
@@ -195,12 +217,24 @@
   (log-debug "making IsDefinedStmt stmt")
   (let [source (get stmt-info "source")]
     (fn [state]
-      (if (contains? (get state :local) source)
+      (if (contains-local? state source)
         (do
-          (log-debug "%d is defined" source)
+          (log-debug "IsDefinedStmt - local var <%d> is defined" source)
           state)
         (do
-          (log-debug "%d is not defined" source)
+          (log-debug "IsDefinedStmt - local var <%d> is not defined" source)
+          (break state))))))
+
+(defn make-IsUndefinedStmt [stmt-info]
+  (log-debug "making IsUndefinedStmt stmt")
+  (let [source (get stmt-info "source")]
+    (fn [state]
+      (if-not (contains-local? state source)
+        (do
+          (log-debug "IsUndefinedStmt - local var <%d> is not defined" source)
+          state)
+        (do
+          (log-debug "IsUndefinedStmt - local var <%d> is defined" source)
           (break state))))))
 
 (defn make-MakeNumberRefStmt [stmt-info]
@@ -218,6 +252,13 @@
     (fn [state]
       (log-debug "MakeArrayStmt - assigning empty array to local var %d" target)
       (set-local state target []))))
+
+(defn make-MakeNullStmt [stmt-info]
+  (log-debug "making MakeNullStmt stmt: %s" stmt-info)
+  (let [target (get stmt-info "target")]
+    (fn [state]
+      (log-debug "MakeNullStmt - assigning 'null' to local var %d" target)
+      (set-local state target nil))))
 
 (defn make-MakeObjectStmt [stmt-info]
   (log-debug "making MakeObjectStmt stmt: %s" stmt-info)
@@ -249,6 +290,23 @@
         (if result
           state
           (break state))))))
+
+(defn make-NotStmt [stmt-info]
+  (log-debug "making NotStmt stmt")
+  (let [block (make-block (get stmt-info "block"))]
+    (fn [state]
+      (let [state (block state)
+            break-index (get state :break-index)]
+        (if-not (nil? break-index)
+          (do
+            (log-trace "NotStmt - not defined; break-index: %d" break-index)
+            (let [new-break-index (dec break-index)]
+              (if (>= new-break-index 0)
+                (break state new-break-index)
+                (dissoc state :break-index))))
+          (do
+            (log-trace "NotStmt - defined")
+            (break state)))))))
 
 (defn make-ObjectInsertOnceStmt [stmt-info]
   (log-debug "making ObjectInsertOnceStmt stmt")
@@ -303,7 +361,7 @@
   (let [target (get stmt-info "target")]
     (fn [state]
       (log-debug "ResetLocalStmt - resetting %d" target)
-      (dissoc state target))))
+      (dissoc-local state target))))
 
 (defn make-ResultSetAddStmt [stmt-info]
   (log-debug "making ResultSetAddStmt stmt")
@@ -393,17 +451,17 @@
                ;"IsArrayStmt"
                "IsDefinedStmt" (make-IsDefinedStmt stmt-info)
                ;"IsObjectStmt"
-               ;"IsUndefinedStmt"
+               "IsUndefinedStmt" (make-IsUndefinedStmt stmt-info)
                ;"LenStmt"
                "MakeArrayStmt" (make-MakeArrayStmt stmt-info)
-               ;"MakeNullStmt"
+               "MakeNullStmt" (make-MakeNullStmt stmt-info)
                ;"MakeNumberIntStmt"
                "MakeNumberRefStmt" (make-MakeNumberRefStmt stmt-info)
                "MakeObjectStmt" (make-MakeObjectStmt stmt-info)
                "MakeSetStmt" (make-MakeSetStmt stmt-info)
                "NopStmt" (make-NopStmt stmt-info)
                "NotEqualStmt" (make-NotEqualStmt stmt-info)
-               ;"NotStmt"
+               "NotStmt" (make-NotStmt stmt-info)
                "ObjectInsertOnceStmt" (make-ObjectInsertOnceStmt stmt-info)
                "ObjectInsertStmt" (make-ObjectInsertStmt stmt-info)
                "ObjectMergeStmt" (make-ObjectMergeStmt stmt-info)
@@ -440,7 +498,16 @@
         stmts (make-stmts stmts-info)]
     (fn [state]
       (log-debug "executing block")
-      (stmts state))))
+      (let [state (stmts state)
+            break-index (get state :break-index)]
+        (if-not (nil? break-index)
+          (do
+            (log-trace "broke out of block; break-index: %d" break-index)
+            (let [new-break-index (dec break-index)]
+              (if (>= new-break-index 0)
+                (break state new-break-index)
+                (dissoc state :break-index))))
+          state)))))
 
 (defn make-blocks [blocks-info]
   (log-debug "making blocks")
@@ -450,17 +517,13 @@
       (log-debug "executing blocks")
       (loop [blocks blocks
              state state]
-        (let [break-index (get state :break-index)]
-          (if-not (nil? break-index)
-            (do
-              (log-trace "breaking out of block; index: %d" break-index)
-              (let [new-break-index (dec break-index)]
-                (if (>= new-break-index 0)
-                  (assoc state :break-index new-break-index)
-                  (dissoc state :break-index))))
-            (if (empty? blocks)
-              state
-              (recur (next blocks) ((first blocks) state)))))))))
+        (if (or (contains? state :break-index) (empty? blocks))
+          (do
+            (let [block-count (count blocks)]
+              (when (pos? block-count)
+                (log-trace "skipping %d block(s); index: %d" block-count)))
+            state)
+          (recur (next blocks) ((first blocks) state)))))))
 
 ; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
 (defn populate-data [plan-info]
@@ -490,20 +553,24 @@
 
 (defn make-plans [plans-info]
   (log-debug "making plans")
-  (doall (for [plan-info (get plans-info "plans")]
-           (make-plan plan-info))))
+  (into-array (doall (for [plan-info (get plans-info "plans")]
+                       (make-plan plan-info)))))
 
 (defn make-func [func-info]
   (let [name (get func-info "name")
-        return (get func-info "return")
+        return-index (get func-info "return")
         blocks-info (get func-info "blocks")
         blocks (make-blocks blocks-info)]
     [name (fn [state]
-            (log-debug "executing func '%s'" name)
-            (let [state (blocks state)
-                  result (get-local state return)]
-              (log-debug "function '%s' returning '%s'" name result)
-              result))]))
+            (log-debug "executing func <%s>" name)
+            (let [state (blocks state)]
+              (if (contains-local? state return-index)
+                (let [result (get-local state return-index)]
+                  (log-debug "function <%s> returning '%s'" name result)
+                  {:result result})
+                (do
+                  (log-debug "function <%s> undefined" name)
+                  {}))))]))
 
 (defn make-funcs [funcs-info]
   (log-debug "making funcs")
