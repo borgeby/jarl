@@ -23,14 +23,14 @@
   "plans": {
     "plans": [
       {
-        "name": "test/p",
+        "name": "array_comprehension/p",
         "blocks": [
           {
             "stmts": [
               {
                 "type": "CallStmt",
                 "stmt": {
-                  "func": "g0.data.test.p",
+                  "func": "g0.data.array_comprehension.p",
                   "args": [
                     {
                       "type": "local",
@@ -104,7 +104,7 @@
   "funcs": {
     "funcs": [
       {
-        "name": "g0.data.test.x",
+        "name": "g0.data.array_comprehension.x",
         "params": [
           0,
           1
@@ -257,12 +257,12 @@
         ],
         "path": [
           "g0",
-          "test",
+          "array_comprehension",
           "x"
         ]
       },
       {
-        "name": "g0.data.test.p",
+        "name": "g0.data.array_comprehension.p",
         "params": [
           0,
           1
@@ -315,7 +315,7 @@
                         {
                           "type": "CallStmt",
                           "stmt": {
-                            "func": "g0.data.test.x",
+                            "func": "g0.data.array_comprehension.x",
                             "args": [
                               {
                                 "type": "local",
@@ -464,7 +464,7 @@
         ],
         "path": [
           "g0",
-          "test",
+          "array_comprehension",
           "p"
         ]
       }

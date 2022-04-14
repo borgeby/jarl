@@ -1,4 +1,4 @@
-package test
+package array_comprehension
 
 x := ["a", "b", "b", "c"]
 

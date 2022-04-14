@@ -28,7 +28,7 @@
   (testing "A policy with set-composition"
     (let [data (parse-file "rego/set-composition/plan.json")
           [name plan] (first (get data :plans))]
-      (is (= name "test"))
+      (is (= name "set_composition"))
       (let [result-set (plan data {})]
         (is (= result-set '({"result" {"p" #{"a" "b" "c"}}})))))))
 
@@ -36,7 +36,7 @@
   (testing "A policy with object-composition"
     (let [data (parse-file "rego/object-composition/plan.json")
           [name plan] (first (get data :plans))]
-      (is (= name "test"))
+      (is (= name "object_composition"))
       (let [result-set (plan data {})]
         (is (= result-set '({"result" {"p" {0 "a"
                                             1 "b"
@@ -46,6 +46,14 @@
   (testing "A policy with array-comprehension"
     (let [data (parse-file "rego/array-comprehension/plan.json")
           [name plan] (first (get data :plans))]
-      (is (= name "test/p"))
+      (is (= name "array_comprehension/p"))
       (let [result-set (plan data {})]
         (is (= result-set '({"result" ["a" "b" "b" "c"]})))))))
+
+(deftest set-comprehension-test
+  (testing "A policy with set-comprehension"
+    (let [data (parse-file "rego/set-comprehension/plan.json")
+          [name plan] (first (get data :plans))]
+      (is (= name "set_comprehension/p"))
+      (let [result-set (plan data {})]
+        (is (= result-set '({"result" #{"a" "b" "c"}})))))))

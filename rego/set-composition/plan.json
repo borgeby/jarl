@@ -17,7 +17,7 @@
         "value": "c"
       },
       {
-        "value": "test"
+        "value": "set_composition"
       }
     ],
     "files": [
@@ -29,7 +29,7 @@
   "plans": {
     "plans": [
       {
-        "name": "test",
+        "name": "set_composition",
         "blocks": [
           {
             "stmts": [
@@ -51,7 +51,7 @@
                         {
                           "type": "CallStmt",
                           "stmt": {
-                            "func": "g0.data.test.p",
+                            "func": "g0.data.set_composition.p",
                             "args": [
                               {
                                 "type": "local",
@@ -228,7 +228,7 @@
   "funcs": {
     "funcs": [
       {
-        "name": "g0.data.test.p",
+        "name": "g0.data.set_composition.p",
         "params": [
           0,
           1
@@ -265,7 +265,7 @@
                   "capacity": 3,
                   "target": 4,
                   "file": 0,
-                  "col": 10,
+                  "col": 7,
                   "row": 4
                 }
               },
@@ -278,7 +278,7 @@
                   },
                   "array": 4,
                   "file": 0,
-                  "col": 10,
+                  "col": 7,
                   "row": 4
                 }
               },
@@ -291,7 +291,7 @@
                   },
                   "array": 4,
                   "file": 0,
-                  "col": 10,
+                  "col": 7,
                   "row": 4
                 }
               },
@@ -304,7 +304,7 @@
                   },
                   "array": 4,
                   "file": 0,
-                  "col": 10,
+                  "col": 7,
                   "row": 4
                 }
               },
@@ -317,7 +317,7 @@
                   },
                   "target": 5,
                   "file": 0,
-                  "col": 10,
+                  "col": 7,
                   "row": 4
                 }
               },
@@ -338,7 +338,7 @@
                           },
                           "target": 8,
                           "file": 0,
-                          "col": 5,
+                          "col": 2,
                           "row": 4
                         }
                       },
@@ -351,7 +351,7 @@
                           },
                           "target": 9,
                           "file": 0,
-                          "col": 5,
+                          "col": 2,
                           "row": 4
                         }
                       },
@@ -371,7 +371,7 @@
                     ]
                   },
                   "file": 0,
-                  "col": 5,
+                  "col": 2,
                   "row": 4
                 }
               }
@@ -393,7 +393,7 @@
         ],
         "path": [
           "g0",
-          "test",
+          "set_composition",
           "p"
         ]
       }
