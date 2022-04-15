@@ -12,4 +12,10 @@
   :repl-options {:init-ns opa4j.core}
   :main opa4j.core
   :aot [opa4j.core]
-  :aliases {"lint" ["do" ["eastwood"] ["kibit"] ["clj-kondo" "--lint" "src" "test"]]})
+  :aliases {"lint" ["do" ["eastwood"] ["kibit"] ["clj-kondo" "--lint" "src" "test"]]}
+  :source-paths ["src/main/clojure"]
+  :java-source-paths ["src/main/java"]
+  :resource-paths ["src/main/resources"]
+  :test-paths ["src/test/clojure"]
+  :profiles {:test {:resource-paths ["src/test/resources"]}})
+
