@@ -16,27 +16,6 @@
 
 package se.fylling.opa4j;
 
-public class Opa4j {
-    public interface Builder {
-        Opa4j build();
-    }
-
-    public static Builder Builder() {
-        return new Opa4jBuilder();
-    }
-
-    Opa4j() {
-    }
-
-    public String run() {
-        opa4j.parser parser = new opa4j.parser();
-        return parser.toString();
-    }
-}
-
-class Opa4jBuilder implements Opa4j.Builder {
-    @Override
-    public Opa4j build() {
-        return new Opa4j();
-    }
+public interface Opa4j {
+    Plan getPlan(String name);
 }

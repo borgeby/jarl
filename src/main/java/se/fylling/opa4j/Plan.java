@@ -16,13 +16,12 @@
 
 package se.fylling.opa4j;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import java.util.List;
+import java.util.Map;
 
-public class Opa4jTest {
-    @Test
-    public void testApi() {
-        Opa4j opa4j = Opa4j.Builder().build();
-        assertEquals("Hello", opa4j.run());
-    }
+public interface Plan {
+    /**
+     * @return The result as a map
+     */
+    List<Map<String, ?>> eval(Map<String, ?> input);
 }

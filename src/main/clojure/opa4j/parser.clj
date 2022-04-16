@@ -15,9 +15,6 @@
 ;
 
 (ns opa4j.parser
-  (:gen-class
-    ;:name "se.fylling.opa4j.Parser"
-    )
   (:require [clojure.data.json :as json])
   (:require [clojure.edn :as edn])
   (:require [clojure.string :as str])
