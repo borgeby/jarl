@@ -63,8 +63,7 @@
 
 (defn plan-by-name [plans name]
   (loop [plans plans]
-    (if (empty? plans)
-      nil
+    (when-not (seq plans)
       (let [[current-name plan] (first plans)]
         (if (= current-name name)
           plan
