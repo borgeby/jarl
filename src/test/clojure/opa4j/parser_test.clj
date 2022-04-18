@@ -73,3 +73,11 @@
         (is (= result-set '({"result" {0 "a"
                                        1 "b"
                                        2 "c"}})))))))
+
+(deftest array-built-ins
+  (testing "A policy with array.* built-ins"
+    (let [data (parse-file (io/resource "rego/array_built-ins/plan.json"))
+          [name plan] (first (get data :plans))]
+      (is (= name "array_built_ins/a"))
+      (let [result-set (plan data {})]
+        (is (= result-set '({"result" ["a" "b" "c" "d"]})))))))

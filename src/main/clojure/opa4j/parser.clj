@@ -18,6 +18,7 @@
   (:require [clojure.data.json :as json])
   (:require [clojure.edn :as edn])
   (:require [clojure.string :as str])
+  (:require [opa4j.builtins.registry :as builtins])
   (:import (java.time Instant)))
 
 (declare make-block)
@@ -82,6 +83,12 @@
 
 (defn get-static-string [state index]
   (get-value state {"type" "string_index" "value" index}))
+
+(defn get-func [state name]
+  (let [func (get (get state :funcs) name)]
+    (if-not (nil? func)
+      func
+      (get (get state :builtin-funcs) name))))
 
 (defn break
   ([state] (assoc state :break-index 0))
@@ -167,19 +174,22 @@
         func-name (get stmt-info "func")]
     (fn [state]
       (log-debug "CallStmt - calling func <%s>" func-name)
-      (let [func (get (get state :funcs) func-name)
-            local (map-by-index (map (fn [arg] (get-value state arg)) (get stmt-info "args")))
-            func-state {:static (get state :static)
-                        :funcs  (get state :funcs)
-                        :local  local}
-            result (func func-state)]
-        (if (contains? result :result)
-          (do
-            (log-debug "CallStmt - <%s> returning: '%s'" func-name result)
-            (set-local state target (get result :result)))
-          (do
-            (log-debug "CallStmt - <%s> undefined" func-name)
-            (break state)))))))
+      (let [func (get-func state func-name)]
+        (if (nil? func)
+          (throw (Exception. (format "unknown function '%s'" func-name)))
+          (let [local (map-by-index (map (fn [arg] (get-value state arg)) (get stmt-info "args")))
+                func-state {:static        (get state :static)
+                            :funcs         (get state :funcs)
+                            :builtin-funcs (get state :builtin-funcs)
+                            :local         local}
+                result (func func-state)]
+            (if (contains? result :result)
+              (do
+                (log-debug "CallStmt - <%s> returning: '%s'" func-name result)
+                (set-local state target (get result :result)))
+              (do
+                (log-debug "CallStmt - <%s> undefined" func-name)
+                (break state)))))))))
 
 (defn make-DotStmt [stmt-info]
   (let [source-index (get stmt-info "source")
@@ -563,6 +573,7 @@
         return-index (get func-info "return")
         blocks-info (get func-info "blocks")
         blocks (make-blocks blocks-info)]
+    (log-debug "making func <%s>" name)
     [name (fn [state]
             (log-debug "executing func <%s>" name)
             (let [state (blocks state)]
@@ -583,15 +594,43 @@
       (let [[name func] (make-func (first func-infos))]
         (recur (next func-infos) (assoc func-map name func))))))
 
+(defn make-builtin-func [func-info]
+  (let [name (get func-info "name")
+        builtin-func (builtins/get-builtin name)]
+    (log-debug "making built-in func <%s>" name)
+    (if (nil? builtin-func)
+      (throw (Exception. (format "unknown function '%s'" name)))
+      [name (fn [state]
+              (let [args (get state :local)]
+                (log-debug "executing built-in func <%s> with args: %s" name, args)
+                (try
+                  (let [result (builtin-func args)]
+                    (log-debug "built-in function <%s> returning '%s'" name result)
+                    {:result result})
+                  (catch Exception e
+                    (log-debug "function <%s> returned undefined value: %s" name e)
+                    {}))))])))
+
+(defn make-builtin-funcs [builtin-funcs-info]
+  (log-debug "making built-in funcs")
+  (loop [func-infos builtin-funcs-info
+         func-map {}]
+    (if (empty? func-infos)
+      func-map
+      (let [[name func] (make-builtin-func (first func-infos))]
+        (recur (next func-infos) (assoc func-map name func))))))
+
 (defn parse
   "Parses the incoming string"
   [str] (let [ir (json/read-str str)
               static (get ir "static")
               plans-info (get ir "plans")
-              funcs-info (get ir "funcs")]
-          {:plans  (make-plans plans-info)
-           :funcs  (make-funcs funcs-info)
-           :static static}))
+              funcs-info (get ir "funcs")
+              builtin-funcs-info (get (get ir "static") "builtin_funcs")]
+          {:plans         (make-plans plans-info)
+           :funcs         (make-funcs funcs-info)
+           :builtin-funcs (make-builtin-funcs builtin-funcs-info)
+           :static        static}))
 
 (defn parse-file
   "Reads and parses the incoming file"
