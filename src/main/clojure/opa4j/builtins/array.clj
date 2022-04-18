@@ -16,7 +16,7 @@
 
 (ns opa4j.builtins.array)
 
-(defn concat [args]
+(defn builtin-concat [args]
   (let [a (get args 0)
         b (get args 1)]
     (when-not (vector? a)
@@ -25,8 +25,8 @@
       (throw (Exception. (format "arg 1 is not an array"))))
     (clojure.core/concat a b)))
 
-(defn reverse [args]
+(defn builtin-reverse [_]
   (throw (Exception. (format "not implemented"))))
 
-(defn slice [args]
+(defn builtin-slice [_]
   (throw (Exception. (format "not implemented"))))

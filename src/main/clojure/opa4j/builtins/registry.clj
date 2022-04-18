@@ -18,9 +18,9 @@
   (:require [opa4j.builtins.array :as array]))
 
 (def builtins {
-               "array.concat" array/concat
-               "array.reverse" array/reverse
-               "array.slice" array/slice
+               "array.concat" array/builtin-concat
+               "array.reverse" array/builtin-reverse
+               "array.slice" array/builtin-slice
                })
 
 (defn get-builtin [name]
