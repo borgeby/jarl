@@ -13,7 +13,7 @@
   :main opa4j.core
   :aot [opa4j.core opa4j.parser opa4j.api]
   :direct-linking true
-  :aliases {"lint" ["do" ["eastwood"] ["kibit"] ["clj-kondo" "--lint" "src" "test"]]}
+  :aliases {"lint" ["do" ["eastwood"] ["kibit"] ["clj-kondo" "--lint" "src"]]}
   :source-paths ["src/main/clojure"]
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
