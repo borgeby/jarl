@@ -34,13 +34,13 @@
 (defn -plan-init [info plan name]
   [[info] [info plan name]])
 
-(defn -plan-eval [this input]
+(defn -plan-eval [^se.fylling.opa4j.PlanImpl this input]
   (let [[info plan name] (.state this)]
     (if (nil? plan)
       (throw (Exception. (format "plan '%s' doesn't exist" name)))
       (plan info input))))
 
-(defn -plans-toString [this]
+(defn -plans-toString [^se.fylling.opa4j.PlanImpl this]
   (let [[_ _ name] (.state this)]
     name))
 
@@ -70,7 +70,7 @@
           plan
           (recur (next plans)))))))
 
-(defn -opa4j-getPlan [this name]
+(defn -opa4j-getPlan [^se.fylling.opa4j.Opa4jImpl this name]
   (let [info (.state this)
         plans (get info :plans)
         plan (plan-by-name plans name)]
