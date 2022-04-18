@@ -14,11 +14,12 @@
 
 (ns opa4j.parser-test
   (:require [clojure.test :refer [deftest is testing]]
-            [opa4j.parser :refer [parse-file]]))
+            [opa4j.parser :refer [parse-file]]
+            [clojure.java.io :as io]))
 
 (deftest simple-test
   (testing "A simple policy"
-    (let [data (parse-file "rego/simple/plan.json")
+    (let [data (parse-file (io/resource "rego/simple/plan.json"))
           plans (get data :plans)]
       (let [[name plan] (get plans 0)]
         (is (= name "simple/p"))
@@ -31,7 +32,7 @@
 
 (deftest set-composition-test
   (testing "A policy with set-composition"
-    (let [data (parse-file "rego/set-composition/plan.json")
+    (let [data (parse-file (io/resource "rego/set-composition/plan.json"))
           [name plan] (first (get data :plans))]
       (is (= name "set_composition"))
       (let [result-set (plan data {})]
@@ -39,7 +40,7 @@
 
 (deftest object-composition-test
   (testing "A policy with object-composition"
-    (let [data (parse-file "rego/object-composition/plan.json")
+    (let [data (parse-file (io/resource "rego/object-composition/plan.json"))
           [name plan] (first (get data :plans))]
       (is (= name "object_composition"))
       (let [result-set (plan data {})]
@@ -49,7 +50,7 @@
 
 (deftest array-comprehension-test
   (testing "A policy with array-comprehension"
-    (let [data (parse-file "rego/array-comprehension/plan.json")
+    (let [data (parse-file (io/resource "rego/array-comprehension/plan.json"))
           [name plan] (first (get data :plans))]
       (is (= name "array_comprehension/p"))
       (let [result-set (plan data {})]
@@ -57,7 +58,7 @@
 
 (deftest set-comprehension-test
   (testing "A policy with set-comprehension"
-    (let [data (parse-file "rego/set-comprehension/plan.json")
+    (let [data (parse-file (io/resource "rego/set-comprehension/plan.json"))
           [name plan] (first (get data :plans))]
       (is (= name "set_comprehension/p"))
       (let [result-set (plan data {})]
@@ -65,7 +66,7 @@
 
 (deftest object-comprehension-test
   (testing "A policy with object-comprehension"
-    (let [data (parse-file "rego/object-comprehension/plan.json")
+    (let [data (parse-file (io/resource "rego/object-comprehension/plan.json"))
           [name plan] (first (get data :plans))]
       (is (= name "object_comprehension/p"))
       (let [result-set (plan data {})]

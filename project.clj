@@ -11,5 +11,14 @@
             [com.github.clj-kondo/lein-clj-kondo "0.1.3"]]
   :repl-options {:init-ns opa4j.core}
   :main opa4j.core
-  :aot [opa4j.core]
-  :aliases {"lint" ["do" ["eastwood"] ["kibit"] ["clj-kondo" "--lint" "src" "test"]]})
+  :aot [opa4j.core opa4j.parser opa4j.api]
+  :direct-linking true
+  :aliases {"lint" ["do" ["eastwood"] ["kibit"] ["clj-kondo" "--lint" "src"]]}
+  :source-paths ["src/main/clojure"]
+  :java-source-paths ["src/main/java"]
+  :resource-paths ["src/main/resources"]
+  :test-paths ["src/test/clojure"]
+  :profiles {:dev  {:dependencies [[junit/junit "4.13.2"]]}
+             :test {:java-source-paths ["src/test/java"]
+                    :resource-paths    ["src/test/resources"]}}
+  )
