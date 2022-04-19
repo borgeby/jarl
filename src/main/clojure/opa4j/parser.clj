@@ -19,7 +19,8 @@
   (:require [clojure.edn :as edn])
   (:require [clojure.string :as str])
   (:require [opa4j.builtins.registry :as builtins])
-  (:import (java.time Instant)))
+  (:import (java.time Instant)
+           (se.fylling.opa4j BuiltinException)))
 
 (declare make-block)
 (declare make-blocks)
@@ -607,8 +608,8 @@
                   (let [result (builtin-func args)]
                     (log-debug "built-in function <%s> returning '%s'" name result)
                     {:result result})
-                  (catch Exception e
-                    (log-debug "function <%s> returned undefined value: %s" name e)
+                  (catch BuiltinException e
+                    (log-debug "function <%s> returned undefined value: %s" name (.getMessage e))
                     {}))))])))
 
 (defn make-builtin-funcs [builtin-funcs-info]
