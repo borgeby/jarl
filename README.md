@@ -8,6 +8,12 @@ Project name is subject to change.
 
 FIXME
 
+## Supported built-in functions
+
+- [x] `array.concat` 
+- [ ] `array.reverse`
+- [ ] `array.slice`
+
 ## Development
 
 ### Linters
