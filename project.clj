@@ -1,5 +1,5 @@
 (defproject jarl "0.1.0-SNAPSHOT"
-  :description "The JVM Alternative for the Rego Language (JARL)"
+  :description "Jarl, The JVM Alternative for the Rego Language"
   :url "https://github.com/johanfylling/jarl"
   :license {:name "Apache License Version 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0"}

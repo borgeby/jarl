@@ -1,4 +1,4 @@
-# JARL
+# Jarl
 
 The _JVM Alternative for the Rego Language_ (JARL) is an OPA evaluator for the JVM, written in Clojure.
 
