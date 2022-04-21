@@ -1,6 +1,6 @@
-(defproject opa4j "0.1.0-SNAPSHOT"
-  :description "An OPA evaluator for the JVM"
-  :url "https://github.com/johanfylling/opa4j"
+(defproject jarl "0.1.0-SNAPSHOT"
+  :description "Jarl, The JVM Alternative for the Rego Language"
+  :url "https://github.com/johanfylling/jarl"
   :license {:name "Apache License Version 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.11.1"]
@@ -9,9 +9,9 @@
             [lein-kibit "0.1.8"]
             [jonase/eastwood "1.2.3"]
             [com.github.clj-kondo/lein-clj-kondo "0.1.3"]]
-  :repl-options {:init-ns opa4j.core}
-  :main opa4j.core
-  :aot [opa4j.core opa4j.parser opa4j.api]
+  :repl-options {:init-ns jarl.core}
+  :main jarl.core
+  :aot [jarl.core jarl.parser jarl.api]
   :direct-linking true
   :aliases {"lint" ["do" ["eastwood"] ["kibit"] ["clj-kondo" "--lint" "src"]]}
   :source-paths ["src/main/clojure"]

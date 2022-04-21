@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.fylling.opa4j;
+package se.fylling.jarl;
 
 import java.util.List;
 import java.util.Map;

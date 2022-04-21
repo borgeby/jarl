@@ -1,8 +1,6 @@
-# opa4j
+# Jarl
 
-An OPA evaluator for the JVM, written in Clojure.
-
-Project name is subject to change.
+The _JVM Alternative for the Rego Language_ (JARL) is an OPA evaluator for the JVM, written in Clojure.
 
 ## Usage
 
