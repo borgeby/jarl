@@ -12,9 +12,9 @@
 ;See the License for the specific language governing permissions and
 ;limitations under the License.
 
-(ns opa4j.parser-test
+(ns jarl.parser-test
   (:require [clojure.test :refer [deftest is testing]]
-            [opa4j.parser :refer [parse-file]]
+            [jarl.parser :refer [parse-file]]
             [clojure.java.io :as io]))
 
 (deftest simple-test

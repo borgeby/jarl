@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package se.fylling.opa4j;
+package se.fylling.jarl;
 
-public interface Opa4j {
+public interface Jarl {
     Plan getPlan(String name);
 }

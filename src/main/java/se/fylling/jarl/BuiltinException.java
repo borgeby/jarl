@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.fylling.opa4j;
+package se.fylling.jarl;
 
 public class BuiltinException extends Exception {
     public BuiltinException(String message) {

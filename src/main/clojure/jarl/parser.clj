@@ -14,13 +14,13 @@
 ; limitations under the License.
 ;
 
-(ns opa4j.parser
+(ns jarl.parser
   (:require [clojure.data.json :as json])
   (:require [clojure.edn :as edn])
   (:require [clojure.string :as str])
-  (:require [opa4j.builtins.registry :as builtins])
+  (:require [jarl.builtins.registry :as builtins])
   (:import (java.time Instant)
-           (se.fylling.opa4j BuiltinException)))
+           (se.fylling.jarl BuiltinException)))
 
 (declare make-block)
 (declare make-blocks)

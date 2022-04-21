@@ -14,14 +14,20 @@
 ; limitations under the License.
 ;
 
-(ns opa4j.builtins.registry
-  (:require [opa4j.builtins.array :as array]))
+(ns jarl.builtins.array
+  (:import (se.fylling.jarl BuiltinException)))
 
-(def builtins {
-               "array.concat" array/builtin-concat
-               "array.reverse" array/builtin-reverse
-               "array.slice" array/builtin-slice
-               })
+(defn builtin-concat [args]
+  (let [a (get args 0)
+        b (get args 1)]
+    (when-not (vector? a)
+      (throw (BuiltinException. (format "arg 0 is not an array"))))
+    (when-not (vector? b)
+      (throw (BuiltinException. (format "arg 1 is not an array"))))
+    (clojure.core/concat a b)))
 
-(defn get-builtin [name]
-  (get builtins name))
+(defn builtin-reverse [_]
+  (throw (BuiltinException. (format "not implemented"))))
+
+(defn builtin-slice [_]
+  (throw (BuiltinException. (format "not implemented"))))
