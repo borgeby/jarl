@@ -20,8 +20,8 @@
   :resource-paths ["src/main/resources"]
   :test-paths ["src/test/clojure"]
   :profiles {:dev  {:dependencies [[junit/junit "4.13.2"]]}
-             :test {:java-source-paths ["src/test/java"]
+             :test {:dependencies      [[org.apache.logging.log4j/log4j-core "2.17.2"]
+                                        [org.apache.logging.log4j/log4j-api "2.17.2"]]
+                    :java-source-paths ["src/test/java"]
                     :resource-paths    ["src/test/resources"]
-                    :jvm-opts          ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/jul-factory"
-                                        "-Djava.util.logging.config.file=logging.properties"]
-                    }})
+                    :jvm-opts          ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/log4j2-factory"]}})
