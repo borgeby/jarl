@@ -428,7 +428,7 @@
                     (recur (next source-indexed) (block-stmt state))))))))))))
 
 (defn make-stmt [stmt-info]
-  (log/debugf "making stmt" stmt-info)
+  (log/debugf "making stmt: %s" stmt-info)
   (let [type (get stmt-info "type")
         stmt-info (get stmt-info "stmt")
         stmt (case type
@@ -515,7 +515,7 @@
           (do
             (let [block-count (count blocks)]
               (when (pos? block-count)
-                (log/tracef "skipping %d block(s); index: %d" block-count)))
+                (log/tracef "skipping %d block(s)" block-count)))
             state)
           (recur (next blocks) ((first blocks) state)))))))
 
