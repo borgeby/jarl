@@ -15,7 +15,6 @@
 ;
 
 (ns jarl.builtins.array
-  (:require [clojure.tools.logging :as log])
   (:import (se.fylling.jarl BuiltinException)))
 
 (defn builtin-concat [a b]
