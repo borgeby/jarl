@@ -373,7 +373,7 @@
 (defn make-ReturnLocalStmt [_]
   (log/debug "making ReturnLocalStmt stmt")
   (fn [state]
-    (log/debug "ReturnLocalStmt - exiting function")       ; TODO: Do we need to recursively break out of all nested blocks to exit the function?
+    (log/debug "ReturnLocalStmt - exiting function")        ; TODO: Do we need to recursively break out of all nested blocks to exit the function?
     state))                                                 ; No-op, the function itself knows what local var is the result
 
 (defn make-SetAddStmt [stmt-info]
@@ -576,6 +576,14 @@
       (let [[name func] (make-func (first func-infos))]
         (recur (next func-infos) (assoc func-map name func))))))
 
+(defn indexed-map-to-array [map]
+  (let [max-index (key (apply max-key key map))]
+    (loop [i 0
+           array []]
+      (if (> i max-index)
+        array
+        (recur (inc i) (conj array (get map i)))))))
+
 (defn make-builtin-func [func-info]
   (let [name (get func-info "name")
         builtin-func (builtins/get-builtin name)]
@@ -586,7 +594,8 @@
               (let [args (get state :local)]
                 (log/debugf "executing built-in func <%s> with args: %s" name, args)
                 (try
-                  (let [result (builtin-func args)]
+                  (let [arg-list (indexed-map-to-array args)
+                        result (apply builtin-func arg-list)]
                     (log/debugf "built-in function <%s> returning '%s'" name result)
                     {:result result})
                   (catch BuiltinException e

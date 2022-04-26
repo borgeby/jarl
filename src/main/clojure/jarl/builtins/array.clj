@@ -15,16 +15,15 @@
 ;
 
 (ns jarl.builtins.array
+  (:require [clojure.tools.logging :as log])
   (:import (se.fylling.jarl BuiltinException)))
 
-(defn builtin-concat [args]
-  (let [a (get args 0)
-        b (get args 1)]
-    (when-not (vector? a)
-      (throw (BuiltinException. (format "arg 0 is not an array"))))
-    (when-not (vector? b)
-      (throw (BuiltinException. (format "arg 1 is not an array"))))
-    (clojure.core/concat a b)))
+(defn builtin-concat [a b]
+  (when-not (vector? a)
+    (throw (BuiltinException. (format "arg 0 is not an array"))))
+  (when-not (vector? b)
+    (throw (BuiltinException. (format "arg 1 is not an array"))))
+  (clojure.core/concat a b))
 
 (defn builtin-reverse [_]
   (throw (BuiltinException. (format "not implemented"))))
