@@ -16,18 +16,21 @@
 
 (ns jarl.eval_test
   (:require [clojure.test :refer :all]
-            [jarl.eval :refer [eval-ArrayAppendStmt]]
+            [jarl.eval :refer [eval-ArrayAppendStmt eval-AssignVarStmt]]
             [jarl.state :refer [get-local set-local get-string]]))
 
 (defn make-value-key [type value]
   {"type"  type
    "value" value})
 
-(defn make-local-value-key [value]
-  (make-value-key "local" value))
+(defn make-local-value-key [index]
+  (make-value-key "local" index))
 
-(defn make-string-value-key [value]
-  (make-value-key "string_index" value))
+(defn make-string-value-key [index]
+  (make-value-key "string_index" index))
+
+(defn make-bool-value-key [value]
+  (make-value-key "bool" value))
 
 (defn set-static [state strings]
   (let [strings-map (loop [index 0
@@ -78,4 +81,38 @@
           state {:local {}}
           state (set-local state 2 array)
           result-state (eval-ArrayAppendStmt array-index value-index state)]
+      (is (contains? result-state :break-index)))))
+
+(deftest eval-AssignVarStmt-test
+  (testing "assign local value"
+    (let [value 42
+          source-index (make-local-value-key 3)
+          target 2
+          state {:local {}}
+          state (set-local state 3 value)
+          result-state (eval-AssignVarStmt source-index target state)
+          result (get-local result-state target)]
+      (is (= result value))))
+  (testing "assign string value"
+    (let [value "foo"
+          source-index (make-string-value-key 0)
+          target 2
+          state {:local {}}
+          state (set-static state [value])
+          result-state (eval-AssignVarStmt source-index target state)
+          result (get-local result-state target)]
+      (is (= result value))))
+  (testing "assign bool value"
+    (let [value true
+          source-index (make-bool-value-key value)
+          target 2
+          state {:local {}}
+          result-state (eval-AssignVarStmt source-index target state)
+          result (get-local result-state target)]
+      (is (= result value))))
+  (testing "assign non-existent value"
+    (let [source-index (make-local-value-key 3)
+          target 2
+          state {:local {}}
+          result-state (eval-AssignVarStmt source-index target state)]
       (is (contains? result-state :break-index)))))
