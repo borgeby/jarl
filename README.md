@@ -9,8 +9,8 @@ FIXME
 ## Supported built-in functions
 
 - [x] `array.concat` 
-- [ ] `array.reverse`
-- [ ] `array.slice`
+- [x] `array.reverse`
+- [x] `array.slice`
 
 ## Development
 
