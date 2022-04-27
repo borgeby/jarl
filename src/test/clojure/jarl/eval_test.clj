@@ -15,9 +15,9 @@
 ;
 
 (ns jarl.eval_test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [deftest is testing]]
             [jarl.eval :refer [eval-ArrayAppendStmt eval-AssignVarStmt]]
-            [jarl.state :refer [get-local set-local get-string]]))
+            [jarl.state :refer [get-local set-local]]))
 
 (defn make-value-key [type value]
   {"type"  type
