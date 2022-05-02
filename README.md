@@ -8,9 +8,35 @@ FIXME
 
 ## Supported built-in functions
 
+### Arrays
+
 - [x] `array.concat` 
 - [x] `array.reverse`
 - [x] `array.slice`
+
+### Strings
+
+- [] `concat`
+- [x] `contains`
+- [x] `endswith`
+- [x] `format_int`
+- [x] `indexof`
+- [x] `indexof_n`
+- [x] `lower`
+- [x] `replace`
+- [x] `strings.reverse`
+- [] `strings.replace_n`
+- [x] `split`
+- [] `sprintf`
+- [x] `startswith`
+- [x] `substring`
+- [] `trim`
+- [] `trim_left`
+- [x] `trim_prefix`
+- [] `trim_right`
+- [x] `trim_suffix`
+- [x] `trim_space`
+- [x] `upper`
 
 ## Development
 
