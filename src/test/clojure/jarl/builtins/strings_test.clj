@@ -2,8 +2,9 @@
   (:require [clojure.test :refer [deftest is testing]]
             [jarl.builtins.strings :refer [builtin-contains builtin-endswith builtin-format-int builtin-indexof
                                            builtin-indexof-n builtin-lower builtin-replace builtin-strings-reverse
-                                           builtin-split builtin-startswith builtin-substring builtin-trim-prefix
-                                           builtin-trim-suffix builtin-trim-space builtin-upper]])
+                                           builtin-split builtin-startswith builtin-substring builtin-trim
+                                           builtin-trim-left builtin-trim-prefix builtin-trim-right builtin-trim-suffix
+                                           builtin-trim-space builtin-upper]])
   (:import (se.fylling.jarl BuiltinException)))
 
 (deftest builtin-contains-test
@@ -82,11 +83,34 @@
   (testing "negative offset"
     (is (thrown-with-msg? BuiltinException #"eval_builtin_error: substring: negative offset" (builtin-substring "a" -1 1)))))
 
+(deftest builtin-trim-test
+  (testing "trim"
+    (is (= (builtin-trim "abcde" "ae") "bcd"))
+    (is (= (builtin-trim "abcde" "cbae") "d"))
+    (is (= (builtin-trim "aalalaah" "ah") "lal"))
+    (is (= (builtin-trim "   test " " t") "es"))
+    (is (= (builtin-trim "foo" "foo") ""))))
+
+(deftest builtin-trim-left-test
+  (testing "trim_left"
+    (is (= (builtin-trim-left "abcde" "x") "abcde"))
+    (is (= (builtin-trim-left "abcde" "cba") "de"))
+    (is (= (builtin-trim-left "åäö" "åä") "ö"))
+    (is (= (builtin-trim-left "   test" " t") "est"))
+    (is (= (builtin-trim-left "foo" "foo") ""))))
+
 (deftest builtin-trim-prefix-test
   (testing "trim_prefix"
     (is (= (builtin-trim-prefix "some text included" "some ") "text included"))
     (is (= (builtin-trim-prefix "ünicÖde everywhere" "ünicÖde ") "everywhere"))
     (is (= (builtin-trim-prefix "negative test" "positive") "negative test"))))
+
+(deftest builtin-trim-right-test
+  (testing "trim_right"
+    (is (= (builtin-trim-right "abcde" "x") "abcde"))
+    (is (= (builtin-trim-right "abcde" "cde") "ab"))
+    (is (= (builtin-trim-right "åäö" "öä") "å"))
+    (is (= (builtin-trim-right "test   " " t") "tes"))))
 
 (deftest builtin-trim-suffix-test
   (testing "trim_suffix"

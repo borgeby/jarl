@@ -18,7 +18,10 @@
    "split" strings/builtin-split
    "startswith" strings/builtin-startswith
    "substring" strings/builtin-substring
+   "trim" strings/builtin-trim
+   "trim_left" strings/builtin-trim-left
    "trim_prefix" strings/builtin-trim-prefix
+   "trim_right" strings/builtin-trim-right
    "trim_suffix" strings/builtin-trim-suffix
    "trim_space" strings/builtin-trim-space
    "upper" strings/builtin-upper})
