@@ -1,6 +1,7 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.array :as array]
-            [jarl.builtins.strings :as strings]))
+            [jarl.builtins.strings :as strings]
+            [jarl.builtins.types :as types]))
 
 (def builtins
   {"array.concat" array/builtin-concat
@@ -24,7 +25,16 @@
    "trim_right" strings/builtin-trim-right
    "trim_suffix" strings/builtin-trim-suffix
    "trim_space" strings/builtin-trim-space
-   "upper" strings/builtin-upper})
+   "upper" strings/builtin-upper
+
+   "is_number" types/builtin-is-number
+   "is_string" types/builtin-is-string
+   "is_boolean" types/builtin-is-boolean
+   "is_array" types/builtin-is-array
+   "is_set" types/builtin-is-set
+   "is_object" types/builtin-is-object
+   "is_null" types/builtin-is-null
+   "type_name" types/builtin-type-name})
 
 (defn get-builtin [name]
   (get builtins name))

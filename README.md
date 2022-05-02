@@ -16,7 +16,7 @@ FIXME
 
 ### Strings
 
-- [] `concat`
+- [ ] `concat`
 - [x] `contains`
 - [x] `endswith`
 - [x] `format_int`
@@ -25,9 +25,9 @@ FIXME
 - [x] `lower`
 - [x] `replace`
 - [x] `strings.reverse`
-- [] `strings.replace_n`
+- [ ] `strings.replace_n`
 - [x] `split`
-- [] `sprintf`
+- [ ] `sprintf`
 - [x] `startswith`
 - [x] `substring`
 - [x] `trim`
@@ -37,6 +37,17 @@ FIXME
 - [x] `trim_suffix`
 - [x] `trim_space`
 - [x] `upper`
+
+### Types
+
+- [x] `is_number`
+- [x] `is_string`
+- [x] `is_boolean`
+- [x] `is_array`
+- [x] `is_set`
+- [x] `is_object`
+- [x] `is_null`
+- [x] `type_name`
 
 ## Development
 

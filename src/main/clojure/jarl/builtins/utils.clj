@@ -1,21 +1,24 @@
 (ns jarl.builtins.utils
   (:import (se.fylling.jarl BuiltinException)
-           (clojure.lang PersistentVector PersistentHashSet)))
+           (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap)))
 
 (defn java->rego
   "Translates provided Java type to equivalent Rego type name"
   [value]
-  (condp instance? value
-    String "string"
-    Boolean "boolean"
-    Double "floating-point number"
-    Float "floating-point number"
-    Integer "number"
-    Long "number"
-    Number "number"
-    PersistentVector "array"
-    PersistentHashSet "set"
-    (str "unknown type: " (type value) " from value: " value)))
+  (if (nil? value)
+    "null"
+    (condp instance? value
+      String "string"
+      Boolean "boolean"
+      Double "floating-point number"
+      Float "floating-point number"
+      Integer "number"
+      Long "number"
+      Number "number"
+      PersistentVector "array"
+      PersistentHashSet "set"
+      PersistentArrayMap "object"
+      (str "unknown type: " (type value) " from value: " value))))
 
 (defn check-args
   "Check types of provided values, and ensure they match the type names provided in the function metadata"
@@ -29,6 +32,6 @@
             expected-type (second entry)
             value (nth entry 2)
             provided-type (java->rego value)]
-        (when-not (= expected-type provided-type)
+        (when-not (or (= expected-type "any") (= expected-type provided-type))
           (throw (BuiltinException.
                    (format "%s: operand %s must be %s but got %s", name, pos, expected-type, provided-type))))))))
