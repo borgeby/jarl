@@ -4,6 +4,16 @@
   (:import (se.fylling.jarl BuiltinException)
            (java.util.regex Pattern)))
 
+(defn- trim-left [s cutset]
+  (let [s-vec (str/split s #"")
+        chars (set (str/split cutset #""))]
+    (str/join "" (drop-while #(contains? chars %) s-vec))))
+
+(defn- trim-right [s cutset]
+  (let [s-vec (str/split (str/reverse s) #"")
+        chars (set (str/split cutset #""))]
+    (str/reverse (str/join "" (drop-while #(contains? chars %) s-vec)))))
+
 (defn builtin-contains
   "Implementation of contains built-in"
   {:builtin "contains" :args-types ["string" "string"]}
@@ -99,6 +109,20 @@
         (subs s start (count s))
         (subs s start end)))))
 
+(defn builtin-trim
+  "Implementation of trim built-in"
+  {:builtin "trim" :args-types ["string" "string"]}
+  [s cutset]
+  (check-args (meta #'builtin-trim) s cutset)
+  (-> s (trim-left cutset) (trim-right cutset)))
+
+(defn builtin-trim-left
+  "Implementation of trim_left built-in"
+  {:builtin "trim_left" :args-types ["string" "string"]}
+  [s cutset]
+  (check-args (meta #'builtin-trim-left) s cutset)
+  (trim-left s cutset))
+
 (defn builtin-trim-prefix
   "Implementation of trim_prefix built-in"
   {:builtin "trim_prefix" :args-types ["string" "string"]}
@@ -107,6 +131,13 @@
   (if (str/starts-with? s prefix)
     (subs s (count prefix))
     s))
+
+(defn builtin-trim-right
+  "Implementation of trim_right built-in"
+  {:builtin "trim_right" :args-types ["string" "string"]}
+  [s cutset]
+  (check-args (meta #'builtin-trim-right) s cutset)
+  (trim-right s cutset))
 
 (defn builtin-trim-suffix
   "Implementation of trim_suffix built-in"

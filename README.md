@@ -30,10 +30,10 @@ FIXME
 - [] `sprintf`
 - [x] `startswith`
 - [x] `substring`
-- [] `trim`
-- [] `trim_left`
+- [x] `trim`
+- [x] `trim_left`
 - [x] `trim_prefix`
-- [] `trim_right`
+- [x] `trim_right`
 - [x] `trim_suffix`
 - [x] `trim_space`
 - [x] `upper`
