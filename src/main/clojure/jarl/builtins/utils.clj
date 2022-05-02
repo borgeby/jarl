@@ -1,6 +1,6 @@
 (ns jarl.builtins.utils
   (:import (se.fylling.jarl BuiltinException)
-           (clojure.lang PersistentVector)))
+           (clojure.lang PersistentVector PersistentHashSet)))
 
 (defn java->rego
   "Translates provided Java type to equivalent Rego type name"
@@ -14,6 +14,7 @@
     Long "number"
     Number "number"
     PersistentVector "array"
+    PersistentHashSet "set"
     (str "unknown type: " (type value) " from value: " value)))
 
 (defn check-args

@@ -5,9 +5,9 @@
 
 (deftest builtin-concat-test
   (testing "concat arrays"
-    (is (= [1 2 3] (builtin-concat [1 2] [3])))
-    (is (= [1 2 3] (builtin-concat [1 2 3] [])))
-    (is (= [1 "a"] (builtin-concat [1] ["a"])))))
+    (is (= (builtin-concat [1 2] [3]) [1 2 3]))
+    (is (= (builtin-concat [1 2 3] []) [1 2 3]))
+    (is (= (builtin-concat [1] ["a"]) [1 "a"]))))
 
 (deftest builtin-concat-test-exceptions
   (testing "concat non-arrays"
@@ -16,9 +16,9 @@
 
 (deftest builtin-reverse-test
   (testing "reverse arrays"
-    (is (= [3 2 1] (builtin-reverse [1 2 3])))
-    (is (= ["a" "b" "c"] (builtin-reverse ["c" "b" "a"])))
-    (is (= [] (builtin-reverse [])))))
+    (is (= (builtin-reverse [1 2 3]) [3 2 1]))
+    (is (= (builtin-reverse ["c" "b" "a"]) ["a" "b" "c"]))
+    (is (= (builtin-reverse []) []))))
 
 (deftest builtin-reverse-test-exceptions
   (testing "reverse non-arrays"
