@@ -1,7 +1,8 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.array :as array]
             [jarl.builtins.strings :as strings]
-            [jarl.builtins.types :as types]))
+            [jarl.builtins.types :as types]
+            [jarl.builtins.encoding :as encoding]))
 
 (def builtins
   {"array.concat" array/builtin-concat
@@ -34,7 +35,19 @@
    "is_set" types/builtin-is-set
    "is_object" types/builtin-is-object
    "is_null" types/builtin-is-null
-   "type_name" types/builtin-type-name})
+   "type_name" types/builtin-type-name
+
+   "base64.encode" encoding/builtin-base64-encode
+   "base64.decode" encoding/builtin-base64-decode
+   "base64url.encode" encoding/builtin-base64-url-encode
+   "base64url.encode_no_pad" encoding/builtin-base64-url-encode-no-pad
+   "base64url.decode" encoding/builtin-base64-url-decode
+   "urlquery.encode" encoding/builtin-url-query-encode
+   "urlquery.decode" encoding/builtin-url-query-decode
+   "json.unmarshal" encoding/builtin-json-unmarshal
+   "json.is_valid" encoding/builtin-json-is-valid
+   "hex.encode" encoding/builtin-hex-encode
+   "hex.decode" encoding/builtin-hex-decode})
 
 (defn get-builtin [name]
   (get builtins name))
