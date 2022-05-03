@@ -37,5 +37,5 @@
 (deftest builtin-slice-test-exceptions
   (testing "slice type errors"
     (is (thrown-with-msg? BuiltinException #"array.slice: operand 1 must be array but got string" (builtin-slice "10" -10 10)))
-    (is (thrown-with-msg? BuiltinException #"array.slice: operand 2 must be number but got floating-point number" (builtin-slice [10] 10.01 10)))
+    (is (thrown-with-msg? BuiltinException #"array.slice: operand 2 must be integer but got floating-point number" (builtin-slice [10] 10.01 10)))
     (is (thrown-with-msg? BuiltinException #"array.slice: operand 3 must be number but got string" (builtin-slice [10] 0 "f")))))

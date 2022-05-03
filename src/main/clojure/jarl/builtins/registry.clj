@@ -1,11 +1,23 @@
 (ns jarl.builtins.registry
-  (:require [jarl.builtins.array :as array]
+  (:require [jarl.builtins.numbers :as numbers]
+            [jarl.builtins.array :as array]
             [jarl.builtins.strings :as strings]
             [jarl.builtins.types :as types]
             [jarl.builtins.encoding :as encoding]))
 
 (def builtins
-  {"array.concat" array/builtin-concat
+  {"plus" numbers/builtin-plus
+   "minus" numbers/builtin-minus
+   "mul" numbers/builtin-mul
+   "div" numbers/builtin-div
+   "rem" numbers/builtin-rem
+   "round" numbers/builtin-round
+   "ceil" numbers/builtin-ceil
+   "floor" numbers/builtin-floor
+   "abs" numbers/builtin-abs
+   "numbers.range" numbers/builtin-numbers-range
+
+   "array.concat" array/builtin-concat
    "array.reverse" array/builtin-reverse
    "array.slice" array/builtin-slice
 

@@ -1,5 +1,6 @@
 (ns jarl.builtins.array
-  (:require [jarl.builtins.utils :refer [check-args]]))
+  (:require [jarl.builtins.utils :refer [check-args java->rego]])
+  (:import (se.fylling.jarl BuiltinException)))
 
 (defn builtin-concat
   "Implementation of array.concat built-in"
@@ -22,6 +23,9 @@
   (check-args (meta #'builtin-slice) arr start stop)
   (let [start (max start 0)
         stop (min stop (count arr))]
-    (if (> start stop)
-      []
-      (subvec arr start stop))))
+    (cond
+      (not (int? start)) (throw (BuiltinException. (str "array.slice: operand 2 must be integer but got " (java->rego start))))
+      (not (int? stop)) (throw (BuiltinException. (str "array.slice: operand 3 must be integer but got " (java->rego stop))))
+      :else (if (> start stop)
+              []
+              (subvec arr start stop)))))
