@@ -1,14 +1,11 @@
 (ns jarl.util)
 
 (defn map-by-index [array]
-  (loop [array array
-         map {}
-         i 0]
-    (if (empty? array)
-      map
-      (recur (next array) (assoc map i (first array)) (inc i)))))
+  (zipmap (range (count array)) array))
 
-(defn indexed-map-to-array [map]
+(defn indexed-map-to-array
+  "Created array from map values, with nil values in places for missing indices"
+  [map]
   (let [max-index (key (apply max-key key map))]
     (loop [i 0
            array []]
