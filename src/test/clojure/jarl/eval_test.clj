@@ -17,12 +17,7 @@
   (make-value-key "bool" value))
 
 (defn set-static [state strings]
-  (let [strings-map (loop [index 0
-                           array strings
-                           map {}]
-                      (if (empty? array)
-                        map
-                        (recur (inc index) (next array) (assoc map index {"value" (first array)}))))
+  (let [strings-map (into {} (map-indexed (fn [i s] {i {"value" s}}) strings))
         static {"strings" strings-map}]
     (assoc state :static static)))
 
