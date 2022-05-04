@@ -49,6 +49,26 @@ FIXME
 - [x] `is_null`
 - [x] `type_name`
 
+### Encoding
+
+- [x] `base64.encode`
+- [x] `base64.decode`
+- [x] `base64url.encode`
+- [x] `base64url.encode_no_pad`
+- [x] `base64url.decode`
+- [x] `urlquery.encode`
+- [ ] `urlquery.encode_object`
+- [x] `urlquery.decode`
+- [ ] `urlquery.decode_object`
+- [ ] `json.marshal`
+- [x] `json.unmarshal`
+- [x] `json.is_valid`
+- [ ] `yaml.marshal`
+- [ ] `yaml.unmarshal`
+- [ ] `yaml.is_valid`
+- [x] `hex.encode`
+- [x] `hex.decode`
+
 ## Development
 
 ### Linters
