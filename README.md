@@ -8,6 +8,20 @@ FIXME
 
 ## Supported built-in functions
 
+### Numbers
+
+- [x] `+`
+- [x] `-`
+- [x] `*`
+- [x] `/`
+- [x] `%`
+- [x] `round`
+- [x] `ceil`
+- [x] `floor`
+- [x] `abs`
+- [x] `numbers.range`
+- [ ] `rand.intn`
+
 ### Arrays
 
 - [x] `array.concat` 

@@ -32,6 +32,7 @@
             expected-type (second entry)
             value (nth entry 2)
             provided-type (java->rego value)]
-        (when-not (or (= expected-type "any") (= expected-type provided-type))
+        (when-not (or (= expected-type "any") (= expected-type provided-type)
+                      (and (= expected-type "number") (= provided-type "floating-point number")))
           (throw (BuiltinException.
                    (format "%s: operand %s must be %s but got %s", name, pos, expected-type, provided-type))))))))
