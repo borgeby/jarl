@@ -28,6 +28,14 @@ FIXME
 - [x] `array.reverse`
 - [x] `array.slice`
 
+### Sets
+
+- [x] `&`
+- [x] `|`
+- [x] `-`
+- [x] `intersection`
+- [x] `union`
+
 ### Strings
 
 - [ ] `concat`
