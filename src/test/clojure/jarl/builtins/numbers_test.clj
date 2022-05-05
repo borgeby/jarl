@@ -16,7 +16,12 @@
     (is (= (builtin-minus 1 1) 0))
     (is (= (builtin-minus 1.5 2) -0.5))
     (is (= (builtin-minus -1.5 -4.5) 3))
-    (is (= (builtin-minus -1.0 1) -2))))
+    (is (= (builtin-minus -1.0 1) -2)))
+  (testing "set difference"
+    (is (= (builtin-minus #{1 2 3} #{2 3}) #{1}))
+    (is (= (builtin-minus #{1 2 3} #{4}) #{1 2 3}))
+    (is (= (builtin-minus #{1 2 3} #{}) #{1 2 3}))
+    (is (= (builtin-minus #{1 2 3} #{2 3 4}) #{1}))))
 
 (deftest builtin-mul-test
   (testing "mul"

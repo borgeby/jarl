@@ -1,5 +1,6 @@
 (ns jarl.builtins.numbers
-  (:require [jarl.builtins.utils :refer [check-args]])
+  (:require [jarl.builtins.utils :refer [check-args]]
+            [clojure.set :as set])
   (:import (se.fylling.jarl UndefinedException)))
 
 (defn- possibly-int
@@ -20,8 +21,11 @@
   "Implementation of minus built-in"
   {:builtin "minus" :args-types ["number" "number"]}
   [a b]
-  (check-args (meta #'builtin-minus) a b)
-  (possibly-int (- a b)))
+  ; Disable args check until we have a way to express union types
+  ; (check-args (meta #'builtin-minus) a b)
+  (if (and (set? a) (set? b))
+    (set/difference a b)
+    (possibly-int (- a b))))
 
 (defn builtin-mul
   "Implementation of mul built-in"

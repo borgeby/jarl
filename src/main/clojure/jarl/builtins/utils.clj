@@ -26,7 +26,7 @@
   (let [name (:builtin builtin-meta)
         types (:args-types builtin-meta)
         operands (vec (range 1 (inc (count types))))
-        zipped (vec (map vector operands types values))]
+        zipped (mapv vector operands types values)]
     (doseq [entry zipped]
       (let [pos (first entry)
             expected-type (second entry)

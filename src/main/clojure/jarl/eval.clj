@@ -57,10 +57,7 @@
     (if (nil? func)
       (throw (Exception. (format "unknown function '%s'" func-name)))
       (let [local (util/map-by-index (map (fn [arg] (state/get-value state arg)) args))
-            func-state {:static        (get state :static)
-                        :funcs         (get state :funcs)
-                        :builtin-funcs (get state :builtin-funcs)
-                        :local         local}
+            func-state (assoc (select-keys state [:static :funcs :builtin-funcs]) :local local)
             result (func func-state)]
         (if (contains? result :result)
           (do
