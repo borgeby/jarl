@@ -1,6 +1,12 @@
 (ns jarl.builtins.utils
-  (:import (se.fylling.jarl BuiltinException)
-           (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap)))
+  (:import (se.fylling.jarl BuiltinException UndefinedException)
+           (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap)))
+
+(defn builtin-ex [message & args]
+  (BuiltinException. (apply format message args)))
+
+(defn undefined-ex [message & args]
+  (UndefinedException. (apply format message args)))
 
 (defn java->rego
   "Translates provided Java type to equivalent Rego type name"
@@ -18,6 +24,7 @@
       PersistentVector "array"
       PersistentHashSet "set"
       PersistentArrayMap "object"
+      PersistentHashMap "object"
       (str "unknown type: " (type value) " from value: " value))))
 
 (defn check-args
@@ -36,3 +43,16 @@
                       (and (= expected-type "number") (= provided-type "floating-point number")))
           (throw (BuiltinException.
                    (format "%s: operand %s must be %s but got %s", name, pos, expected-type, provided-type))))))))
+
+(defn type-sort-order
+  "Return the sort order value for any given Rego type - lower value means higher precedence"
+  [val]
+  (let [rego-type (java->rego val)
+        precedence-table {"null"   0 "boolean" 1
+                          "number" 2 "floating-point number" 2
+                          "string" 3 "array" 4
+                          "object" 5 "set" 6}
+        precedence (get precedence-table rego-type)]
+    (if (nil? precedence)
+      (throw (builtin-ex "unknown Rego type: %s" rego-type))
+      precedence)))

@@ -8,6 +8,15 @@ FIXME
 
 ## Supported built-in functions
 
+### Comparison
+
+- [x] `==`
+- [x] `!=`
+- [x] `<`
+- [x] `<=`
+- [x] `>`
+- [x] `>=`
+
 ### Numbers
 
 - [x] `+`

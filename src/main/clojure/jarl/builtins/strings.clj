@@ -1,8 +1,7 @@
 (ns jarl.builtins.strings
-  (:require [jarl.builtins.utils :refer [check-args]]
+  (:require [jarl.builtins.utils :refer [builtin-ex check-args]]
             [clojure.string :as str])
-  (:import (se.fylling.jarl BuiltinException)
-           (java.util.regex Pattern)))
+  (:import (java.util.regex Pattern)))
 
 (defn- trim-left [s cutset]
   (let [s-vec (str/split s #"")
@@ -103,7 +102,7 @@
   [s start len]
   (check-args (meta #'builtin-substring) s start len)
   (if (neg-int? start)
-    (throw (BuiltinException. "eval_builtin_error: substring: negative offset"))
+    (throw (builtin-ex "eval_builtin_error: substring: negative offset"))
     (let [end (+ start len)]
       (if (or (> end (count s)) (neg-int? len))
         (subs s start (count s))
