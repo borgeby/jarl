@@ -1,6 +1,7 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.comparison :as comparison]
             [jarl.builtins.numbers :as numbers]
+            [jarl.builtins.aggregates :as aggregates]
             [jarl.builtins.array :as array]
             [jarl.builtins.strings :as strings]
             [jarl.builtins.types :as types]
@@ -24,6 +25,13 @@
    "floor"                    numbers/builtin-floor
    "abs"                      numbers/builtin-abs
    "numbers.range"            numbers/builtin-numbers-range
+
+   "count"                    aggregates/builtin-count
+   "sum"                      aggregates/builtin-sum
+   "product"                  aggregates/builtin-product
+   "max"                      aggregates/builtin-max
+   "min"                      aggregates/builtin-min
+   "sort"                     aggregates/builtin-sort
 
    "array.concat"             array/builtin-concat
    "array.reverse"            array/builtin-reverse

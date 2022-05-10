@@ -7,18 +7,25 @@
   (testing "numbers"
     (is (= (builtin-equal 1 1) true))
     (is (= (builtin-equal 1 1.0) true))
-    (is (= (builtin-equal -3.334 -3.3340000) true)))
+    (is (= (builtin-equal -3.334 -3.3340000) true))
+    (is (= (builtin-equal 3.00000000000001 3) false))
+    (is (= (builtin-equal 3 "3") false)))
   (testing "strings"
     (is (= (builtin-equal "a" "a") true))
+    (is (= (builtin-equal "a" "A") false))
+    (is (= (builtin-equal "a" "b") false))
     (is (= (builtin-equal "å" "å") true))
     (is (= (builtin-equal "🇸🇪" "🇸🇪") true))
     (is (= (builtin-equal "foo bar baz\t" "foo bar baz\t") true)))
   (testing "objects"
     (is (= (builtin-equal {"foo" "bar"} {"foo" "bar"}) true))
+    (is (= (builtin-equal {"foo" "bar"} {"foo" "bar" "bar" "baz"}) false))
+    (is (= (builtin-equal {"foo" "bar" "bar" "baz"} {"bar" "baz" "foo" "bar"}) true))
     (is (= (builtin-equal {"foo" ["bar" 1]} {"foo" ["bar" 1]}) true))
     (is (= (builtin-equal {"foo" 1} {"foo" 1.0}) true)))
   (testing "arrays"
     (is (= (builtin-equal ["foo" "bar"] ["foo" "bar"]) true))
+    (is (= (builtin-equal ["bar" "foo"] ["foo" "bar"]) false))
     (is (= (builtin-equal ["fåäö" "båäör"] ["fåäö" "båäör"]) true))
     (is (= (builtin-equal ["a" 1 [2] "b"] ["a" 1 [2] "b"]) true)))
   (testing "booleans"
@@ -37,6 +44,7 @@
     (is (= (builtin-neq -3.334 -3.3340000) false)))
   (testing "strings"
     (is (= (builtin-neq "a" "a") false))
+    (is (= (builtin-neq "a" "A") true))
     (is (= (builtin-neq "å" "å") false))
     (is (= (builtin-neq "🇸🇪" "🇸🇪") false))
     (is (= (builtin-neq "foo bar baz\t" "foo bar baz\t") false)))
@@ -45,6 +53,7 @@
     (is (= (builtin-neq {"foo" ["bar" 1]} {"foo" ["bar" 1]}) false)))
   (testing "arrays"
     (is (= (builtin-neq ["foo" "bar"] ["foo" "bar"]) false))
+    (is (= (builtin-neq ["bar" "foo"] ["foo" "bar"]) true))
     (is (= (builtin-neq ["fåäö" "båäör"] ["fåäö" "båäör"]) false))
     (is (= (builtin-neq ["a" 1 [2] "b"] ["a" 1 [2] "b"]) false)))
   (testing "boolean"

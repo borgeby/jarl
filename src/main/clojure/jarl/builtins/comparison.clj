@@ -59,7 +59,7 @@
 ; Sets are considered equal if and only if the symmetric difference of a and b
 ; is empty.
 ; Other comparisons are consistent but not defined.
-(defn set-compare [a b]
+(defn- set-compare [a b]
   (let [vc (vector-compare a b)]
     (if-not (zero? vc)
       vc

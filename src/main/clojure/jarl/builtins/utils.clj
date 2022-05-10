@@ -1,4 +1,5 @@
 (ns jarl.builtins.utils
+  (:require [clojure.string :as str])
   (:import (se.fylling.jarl BuiltinException UndefinedException)
            (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap)))
 
@@ -27,6 +28,13 @@
       PersistentHashMap "object"
       (str "unknown type: " (type value) " from value: " value))))
 
+(defn possibly-int
+  "present e.g. 1.0 as 1"
+  [num]
+  (if (zero? (mod num 1))
+    (int num)
+    num))
+
 (defn check-args
   "Check types of provided values, and ensure they match the type names provided in the function metadata"
   [builtin-meta & values]
@@ -41,8 +49,7 @@
             provided-type (java->rego value)]
         (when-not (or (= expected-type "any") (= expected-type provided-type)
                       (and (= expected-type "number") (= provided-type "floating-point number")))
-          (throw (BuiltinException.
-                   (format "%s: operand %s must be %s but got %s", name, pos, expected-type, provided-type))))))))
+          (throw (builtin-ex "%s: operand %s must be %s but got %s" name pos expected-type provided-type)))))))
 
 (defn type-sort-order
   "Return the sort order value for any given Rego type - lower value means higher precedence"
@@ -56,3 +63,14 @@
     (if (nil? precedence)
       (throw (builtin-ex "unknown Rego type: %s" rego-type))
       precedence)))
+
+(defn typed-seq
+  "Ensure that array/set only contains allowed Rego types"
+  [arr-or-set allowed-types]
+  (let [allowed-set (set allowed-types)
+        allow (if (contains? allowed-set "number") (conj allowed-set "floating-point number") allowed-set)
+        forbidden (fn [x] (not (contains? allow (java->rego x))))]
+    (when-let [violation (first (filter forbidden arr-or-set))]
+      (throw (builtin-ex "operand must be array or set of %s but got array or set containing %s"
+                         (str/join "," allowed-types)
+                         (java->rego violation))))))

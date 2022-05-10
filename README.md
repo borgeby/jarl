@@ -31,6 +31,15 @@ FIXME
 - [x] `numbers.range`
 - [ ] `rand.intn`
 
+### Aggregates
+
+- [x] `count`
+- [x] `sum`
+- [x] `product`
+- [x] `max`
+- [x] `min`
+- [x] `sort`
+
 ### Arrays
 
 - [x] `array.concat` 
