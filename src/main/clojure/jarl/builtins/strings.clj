@@ -13,6 +13,13 @@
         chars (set (str/split cutset #""))]
     (str/reverse (str/join "" (drop-while #(contains? chars %) s-vec)))))
 
+(defn builtin-concat
+  "Implementation of concat built-in"
+  {:builtin "concat" :args-types ["string" "array"]}
+  [^String delim coll]
+  (check-args (meta #'builtin-concat) delim coll)
+  (str/join delim coll))
+
 (defn builtin-contains
   "Implementation of contains built-in"
   {:builtin "contains" :args-types ["string" "string"]}

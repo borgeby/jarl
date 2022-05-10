@@ -54,9 +54,20 @@ FIXME
 - [x] `intersection`
 - [x] `union`
 
+### Objects
+
+- [x] `object.get`
+- [x] `object.remove`
+- [x] `object.union`
+- [x] `object.union_n`
+- [x] `object.filter`
+- [ ] `json.filter`
+- [ ] `json.remove`
+- [ ] `json.patch`
+
 ### Strings
 
-- [ ] `concat`
+- [x] `concat`
 - [x] `contains`
 - [x] `endswith`
 - [x] `format_int`
@@ -78,6 +89,18 @@ FIXME
 - [x] `trim_space`
 - [x] `upper`
 
+### Regex
+
+https://github.com/google/re2j
+
+- [x] `regex.match`
+- [x] `regex.is_valid`
+- [x] `regex.split`
+- [ ] `regex.globs_match`
+- [ ] `regex.template_match`
+- [x] `regex.find_n`
+- [ ] `regex.find_all_string_submatch_n`
+
 ### Types
 
 - [x] `is_number`
@@ -88,6 +111,20 @@ FIXME
 - [x] `is_object`
 - [x] `is_null`
 - [x] `type_name`
+
+### Glob
+
+- [ ] `glob.match`
+- [ ] `glob.quote_meta`
+
+### Bitwise
+
+- [x] `bits.or`
+- [x] `bits.and`
+- [x] `bits.negate`
+- [x] `bits.xor`
+- [x] `bits.lsh`
+- [x] `bits.rsh`
 
 ### Encoding
 

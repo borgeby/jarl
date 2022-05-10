@@ -1,11 +1,16 @@
 (ns jarl.builtins.strings_test
   (:require [clojure.test :refer [deftest is testing]]
-            [jarl.builtins.strings :refer [builtin-contains builtin-endswith builtin-format-int builtin-indexof
-                                           builtin-indexof-n builtin-lower builtin-replace builtin-strings-reverse
-                                           builtin-split builtin-startswith builtin-substring builtin-trim
-                                           builtin-trim-left builtin-trim-prefix builtin-trim-right builtin-trim-suffix
-                                           builtin-trim-space builtin-upper]])
+            [jarl.builtins.strings :refer [builtin-concat builtin-contains builtin-endswith builtin-format-int
+                                           builtin-indexof builtin-indexof-n builtin-lower builtin-replace
+                                           builtin-strings-reverse builtin-split builtin-startswith builtin-substring
+                                           builtin-trim builtin-trim-left builtin-trim-prefix builtin-trim-right
+                                           builtin-trim-suffix builtin-trim-space builtin-upper]])
   (:import (se.fylling.jarl BuiltinException)))
+
+(deftest builtin-concat-test
+  (testing "concat"
+    (is (= (builtin-concat ", " ["a" "b" "c"]) "a, b, c"))
+    (is (= (builtin-concat "🙂" ["🙃" "🙃" "🙃"]) "🙃🙂🙃🙂🙃"))))
 
 (deftest builtin-contains-test
   (testing "contains"
