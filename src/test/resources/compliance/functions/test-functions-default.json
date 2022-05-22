@@ -1,0 +1,23 @@
+{
+	"cases": [
+		{
+			"note": "functions/default",
+			"query": "data.p.m = x",
+			"modules": [
+				"package p.m\n\ndefault hello = false\n\nhello() = m {\n  m = input.message\n  1 == 2\n  m = \"world\"\n}\nh = m {\n  m = hello()\n}\n"
+			],
+			"want_result": [
+				{
+					"x": {
+						"hello": false
+					}
+				}
+			],
+			"entrypoints": [
+				"p/m"
+			],
+			"plan": null,
+			"want_plan_result": null
+		}
+	]
+}

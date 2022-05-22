@@ -1,0 +1,174 @@
+{
+	"cases": [
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"8k\") \u003e units.parse(\"7k\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"8g\") \u003e units.parse(\"8m\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"1234k\") \u003c units.parse(\"1g\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"1024\") == units.parse(\"1Ki\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"2Mi\") == units.parse(\"2097152\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"3Mi\") \u003e units.parse(\"3M\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"2Mi\") == units.parse(\"2Mi\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"4Mi\") \u003e units.parse(\"4M\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"4.1Mi\") \u003e units.parse(\"4Mi\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "parse/comparison",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\np {\n    units.parse(\"128Gi\") == units.parse(\"137438953472\")\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		}
+	]
+}

@@ -1,0 +1,506 @@
+{
+	"cases": [
+		{
+			"note": "jwtverifyrsa/success-key",
+			"query": "data.generated.p = x",
+			"modules": [
+				"package generated\n\np = x {\n  io.jwt.verify_rs384(\"eyJhbGciOiJSUzM4NCJ9.eyJTY29wZXMiOlsiZm9vIiwiYmFyIl0sIm5iZiI6MTQ1MTYwNjQwMH0.b__y2zjqMoD7iWbHeQ0lNpnche3ph5-AwrIQICLMQQGtEz9WMBteHydkC5g01bm3TBX1d04Z5IEOsuK6btAtWma04c5NYqaUyNEUJKYCFoY02uH0jGdGfL6R5Kkv0lkNvN0s3Nex9jMaVVgqx8bcrOU0uRBFT67sXcm11LHaB9BwKFslolzHClxgXy5RIZb4OFk_7Yk7xTC6PcvEWkkGR9uXBhfDEig5WqdwOWPeulimvARDw14U35rzeh9xpGAPjBKeE-y20fXAk0cSF1H69C-Qa1jDQheYIrAJ6XMYGNZWuay5-smmeefe67eweEt1q-AD1NFepqkmZX382DGuYQ\", \"-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3kZsoF/3zjlLuVpvdTxT\\naLBwxtQsxvWtYigY1HjIIvW110nFH2rT5rDZcW+erkotEV1LLyZmP8sZCCIUcmqc\\nVuPY9onQDN0hhi9ZzmX/13aQx2LABRWdt+xxm/AzhJP6d8Qhb9LR/4kPpCz9+hDN\\nfrZ+gX1F3SZ1cr5EitojDXkWOwOAzF+7Bl9/S17FSYgqJCAvBNEFBa0o76wJvXoy\\nhLT6I8naOHN1VMS35hbsjF6A9235NSb+YtieUY7aJo4CuszQr4GM6bKYqHRwoZM5\\nVF/MpNmKpQB1913SQPeC2gxNpDV4jkJxZFG/BrD+4ZhG8BrTFBEInvo34CqZcSeP\\nQQIDAQAB\\n-----END PUBLIC KEY-----\", x)\n}\n"
+			],
+			"data": {
+				"a": [
+					1,
+					2,
+					3,
+					4
+				],
+				"b": {
+					"v1": "hello",
+					"v2": "goodbye"
+				},
+				"c": [
+					{
+						"x": [
+							true,
+							false,
+							"foo"
+						],
+						"y": [
+							null,
+							3.14159
+						],
+						"z": {
+							"p": true,
+							"q": false
+						}
+					}
+				],
+				"d": {
+					"e": [
+						"bar",
+						"baz"
+					]
+				},
+				"f": [
+					{
+						"xs": [
+							1
+						],
+						"ys": [
+							2
+						]
+					},
+					{
+						"xs": [
+							2
+						],
+						"ys": [
+							3
+						]
+					}
+				],
+				"g": {
+					"a": [
+						1,
+						0,
+						0,
+						0
+					],
+					"b": [
+						0,
+						2,
+						0,
+						0
+					],
+					"c": [
+						0,
+						0,
+						0,
+						4
+					]
+				},
+				"h": [
+					[
+						1,
+						2,
+						3
+					],
+					[
+						2,
+						3,
+						4
+					]
+				],
+				"l": [
+					{
+						"a": "bob",
+						"b": -1,
+						"c": [
+							1,
+							2,
+							3,
+							4
+						]
+					},
+					{
+						"a": "alice",
+						"b": 1,
+						"c": [
+							2,
+							3,
+							4,
+							5
+						],
+						"d": null
+					}
+				],
+				"m": [],
+				"numbers": [
+					"1",
+					"2",
+					"3",
+					"4"
+				],
+				"strings": {
+					"bar": 2,
+					"baz": 3,
+					"foo": 1
+				},
+				"three": 3
+			},
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"generated"
+			],
+			"plan": {
+				"funcs": {
+					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "string_index",
+														"value": 2
+													},
+													{
+														"type": "string_index",
+														"value": 3
+													}
+												],
+												"col": 3,
+												"file": 0,
+												"func": "io.jwt.verify_rs384",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 5
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.generated.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"generated",
+								"p"
+							],
+							"return": 2
+						}
+					]
+				},
+				"plans": {
+					"plans": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 2
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.generated.p",
+																	"result": 3,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 1
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 3
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"blocks": [
+																		{
+																			"stmts": [
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"key": {
+																							"type": "string_index",
+																							"value": 4
+																						},
+																						"row": 0,
+																						"source": {
+																							"type": "local",
+																							"value": 1
+																						},
+																						"target": 5
+																					},
+																					"type": "DotStmt"
+																				},
+																				{
+																					"stmt": {
+																						"a": 5,
+																						"b": 2,
+																						"col": 0,
+																						"file": 0,
+																						"row": 0,
+																						"target": 4
+																					},
+																					"type": "ObjectMergeStmt"
+																				},
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"index": 1,
+																						"row": 0
+																					},
+																					"type": "BreakStmt"
+																				}
+																			]
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"row": 0
+																},
+																"type": "BlockStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"row": 0,
+																	"source": {
+																		"type": "local",
+																		"value": 2
+																	},
+																	"target": 4
+																},
+																"type": "AssignVarStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 6
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 7
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 0
+												},
+												"object": 7,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"value": 7
+											},
+											"type": "ResultSetAddStmt"
+										}
+									]
+								}
+							],
+							"name": "generated"
+						}
+					]
+				},
+				"static": {
+					"builtin_funcs": [
+						{
+							"decl": {
+								"args": [
+									{
+										"type": "string"
+									},
+									{
+										"type": "string"
+									}
+								],
+								"result": {
+									"type": "boolean"
+								},
+								"type": "function"
+							},
+							"name": "io.jwt.verify_rs384"
+						}
+					],
+					"files": [
+						{
+							"value": "mod_0"
+						}
+					],
+					"strings": [
+						{
+							"value": "result"
+						},
+						{
+							"value": "p"
+						},
+						{
+							"value": "eyJhbGciOiJSUzM4NCJ9.eyJTY29wZXMiOlsiZm9vIiwiYmFyIl0sIm5iZiI6MTQ1MTYwNjQwMH0.b__y2zjqMoD7iWbHeQ0lNpnche3ph5-AwrIQICLMQQGtEz9WMBteHydkC5g01bm3TBX1d04Z5IEOsuK6btAtWma04c5NYqaUyNEUJKYCFoY02uH0jGdGfL6R5Kkv0lkNvN0s3Nex9jMaVVgqx8bcrOU0uRBFT67sXcm11LHaB9BwKFslolzHClxgXy5RIZb4OFk_7Yk7xTC6PcvEWkkGR9uXBhfDEig5WqdwOWPeulimvARDw14U35rzeh9xpGAPjBKeE-y20fXAk0cSF1H69C-Qa1jDQheYIrAJ6XMYGNZWuay5-smmeefe67eweEt1q-AD1NFepqkmZX382DGuYQ"
+						},
+						{
+							"value": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3kZsoF/3zjlLuVpvdTxT\naLBwxtQsxvWtYigY1HjIIvW110nFH2rT5rDZcW+erkotEV1LLyZmP8sZCCIUcmqc\nVuPY9onQDN0hhi9ZzmX/13aQx2LABRWdt+xxm/AzhJP6d8Qhb9LR/4kPpCz9+hDN\nfrZ+gX1F3SZ1cr5EitojDXkWOwOAzF+7Bl9/S17FSYgqJCAvBNEFBa0o76wJvXoy\nhLT6I8naOHN1VMS35hbsjF6A9235NSb+YtieUY7aJo4CuszQr4GM6bKYqHRwoZM5\nVF/MpNmKpQB1913SQPeC2gxNpDV4jkJxZFG/BrD+4ZhG8BrTFBEInvo34CqZcSeP\nQQIDAQAB\n-----END PUBLIC KEY-----"
+						},
+						{
+							"value": "generated"
+						}
+					]
+				}
+			},
+			"want_plan_result": {
+				"generated": {
+					"p": true
+				}
+			}
+		}
+	]
+}

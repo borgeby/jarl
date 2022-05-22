@@ -73,4 +73,4 @@
   )
 
 (defn -jarl-factory-fromIr [ir]
-  (new se.fylling.jarl.JarlImpl (parser/parse ir)))
+  (new se.fylling.jarl.JarlImpl (parser/parse-json ir)))

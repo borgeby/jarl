@@ -1,0 +1,120 @@
+{
+	"cases": [
+		{
+			"note": "example/violations",
+			"query": "data.opa.example.violations = x",
+			"modules": [
+				"package opa.example\n\npublic_servers[server] {\n  server = data.servers[_]\n  server.ports[_] = data.ports[i].id\n  data.ports[i].networks[_] = data.networks[j].id\n  data.networks[j].public = true\n}\n\nviolations[server] {\n  server = data.servers[_]\n  server.protocols[_] = \"http\"\n  data.opa.example.public_servers[server]\n}\n",
+				"package topdown_test_partial\n\n__result__ = _result {\n  _result = {{\"id\": \"s1\", \"name\": \"app\", \"ports\": [\"p1\", \"p2\", \"p3\"], \"protocols\": [\"https\", \"ssh\"]}, {\"id\": \"s4\", \"name\": \"dev\", \"ports\": [\"p1\", \"p2\"], \"protocols\": [\"http\"]}}\n}\n"
+			],
+			"data": {
+				"networks": [
+					{
+						"id": "n1",
+						"public": false
+					},
+					{
+						"id": "n2",
+						"public": false
+					},
+					{
+						"id": "n3",
+						"public": true
+					}
+				],
+				"ports": [
+					{
+						"id": "p1",
+						"networks": [
+							"n1"
+						]
+					},
+					{
+						"id": "p2",
+						"networks": [
+							"n3"
+						]
+					},
+					{
+						"id": "p3",
+						"networks": [
+							"n2"
+						]
+					}
+				],
+				"servers": [
+					{
+						"id": "s1",
+						"name": "app",
+						"ports": [
+							"p1",
+							"p2",
+							"p3"
+						],
+						"protocols": [
+							"https",
+							"ssh"
+						]
+					},
+					{
+						"id": "s2",
+						"name": "db",
+						"ports": [
+							"p3"
+						],
+						"protocols": [
+							"mysql"
+						]
+					},
+					{
+						"id": "s3",
+						"name": "cache",
+						"ports": [
+							"p3"
+						],
+						"protocols": [
+							"memcache",
+							"http"
+						]
+					},
+					{
+						"id": "s4",
+						"name": "dev",
+						"ports": [
+							"p1",
+							"p2"
+						],
+						"protocols": [
+							"http"
+						]
+					}
+				]
+			},
+			"input_term": "{}",
+			"want_result": [
+				{
+					"x": [
+						{
+							"id": "s4",
+							"name": "dev",
+							"ports": [
+								"p1",
+								"p2"
+							],
+							"protocols": [
+								"http"
+							]
+						}
+					]
+				}
+			],
+			"sort_bindings": true,
+			"entrypoints": [
+				"opa/example",
+				"topdown_test_partial"
+			],
+			"plan": null,
+			"want_plan_result": null
+		}
+	]
+}
