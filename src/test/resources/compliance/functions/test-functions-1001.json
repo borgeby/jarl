@@ -1,0 +1,154 @@
+{
+	"cases": [
+		{
+			"note": "functions/always_true",
+			"query": "data.ex.always_true = x",
+			"modules": [
+				"package test\n\nsamepkg = y {\n  data.test.foo(\"how do you do?\", y)\n}\n",
+				"package test.l1.l3\n\ng(__local238__) = __local238__\n",
+				"package test.l1.l2\n\np = true\n\nf(__local248__) = __local248__\n",
+				"package test.omit_result\n\nf(__local258__) = __local258__\n\np {\n  data.test.omit_result.f(1)\n}\n",
+				"package topdown_test_partial\n\n__result__ = _result {\n  _result = \"h\"\n}\n",
+				"package ex\n\nfoo(__local176__) = y {\n  split(__local176__, \"i\", y)\n}\n\nbar[x] = y {\n  data.l[_].a = x\n  data.ex.foo(x, y)\n}\n\nchain0(__local177__) = y {\n  data.ex.foo(__local177__, y)\n}\n\nchain1(__local178__) = b {\n  data.ex.chain0(__local178__, b)\n}\n\nchain2 = d {\n  data.ex.chain1(\"fooibar\", d)\n}\n\ncross(__local179__) = [a, b] {\n  split(__local179__, \"i\", y)\n  __local27__ = y[1]\n  data.ex.foo(__local27__, b)\n  __local28__ = y[2]\n  data.test.foo(__local28__, a)\n}\n\nfalsy_func(__local180__) = false\n\nfalsy_func_else(__local181__) {\n  __local181__ = 1\n}\n\nelse = false {\n  true\n}\n\nfalsy_undefined {\n  data.ex.falsy_func(1)\n}\n\nfalsy_negation {\n  not data.ex.falsy_func(1)\n}\n\nfalsy_else_value = __local23__ {\n  true\n  data.ex.falsy_func_else(2, __local23__)\n}\n\nfalsy_else_undefined {\n  data.ex.falsy_func_else(2)\n}\n\nfalsy_else_negation {\n  not data.ex.falsy_func_else(2)\n}\n\narrays([__local183__, __local184__]) = [a, b] {\n  data.ex.foo(__local183__, a)\n  data.ex.foo(__local184__, b)\n}\n\narraysrule = y {\n  data.ex.arrays([\"hih\", \"foo\"], y)\n}\n\nobjects({\"foo\": __local185__, \"bar\": __local186__}) = z {\n  data.ex.foo(__local185__, a)\n  data.test.foo(__local186__, b)\n  z = [a, b]\n}\n\nobjectsrule = y {\n  data.ex.objects({\"bar\": \"hi ho\", \"foo\": \"hih\"}, y)\n}\n\nrefoutput = y {\n  data.ex.foo(\"hih\", z)\n  y = z[1]\n}\n\nvoid(__local187__) {\n  __local187__ = \"foo\"\n}\n\nvoidGood {\n  not data.ex.void(\"bar\", true)\n}\n\nvoidBad {\n  data.ex.void(\"bar\", true)\n}\n\nmulti(1, __local188__) = y {\n  y = __local188__\n}\n\nmulti(2, __local189__) = y {\n  __local24__ = 2 * __local189__\n  a = __local24__\n  __local25__ = a + 1\n  y = __local25__\n}\n\nmulti(3, __local190__) = y {\n  __local26__ = __local190__ * 10\n  y = __local26__\n}\n\nmulti(\"foo\", __local191__) = y {\n  y = \"bar\"\n}\n\nmulti1 = y {\n  data.ex.multi(1, 2, y)\n}\n\nmulti2 = y {\n  data.ex.multi(2, 2, y)\n}\n\nmulti3 = y {\n  data.ex.multi(3, 2, y)\n}\n\nmulti4 = y {\n  data.ex.multi(\"foo\", 2, y)\n}\n\nalways_true_fn(__local192__) = true\n\nalways_true {\n  data.ex.always_true_fn(1)\n}\n",
+				"package test\n\nfoo(__local224__) = y {\n  trim(__local224__, \"h o\", y)\n}\n\ncross = y {\n  data.ex.cross(\"hi, my name is foo\", y)\n}\n\nmulti(\"foo\", __local225__) = y {\n  y = __local225__\n}\n\nmulti(\"bar\", __local227__) = y {\n  y = \"baz\"\n}\n\nmulti_cross_pkg = [y, z] {\n  data.test.multi(\"foo\", \"bar\", y)\n  data.ex.multi(2, 1, z)\n}\n"
+			],
+			"data": {
+				"a": [
+					1,
+					2,
+					3,
+					4
+				],
+				"b": {
+					"v1": "hello",
+					"v2": "goodbye"
+				},
+				"c": [
+					{
+						"x": [
+							true,
+							false,
+							"foo"
+						],
+						"y": [
+							null,
+							3.14159
+						],
+						"z": {
+							"p": true,
+							"q": false
+						}
+					}
+				],
+				"d": {
+					"e": [
+						"bar",
+						"baz"
+					]
+				},
+				"f": [
+					{
+						"xs": [
+							1
+						],
+						"ys": [
+							2
+						]
+					},
+					{
+						"xs": [
+							2
+						],
+						"ys": [
+							3
+						]
+					}
+				],
+				"g": {
+					"a": [
+						1,
+						0,
+						0,
+						0
+					],
+					"b": [
+						0,
+						2,
+						0,
+						0
+					],
+					"c": [
+						0,
+						0,
+						0,
+						4
+					]
+				},
+				"h": [
+					[
+						1,
+						2,
+						3
+					],
+					[
+						2,
+						3,
+						4
+					]
+				],
+				"l": [
+					{
+						"a": "bob",
+						"b": -1,
+						"c": [
+							1,
+							2,
+							3,
+							4
+						]
+					},
+					{
+						"a": "alice",
+						"b": 1,
+						"c": [
+							2,
+							3,
+							4,
+							5
+						],
+						"d": null
+					}
+				],
+				"m": [],
+				"numbers": [
+					"1",
+					"2",
+					"3",
+					"4"
+				],
+				"strings": {
+					"bar": 2,
+					"baz": 3,
+					"foo": 1
+				},
+				"three": 3
+			},
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test",
+				"test/l1/l3",
+				"test/l1/l2",
+				"test/omit_result",
+				"topdown_test_partial",
+				"ex",
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		}
+	]
+}

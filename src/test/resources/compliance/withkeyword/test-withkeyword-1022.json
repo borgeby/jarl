@@ -1,0 +1,153 @@
+{
+	"cases": [
+		{
+			"note": "withkeyword/with stack (data)",
+			"query": "data.generated.p = x",
+			"modules": [
+				"package generated\n\nr = __local0__ {\n  true\n  __local0__ = data.test\n}\n\nq = x {\n  data.generated.r = x with data.test.a.c as 2\n}\n\np = x {\n  data.generated.q = x with data.test.a.b as 1\n}\n",
+				"package test.a\n\nd = 3\n",
+				"package test\n\ne = 4\n"
+			],
+			"data": {
+				"a": [
+					1,
+					2,
+					3,
+					4
+				],
+				"b": {
+					"v1": "hello",
+					"v2": "goodbye"
+				},
+				"c": [
+					{
+						"x": [
+							true,
+							false,
+							"foo"
+						],
+						"y": [
+							null,
+							3.14159
+						],
+						"z": {
+							"p": true,
+							"q": false
+						}
+					}
+				],
+				"d": {
+					"e": [
+						"bar",
+						"baz"
+					]
+				},
+				"f": [
+					{
+						"xs": [
+							1
+						],
+						"ys": [
+							2
+						]
+					},
+					{
+						"xs": [
+							2
+						],
+						"ys": [
+							3
+						]
+					}
+				],
+				"g": {
+					"a": [
+						1,
+						0,
+						0,
+						0
+					],
+					"b": [
+						0,
+						2,
+						0,
+						0
+					],
+					"c": [
+						0,
+						0,
+						0,
+						4
+					]
+				},
+				"h": [
+					[
+						1,
+						2,
+						3
+					],
+					[
+						2,
+						3,
+						4
+					]
+				],
+				"l": [
+					{
+						"a": "bob",
+						"b": -1,
+						"c": [
+							1,
+							2,
+							3,
+							4
+						]
+					},
+					{
+						"a": "alice",
+						"b": 1,
+						"c": [
+							2,
+							3,
+							4,
+							5
+						],
+						"d": null
+					}
+				],
+				"m": [],
+				"numbers": [
+					"1",
+					"2",
+					"3",
+					"4"
+				],
+				"strings": {
+					"bar": 2,
+					"baz": 3,
+					"foo": 1
+				},
+				"three": 3
+			},
+			"want_result": [
+				{
+					"x": {
+						"a": {
+							"b": 1,
+							"c": 2,
+							"d": 3
+						},
+						"e": 4
+					}
+				}
+			],
+			"entrypoints": [
+				"generated",
+				"test/a",
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		}
+	]
+}

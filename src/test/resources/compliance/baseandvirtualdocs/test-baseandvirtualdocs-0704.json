@@ -1,0 +1,92 @@
+{
+	"cases": [
+		{
+			"note": "baseandvirtualdocs/base/virtual: conflicts",
+			"query": "data.topdown.conflicts = x",
+			"modules": [
+				"package topdown_test_partial\n\n__result__ = _result {\n  _result = {\"p\", \"r\"}\n}\n",
+				"package topdown.missing.input.value\n\np = __local7__ {\n  true\n  __local7__ = input.deadbeef\n}\n",
+				"package topdown.a.b.c.s\n\nw = {\"f\": 10, \"g\": 9.9}\n",
+				"package topdown.a.b.c.undefined1\n\np {\n  false\n}\n\np {\n  false\n}\n\nq {\n  false\n}\n",
+				"package topdown.set\n\nv[__local6__] {\n  true\n  __local6__ = data.topdown.set.u[_]\n}\n",
+				"package enum_errors.caller\n\np[x] = y {\n  data.enum_errors.a[x] = y\n}\n",
+				"package topdown.conflicts\n\nk = \"bar\"\n",
+				"package topdown\n\np[[x1, x2, x3, x4]] {\n  data.topdown.a.b[x1][x2][x3] = x4\n}\n\nq[[x1, x2, x3]] {\n  data.topdown.a.b[x1][x2][0] = x3\n}\n\nr[[x1, x2]] {\n  data.topdown.a.b[x1] = x2\n}\n\ns = __local1__ {\n  true\n  __local1__ = data.topdown.no\n}\n\nt = __local2__ {\n  true\n  __local2__ = data.topdown.a.b.c.undefined1\n}\n\nu = __local3__ {\n  true\n  __local3__ = data.topdown.missing.input.value\n}\n\nv = __local4__ {\n  true\n  __local4__ = data.topdown.g\n}\n\nw = __local5__ {\n  true\n  __local5__ = data.topdown.set\n}\n\niterate_ground[x] {\n  data.topdown.virtual.constants[x] = 1\n}\n",
+				"package topdown.no.base.doc\n\np = true\n",
+				"package partial.topdown\n\nr[[\"c\", x21]] {\n  data.topdown.a.b.c = x21\n}\n\nr[[\"c\", x21]] {\n  data.topdown.a.b.c = x21\n}\n",
+				"package enum_errors.a.b.c\n\np = x {\n  __local0__ = 1 / 0\n  x = __local0__\n}\n",
+				"package topdown.a.b.c\n\np = [1, 2]\n\nq = [3, 4]\n\nr[\"a\"] = 1\n\nr[\"b\"] = 2\n",
+				"package topdown.a.b.c.empty\n",
+				"package topdown.a.b.c.undefined2\n\np {\n  input.foo\n}\n",
+				"package topdown.virtual.constants\n\np = 1\n\nq = 2\n\nr = 1\n",
+				"package topdown.g.h\n\np {\n  false\n}\n"
+			],
+			"data": {
+				"topdown": {
+					"a": {
+						"b": {
+							"c": {
+								"x": [
+									100,
+									200
+								],
+								"y": false,
+								"z": {
+									"a": "b"
+								}
+							}
+						}
+					},
+					"conflicts": {
+						"k": "foo"
+					},
+					"g": {
+						"h": {
+							"k": [
+								1,
+								2,
+								3
+							]
+						}
+					},
+					"set": {
+						"u": [
+							1,
+							2,
+							3,
+							4
+						]
+					}
+				}
+			},
+			"input_term": "{}",
+			"want_result": [
+				{
+					"x": {
+						"k": "foo"
+					}
+				}
+			],
+			"entrypoints": [
+				"topdown_test_partial",
+				"topdown/missing/input/value",
+				"enum_errors/a/b/c",
+				"topdown/a/b/c",
+				"topdown/a/b/c/empty",
+				"topdown/a/b/c/undefined2",
+				"topdown/virtual/constants",
+				"topdown/g/h",
+				"topdown/a/b/c/s",
+				"topdown/a/b/c/undefined1",
+				"topdown/set",
+				"enum_errors/caller",
+				"topdown/conflicts",
+				"topdown",
+				"topdown/no/base/doc",
+				"partial/topdown"
+			],
+			"plan": null,
+			"want_plan_result": null
+		}
+	]
+}

@@ -1,0 +1,74 @@
+{
+	"cases": [
+		{
+			"note": "functions/nested complete doc with conflict",
+			"query": "data.generated.p(1) = x",
+			"modules": [
+				"package generated\n\np(_) {\n  data.generated.q\n}\n\nq = true\n\nq = false\n"
+			],
+			"want_error_code": "eval_conflict_error",
+			"want_error": "complete rules must not produce multiple outputs",
+			"entrypoints": [
+				"generated"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "functions/nested complete doc with conflict, else",
+			"query": "data.generated.p(1) = x",
+			"modules": [
+				"package generated\n\np(_) {\n  data.generated.q\n}\n\nq = true {\n  false\n}\nelse = true {\n  true\n}\n\nq = true {\n  false\n}\nelse = false {\n  true\n}\n"
+			],
+			"want_error_code": "eval_conflict_error",
+			"want_error": "complete rules must not produce multiple outputs",
+			"entrypoints": [
+				"generated"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "functions/nested function with conflict",
+			"query": "data.generated.p(1) = x",
+			"modules": [
+				"package generated\n\np(x) {\n  y := data.generated.q(x)\n}\n\nq(_) = true\n\nq(_) = false\n"
+			],
+			"want_error_code": "eval_conflict_error",
+			"want_error": "functions must not produce multiple outputs for same inputs",
+			"entrypoints": [
+				"generated"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "functions/nested function with conflict, else",
+			"query": "data.generated.p(1) = x",
+			"modules": [
+				"package generated\n\np(x) {\n  y := data.generated.q(x)\n}\n\nq(_) = true {\n  false\n}\nelse = true {\n  true\n}\n\nq(_) = true {\n  false\n}\nelse = false {\n  true\n}\n"
+			],
+			"want_error_code": "eval_conflict_error",
+			"want_error": "functions must not produce multiple outputs for same inputs",
+			"entrypoints": [
+				"generated"
+			],
+			"plan": null,
+			"want_plan_result": null
+		},
+		{
+			"note": "functions/nested function with conflict, else, no extra return",
+			"query": "data.test.p(1) = x",
+			"modules": [
+				"package test\n\np(x) {\n  y := data.test.q(x)\n}\nxs = {1, 2}\nq(_) = xs[_]\n"
+			],
+			"want_error_code": "eval_conflict_error",
+			"want_error": "functions must not produce multiple outputs for same inputs",
+			"entrypoints": [
+				"test"
+			],
+			"plan": null,
+			"want_plan_result": null
+		}
+	]
+}

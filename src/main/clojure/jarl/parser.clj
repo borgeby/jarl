@@ -314,9 +314,8 @@
         (recur (next func-infos) (assoc func-map name func))))))
 
 (defn parse
-  "Parses the incoming string"
-  [str] (let [ir (json/read-str str)
-              static (get ir "static")
+  "Parses the incoming Intermediate Representation map"
+  [ir] (let [static (get ir "static")
               plans-info (get ir "plans")
               funcs-info (get ir "funcs")
               builtin-funcs-info (get (get ir "static") "builtin_funcs")]
@@ -325,8 +324,12 @@
            :builtin-funcs (make-builtin-funcs builtin-funcs-info)
            :static        static}))
 
+(defn parse-json
+  "Parses the incoming string"
+  [str] (parse (json/read-str str)))
+
 (defn parse-file
   "Reads and parses the incoming file"
   ([file]
    (log/infof "Parsing file '%s'" file)
-   (parse (slurp file))))
+   (parse-json (slurp file))))
