@@ -49,15 +49,32 @@
 ; Test generator
 ;
 
+(defn- builtin-names [ir]
+  (let [builtins (get (get ir "static") "builtin_funcs")]
+    (map #(get % "name") builtins)))
+
+(defn- ir-supported? [ir]
+  (let [used-builtins (builtin-names ir)
+        unsupported (filter #(not (contains? jarl.builtins.registry/builtins %)) used-builtins)]
+    (if (empty? unsupported)
+      true
+      (do
+        (println "Unsupported built-ins:" unsupported)
+        false))))
+
 (do
   (let [test-cases (read-test-cases)]
     (doseq [test-case test-cases]
       (let [note (get test-case "note")
             sanitized-note (clojure.string/replace note #"[/\s]" "_")
-            test-name sanitized-note]
-        (add-test test-name
-                  'jarl.compliance-test
-                  #(do-test test-case))))))
+            test-name sanitized-note
+            ir (get test-case "plan")]
+        (if (ir-supported? ir)
+          (add-test test-name
+                    'jarl.compliance-test
+                    #(do-test test-case))
+          (println "Ignoring" test-name))))))
+
 
 (defn test-ns-hook
   "Run tests in a sorted order."
