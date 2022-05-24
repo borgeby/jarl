@@ -1,6 +1,5 @@
 (ns jarl.builtins.types
-  (:require [jarl.builtins.utils :refer [java->rego]])
-  (:import (se.fylling.jarl UndefinedException)))
+  (:require [jarl.builtins.utils :refer [java->rego undefined-ex]]))
 
 (defn builtin-is-number
   "Implementation of is_number built-in"
@@ -8,7 +7,7 @@
   [x]
   (if (number? x)
     true
-    (throw (UndefinedException. (str x " is not a number")))))
+    (throw (undefined-ex "%s is not a number" x))))
 
 (defn builtin-is-string
   "Implementation of is_string built-in"
@@ -16,7 +15,7 @@
   [x]
   (if (string? x)
     true
-    (throw (UndefinedException. (str x " is not a string")))))
+    (throw (undefined-ex "%s is not a string" x))))
 
 (defn builtin-is-boolean
   "Implementation of is_boolean built-in"
@@ -24,7 +23,7 @@
   [x]
   (if (boolean? x)
     true
-    (throw (UndefinedException. (str x " is not a boolean")))))
+    (throw (undefined-ex "%s is not a boolean" x))))
 
 (defn builtin-is-array
   "Implementation of is_array built-in"
@@ -32,7 +31,7 @@
   [x]
   (if (vector? x)
     true
-    (throw (UndefinedException. (str x " is not an array")))))
+    (throw (undefined-ex "%s is not an array" x))))
 
 (defn builtin-is-set
   "Implementation of is_set built-in"
@@ -40,7 +39,7 @@
   [x]
   (if (set? x)
     true
-    (throw (UndefinedException. (str x " is not a set")))))
+    (throw (undefined-ex "%s is not a set" x))))
 
 (defn builtin-is-object
   "Implementation of is_object built-in"
@@ -48,7 +47,7 @@
   [x]
   (if (map? x)
     true
-    (throw (UndefinedException. (str x " is not an object")))))
+    (throw (undefined-ex "%s is not an object" x))))
 
 (defn builtin-is-null
   "Implementation of is_null built-in"
@@ -56,7 +55,7 @@
   [x]
   (if (nil? x)
     true
-    (throw (UndefinedException. (str x " is not null")))))
+    (throw (undefined-ex "%s is not null" x))))
 
 (defn builtin-type-name
   "Implementation of type_name built-in"

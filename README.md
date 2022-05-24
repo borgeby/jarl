@@ -8,6 +8,15 @@ FIXME
 
 ## Supported built-in functions
 
+### Comparison
+
+- [x] `==`
+- [x] `!=`
+- [x] `<`
+- [x] `<=`
+- [x] `>`
+- [x] `>=`
+
 ### Numbers
 
 - [x] `+`
@@ -21,6 +30,15 @@ FIXME
 - [x] `abs`
 - [x] `numbers.range`
 - [ ] `rand.intn`
+
+### Aggregates
+
+- [x] `count`
+- [x] `sum`
+- [x] `product`
+- [x] `max`
+- [x] `min`
+- [x] `sort`
 
 ### Arrays
 
