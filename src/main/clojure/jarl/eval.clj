@@ -1,5 +1,6 @@
 (ns jarl.eval
   (:require [clojure.edn :as edn])
+  (:require [clojure.string :as string])
   (:require [jarl.util :as util])
   (:require [jarl.state :as state])
   (:require [clojure.tools.logging :as log])
@@ -58,21 +59,33 @@
   (log/debugf "BreakStmt - index: %s", index)
   (break state index))
 
+(defn- call-func [func target func-name args state]
+  (if (nil? func)
+    (throw (Exception. (format "unknown function '%s'" func-name)))
+    (let [local (util/map-by-index args)
+          func-state (assoc (select-keys state [:static :funcs :builtin-funcs]) :local local)
+          result (func func-state)]
+      (if (contains? result :result)
+        (do
+          (log/debugf "CallStmt - <%s> returning: '%s'" func-name result)
+          (state/set-local state target (get result :result)))
+        (do
+          (log/debugf "CallStmt - <%s> undefined" func-name)
+          (break state))))))
+
+(defn eval-CallDynamicStmt [target path args state]
+  (let [path (map #(state/get-value state %) path)
+        func-name (string/join "." path)]
+    (log/debugf "CallDynamicStmt - calling dynamic func <%s>" path)
+    (let [func (state/get-func state path)
+          args (map #(state/get-local state %) args)]
+      (call-func func target func-name args state))))
+
 (defn eval-CallStmt [target func-name args state]
   (log/debugf "CallStmt - calling func <%s>" func-name)
-  (let [func (state/get-func state func-name)]
-    (if (nil? func)
-      (throw (Exception. (format "unknown function '%s'" func-name)))
-      (let [local (util/map-by-index (map (fn [arg] (state/get-value state arg)) args))
-            func-state (assoc (select-keys state [:static :funcs :builtin-funcs]) :local local)
-            result (func func-state)]
-        (if (contains? result :result)
-          (do
-            (log/debugf "CallStmt - <%s> returning: '%s'" func-name result)
-            (state/set-local state target (get result :result)))
-          (do
-            (log/debugf "CallStmt - <%s> undefined" func-name)
-            (break state)))))))
+  (let [func (state/get-func state func-name)
+        args (map (fn [arg] (state/get-value state arg)) args)]
+    (call-func func target func-name args state)))
 
 (defn eval-DotStmt [source-index key-index target state]
   (let [source (state/get-value state source-index)

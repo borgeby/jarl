@@ -49,6 +49,14 @@
     (fn [state]
       (eval/eval-BreakStmt index state))))
 
+(defn make-CallDynamicStmt [stmt-info]
+  (log/debug "making CallDynamicStmt stmt")
+  (let [result (get stmt-info "result")
+        path (get stmt-info "path")
+        args (get stmt-info "args")]
+    (fn [state]
+      (eval/eval-CallDynamicStmt result path args state))))
+
 (defn make-CallStmt [stmt-info]
   (log/debug "making CallStmt stmt")
   (let [result (get stmt-info "result")
@@ -227,7 +235,7 @@
                "AssignVarStmt" (make-AssignVarStmt stmt-info)
                "BlockStmt" (make-BlockStmt stmt-info)
                "BreakStmt" (make-BreakStmt stmt-info)
-               ;"CallDynamicStmt"
+               "CallDynamicStmt" (make-CallDynamicStmt stmt-info)
                "CallStmt" (make-CallStmt stmt-info)
                "DotStmt" (make-DotStmt stmt-info)
                "EqualStmt" (make-EqualStmt stmt-info)
@@ -312,12 +320,13 @@
 
 (defn make-func [func-info]
   (let [name (get func-info "name")
+        path (get func-info "path")
         return-index (get func-info "return")
         blocks-info (get func-info "blocks")
         blocks (make-blocks blocks-info)]
     (log/debugf "making func <%s>" name)
-    [name (fn [state]
-            (eval/eval-func name return-index blocks state))]))
+    [name path (fn [state]
+                 (eval/eval-func name return-index blocks state))]))
 
 (defn make-funcs [funcs-info]
   (log/debug "making funcs")
@@ -325,8 +334,10 @@
          func-map {}]
     (if (empty? func-infos)
       func-map
-      (let [[name func] (make-func (first func-infos))]
-        (recur (next func-infos) (assoc func-map name func))))))
+      (let [[name path func] (make-func (first func-infos))
+            func-map (assoc func-map name func)
+            func-map (assoc func-map path func)]
+        (recur (next func-infos) func-map)))))
 
 (defn make-builtin-func [func-info]
   (let [name (get func-info "name")
@@ -349,13 +360,13 @@
 (defn parse
   "Parses the incoming Intermediate Representation map"
   [ir] (let [static (get ir "static")
-              plans-info (get ir "plans")
-              funcs-info (get ir "funcs")
-              builtin-funcs-info (get (get ir "static") "builtin_funcs")]
-          {:plans         (make-plans plans-info)
-           :funcs         (make-funcs funcs-info)
-           :builtin-funcs (make-builtin-funcs builtin-funcs-info)
-           :static        static}))
+             plans-info (get ir "plans")
+             funcs-info (get ir "funcs")
+             builtin-funcs-info (get (get ir "static") "builtin_funcs")]
+         {:plans         (make-plans plans-info)
+          :funcs         (make-funcs funcs-info)
+          :builtin-funcs (make-builtin-funcs builtin-funcs-info)
+          :static        static}))
 
 (defn parse-json
   "Parses the incoming string"
