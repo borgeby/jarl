@@ -335,8 +335,8 @@
     (if (empty? func-infos)
       func-map
       (let [[name path func] (make-func (first func-infos))
-            func-map (assoc func-map name func)
-            func-map (assoc func-map path func)]
+            func-map (assoc func-map name func)             ; bind function to name
+            func-map (assoc func-map path func)]            ; bind function to path
         (recur (next func-infos) func-map)))))
 
 (defn make-builtin-func [func-info]
