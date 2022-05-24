@@ -15,6 +15,13 @@
     (fn [state]
       (eval/eval-ArrayAppendStmt array-index value-index state))))
 
+(defn make-AssignIntStmt [stmt-info]
+  (log/debug "making AssignIntStmt stmt")
+  (let [value (get stmt-info "value")
+        target (get stmt-info "target")]
+    (fn [state]
+      (eval/eval-AssignIntStmt value target state))))
+
 (defn make-AssignVarStmt [stmt-info]
   (log/debug "making AssignVarStmt stmt")
   (let [source-index (get stmt-info "source")
@@ -65,17 +72,36 @@
     (fn [state]
       (eval/eval-EqualStmt a-index b-index state))))
 
+(defn make-IsArrayStmt [stmt-info]
+  (log/debug "making IsArrayStmt stmt")
+  (let [source (get stmt-info "source")]
+    (fn [state]
+      (eval/eval-IsArrayStmt source state))))
+
 (defn make-IsDefinedStmt [stmt-info]
   (log/debug "making IsDefinedStmt stmt")
   (let [source (get stmt-info "source")]
     (fn [state]
       (eval/eval-IsDefinedStmt source state))))
 
+(defn make-IsObjectStmt [stmt-info]
+  (log/debug "making IsObjectStmt stmt")
+  (let [source (get stmt-info "source")]
+    (fn [state]
+      (eval/eval-IsObjectStmt source state))))
+
 (defn make-IsUndefinedStmt [stmt-info]
   (log/debug "making IsUndefinedStmt stmt")
   (let [source (get stmt-info "source")]
     (fn [state]
       (eval/eval-IsUndefinedStmt source state))))
+
+(defn make-LenStmt [stmt-info]
+  (log/debug "making LenStmt stmt")
+  (let [source (get stmt-info "source")
+        target (get stmt-info "target")]
+    (fn [state]
+      (eval/eval-LenStmt source target state))))
 
 (defn make-MakeNumberRefStmt [stmt-info]
   (log/debug "making MakeNumberRefStmt stmt")
@@ -95,6 +121,13 @@
   (let [target (get stmt-info "target")]
     (fn [state]
       (eval/eval-MakeNullStmt target state))))
+
+(defn make-MakeNumberIntStmt [stmt-info]
+  (log/debugf "making MakeNumberIntStmt stmt: %s" stmt-info)
+  (let [value (get stmt-info "value")
+        target (get stmt-info "target")]
+    (fn [state]
+      (eval/eval-MakeNumberIntStmt value target state))))
 
 (defn make-MakeObjectStmt [stmt-info]
   (log/debugf "making MakeObjectStmt stmt: %s" stmt-info)
@@ -189,7 +222,7 @@
         stmt-info (get stmt-info "stmt")
         stmt (case type
                "ArrayAppendStmt" (make-ArrayAppendStmt stmt-info)
-               ;"AssignIntStmt"
+               "AssignIntStmt" (make-AssignIntStmt stmt-info)
                "AssignVarOnceStmt" (make-AssignVarOnceStmt stmt-info)
                "AssignVarStmt" (make-AssignVarStmt stmt-info)
                "BlockStmt" (make-BlockStmt stmt-info)
@@ -198,14 +231,14 @@
                "CallStmt" (make-CallStmt stmt-info)
                "DotStmt" (make-DotStmt stmt-info)
                "EqualStmt" (make-EqualStmt stmt-info)
-               ;"IsArrayStmt"
+               "IsArrayStmt" (make-IsArrayStmt stmt-info)
                "IsDefinedStmt" (make-IsDefinedStmt stmt-info)
-               ;"IsObjectStmt"
+               "IsObjectStmt" (make-IsObjectStmt stmt-info)
                "IsUndefinedStmt" (make-IsUndefinedStmt stmt-info)
-               ;"LenStmt"
+               "LenStmt" (make-LenStmt stmt-info)
                "MakeArrayStmt" (make-MakeArrayStmt stmt-info)
                "MakeNullStmt" (make-MakeNullStmt stmt-info)
-               ;"MakeNumberIntStmt"
+               "MakeNumberIntStmt" (make-MakeNumberIntStmt stmt-info)
                "MakeNumberRefStmt" (make-MakeNumberRefStmt stmt-info)
                "MakeObjectStmt" (make-MakeObjectStmt stmt-info)
                "MakeSetStmt" (make-MakeSetStmt stmt-info)

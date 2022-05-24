@@ -33,17 +33,22 @@
         want-results (get test-case "want_plan_result")
         input (get test-case "input")
         data (get test-case "data")
-        plan-data (get test-case "plan")
-        info (parse plan-data)]
+        ir (get test-case "plan")
+        info (parse ir)]
     (doseq [entry-point entry-points]
       (let [want-result (get want-results entry-point)
             plan (get-plan (get info :plans) entry-point)
-            result-set (plan info input)
-            result (get (first result-set) "result")]
-        (println "Expected:" want-result)
-        (println)
-        (println "Got:" result)
-        (is (= result want-result))))))
+            want-error-code (get test-case "want_error_code")
+            want-error (get test-case "want_error")]
+        (is (not (nil? plan)))
+        (if (and (nil? want-error-code) (nil? want-error))
+          (let [result-set (plan info input)
+                result (get (first result-set) "result")]
+            ;(println (str "Want: " want-result "\n\nGot: " result "\n"))
+            (is (= result want-result)))
+          (do
+            (println (str "Want error: " want-error-code ": " want-error "\n"))
+            (is (thrown-with-msg? Exception #"foobar" (plan info input)))))))))
 
 ;
 ; Test generator

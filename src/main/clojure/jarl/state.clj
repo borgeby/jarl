@@ -1,4 +1,5 @@
-(ns jarl.state)
+(ns jarl.state
+  (:import (se.fylling.jarl UndefinedException)))
 
 (defn get-local [state index]
   (get (get state :local) index))
@@ -37,6 +38,11 @@
       "string_index" (contains-string? state key-value)
       "bool" true
       (throw (Exception. (format "unknown value type '%s'" key-type))))))
+
+(defn must-get-value [state key]
+  (if-not (contains-value? state key)
+    (throw (UndefinedException. (format "value with key '%s' is undefined" key)))
+    (get-value state key)))
 
 (defn get-static-string [state index]
   (get-value state {"type" "string_index" "value" index}))

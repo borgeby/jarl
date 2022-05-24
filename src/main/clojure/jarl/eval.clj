@@ -3,7 +3,7 @@
   (:require [jarl.util :as util])
   (:require [jarl.state :as state])
   (:require [clojure.tools.logging :as log])
-  (:import (se.fylling.jarl BuiltinException)))
+  (:import (se.fylling.jarl BuiltinException UndefinedException)))
 
 (defn break
   ([state] (assoc state :break-index 0))
@@ -22,6 +22,13 @@
         (let [array (state/get-local state array-index)]
           (log/debugf "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
           (state/set-local state array-index (conj array val)))))))
+
+(defn eval-AssignIntStmt [value target state]
+  (when (or (not (number? value))
+            (not (zero? (mod value 1))))
+    (throw (Exception. (format "'%s' is not an integer" value))))
+  (log/debugf "AssignIntStmt - assigning '%d' to local var %d" value target)
+  (state/set-local state target (int value)))
 
 (defn eval-AssignVarStmt [source-index target state]
   (if-not (state/contains-value? state source-index)
@@ -92,6 +99,16 @@
       state
       (break state))))
 
+(defn eval-IsArrayStmt [source state]
+  (let [obj (state/get-value state source)]
+    (if (or (list? obj) (set? obj))
+      (do
+        (log/debugf "IsArrayStmt - <%d> is array" source)
+        state)
+      (do
+        (log/debugf "IsArrayStmt - <%d> is not array" source)
+        (break state)))))
+
 (defn eval-IsDefinedStmt [source state]
   (if (state/contains-local? state source)
     (do
@@ -110,6 +127,23 @@
       (log/debugf "IsUndefinedStmt - local var <%d> is defined" source)
       (break state))))
 
+(defn eval-IsObjectStmt [source state]
+  (let [obj (state/get-value state source)]
+    (if (map? obj)
+      (do
+        (log/debugf "IsObjectStmt - <%d> is object" source)
+        state)
+      (do
+        (log/debugf "IsObjectStmt - <%d> is not object" source)
+        (break state)))))
+
+(defn eval-LenStmt [source target state]
+  (let [val (state/must-get-value state source)]
+    (if (or (coll? val) (string? val))
+      (let [len (count val)]
+        (state/set-local state target len))
+      (throw (Exception. "invalid argument(s)")))))
+
 (defn eval-MakeNumberRefStmt [index target state]
   (let [val (edn/read-string (state/get-static-string state index))]
     (log/debugf "MakeNumberRefStmt - parsed number: %s" val)
@@ -122,6 +156,13 @@
 (defn eval-MakeNullStmt [target state]
   (log/debugf "MakeNullStmt - assigning 'null' to local var %d" target)
   (state/set-local state target nil))
+
+(defn eval-MakeNumberIntStmt [value target state]
+  (when (or (not (number? value))
+            (not (zero? (mod value 1))))
+    (throw (Exception. (format "'%s' is not an integer" value))))
+  (log/debugf "MakeNumberIntStmt - assigning '%d' to local var %d" value target)
+  (state/set-local state target (int value)))
 
 (defn eval-MakeObjectStmt [target state]
   (log/debugf "MakeObjectStmt - assigning empty object to local var %d" target)
@@ -231,28 +272,30 @@
       (do
         (log/debugf "ScanStmt - '%s' is not a collection" source-index)
         (break state))
-      (if (map? source)
-        (do
-          (log/trace "ScanStmt - source is map")
-          (throw (Exception. (format "ScanStmt not implemented for maps"))))
-        (do
-          (log/trace "ScanStmt - source is list")
-          (loop [source-indexed (map-indexed (fn [i v] [i v]) source)
-                 state state]
-            (if (empty? source-indexed)
-              (do
-                (log/trace "ScanStmt - done")
-                (break state))
-              (let [entry (first source-indexed)
-                    key (get entry 0)
-                    value (get entry 1)
-                    state (state/set-local state key-index key)
-                    state (state/set-local state value-index value)]
-                (recur (next source-indexed) (block-stmt state))))))))))
+      (do
+        (log/trace "ScanStmt - source is list or map")
+        (loop [source-indexed (if (map? source)
+                                source
+                                (map-indexed (fn [i v] [i v]) source))
+               state state]
+          (if (empty? source-indexed)
+            (do
+              (log/trace "ScanStmt - done")
+              (break state))
+            (let [entry (first source-indexed)
+                  key (get entry 0)
+                  value (get entry 1)
+                  state (state/set-local state key-index key)
+                  state (state/set-local state value-index value)]
+              (recur (next source-indexed) (block-stmt state)))))))))
 
 (defn eval-stmt [type stmt state]
   (log/tracef "%s - calling with vars: %s" type (get state :local))
-  (stmt state))
+  (try
+    (stmt state)
+    (catch UndefinedException e
+      (log/debugf "statement type produced undefined result: %s" type (.getMessage e))
+      (break state))))
 
 (defn eval-stmts [stmts state]
   (log/debug "executing statements")
