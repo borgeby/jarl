@@ -301,6 +301,9 @@
 (defn make-data [plan-info data]
   (merge data (data-from-plan-info plan-info)))
 
+(defn- align-result-set [result-set]
+  (json/read-str (json/write-str result-set)))
+
 (defn make-plan [plan-info]
   (let [name (get plan-info "name")
         blocks-info (get plan-info "blocks")]
@@ -314,7 +317,7 @@
                 (let [state (blocks state)
                       result-set (get state :result-set)]
                   (log/debugf "Plan - result-set: %s" result-set)
-                  result-set)))])))
+                  (align-result-set result-set))))])))
 
 (defn make-plans [plans-info]
   (log/debug "making plans")

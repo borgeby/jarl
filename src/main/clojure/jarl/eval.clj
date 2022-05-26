@@ -2,6 +2,7 @@
   (:require [clojure.edn :as edn])
   (:require [clojure.string :as string])
   (:require [jarl.util :as util])
+  (:require [jarl.builtins.comparison :refer [rego-compare]])
   (:require [jarl.state :as state])
   (:require [clojure.tools.logging :as log])
   (:import (se.fylling.jarl BuiltinException UndefinedException)))
@@ -183,7 +184,7 @@
 
 (defn eval-MakeSetStmt [target state]
   (log/debugf "MakeSetStmt - assigning empty set to local var %d" target)
-  (state/set-local state target #{}))
+  (state/set-local state target (sorted-set-by rego-compare)))
 
 (defn eval-NopStmt [state]
   (log/debug "NopStmt - Doing nothing")
