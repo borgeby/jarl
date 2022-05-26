@@ -42,7 +42,7 @@
             want-error (get test-case "want_error")]
         (is (not (nil? plan)))
         (if (and (nil? want-error-code) (nil? want-error))
-          (let [result-set (plan info input)
+          (let [result-set (plan info data input)
                 result (get (first result-set) "result")]
             ;(println (str "Want: " want-result "\n\nGot: " result "\n"))
             (is (= result want-result)))

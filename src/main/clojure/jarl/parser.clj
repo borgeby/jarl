@@ -288,7 +288,7 @@
       (eval/eval-blocks blocks state))))
 
 ; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
-(defn populate-data [plan-info]
+(defn data-from-plan-info [plan-info]
   (let [plan-name (get plan-info "name")]
     (if (pos? (count plan-name))
       (loop [components (reverse (str/split plan-name #"/"))
@@ -298,15 +298,18 @@
           (recur (next components) {(first components) result})))
       {})))
 
+(defn make-data [plan-info data]
+  (merge data (data-from-plan-info plan-info)))
+
 (defn make-plan [plan-info]
   (let [name (get plan-info "name")
         blocks-info (get plan-info "blocks")]
     (log/debugf "making plan '%s'" name)
     (log/tracef "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info)]
-      [name (fn [info input]
+      [name (fn [info data input]
               (let [state (assoc info :local {0 input
-                                              1 (populate-data plan-info)})]
+                                              1 (make-data plan-info data)})]
                 (log/debugf "Plan - executing '%s'" name)
                 (let [state (blocks state)
                       result-set (get state :result-set)]
