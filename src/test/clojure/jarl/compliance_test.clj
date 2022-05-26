@@ -41,14 +41,16 @@
             want-error-code (get test-case "want_error_code")
             want-error (get test-case "want_error")]
         (is (not (nil? plan)))
-        (if (and (nil? want-error-code) (nil? want-error))
-          (let [result-set (plan info data input)
-                result (get (first result-set) "result")]
-            ;(println (str "Want: " want-result "\n\nGot: " result "\n"))
-            (is (= result want-result)))
-          (do
-            (println (str "Want error: " want-error-code ": " want-error "\n"))
-            (is (thrown-with-msg? Exception #"foobar" (plan info input)))))))))
+        (if-not (nil? plan)
+          (if (and (nil? want-error-code) (nil? want-error))
+            (let [result-set (plan info data input)
+                  result (get (first result-set) "result")]
+              ;(println (str "Want: " want-result "\n\nGot: " result "\n"))
+              (is (= result want-result)))
+            (do
+              (println (str "Want error: " want-error-code ": " want-error "\n"))
+              (is (thrown-with-msg? Exception #"foobar" (plan info input)))))
+          (println info))))))
 
 ;
 ; Test generator
@@ -59,13 +61,15 @@
     (map #(get % "name") builtins)))
 
 (defn- ir-supported? [ir]
-  (let [used-builtins (builtin-names ir)
-        unsupported (filter #(not (contains? jarl.builtins.registry/builtins %)) used-builtins)]
-    (if (empty? unsupported)
-      true
-      (do
-        (println "Unsupported built-ins:" unsupported)
-        false))))
+  (if (nil? ir)
+    false
+    (let [used-builtins (builtin-names ir)
+          unsupported (filter #(not (contains? jarl.builtins.registry/builtins %)) used-builtins)]
+      (if (empty? unsupported)
+        true
+        (do
+          (println "Unsupported built-ins:" unsupported)
+          false)))))
 
 (do
   (let [test-cases (read-test-cases)]
