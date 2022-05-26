@@ -76,6 +76,8 @@
 (deftest builtin-substring-test
   (testing "substring"
     (is (= (builtin-substring "abcde" 1 3) "bcd"))
+    (is (= (builtin-substring "aaa" 4 -1) ""))
+    (is (= (builtin-substring "aaa" 3 3) ""))
     (is (= (builtin-substring "abcde" 0 5) "abcde"))
     (is (= (builtin-substring "ünicÖde" 4 1) "Ö"))
     (is (= (builtin-substring "a" 0 100) "a"))

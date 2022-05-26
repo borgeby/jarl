@@ -1,5 +1,6 @@
 (ns jarl.builtins.numbers
-  (:require [jarl.builtins.utils :refer [check-args possibly-int undefined-ex]]
+  (:require [jarl.exceptions :as errors]
+            [jarl.builtins.utils :refer [check-args possibly-int]]
             [clojure.set :as set]))
 
 (defn builtin-plus
@@ -32,7 +33,7 @@
   [a b]
   (check-args (meta #'builtin-div) a b)
   (if (zero? b)
-    (throw (undefined-ex "div: divide by zero"))
+    (throw (errors/undefined-ex "div: divide by zero"))
     (possibly-int (double (/ a b)))))
 
 (defn builtin-rem
@@ -44,7 +45,7 @@
     (if (zero? (mod res 1))
       (possibly-int res)
       ; OPA returns undefined for rem resulting in floating point numbers
-      (throw (undefined-ex "remainder is not an integer")))))
+      (throw (errors/undefined-ex "remainder is not an integer")))))
 
 (defn builtin-round
   "Implementation of round built-in"

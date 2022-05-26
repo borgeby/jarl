@@ -1,10 +1,10 @@
 (ns jarl.eval
-  (:require [clojure.edn :as edn])
-  (:require [clojure.string :as string])
-  (:require [jarl.util :as util])
-  (:require [jarl.builtins.comparison :refer [rego-compare]])
-  (:require [jarl.state :as state])
-  (:require [clojure.tools.logging :as log])
+  (:require [clojure.edn :as edn]
+            [clojure.string :as string]
+            [jarl.state :as state]
+            [jarl.types :as types]
+            [jarl.util :as util]
+            [clojure.tools.logging :as log])
   (:import (se.fylling.jarl BuiltinException UndefinedException)))
 
 (defn break
@@ -184,7 +184,7 @@
 
 (defn eval-MakeSetStmt [target state]
   (log/debugf "MakeSetStmt - assigning empty set to local var %d" target)
-  (state/set-local state target (sorted-set-by rego-compare)))
+  (state/set-local state target (sorted-set-by types/rego-compare)))
 
 (defn eval-NopStmt [state]
   (log/debug "NopStmt - Doing nothing")
@@ -308,7 +308,7 @@
   (try
     (stmt state)
     (catch UndefinedException e
-      (log/debugf "statement type produced undefined result: %s" type (.getMessage e))
+      (log/debugf "statement type %s produced undefined result: %s" type (.getMessage e))
       (break state))))
 
 (defn eval-stmts [stmts state]

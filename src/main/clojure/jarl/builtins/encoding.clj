@@ -1,5 +1,6 @@
 (ns jarl.builtins.encoding
-  (:require [jarl.builtins.utils :refer [builtin-ex check-args]]
+  (:require [jarl.exceptions :as errors]
+            [jarl.builtins.utils :refer [check-args]]
             [clojure.data.json :as json]
             [clojure.string :as str])
   (:import (java.util Base64)
@@ -73,8 +74,8 @@
   (check-args (meta #'builtin-json-unmarshal) s)
   (try
     (json/read-str s)
-    (catch EOFException _ (throw (builtin-ex "eval_builtin_error: json.unmarshal: unexpected EOF")))
-    (catch Exception e (throw (builtin-ex "eval_builtin_error: json.unmarshal: %s" (.getMessage e))))))
+    (catch EOFException _ (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: unexpected EOF")))
+    (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: %s" (.getMessage e))))))
 
 (defn builtin-json-is-valid
   "Implementation of json.is_valid built-in"
