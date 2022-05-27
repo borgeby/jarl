@@ -35,6 +35,14 @@
     (int num)
     num))
 
+(defn str->int
+  "Converts a numeric string to int, or returns the string if not a number"
+  [s]
+  (let [numeric? (fn [s] (some? (re-matches #"[\d]+" s)))]
+    (if (numeric? s)
+      (.intValue (bigdec s))
+      s)))
+
 (defn check-args
   "Check types of provided values, and ensure they match the type names provided in the function metadata"
   [builtin-meta & values]

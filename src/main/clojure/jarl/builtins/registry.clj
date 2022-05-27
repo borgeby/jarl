@@ -3,8 +3,12 @@
             [jarl.builtins.numbers :as numbers]
             [jarl.builtins.aggregates :as aggregates]
             [jarl.builtins.array :as array]
+            [jarl.builtins.sets :as sets]
+            [jarl.builtins.objects :as objects]
             [jarl.builtins.strings :as strings]
+            [jarl.builtins.regex :as regex]
             [jarl.builtins.types :as types]
+            [jarl.builtins.bits :as bits]
             [jarl.builtins.encoding :as encoding]))
 
 (def builtins
@@ -37,6 +41,17 @@
    "array.reverse"            array/builtin-reverse
    "array.slice"              array/builtin-slice
 
+   "and"                      sets/builtin-and
+   "or"                       sets/builtin-or
+   "intersection"             sets/builtin-intersection
+   "union"                    sets/builtin-union
+
+   "object.get"               objects/builtin-object-get
+   "object.remove"            objects/builtin-object-remove
+   "object.union"             objects/builtin-object-union
+   "object.union_n"           objects/builtin-object-union-n
+
+   "concat"                   strings/builtin-concat
    "contains"                 strings/builtin-contains
    "endswith"                 strings/builtin-endswith
    "format_int"               strings/builtin-format-int
@@ -56,6 +71,11 @@
    "trim_space"               strings/builtin-trim-space
    "upper"                    strings/builtin-upper
 
+   "regex.match"              regex/builtin-regex-match
+   "regex.is_valid"           regex/builtin-regex-is-valid
+   "regex.split"              regex/builtin-regex-split
+   "regex.find_n"             regex/builtin-regex-find-n
+
    "is_number"                types/builtin-is-number
    "is_string"                types/builtin-is-string
    "is_boolean"               types/builtin-is-boolean
@@ -64,6 +84,13 @@
    "is_object"                types/builtin-is-object
    "is_null"                  types/builtin-is-null
    "type_name"                types/builtin-type-name
+
+   "bits.or"                  bits/builtin-bits-or
+   "bits.and"                 bits/builtin-bits-and
+   "bits.negate"              bits/builtin-bits-negate
+   "bits.xor"                 bits/builtin-bits-xor
+   "bits.lsh"                 bits/builtin-bits-lsh
+   "bits.rsh"                 bits/builtin-bits-rsh
 
    "base64.encode"            encoding/builtin-base64-encode
    "base64.decode"            encoding/builtin-base64-decode

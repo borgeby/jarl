@@ -5,7 +5,8 @@
             :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/data.json "2.4.0"]
-                 [org.clojure/tools.logging "1.2.4"]]
+                 [org.clojure/tools.logging "1.2.4"]
+                 [com.google.re2j/re2j "1.6"]]
   :plugins [[lein-ancient "1.0.0-RC3"]
             [lein-kibit "0.1.8"]
             [jonase/eastwood "1.2.3"]
