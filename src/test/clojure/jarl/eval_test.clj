@@ -1,6 +1,7 @@
 (ns jarl.eval_test
   (:require [clojure.test :refer [deftest is testing]]
-            [jarl.eval :refer :all]
+            [jarl.eval :refer [eval-ArrayAppendStmt eval-AssignVarStmt eval-IsObjectStmt eval-LenStmt
+                               eval-MakeNumberIntStmt eval-MakeObjectStmt]]
             [jarl.state :refer [get-local set-local]])
   (:import (se.fylling.jarl UndefinedException)))
 

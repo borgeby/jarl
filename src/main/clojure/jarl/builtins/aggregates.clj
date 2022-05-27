@@ -1,6 +1,7 @@
 (ns jarl.builtins.aggregates
-  (:require [jarl.builtins.utils :refer [possibly-int typed-seq undefined-ex]]
-            [jarl.builtins.comparison :refer [rego-compare]]))
+  (:require [jarl.exceptions :as errors]
+            [jarl.types :as types]
+            [jarl.builtins.utils :refer [possibly-int typed-seq]]))
 
 (defn builtin-count
   "Implementation of count built-in"
@@ -27,19 +28,19 @@
   {:builtin "max" :args-types ["any"]}
   [coll]
   (if (empty? coll)
-    (throw (undefined-ex "max on empty collection"))
-    (last (sort rego-compare coll))))
+    (throw (errors/undefined-ex "max on empty collection"))
+    (last (sort types/rego-compare coll))))
 
 (defn builtin-min
   "Implementation of min built-in"
   {:builtin "min" :args-types ["any"]}
   [coll]
   (if (empty? coll)
-    (throw (undefined-ex "min on empty collection"))
-    (first (sort rego-compare coll))))
+    (throw (errors/undefined-ex "min on empty collection"))
+    (first (sort types/rego-compare coll))))
 
 (defn builtin-sort
   "Implementation of sort built-in"
   {:builtin "sort" :args-types ["any"]}
   [coll]
-  (sort rego-compare coll))
+  (sort types/rego-compare coll))

@@ -1,5 +1,6 @@
 (ns jarl.builtins.strings
-  (:require [jarl.builtins.utils :refer [builtin-ex check-args]]
+  (:require [jarl.exceptions :as errors]
+            [jarl.builtins.utils :refer [check-args]]
             [clojure.string :as str])
   (:import (java.util.regex Pattern)))
 
@@ -109,11 +110,13 @@
   [s start len]
   (check-args (meta #'builtin-substring) s start len)
   (if (neg-int? start)
-    (throw (builtin-ex "eval_builtin_error: substring: negative offset"))
-    (let [end (+ start len)]
-      (if (or (> end (count s)) (neg-int? len))
-        (subs s start (count s))
-        (subs s start end)))))
+    (throw (errors/builtin-ex "eval_builtin_error: substring: negative offset"))
+    (if (>= start (count s))
+      ""
+      (let [end (+ start len)]
+        (if (or (> end (count s)) (neg-int? len))
+          (subs s start (count s))
+          (subs s start end))))))
 
 (defn builtin-trim
   "Implementation of trim built-in"

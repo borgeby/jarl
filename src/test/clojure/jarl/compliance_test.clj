@@ -1,8 +1,10 @@
 (ns jarl.compliance-test
-  (:require [clojure.test :refer :all]
-            [test.utils :refer :all]
+  (:require [clojure.test :refer [is test-vars]]
+            [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.data.json :as json]
+            [test.utils :refer [add-test]]
+            [jarl.builtins.registry :as registry]
             [jarl.parser :refer [parse]])
   (:import (java.nio.file FileSystems)
            (java.io File)))
@@ -64,25 +66,24 @@
   (if (nil? ir)
     false
     (let [used-builtins (builtin-names ir)
-          unsupported (filter #(not (contains? jarl.builtins.registry/builtins %)) used-builtins)]
+          unsupported (filter #(not (contains? registry/builtins %)) used-builtins)]
       (if (empty? unsupported)
         true
         (do
           (println "Unsupported built-ins:" unsupported)
           false)))))
 
-(do
-  (let [test-cases (read-test-cases)]
-    (doseq [test-case test-cases]
-      (let [note (get test-case "note")
-            sanitized-note (clojure.string/replace note #"[/\s]" "_")
-            test-name sanitized-note
-            ir (get test-case "plan")]
-        (if (ir-supported? ir)
-          (add-test test-name
-                    'jarl.compliance-test
-                    #(do-test test-case))
-          (println "Ignoring" test-name))))))
+(let [test-cases (read-test-cases)]
+  (doseq [test-case test-cases]
+    (let [note (get test-case "note")
+          sanitized-note (str/replace note #"[/\s]" "_")
+          test-name sanitized-note
+          ir (get test-case "plan")]
+      (if (ir-supported? ir)
+        (add-test test-name
+                  'jarl.compliance-test
+                  #(do-test test-case))
+        (println "Ignoring" test-name)))))
 
 
 (defn test-ns-hook
