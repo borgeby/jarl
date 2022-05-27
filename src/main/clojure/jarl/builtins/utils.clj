@@ -8,7 +8,7 @@
   "present e.g. 1.0 as 1"
   [num]
   (if (zero? (mod num 1))
-    (int num)
+    (long num)
     num))
 
 (defn str->int
