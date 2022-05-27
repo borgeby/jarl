@@ -1,5 +1,5 @@
 (ns jarl.builtins.regex
-  (:require [jarl.builtins.utils :refer [builtin-ex]])
+  (:require [jarl.exceptions :as errors])
   (:import [com.google.re2j Pattern PatternSyntaxException]))
 
 (defn builtin-regex-match
@@ -45,4 +45,4 @@
   "Implementation of regex.find_all_string_submatch_n built-in"
   {:builtin "regex.find_all_string_submatch_n" :args-types ["string" "string" "number"]}
   [pattern ^String value number]
-  (throw (builtin-ex "not implemented %s %s %s" pattern value number?)))
+  (throw (errors/builtin-ex "not implemented %s %s %s" pattern value number?)))

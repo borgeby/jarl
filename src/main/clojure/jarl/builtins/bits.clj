@@ -1,28 +1,29 @@
 (ns jarl.builtins.bits
-  (:require [jarl.builtins.utils :refer [undefined-ex java->rego]]))
+  (:require [jarl.exceptions :as errors]
+            [jarl.types :as types]))
 
 (defn- non-integer? [num]
   (not (zero? (mod num 1))))
 
 (defn- ensure-pos [builtin-name a b]
   (when (neg? a)
-    (throw (undefined-ex "eval_type_error: %s: operand 1 must be an unsigned integer number but got a negative %s"
+    (throw (errors/undefined-ex "eval_type_error: %s: operand 1 must be an unsigned integer number but got a negative %s"
                          builtin-name
-                         (java->rego a))))
+                         (types/java->rego a))))
   (when (neg? b)
-    (throw (undefined-ex "eval_type_error: %s: operand 2 must be an unsigned integer number but got a negative %s"
+    (throw (errors/undefined-ex "eval_type_error: %s: operand 2 must be an unsigned integer number but got a negative %s"
                          builtin-name
-                         (java->rego b)))))
+                         (types/java->rego b)))))
 
 (defn- ensure-ints [builtin-name a b]
   (when (non-integer? a)
-    (throw (undefined-ex "eval_type_error: %s: operand 1 must be integer number but got %s"
+    (throw (errors/undefined-ex "eval_type_error: %s: operand 1 must be integer number but got %s"
                          builtin-name
-                         (java->rego a))))
+                         (types/java->rego a))))
   (when (non-integer? b)
-    (throw (undefined-ex "eval_type_error: %s: operand 2 must be integer number but got %s"
+    (throw (errors/undefined-ex "eval_type_error: %s: operand 2 must be integer number but got %s"
                          builtin-name
-                         (java->rego b)))))
+                         (types/java->rego b)))))
 
 (defn- ensure-pos-ints [builtin-name a b]
   (ensure-ints builtin-name a b)
@@ -47,7 +48,8 @@
   {:builtin "bits.negate" :args-types ["number"]}
   [a]
   (when (non-integer? a)
-    (throw (undefined-ex "eval_type_error: bits.negate: operand 1 must be integer number but got %s" (java->rego a))))
+    (throw (errors/undefined-ex "eval_type_error: bits.negate: operand 1 must be integer number but got %s"
+                                (types/java->rego a))))
   (bit-not a))
 
 (defn builtin-bits-xor
