@@ -2,7 +2,7 @@
   (:require [clojure.test :refer [deftest is testing]]
             [jarl.builtins.numbers :refer [builtin-plus builtin-minus builtin-mul builtin-div builtin-rem builtin-round
                                            builtin-ceil builtin-floor builtin-abs builtin-numbers-range]])
-  (:import (se.fylling.jarl UndefinedException)))
+  (:import (se.fylling.jarl UndefinedException JarlException)))
 
 (deftest builtin-plus-test
   (testing "plus"
@@ -46,7 +46,13 @@
     (is (= (builtin-rem 2 2) 0))
     (is (= (builtin-rem 2.0 2.0) 0)))
   (testing "non-int result is undefined"
-    (is (thrown-with-msg? UndefinedException #"remainder is not an integer" (builtin-rem 2.0 1.5)))))
+    (is (thrown-with-msg? UndefinedException #"remainder is not an integer" (builtin-rem 2.0 1.5))))
+  (testing "rem by zero"
+    (try
+      (builtin-rem 2 0)
+      (catch JarlException e
+        (is (= (.getMessage e) "modulo by zero"))
+        (is (= (.getType e) "eval_builtin_error"))))))
 
 (deftest builtin-round-test
   (testing "round"

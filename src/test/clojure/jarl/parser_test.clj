@@ -32,7 +32,7 @@
           [name plan] (first (get info :plans))]
       (is (= name "set_composition"))
       (let [result-set (plan info {} {})]
-        (is (= result-set '({"result" {"p" #{"a" "b" "c"}}})))))))
+        (is (= result-set '({"result" {"p" ["a" "b" "c"]}})))))))
 
 (deftest object-composition-test
   (testing "A policy with object-composition"
@@ -40,9 +40,9 @@
           [name plan] (first (get info :plans))]
       (is (= name "object_composition"))
       (let [result-set (plan info {} {})]
-        (is (= result-set '({"result" {"p" {0 "a"
-                                            1 "b"
-                                            2 "c"}}})))))))
+        (is (= result-set '({"result" {"p" {"0" "a"
+                                            "1" "b"
+                                            "2" "c"}}})))))))
 
 (deftest array-comprehension-test
   (testing "A policy with array-comprehension"
@@ -58,7 +58,7 @@
           [name plan] (first (get info :plans))]
       (is (= name "set_comprehension/p"))
       (let [result-set (plan info {} {})]
-        (is (= result-set '({"result" #{"a" "b" "c"}})))))))
+        (is (= result-set '({"result" ["a" "b" "c"]})))))))
 
 (deftest object-comprehension-test
   (testing "A policy with object-comprehension"
@@ -66,9 +66,9 @@
           [name plan] (first (get info :plans))]
       (is (= name "object_comprehension/p"))
       (let [result-set (plan info {} {})]
-        (is (= result-set '({"result" {0 "a"
-                                       1 "b"
-                                       2 "c"}})))))))
+        (is (= result-set '({"result" {"0" "a"
+                                       "1" "b"
+                                       "2" "c"}})))))))
 
 (deftest array-built-ins-test
   (testing "A policy with array.* built-ins"

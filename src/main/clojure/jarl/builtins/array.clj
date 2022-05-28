@@ -25,8 +25,8 @@
   (let [start (max start 0)
         stop (min stop (count arr))]
     (cond
-      (not (int? start)) (throw (errors/builtin-ex "array.slice: operand 2 must be integer but got %s" (types/java->rego start)))
-      (not (int? stop)) (throw (errors/builtin-ex "array.slice: operand 3 must be integer but got %s" (types/java->rego stop)))
+      (not (int? start)) (throw (errors/type-ex "array.slice: operand 2 must be integer but got %s" (types/java->rego start)))
+      (not (int? stop)) (throw (errors/type-ex "array.slice: operand 3 must be integer but got %s" (types/java->rego stop)))
       :else (if (> start stop)
               []
               (subvec arr start stop)))))

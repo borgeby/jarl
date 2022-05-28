@@ -4,7 +4,8 @@
             [jarl.state :as state]
             [jarl.types :as types]
             [jarl.util :as util]
-            [clojure.tools.logging :as log])
+            [clojure.tools.logging :as log]
+            [jarl.exceptions :as errors])
   (:import (se.fylling.jarl BuiltinException UndefinedException)))
 
 (defn break
@@ -43,7 +44,10 @@
 
 (defn eval-AssignVarOnceStmt [source-index target state]
   (if (state/contains-local? state target)
-    (throw (Exception. (format "local %s already assigned" target)))
+    (do
+      (log/debugf "local %s already assigned" target)
+      ; Is it a safe assumption that AssignVarOnceStmt is only used for assigning rule results?
+      (throw (errors/conflict-ex "complete rules must not produce multiple outputs")))
     (if-not (state/contains-value? state source-index)
       (do
         (log/debugf "AssignVarOnceStmt - <%s> not present" source-index)
@@ -64,7 +68,7 @@
   (if (nil? func)
     (throw (Exception. (format "unknown function '%s'" func-name)))
     (let [local (util/map-by-index args)
-          func-state (assoc (select-keys state [:static :funcs :builtin-funcs]) :local local)
+          func-state (assoc (select-keys state [:static :funcs :builtin-funcs :strict-builtin-errors]) :local local)
           result (func func-state)]
       (if (contains? result :result)
         (do
@@ -177,7 +181,7 @@
   (when (or (not (number? value))
             (not (zero? (mod value 1))))
     (throw (Exception. (format "'%s' is not an integer" value))))
-  (log/debugf "MakeNumberIntStmt - assigning '%d' to local var <%d"> value target)
+  (log/debugf "MakeNumberIntStmt - assigning '%d' to local var <%d" > value target)
   (state/set-local state target (int value)))
 
 (defn eval-MakeObjectStmt [target state]
@@ -375,5 +379,9 @@
         (log/debugf "built-in function <%s> returning '%s'" name result)
         {:result result})
       (catch BuiltinException e
-        (log/debugf "function <%s> returned undefined value: %s" name (.getMessage e))
-        {}))))
+        (log/tracef "function <%s> threw error: %s" name (.getMessage e))
+        (if (true? (get state :strict-builtin-errors))
+          (throw e)
+          (do
+            (log/debugf "function <%s> returned undefined value" name)
+            {}))))))

@@ -1,7 +1,7 @@
 (ns jarl.builtins.array_test
   (:require [clojure.test :refer [deftest is testing]]
             [jarl.builtins.array :refer [builtin-concat builtin-reverse builtin-slice]])
-  (:import (se.fylling.jarl BuiltinException)))
+  (:import (se.fylling.jarl TypeException)))
 
 (deftest builtin-concat-test
   (testing "concat arrays"
@@ -11,8 +11,8 @@
 
 (deftest builtin-concat-test-exceptions
   (testing "concat non-arrays"
-    (is (thrown-with-msg? BuiltinException #"array.concat: operand 1 must be array but got string" (builtin-concat "a" [3])))
-    (is (thrown-with-msg? BuiltinException #"array.concat: operand 2 must be array but got string" (builtin-concat [3] "a")))))
+    (is (thrown-with-msg? TypeException #"array.concat: operand 1 must be array but got string" (builtin-concat "a" [3])))
+    (is (thrown-with-msg? TypeException #"array.concat: operand 2 must be array but got string" (builtin-concat [3] "a")))))
 
 (deftest builtin-reverse-test
   (testing "reverse arrays"
@@ -22,8 +22,8 @@
 
 (deftest builtin-reverse-test-exceptions
   (testing "reverse non-arrays"
-    (is (thrown-with-msg? BuiltinException #"array.reverse: operand 1 must be array but got string" (builtin-reverse "abc")))
-    (is (thrown-with-msg? BuiltinException #"array.reverse: operand 1 must be array but got number" (builtin-reverse 12345)))))
+    (is (thrown-with-msg? TypeException #"array.reverse: operand 1 must be array but got string" (builtin-reverse "abc")))
+    (is (thrown-with-msg? TypeException #"array.reverse: operand 1 must be array but got number" (builtin-reverse 12345)))))
 
 (deftest builtin-slice-test
   (testing "slice arrays"
@@ -36,6 +36,6 @@
 
 (deftest builtin-slice-test-exceptions
   (testing "slice type errors"
-    (is (thrown-with-msg? BuiltinException #"array.slice: operand 1 must be array but got string" (builtin-slice "10" -10 10)))
-    (is (thrown-with-msg? BuiltinException #"array.slice: operand 2 must be integer but got floating-point number" (builtin-slice [10] 10.01 10)))
-    (is (thrown-with-msg? BuiltinException #"array.slice: operand 3 must be number but got string" (builtin-slice [10] 0 "f")))))
+    (is (thrown-with-msg? TypeException #"array.slice: operand 1 must be array but got string" (builtin-slice "10" -10 10)))
+    (is (thrown-with-msg? TypeException #"array.slice: operand 2 must be integer but got floating-point number" (builtin-slice [10] 10.01 10)))
+    (is (thrown-with-msg? TypeException #"array.slice: operand 3 must be number but got string" (builtin-slice [10] 0 "f")))))

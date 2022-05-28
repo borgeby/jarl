@@ -1,11 +1,13 @@
 package se.fylling.jarl;
 
-public class BuiltinException extends Exception {
+public class BuiltinException extends EvalException {
+    public static final String TYPE = "eval_builtin_error";
+
     public BuiltinException(String message) {
-        super(message);
+        super(TYPE, message);
     }
 
     public BuiltinException(String message, Throwable cause) {
-        super(message, cause);
+        super(TYPE, message, cause);
     }
 }

@@ -33,7 +33,7 @@
             provided-type (types/java->rego value)]
         (when-not (or (= expected-type "any") (= expected-type provided-type)
                       (and (= expected-type "number") (= provided-type "floating-point number")))
-          (throw (errors/builtin-ex "%s: operand %s must be %s but got %s" name pos expected-type provided-type)))))))
+          (throw (errors/type-ex "%s: operand %s must be %s but got %s" name pos expected-type provided-type)))))))
 
 (defn typed-seq
   "Ensure that array/set only contains allowed Rego types"

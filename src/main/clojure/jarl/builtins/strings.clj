@@ -110,7 +110,7 @@
   [s start len]
   (check-args (meta #'builtin-substring) s start len)
   (if (neg-int? start)
-    (throw (errors/builtin-ex "eval_builtin_error: substring: negative offset"))
+    (throw (errors/builtin-ex "negative offset"))
     (if (>= start (count s))
       ""
       (let [end (+ start len)]

@@ -41,6 +41,8 @@
   {:builtin "rem" :args-types ["number" "number"]}
   [a b]
   (check-args (meta #'builtin-rem) a b)
+  (when (= b 0)
+    (throw (errors/builtin-ex "modulo by zero")))
   (let [res (rem a b)]
     (if (zero? (mod res 1))
       (possibly-int res)

@@ -311,6 +311,7 @@
     (log/debugf "making plan '%s'" name)
     (log/tracef "plan: %s" plan-info)
     (let [blocks (make-blocks blocks-info)]
+      ; return a [name fn] pair
       [name (fn [info data input]
               (let [state (assoc info :local {0 input
                                               1 (make-data plan-info data)})]

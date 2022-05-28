@@ -7,7 +7,8 @@
             [jarl.builtins.registry :as registry]
             [jarl.parser :refer [parse]])
   (:import (java.nio.file FileSystems)
-           (java.io File)))
+           (java.io File)
+           (se.fylling.jarl JarlException)))
 
 (defn json->test-cases [^File file]
   (get (json/read-str (slurp file)) "cases"))
@@ -36,14 +37,17 @@
         input (get test-case "input")
         data (get test-case "data")
         ir (get test-case "plan")
-        info (parse ir)]
+        info (parse ir)
+        info (if (true? (get test-case "strict_error"))
+               (assoc info :strict-builtin-errors true)
+               info)]
     (doseq [entry-point entry-points]
       (let [want-result (get want-results entry-point)
             plan (get-plan (get info :plans) entry-point)
             want-error-code (get test-case "want_error_code")
             want-error (get test-case "want_error")]
         (is (not (nil? plan)))
-        (if-not (nil? plan)
+        (when-not (nil? plan)
           (if (and (nil? want-error-code) (nil? want-error))
             (let [result-set (plan info data input)
                   result (get (first result-set) "result")]
@@ -51,8 +55,16 @@
               (is (= result want-result)))
             (do
               (println (str "Want error: " want-error-code ": " want-error "\n"))
-              (is (thrown-with-msg? Exception #"foobar" (plan info input)))))
-          (println info))))))
+              (try
+                (let [result-set (plan info data input)]
+                  (is (not (nil? result-set)) "Exception must be thrown"))
+                (catch JarlException e
+                  (is (= (.getMessage e) want-error))
+                  (is (= (.getType e) want-error-code)))
+                (catch Throwable e
+                  (println "Unexpected error" e)
+                  (is false "JarlException must be thrown")))
+              )))))))
 
 ;
 ; Test generator

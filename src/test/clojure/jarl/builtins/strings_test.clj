@@ -88,7 +88,7 @@
     (is (= (builtin-substring "a" 0 100) "a"))
     (is (= (builtin-substring "everything" 0 -1) "everything")))
   (testing "negative offset"
-    (is (thrown-with-msg? BuiltinException #"eval_builtin_error: substring: negative offset" (builtin-substring "a" -1 1)))))
+    (is (thrown-with-msg? BuiltinException #"negative offset" (builtin-substring "a" -1 1)))))
 
 (deftest builtin-trim-test
   (testing "trim"
