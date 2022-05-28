@@ -70,10 +70,19 @@
                                        1 "b"
                                        2 "c"}})))))))
 
-(deftest array-built-ins
+(deftest array-built-ins-test
   (testing "A policy with array.* built-ins"
     (let [info (parse-file (io/resource "rego/array_built-ins/plan.json"))
           [name plan] (first (get info :plans))]
       (is (= name "array_built_ins/a"))
       (let [result-set (plan info {} {})]
         (is (= result-set '({"result" ["a" "b" "c" "d"]})))))))
+
+(deftest aggregates-test
+  (testing "A policy with aggregate"
+    (let [info (parse-file (io/resource "rego/aggregates/plan.json"))
+          [name plan] (first (get info :plans))]
+      (is (= name "agg"))
+      (let [result-set (plan info {"a" #{1 2 3 4}} {})]
+        (is (= result-set '({"result" {"p" [4]
+                                       "q" [1 2 3 4]}})))))))

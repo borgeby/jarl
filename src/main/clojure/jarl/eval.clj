@@ -88,20 +88,21 @@
         args (map (fn [arg] (state/get-value state arg)) args)]
     (call-func func target func-name args state)))
 
-(defn eval-DotStmt [source-index key-index target state]
-  (let [source (state/get-value state source-index)
-        key (state/get-value state key-index)]
+(defn eval-DotStmt [source-info key-info target-index state]
+  "Gets value with key described by `key-info` from source described by `source-info` and stores it in local var at `target-index`"
+  (let [source (state/get-value state source-info)
+        key (state/get-value state key-info)]
     (if (nil? source)
       (do
-        (log/debugf "DotStmt - <%s> not present" source-index)
+        (log/debugf "DotStmt - <%s> not present" source-info)
         (break state))
-      (let [val (get (state/get-value state source-index) key)]
+      (let [val (get source key)]
         (if-not (nil? val)
           (do
-            (log/debugf "DotStmt - got '%s' to var <%s>" val target)
-            (state/set-local state target val))
+            (log/debugf "DotStmt - got '%s' to var <%s>" val target-index)
+            (state/set-local state target-index val))
           (do
-            (log/debugf "DotStmt - <%s> not present in <%s>" key source-index)
+            (log/debugf "DotStmt - <%s> not present in <%s>" key source-info)
             (break state)))))))
 
 (defn eval-EqualStmt [a-index b-index state]
@@ -280,13 +281,14 @@
             (state/set-local state set-index (conj set val))))))))
 
 (defn eval-ScanStmt [source-index key-index value-index block-stmt state]
+  "Scan list/set/map local var at `source-index`; executing `block-stmt` for every key/index-value pair encountered"
   (log/debugf "ScanStmt - scanning <%d>" source-index)
   (let [source (state/get-local state source-index)]
     (if (or (nil? source) (not (coll? source)) (empty? source))
       (do
         (log/debugf "ScanStmt - '%s' is not a collection" source-index)
         (break state))
-      (do
+      (let [is-set (set? source)]
         (log/trace "ScanStmt - source is list or map")
         (loop [source-indexed (if (map? source)
                                 source
@@ -297,10 +299,12 @@
               (log/trace "ScanStmt - done")
               (break state))
             (let [entry (first source-indexed)
-                  key (get entry 0)
                   value (get entry 1)
+                  key (if is-set value (get entry 0))       ; Rego set entries are indexed by their value
                   state (state/set-local state key-index key)
                   state (state/set-local state value-index value)]
+              (log/tracef "ScanStmt - executing block with key <%d> = '%s', and value <%d> = '%s'"
+                          key-index key value-index value)
               (recur (next source-indexed) (block-stmt state)))))))))
 
 (defn eval-stmt [type stmt state]
