@@ -7,6 +7,7 @@
 
 (declare make-block)
 (declare make-blocks)
+(declare make-stmts)
 
 (defn make-ArrayAppendStmt [stmt-info]
   (log/debug "making ArrayAppendStmt stmt")
@@ -163,7 +164,7 @@
 
 (defn make-NotStmt [stmt-info]
   (log/debug "making NotStmt stmt")
-  (let [block (make-block (get stmt-info "block"))]
+  (let [block (make-stmts (get (get stmt-info "block") "stmts"))]
     (fn [state]
       (eval/eval-NotStmt block state))))
 

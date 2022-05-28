@@ -109,7 +109,7 @@
   (let [a (state/get-value state a-index)
         b (state/get-value state b-index)
         result (= a b)]
-    (log/debugf "EqualStmt - '%s' != '%s' == %s" a b result)
+    (log/debugf "EqualStmt - ('%s' == '%s') == %s" a b result)
     (if result
       state
       (break state))))
@@ -160,8 +160,9 @@
       (throw (Exception. "invalid argument(s)")))))
 
 (defn eval-MakeNumberRefStmt [index target state]
+  "Parses the static string at `index` into a number, putting the result in local var `target`"
   (let [val (edn/read-string (state/get-static-string state index))]
-    (log/debugf "MakeNumberRefStmt - parsed number: %s" val)
+    (log/debugf "MakeNumberRefStmt - putting parsed number '%d' in local var <%d>" val target)
     (state/set-local state target val)))
 
 (defn eval-MakeArrayStmt [target state]
@@ -176,15 +177,15 @@
   (when (or (not (number? value))
             (not (zero? (mod value 1))))
     (throw (Exception. (format "'%s' is not an integer" value))))
-  (log/debugf "MakeNumberIntStmt - assigning '%d' to local var %d" value target)
+  (log/debugf "MakeNumberIntStmt - assigning '%d' to local var <%d"> value target)
   (state/set-local state target (int value)))
 
 (defn eval-MakeObjectStmt [target state]
-  (log/debugf "MakeObjectStmt - assigning empty object to local var %d" target)
+  (log/debugf "MakeObjectStmt - assigning empty object to local var <%d>" target)
   (state/set-local state target {}))
 
 (defn eval-MakeSetStmt [target state]
-  (log/debugf "MakeSetStmt - assigning empty set to local var %d" target)
+  (log/debugf "MakeSetStmt - assigning empty set to local var <%d>" target)
   (state/set-local state target (sorted-set-by types/rego-compare)))
 
 (defn eval-NopStmt [state]
@@ -195,13 +196,13 @@
   (let [a (state/get-value state a-index)
         b (state/get-value state b-index)
         result (not= a b)]
-    (log/debugf "NotEqualStmt - '%s' != '%s' == %s" a b result)
+    (log/debugf "NotEqualStmt - ('%s' != '%s') == %s" a b result)
     (if result
       state
       (break state))))
 
-(defn eval-NotStmt [block state]
-  (let [state (block state)
+(defn eval-NotStmt [stmts state]
+  (let [state (stmts state)
         break-index (get state :break-index)]
     (if-not (nil? break-index)
       (do
@@ -333,11 +334,13 @@
         break-index (get state :break-index)]
     (if-not (nil? break-index)
       (do
-        (log/tracef "broke out of block; break-index: %d" break-index)
+        (log/tracef "block - broke out of block; break-index: %d" break-index)
         (let [new-break-index (dec break-index)]
           (if (>= new-break-index 0)
             (break state new-break-index)
-            (dissoc state :break-index))))
+            (do
+              (log/trace "block - ending break sequence")
+              (dissoc state :break-index)))))
       state)))
 
 (defn eval-blocks [blocks state]

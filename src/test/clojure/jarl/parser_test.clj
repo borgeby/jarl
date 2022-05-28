@@ -83,6 +83,7 @@
     (let [info (parse-file (io/resource "rego/aggregates/plan.json"))
           [name plan] (first (get info :plans))]
       (is (= name "agg"))
-      (let [result-set (plan info {"a" #{1 2 3 4}} {})]
+      (let [result-set (plan info {"a" [1 2 3 4]} {})]
         (is (= result-set '({"result" {"p" [4]
-                                       "q" [1 2 3 4]}})))))))
+                                       "q" [1 2 3 4]
+                                       "r" true}})))))))
