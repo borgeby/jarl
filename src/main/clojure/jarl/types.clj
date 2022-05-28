@@ -1,6 +1,6 @@
 (ns jarl.types
   (:require [jarl.exceptions :as errors])
-  (:import (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap)))
+  (:import (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap PersistentTreeSet)))
 
 ; From the OPA go docs on ast.Compare:
 ;
@@ -31,6 +31,7 @@
       Number "number"
       PersistentVector "array"
       PersistentHashSet "set"
+      PersistentTreeSet "set"
       PersistentArrayMap "object"
       PersistentHashMap "object"
       (str "unknown type: " (type value) " from value: " value))))
