@@ -22,5 +22,5 @@
             m
             {})]
     (if ks
-      (assoc m k (assoc-in (get m k) ks v))
+      (assoc m k (indiscriminate-assoc-in (get m k) ks v))
       (assoc m k v))))
