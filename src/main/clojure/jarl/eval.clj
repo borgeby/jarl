@@ -122,10 +122,10 @@
   (let [obj (state/get-value state source)]
     (if (or (list? obj) (set? obj))
       (do
-        (log/debugf "IsArrayStmt - <%d> is array" source)
+        (log/debugf "IsArrayStmt - <%s> is array" source)
         state)
       (do
-        (log/debugf "IsArrayStmt - <%d> is not array" source)
+        (log/debugf "IsArrayStmt - <%s> is not array" source)
         (break state)))))
 
 (defn eval-IsDefinedStmt [source state]
@@ -150,10 +150,10 @@
   (let [obj (state/get-value state source)]
     (if (map? obj)
       (do
-        (log/debugf "IsObjectStmt - <%d> is object" source)
+        (log/debugf "IsObjectStmt - <%s> is object" source)
         state)
       (do
-        (log/debugf "IsObjectStmt - <%d> is not object" source)
+        (log/debugf "IsObjectStmt - <%s> is not object" source)
         (break state)))))
 
 (defn eval-LenStmt [source target state]
@@ -166,7 +166,7 @@
 (defn eval-MakeNumberRefStmt [index target state]
   "Parses the static string at `index` into a number, putting the result in local var `target`"
   (let [val (edn/read-string (state/get-static-string state index))]
-    (log/debugf "MakeNumberRefStmt - putting parsed number '%d' in local var <%d>" val target)
+    (log/debugf "MakeNumberRefStmt - putting parsed number '%s' in local var <%d>" val target)
     (state/set-local state target val)))
 
 (defn eval-MakeArrayStmt [target state]
@@ -181,8 +181,9 @@
   (when (or (not (number? value))
             (not (zero? (mod value 1))))
     (throw (Exception. (format "'%s' is not an integer" value))))
-  (log/debugf "MakeNumberIntStmt - assigning '%d' to local var <%d" > value target)
-  (state/set-local state target (int value)))
+  (let [value (int value)]
+    (log/debugf "MakeNumberIntStmt - assigning '%d' to local var <%d>" value target)
+    (state/set-local state target value)))
 
 (defn eval-MakeObjectStmt [target state]
   (log/debugf "MakeObjectStmt - assigning empty object to local var <%d>" target)
