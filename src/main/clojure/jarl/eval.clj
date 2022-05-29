@@ -3,7 +3,7 @@
             [clojure.string :as string]
             [jarl.state :as state]
             [jarl.types :as types]
-            [jarl.util :as util]
+            [jarl.utils :as utils]
             [clojure.tools.logging :as log]
             [jarl.exceptions :as errors])
   (:import (se.fylling.jarl BuiltinException UndefinedException)))
@@ -67,7 +67,7 @@
 (defn- call-func [func target func-name args state]
   (if (nil? func)
     (throw (Exception. (format "unknown function '%s'" func-name)))
-    (let [local (util/map-by-index args)
+    (let [local (utils/map-by-index args)
           func-state (assoc (select-keys state [:static :funcs :builtin-funcs :strict-builtin-errors]) :local local)
           result (func func-state)]
       (if (contains? result :result)
@@ -313,8 +313,18 @@
                           key-index key value-index value)
               (recur (next source-indexed) (block-stmt state)))))))))
 
+(defn- int-path-to-str-path [state int-path]
+  (into [] (map #(state/get-string state %) int-path)))     ; doall doesn't realize the array in a way that can be logged properly
+
+(defn eval-WithStmt [local-index path value-info block state]
+  (let [str-path (int-path-to-str-path state path)
+        value (state/get-value state value-info)
+        state (state/push-while-stack state local-index str-path value)]
+    (log/debugf "WithStmt - replacing <%s> in local var <%d> with '%s'" str-path local-index value)
+    (state/pop-while-stack (block state))))
+
 (defn eval-stmt [type stmt state]
-  (log/tracef "%s - calling with vars: %s" type (get state :local))
+  (log/tracef "%s - calling with vars: %s; while-stack: %s" type (get state :local) (get state :while-stack))
   (try
     (stmt state)
     (catch UndefinedException e
@@ -375,7 +385,7 @@
   (let [args (get state :local)]
     (log/debugf "executing built-in func <%s> with args: %s" name, args)
     (try
-      (let [arg-list (util/indexed-map-to-array args)
+      (let [arg-list (utils/indexed-map-to-array args)
             result (apply builtin-func arg-list)]
         (log/debugf "built-in function <%s> returning '%s'" name result)
         {:result result})

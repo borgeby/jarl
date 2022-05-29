@@ -87,3 +87,11 @@
         (is (= result-set '({"result" {"p" [4]
                                        "q" [1 2 3 4]
                                        "r" true}})))))))
+
+(deftest while-test
+  (testing "A policy with while keyword"
+    (let [info (parse-file (io/resource "rego/while/plan.json"))
+          [name plan] (first (get info :plans))]
+      (is (= name "w"))
+      (let [result-set (plan info {"a" "bar"} {})]
+        (is (= result-set '({"result" {"p" true}})))))))

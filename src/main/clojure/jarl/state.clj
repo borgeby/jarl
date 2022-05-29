@@ -1,8 +1,31 @@
 (ns jarl.state
+  (:require [jarl.utils :as utils])
   (:import (se.fylling.jarl UndefinedException)))
 
-(defn get-local [state index]
-  (get (get state :local) index))
+(defn- upsert-local [value stack index]
+  (if (or (nil? stack) (empty? stack))
+    value
+    (loop [stack (reverse stack)
+           aggregate value]
+      (if (empty? stack)
+        aggregate
+        (let [[stack-index stack-path stack-value] (first stack)
+              aggregate (if (= stack-index index)
+                          (utils/indiscriminate-assoc-in aggregate stack-path stack-value)
+                          aggregate)]
+          (recur (next stack) aggregate))))))
+
+(defn get-local
+  ([state index]
+   (let [stack (get state :while-stack)
+         local (get state :local)
+         value (get local index)]
+     (upsert-local value stack index)))
+  ([state index not-found]
+   (let [value (get-local state index)]
+     (if (nil? value)
+       not-found
+       value))))
 
 (defn contains-local? [state index]
   (contains? (get state :local) index))
@@ -56,3 +79,15 @@
 (defn add-result [state value]
   (let [result-set (get state :result)]
     (assoc state :result-set (conj result-set value))))
+
+(defn push-while-stack [state local-index path value]
+  (let [stack (get state :while-stack [])
+        frame [local-index path value]]
+    (assoc state :while-stack (conj stack frame))))
+
+(defn pop-while-stack [state]
+  (let [stack (get state :while-stack [])
+        stack (butlast stack)]
+    (if (empty? stack)
+      (dissoc state :while-stack)
+      (assoc state :while-stack stack))))

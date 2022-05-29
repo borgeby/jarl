@@ -225,6 +225,15 @@
     (fn [state]
       (eval/eval-ScanStmt source-index key-index value-index block-stmt state))))
 
+(defn make-WithStmt [stmt-info]
+  (log/debug "making WithStmt stmt")
+  (let [local (get stmt-info "local")
+        path (get stmt-info "path")
+        value (get stmt-info "value")
+        block (make-block (get stmt-info "block"))]
+    (fn [state]
+      (eval/eval-WithStmt local path value block state))))
+
 (defn make-stmt [stmt-info]
   (log/debugf "making stmt: %s" stmt-info)
   (let [type (get stmt-info "type")
@@ -262,7 +271,7 @@
                "ReturnLocalStmt" (make-ReturnLocalStmt stmt-info)
                "ScanStmt" (make-ScanStmt stmt-info)
                "SetAddStmt" (make-SetAddStmt stmt-info)
-               ;"WithStmt"
+               "WithStmt" (make-WithStmt stmt-info)
                (throw (Exception. (format "%s statement type not implemented" type))))]
     (fn [state]
       (eval/eval-stmt type stmt state))))
