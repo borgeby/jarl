@@ -88,9 +88,9 @@
                                        "q" [1 2 3 4]
                                        "r" true}})))))))
 
-(deftest while-test
+(deftest with-test
   (testing "A policy with while keyword"
-    (let [info (parse-file (io/resource "rego/while/plan.json"))
+    (let [info (parse-file (io/resource "rego/with/plan.json"))
           [name plan] (first (get info :plans))]
       (is (= name "w"))
       (let [result-set (plan info {"a" "bar"} {})]
