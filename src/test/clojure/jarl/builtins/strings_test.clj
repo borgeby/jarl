@@ -10,7 +10,10 @@
 (deftest builtin-concat-test
   (testing "concat"
     (is (= (builtin-concat ", " ["a" "b" "c"]) "a, b, c"))
-    (is (= (builtin-concat "🙂" ["🙃" "🙃" "🙃"]) "🙃🙂🙃🙂🙃"))))
+    (is (= (builtin-concat "🙂" ["🙃" "🙃" "🙃"]) "🙃🙂🙃🙂🙃")))
+  (testing "concat sets"
+    (is (= (builtin-concat ", " #{"a", "b", "c"}) "a, b, c"))
+    (is (= (builtin-concat ", " #{"c", "b", "a"}) "a, b, c"))))
 
 (deftest builtin-contains-test
   (testing "contains"

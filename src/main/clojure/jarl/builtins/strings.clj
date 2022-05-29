@@ -16,7 +16,7 @@
 
 (defn builtin-concat
   "Implementation of concat built-in"
-  {:builtin "concat" :args-types ["string" "array"]}
+  {:builtin "concat" :args-types ["string" #{"array", "set"}]}
   [^String delim coll]
   (check-args (meta #'builtin-concat) delim coll)
   (str/join delim coll))
