@@ -2,7 +2,8 @@
   (:require [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [check-args]]
             [clojure.string :as str])
-  (:import (java.util.regex Pattern)))
+  (:import (java.util.regex Pattern)
+           (java.text Normalizer$Form Normalizer)))
 
 (defn- trim-left [s cutset]
   (let [s-vec (str/split s #"")
@@ -14,9 +15,20 @@
         chars (set (str/split cutset #""))]
     (str/reverse (str/join "" (drop-while #(contains? chars %) s-vec)))))
 
+(defn- normalize [^CharSequence s]
+  (Normalizer/normalize s Normalizer$Form/NFC))
+
+; https://stackoverflow.com/a/51709133/11849243
+(defn- index-of-codepoints [^CharSequence s ^CharSequence search]
+  (let [s (normalize s)]
+    (when-some [char-index (str/index-of s (normalize search))]
+      (-> (subs s 0 char-index)
+          (.codePoints)
+          (.count)))))
+
 (defn builtin-concat
   "Implementation of concat built-in"
-  {:builtin "concat" :args-types ["string" "array"]}
+  {:builtin "concat" :args-types ["string" #{"array", "set"}]}
   [^String delim coll]
   (check-args (meta #'builtin-concat) delim coll)
   (str/join delim coll))
@@ -47,10 +59,7 @@
   {:builtin "indexof" :args-types ["string" "string"]}
   [s search]
   (check-args (meta #'builtin-indexof) s search)
-  (let [result (str/index-of s search)]
-    (if (nil? result)
-      -1
-      result)))
+  (or (index-of-codepoints s search) -1))
 
 (defn builtin-indexof-n
   "Implementation of indexof_n built-in"

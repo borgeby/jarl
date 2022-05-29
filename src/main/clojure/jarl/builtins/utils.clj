@@ -19,6 +19,12 @@
       (.intValue (bigdec s))
       s)))
 
+(defn- type-match? [expected-type provided-type]
+  (or (= expected-type "any")
+      (= expected-type provided-type)
+      (and (set? expected-type) (contains? expected-type provided-type))
+      (and (= expected-type "number") (= provided-type "floating-point number"))))
+
 (defn check-args
   "Check types of provided values, and ensure they match the type names provided in the function metadata"
   [builtin-meta & values]
@@ -31,8 +37,7 @@
             expected-type (second entry)
             value (nth entry 2)
             provided-type (types/java->rego value)]
-        (when-not (or (= expected-type "any") (= expected-type provided-type)
-                      (and (= expected-type "number") (= provided-type "floating-point number")))
+        (when-not (type-match? expected-type provided-type)
           (throw (errors/type-ex "%s: operand %s must be %s but got %s" name pos expected-type provided-type)))))))
 
 (defn typed-seq
