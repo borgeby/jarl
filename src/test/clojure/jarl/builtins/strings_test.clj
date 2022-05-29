@@ -37,7 +37,8 @@
   (testing "indexof"
     (is (= (builtin-indexof "some text included" "text") 5))
     (is (= (builtin-indexof "some ünicÖde" "ünicÖde") 5))
-    (is (= (builtin-indexof "negative test" "positive") -1))))
+    (is (= (builtin-indexof "negative test" "positive") -1))
+    (is (= (builtin-indexof "🍧🍨🧁🍰🍮" "🍮") 4))))
 
 (deftest builtin-indexof-n-test
   (testing "indexof_n"
