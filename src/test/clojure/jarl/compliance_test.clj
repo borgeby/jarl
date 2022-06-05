@@ -91,6 +91,7 @@
           sanitized-note (str/replace note #"[/\s]" "_")
           test-name sanitized-note
           ir (get test-case "plan")]
+      ;(if (and (ir-supported? ir) (= test-name "withkeyword_bug_1100"))
       (if (ir-supported? ir)
         (add-test test-name
                   'jarl.compliance-test

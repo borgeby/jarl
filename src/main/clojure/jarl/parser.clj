@@ -1,9 +1,9 @@
 (ns jarl.parser
   (:require [clojure.data.json :as json])
   (:require [clojure.tools.logging :as log])
-  (:require [clojure.string :as str])
   (:require [jarl.builtins.registry :as builtins])
-  (:require [jarl.eval :as eval]))
+  (:require [jarl.eval :as eval]
+            [jarl.state :as state]))
 
 (declare make-block)
 (declare make-blocks)
@@ -297,20 +297,6 @@
     (fn [state]
       (eval/eval-blocks blocks state))))
 
-; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
-(defn data-from-plan-info [plan-info]
-  (let [plan-name (get plan-info "name")]
-    (if (pos? (count plan-name))
-      (loop [components (reverse (str/split plan-name #"/"))
-             result {}]
-        (if (empty? components)
-          result
-          (recur (next components) {(first components) result})))
-      {})))
-
-(defn make-data [plan-info data]
-  (merge data (data-from-plan-info plan-info)))
-
 (defn- align-result-set [result-set]
   (json/read-str (json/write-str result-set)))
 
@@ -322,8 +308,7 @@
     (let [blocks (make-blocks blocks-info)]
       ; return a [name fn] pair
       [name (fn [info data input]
-              (let [state (assoc info :local {0 input
-                                              1 (make-data plan-info data)})]
+              (let [state (state/init-state info input data)]
                 (log/debugf "Plan - executing '%s'" name)
                 (let [state (blocks state)
                       result-set (get state :result-set)]

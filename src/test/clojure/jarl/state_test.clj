@@ -58,6 +58,14 @@
           state (push-while-stack state 3 ["a" "b"] 42)
           result (get-local state index)]
       (is (= result value))))
+  (testing "get while-stack miss (no path)"
+    (let [value {"a" {"b" "foo"
+                      "c" "bar"}}
+          index 2
+          state {:local {index value}}
+          state (push-while-stack state 3 [] 42)
+          result (get-local state index)]
+      (is (= result value))))
   (testing "get while-stack hit"
     (let [value {"a" {"b" "foo"
                       "c" "bar"}}

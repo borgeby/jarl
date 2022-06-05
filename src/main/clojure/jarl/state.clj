@@ -1,5 +1,7 @@
 (ns jarl.state
   (:require [jarl.utils :as utils])
+  (:require [clojure.string :as str]
+            [clojure.tools.logging :as log])
   (:import (se.fylling.jarl UndefinedException)))
 
 (defn- upsert-local [value stack index]
@@ -91,3 +93,27 @@
     (if (empty? stack)
       (dissoc state :while-stack)
       (assoc state :while-stack stack))))
+
+; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
+(defn- data-from-plan-info [plan-info]
+  (let [plan-name (get plan-info "name")]
+    (if (pos? (count plan-name))
+      (loop [components (reverse (str/split plan-name #"/"))
+             result {}]
+        (if (empty? components)
+          result
+          (recur (next components) {(first components) result})))
+      {})))
+
+(defn- make-data [plan-info data]
+  (merge data (data-from-plan-info plan-info)))
+
+(defn init-state [info input data]
+  (let [local {}
+        local (if-not (nil? input)
+                (assoc local 0 input)
+                local)
+        local (if-not (nil? data)
+                (assoc local 1 (make-data info data))
+                local)]
+    (assoc info :local local)))

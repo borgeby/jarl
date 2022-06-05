@@ -1,5 +1,6 @@
 (ns jarl.utils)
 
+; FIXME: drop "undefined" values? (new 'Undefined' type required)
 (defn map-by-index [array]
   (zipmap (range (count array)) array))
 

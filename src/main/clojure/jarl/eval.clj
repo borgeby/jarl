@@ -87,9 +87,10 @@
       (call-func func target func-name args state))))
 
 (defn eval-CallStmt [target func-name args state]
-  (log/debugf "CallStmt - calling func <%s>" func-name)
+  (log/debugf "CallStmt - calling func <%s> with args: %s" func-name args)
   (let [func (state/get-func state func-name)
         args (map (fn [arg] (state/get-value state arg)) args)]
+    (log/tracef "CallStmt - realized args: %s" (into [] args))
     (call-func func target func-name args state)))
 
 (defn eval-DotStmt [source-info key-info target-index state]
@@ -324,7 +325,7 @@
     (state/pop-while-stack (block state))))
 
 (defn eval-stmt [type stmt state]
-  (log/tracef "%s - calling with vars: %s; while-stack: %s" type (get state :local) (get state :while-stack))
+  (log/tracef "%s - calling with vars: %s; with-stack: %s" type (get state :local) (get state :while-stack))
   (try
     (stmt state)
     (catch UndefinedException e
