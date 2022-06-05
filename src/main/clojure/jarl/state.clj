@@ -13,7 +13,9 @@
         aggregate
         (let [[stack-index stack-path stack-value] (first stack)
               aggregate (if (= stack-index index)
-                          (utils/indiscriminate-assoc-in aggregate stack-path stack-value)
+                          (if (empty? stack-path)
+                            stack-value
+                            (utils/indiscriminate-assoc-in aggregate stack-path stack-value))
                           aggregate)]
           (recur (next stack) aggregate))))))
 
