@@ -10,14 +10,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  clj-kondo:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
+    - name: Run clj-kondo linter
+      run: lein clj-kondo
 
+  eastwood:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run eastwood linter
+      run: lein eastwood
+
+  kibit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run kibit linter
+      run: lein kibit
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
     - name: Run tests
       run: lein test
-
-    - name: Run linters
-      run: lein lint
