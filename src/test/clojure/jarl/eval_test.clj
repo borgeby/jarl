@@ -1,7 +1,11 @@
 (ns jarl.eval_test
   (:require [clojure.test :refer [deftest is testing]]
-            [jarl.eval :refer [eval-ArrayAppendStmt eval-AssignVarStmt eval-IsObjectStmt eval-LenStmt
-                               eval-MakeNumberIntStmt eval-MakeObjectStmt]]
+            [jarl.eval :refer [eval-ArrayAppendStmt
+                               eval-AssignVarStmt
+                               eval-AssignVarOnceStmt
+                               eval-IsObjectStmt eval-LenStmt
+                               eval-MakeNumberIntStmt
+                               eval-MakeObjectStmt]]
             [jarl.state :refer [get-local set-local]])
   (:import (se.fylling.jarl UndefinedException)))
 
@@ -69,7 +73,7 @@
     (let [value 42
           source-index (make-local-value-key 3)
           target 2
-          state {:local {}}
+          state {}
           state (set-local state 3 value)
           result-state (eval-AssignVarStmt source-index target state)
           result (get-local result-state target)]
@@ -78,7 +82,7 @@
     (let [value "foo"
           source-index (make-string-value-key 0)
           target 2
-          state {:local {}}
+          state {}
           state (set-static state [value])
           result-state (eval-AssignVarStmt source-index target state)
           result (get-local result-state target)]
@@ -87,16 +91,52 @@
     (let [value true
           source-index (make-bool-value-key value)
           target 2
-          state {:local {}}
+          state {}
           result-state (eval-AssignVarStmt source-index target state)
           result (get-local result-state target)]
       (is (= result value))))
   (testing "assign non-existent value"
     (let [source-index (make-local-value-key 3)
           target 2
-          state {:local {}}
+          state {}
           result-state (eval-AssignVarStmt source-index target state)]
-      (is (contains? result-state :break-index)))))
+      (is (= result-state state)))))
+
+(deftest eval-AssignVarOnceStmt-test
+  (testing "assign local value"
+    (let [value 42
+          source-index (make-local-value-key 3)
+          target 2
+          state {}
+          state (set-local state 3 value)
+          result-state (eval-AssignVarOnceStmt source-index target state)
+          result (get-local result-state target)]
+      (is (= result value))))
+  (testing "assign already existing local value (==)"
+    (let [value 42
+          source-index (make-local-value-key 3)
+          target 2
+          state {:local {}}
+          state (set-local state target value)
+          state (set-local state 3 value)
+          result-state (eval-AssignVarOnceStmt source-index target state)
+          result (get-local result-state target)]
+      (is (= result value))))
+  (testing "assign already existing local value (!=)"
+    (let [value 42
+          existing-value 43
+          source-index (make-local-value-key 3)
+          target 2
+          state {:local {}}
+          state (set-local state target existing-value)
+          state (set-local state 3 value)]
+      (is (thrown-with-msg? Exception #"complete rules must not produce multiple outputs" (eval-AssignVarOnceStmt source-index target state)))))
+  (testing "assign non-existent value"
+    (let [source-index (make-local-value-key 3)
+          target 2
+          state {:local {}}
+          result-state (eval-AssignVarOnceStmt source-index target state)]
+      (is (= result-state state)))))
 
 (deftest eval-MakeObjectStmt-test
   (testing "make an empty object"

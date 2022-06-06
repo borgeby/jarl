@@ -110,3 +110,6 @@
     (and (map? a) (map? b))       (map-compare a b)
     (and (set? a) (set? b))       (set-compare a b)
     :else                         (compare a b)))
+
+(defn rego-equal? [a b]
+  (= (rego-compare a b) 0))

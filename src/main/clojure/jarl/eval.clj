@@ -36,25 +36,28 @@
 (defn eval-AssignVarStmt [source-index target state]
   (if-not (state/contains-value? state source-index)
     (do
-      (log/debugf "AssignVarStmt - <%s> not present" source-index)
-      (break state))
+      (log/debugf "AssignVarStmt - <%s> not present, not making assignment" source-index)
+      state)                                                ; 'undefined' source value doesn't cause abort
     (let [val (state/get-value state source-index)]
       (log/debugf "AssignVarStmt - assigning '%s' from <%s> to <%s>" val source-index target)
       (state/set-local state target val))))
 
 (defn eval-AssignVarOnceStmt [source-index target state]
-  (if (state/contains-local? state target)
+  (log/tracef "AssignVarOnceStmt - Assigning var <%s> to <%d>, unless already present and not equal", source-index, target)
+  (if-not (state/contains-value? state source-index)
     (do
-      (log/debugf "local %s already assigned" target)
-      ; Is it a safe assumption that AssignVarOnceStmt is only used for assigning rule results?
-      (throw (errors/conflict-ex "complete rules must not produce multiple outputs")))
-    (if-not (state/contains-value? state source-index)
-      (do
-        (log/debugf "AssignVarOnceStmt - <%s> not present" source-index)
-        (break state))
-      (let [val (state/get-value state source-index)]
-        (log/debugf "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" val source-index target)
-        (state/set-local state target val)))))
+      (log/debugf "AssignVarOnceStmt - <%s> not present, not making assignment" source-index)
+      state)
+    (let [value (state/get-value state source-index)]
+      (if (state/contains-local? state target)
+        (let [orig-value (state/get-local state target)]
+          (if (types/rego-equal? value orig-value)
+            state                                           ; do nothing, existing value == new value
+            (throw (errors/conflict-ex "complete rules must not produce multiple outputs"))))
+        (do
+          (log/debugf "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" value source-index target)
+          (state/set-local state target value)))))
+  )
 
 (defn eval-BlockStmt [blocks state]
   (log/debug "BlockStmt - ")
