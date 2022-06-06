@@ -7,15 +7,16 @@
 (defn- upsert-local [value stack index]
   (if (or (nil? stack) (empty? stack))
     value
-    (loop [stack (reverse stack)
+    (loop [stack stack                                      ; we process the stack bottom->top
            aggregate value]
       (if (empty? stack)
         aggregate
         (let [[stack-index stack-path stack-value] (first stack)
               aggregate (if (= stack-index index)
-                          (if (empty? stack-path)
-                            stack-value
-                            (utils/indiscriminate-assoc-in aggregate stack-path stack-value))
+                          (do (log/tracef "with-stack hit for <%d>" index)
+                              (if (empty? stack-path)
+                                stack-value
+                                (utils/indiscriminate-assoc-in aggregate stack-path stack-value)))
                           aggregate)]
           (recur (next stack) aggregate))))))
 
