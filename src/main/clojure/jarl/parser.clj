@@ -164,9 +164,9 @@
 
 (defn make-NotStmt [stmt-info]
   (log/debug "making NotStmt stmt")
-  (let [block (make-stmts (get (get stmt-info "block") "stmts"))]
+  (let [stmts (make-stmts (get (get stmt-info "block") "stmts"))]
     (fn [state]
-      (eval/eval-NotStmt block state))))
+      (eval/eval-NotStmt stmts state))))
 
 (defn make-ObjectInsertOnceStmt [stmt-info]
   (log/debug "making ObjectInsertOnceStmt stmt")
@@ -230,9 +230,9 @@
   (let [local (get stmt-info "local")
         path (get stmt-info "path")
         value (get stmt-info "value")
-        block (make-block (get stmt-info "block"))]
+        stmts (make-stmts (get (get stmt-info "block") "stmts"))]
     (fn [state]
-      (eval/eval-WithStmt local path value block state))))
+      (eval/eval-WithStmt local path value stmts state))))
 
 (defn make-stmt [stmt-info]
   (log/debugf "making stmt: %s" stmt-info)
@@ -323,12 +323,13 @@
 (defn make-func [func-info]
   (let [name (get func-info "name")
         path (get func-info "path")
+        params (get func-info "params")
         return-index (get func-info "return")
         blocks-info (get func-info "blocks")
         blocks (make-blocks blocks-info)]
     (log/debugf "making func <%s>" name)
-    [name path (fn [state]
-                 (eval/eval-func name return-index blocks state))]))
+    [name path (fn [args state]
+                 (eval/eval-func name params return-index blocks args state))]))
 
 (defn make-funcs [funcs-info]
   (log/debug "making funcs")
@@ -347,8 +348,8 @@
     (log/debugf "making built-in func <%s>" name)
     (if (nil? builtin-func)
       (throw (Exception. (format "unknown function '%s'" name)))
-      [name (fn [state]
-              (eval/eval-builtin-func name builtin-func state))])))
+      [name (fn [args state]
+              (eval/eval-builtin-func name builtin-func args state))])))
 
 (defn make-builtin-funcs [builtin-funcs-info]
   (log/debug "making built-in funcs")

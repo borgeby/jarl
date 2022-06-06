@@ -70,9 +70,8 @@
 (defn- call-func [func target func-name args state]
   (if (nil? func)
     (throw (Exception. (format "unknown function '%s'" func-name)))
-    (let [local (utils/map-by-index args)
-          func-state (assoc (select-keys state [:static :funcs :builtin-funcs :strict-builtin-errors]) :local local)
-          result (func func-state)]
+    (let [func-state (select-keys state [:static :funcs :builtin-funcs :strict-builtin-errors])
+          result (func args func-state)]
       (if (contains? result :result)
         (do
           (log/debugf "CallStmt - <%s> returning: '%s'" func-name result)
@@ -81,19 +80,30 @@
           (log/debugf "CallStmt - <%s> undefined" func-name)
           (break state))))))
 
+(defn- create-func-args [state keys]
+  (loop [i 0
+         args {}
+         keys keys]
+    (if (empty? keys)
+      args
+      (let [key (first keys)]
+        (if (state/contains-value? state key)
+          (recur (inc i) (assoc args i (state/get-value state key)) (next keys))
+          (recur (inc i) args (next keys)))))))
+
 (defn eval-CallDynamicStmt [target path args state]
   (let [path (map #(state/get-value state %) path)
         func-name (string/join "." path)]
     (log/debugf "CallDynamicStmt - calling dynamic func <%s>" path)
     (let [func (state/get-func state path)
-          args (map #(state/get-local state %) args)]
+          args (create-func-args state args)]
       (call-func func target func-name args state))))
 
 (defn eval-CallStmt [target func-name args state]
-  (log/debugf "CallStmt - calling func <%s> with args: %s" func-name args)
+  (log/debugf "CallStmt - calling func <%s> with args: %s; target <%d>" func-name args target)
   (let [func (state/get-func state func-name)
-        args (map (fn [arg] (state/get-value state arg)) args)]
-    (log/tracef "CallStmt - realized args: %s" (into [] args))
+        args (create-func-args state args)]
+    (log/tracef "CallStmt - realized args: %s" args)
     (call-func func target func-name args state)))
 
 (defn eval-DotStmt [source-info key-info target-index state]
@@ -320,12 +330,12 @@
 (defn- int-path-to-str-path [state int-path]
   (into [] (map #(state/get-string state %) int-path)))     ; doall doesn't realize the array in a way that can be logged properly
 
-(defn eval-WithStmt [local-index path value-info block state]
+(defn eval-WithStmt [local-index path value-info stmts state]
   (let [str-path (int-path-to-str-path state path)
         value (state/get-value state value-info)
         state (state/push-while-stack state local-index str-path value)]
     (log/debugf "WithStmt - replacing <%s> in local var <%d> with '%s'" str-path local-index value)
-    (state/pop-while-stack (block state))))
+    (state/pop-while-stack (stmts state))))
 
 (defn eval-stmt [type stmt state]
   (log/tracef "%s - calling with vars: %s; with-stack: %s" type (get state :local) (get state :while-stack))
@@ -374,9 +384,21 @@
         state)
       (recur (next blocks) ((first blocks) state)))))
 
-(defn eval-func [name return-index blocks state]
+(defn- map-args-by-params [params args]
+  (loop [params params
+         mapped-args {}]
+    (if (empty? params)
+      mapped-args
+      (let [param (first params)]
+        (if (contains? args param)
+          (recur (next params) (assoc mapped-args param (get args param)))
+          (recur (next params) mapped-args))))))
+
+(defn eval-func [name params return-index blocks args state]
   (log/debugf "func - executing <%s>" name)
-  (let [state (blocks state)]
+  (let [local (map-args-by-params params args)
+        state (assoc state :local local)
+        state (blocks state)]
     (if (state/contains-local? state return-index)
       (let [result (state/get-local state return-index)]
         (log/debugf "function <%s> returning '%s'" name result)
@@ -385,18 +407,17 @@
         (log/debugf "function <%s> undefined" name)
         {}))))
 
-(defn eval-builtin-func [name builtin-func state]
-  (let [args (get state :local)]
-    (log/debugf "executing built-in func <%s> with args: %s" name, args)
-    (try
-      (let [arg-list (utils/indexed-map-to-array args)
-            result (apply builtin-func arg-list)]
-        (log/debugf "built-in function <%s> returning '%s'" name result)
-        {:result result})
-      (catch BuiltinException e
-        (log/tracef "function <%s> threw error: %s" name (.getMessage e))
-        (if (true? (get state :strict-builtin-errors))
-          (throw e)
-          (do
-            (log/debugf "function <%s> returned undefined value" name)
-            {}))))))
+(defn eval-builtin-func [name builtin-func args state]
+  (log/debugf "executing built-in func <%s> with args: %s" name, args)
+  (try
+    (let [arg-list (utils/indexed-map-to-array args)
+          result (apply builtin-func arg-list)]
+      (log/debugf "built-in function <%s> returning '%s'" name result)
+      {:result result})
+    (catch BuiltinException e
+      (log/tracef "function <%s> threw error: %s" name (.getMessage e))
+      (if (true? (get state :strict-builtin-errors))
+        (throw e)
+        (do
+          (log/debugf "function <%s> returned undefined value" name)
+          {})))))
