@@ -32,8 +32,17 @@
        not-found
        value))))
 
+(defn- stack-contains? [stack index]
+  (if (or (nil? stack) (empty? stack))
+    false
+    (not (nil? (some
+                 (fn [frame]
+                   (let [frame-index (first frame)]
+                     (= frame-index index)))
+                 stack)))))
+
 (defn contains-local? [state index]
-  (contains? (get state :local) index))
+  (or (contains? (get state :local) index) (stack-contains? (get state :while-stack) index)))
 
 (defn dissoc-local [state index]
   (let [local (get state :local)]
