@@ -34,7 +34,9 @@
 (defn- do-test [test-case]
   (let [entry-points (get test-case "entrypoints")
         want-results (get test-case "want_plan_result")
-        input (get test-case "input")
+        input (if (contains? test-case "input_term")
+                (json/read-str (get test-case "input_term"))
+                (get test-case "input"))
         data (get test-case "data")
         ir (get test-case "plan")
         info (parse ir)
