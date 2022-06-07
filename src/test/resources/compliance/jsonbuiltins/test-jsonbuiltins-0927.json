@@ -618,10 +618,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the term to serialize",
+										"name": "x",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "the YAML string representation of `x`",
+									"name": "y",
 									"type": "string"
 								},
 								"type": "function"
@@ -632,10 +636,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "a YAML string",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the term deseralized from `x`",
+									"name": "y",
 									"type": "any"
 								},
 								"type": "function"

@@ -339,10 +339,13 @@
 							"decl": {
 								"args": [
 									{
+										"name": "cidr",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "set of IP addresses the CIDR `cidr` expands to",
+									"name": "hosts",
 									"of": {
 										"type": "string"
 									},

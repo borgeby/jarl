@@ -550,16 +550,22 @@
 							"decl": {
 								"args": [
 									{
+										"description": "string with formatting verbs",
+										"name": "format",
 										"type": "string"
 									},
 									{
+										"description": "arguments to format into formatting verbs",
 										"dynamic": {
 											"type": "any"
 										},
+										"name": "values",
 										"type": "array"
 									}
 								],
 								"result": {
+									"description": "`format` formatted by the values in `values`",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

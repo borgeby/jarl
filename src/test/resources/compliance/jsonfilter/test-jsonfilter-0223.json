@@ -404,9 +404,12 @@
 												"type": "any"
 											}
 										},
+										"name": "object",
 										"type": "object"
 									},
 									{
+										"description": "JSON string paths",
+										"name": "paths",
 										"of": [
 											{
 												"dynamic": {
@@ -447,6 +450,8 @@
 									}
 								],
 								"result": {
+									"description": "remaining data from `object` with only keys specified in `paths`",
+									"name": "filtered",
 									"type": "any"
 								},
 								"type": "function"

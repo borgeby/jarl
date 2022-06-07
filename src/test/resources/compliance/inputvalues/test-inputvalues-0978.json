@@ -3576,13 +3576,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is greater than `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -3593,6 +3597,7 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"of": [
 											{
 												"type": "null"
@@ -3611,6 +3616,7 @@
 									}
 								],
 								"result": {
+									"name": "num",
 									"type": "number"
 								},
 								"type": "function"

@@ -462,10 +462,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "a JSON string",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the term deseralized from `x`",
+									"name": "y",
 									"type": "any"
 								},
 								"type": "function"

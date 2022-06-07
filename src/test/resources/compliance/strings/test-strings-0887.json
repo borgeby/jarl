@@ -337,13 +337,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "string to search in",
+										"name": "haystack",
 										"type": "string"
 									},
 									{
+										"description": "substring to look for",
+										"name": "needle",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "index of first occurrence, `-1` if not found",
+									"name": "output",
 									"type": "number"
 								},
 								"type": "function"
@@ -718,13 +724,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "string to search in",
+										"name": "haystack",
 										"type": "string"
 									},
 									{
+										"description": "substring to look for",
+										"name": "needle",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "index of first occurrence, `-1` if not found",
+									"name": "output",
 									"type": "number"
 								},
 								"type": "function"

@@ -596,13 +596,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "number to format",
+										"name": "number",
 										"type": "number"
 									},
 									{
+										"description": "base of number representation to use",
+										"name": "base",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "formatted number",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

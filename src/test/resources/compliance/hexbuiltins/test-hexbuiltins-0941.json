@@ -331,10 +331,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "a hex-encoded string",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "deseralized from `x`",
+									"name": "y",
 									"type": "string"
 								},
 								"type": "function"

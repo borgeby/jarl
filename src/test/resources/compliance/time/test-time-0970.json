@@ -2383,13 +2383,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "number"
 									},
 									{
+										"name": "y",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the product of `x` and `y`",
+									"name": "z",
 									"type": "number"
 								},
 								"type": "function"
@@ -2400,13 +2404,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "number"
 									},
 									{
+										"name": "y",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the sum of `x` and `y`",
+									"name": "z",
 									"type": "number"
 								},
 								"type": "function"
@@ -2417,6 +2425,7 @@
 							"decl": {
 								"args": [
 									{
+										"name": "ns1",
 										"of": [
 											{
 												"type": "number"
@@ -2436,6 +2445,7 @@
 										"type": "any"
 									},
 									{
+										"name": "ns2",
 										"of": [
 											{
 												"type": "number"
@@ -2456,6 +2466,8 @@
 									}
 								],
 								"result": {
+									"description": "difference between `ns1` and `ns2` (in their supplied timezones, if supplied, or UTC) as array of numbers: `[years, months, days, hours, minutes, seconds]`",
+									"name": "output",
 									"static": [
 										{
 											"type": "number"
@@ -2485,6 +2497,8 @@
 						{
 							"decl": {
 								"result": {
+									"description": "nanoseconds since epoch",
+									"name": "now",
 									"type": "number"
 								},
 								"type": "function"
@@ -2495,13 +2509,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "format used for parsing, see the [Go `time` package documentation](https://golang.org/pkg/time/#Parse) for more details",
+										"name": "layout",
 										"type": "string"
 									},
 									{
+										"description": "input to parse according to `layout`",
+										"name": "value",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`value` in nanoseconds since epoch",
+									"name": "ns",
 									"type": "number"
 								},
 								"type": "function"

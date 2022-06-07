@@ -398,19 +398,26 @@
 							"decl": {
 								"args": [
 									{
+										"description": "nanoseconds since the epoch",
+										"name": "ns",
 										"type": "number"
 									},
 									{
+										"name": "years",
 										"type": "number"
 									},
 									{
+										"name": "months",
 										"type": "number"
 									},
 									{
+										"name": "days",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "nanoseconds since the epoch representing the input time, with years, months and days added",
+									"name": "output",
 									"type": "number"
 								},
 								"type": "function"
@@ -831,19 +838,26 @@
 							"decl": {
 								"args": [
 									{
+										"description": "nanoseconds since the epoch",
+										"name": "ns",
 										"type": "number"
 									},
 									{
+										"name": "years",
 										"type": "number"
 									},
 									{
+										"name": "months",
 										"type": "number"
 									},
 									{
+										"name": "days",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "nanoseconds since the epoch representing the input time, with years, months and days added",
+									"name": "output",
 									"type": "number"
 								},
 								"type": "function"

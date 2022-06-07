@@ -493,9 +493,12 @@
 							"decl": {
 								"args": [
 									{
+										"name": "delimiter",
 										"type": "string"
 									},
 									{
+										"description": "strings to join",
+										"name": "collection",
 										"of": [
 											{
 												"dynamic": {
@@ -514,6 +517,7 @@
 									}
 								],
 								"result": {
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

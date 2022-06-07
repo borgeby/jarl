@@ -681,10 +681,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "JWT token to decode",
+										"name": "jwt",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`[header, payload, sig]`, where `header` and `payload` are objects; `sig` is the hexadecimal representation of the signature on the token.",
+									"name": "output",
 									"static": [
 										{
 											"dynamic": {

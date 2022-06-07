@@ -565,16 +565,22 @@
 							"decl": {
 								"args": [
 									{
+										"description": "string that is split",
+										"name": "x",
 										"type": "string"
 									},
 									{
+										"description": "delimiter used for splitting",
+										"name": "delimiter",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "splitted parts",
 									"dynamic": {
 										"type": "string"
 									},
+									"name": "ys",
 									"type": "array"
 								},
 								"type": "function"

@@ -623,22 +623,30 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the array to be sliced",
 										"dynamic": {
 											"type": "any"
 										},
+										"name": "arr",
 										"type": "array"
 									},
 									{
+										"description": "the start index of the returned slice; if less than zero, it's clamped to 0",
+										"name": "start",
 										"type": "number"
 									},
 									{
+										"description": "the stop index of the returned slice; if larger than `count(arr)`, it's clamped to `count(arr)`",
+										"name": "stop",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the subslice of `array`, from `start` to `end`, including `arr[start]`, but excluding `arr[end]`",
 									"dynamic": {
 										"type": "any"
 									},
+									"name": "slice",
 									"type": "array"
 								},
 								"type": "function"

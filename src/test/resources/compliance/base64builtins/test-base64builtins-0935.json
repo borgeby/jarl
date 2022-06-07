@@ -334,10 +334,13 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`true` if `x` is valid base64 encoded value, `false` otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -706,10 +709,13 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`true` if `x` is valid base64 encoded value, `false` otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

@@ -1059,6 +1059,7 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"of": [
 											{
 												"type": "number"
@@ -1073,6 +1074,7 @@
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"of": [
 											{
 												"type": "number"
@@ -1088,6 +1090,8 @@
 									}
 								],
 								"result": {
+									"description": "the difference of `x` and `y`",
+									"name": "z",
 									"of": [
 										{
 											"type": "number"

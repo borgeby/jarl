@@ -403,13 +403,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "input string",
+										"name": "x",
 										"type": "string"
 									},
 									{
+										"description": "key to use",
+										"name": "key",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "SHA256-HMAC of `x`",
+									"name": "y",
 									"type": "string"
 								},
 								"type": "function"
@@ -853,13 +859,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "input string",
+										"name": "x",
 										"type": "string"
 									},
 									{
+										"description": "key to use",
+										"name": "key",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "SHA256-HMAC of `x`",
+									"name": "y",
 									"type": "string"
 								},
 								"type": "function"

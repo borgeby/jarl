@@ -401,6 +401,7 @@
 							"decl": {
 								"args": [
 									{
+										"description": "object to filter keys",
 										"dynamic": {
 											"key": {
 												"type": "any"
@@ -409,9 +410,11 @@
 												"type": "any"
 											}
 										},
+										"name": "object",
 										"type": "object"
 									},
 									{
+										"name": "keys",
 										"of": [
 											{
 												"dynamic": {
@@ -441,6 +444,8 @@
 									}
 								],
 								"result": {
+									"description": "remaining data from `object` with only keys specified in `keys`",
+									"name": "filtered",
 									"type": "any"
 								},
 								"type": "function"

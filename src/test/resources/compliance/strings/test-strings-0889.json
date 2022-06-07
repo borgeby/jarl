@@ -482,16 +482,23 @@
 							"decl": {
 								"args": [
 									{
+										"name": "value",
 										"type": "string"
 									},
 									{
+										"description": "offset, must be positive",
+										"name": "offset",
 										"type": "number"
 									},
 									{
+										"description": "length of the substring starting from `offset`",
+										"name": "length",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "substring of `value` from `offset`, of length `length`",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"
@@ -893,16 +900,23 @@
 							"decl": {
 								"args": [
 									{
+										"name": "value",
 										"type": "string"
 									},
 									{
+										"description": "offset, must be positive",
+										"name": "offset",
 										"type": "number"
 									},
 									{
+										"description": "length of the substring starting from `offset`",
+										"name": "length",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "substring of `value` from `offset`, of length `length`",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

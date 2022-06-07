@@ -569,6 +569,7 @@
 							"decl": {
 								"args": [
 									{
+										"name": "cidrs",
 										"of": [
 											{
 												"type": "string"
@@ -633,6 +634,7 @@
 										"type": "any"
 									},
 									{
+										"name": "cidrs_or_ips",
 										"of": [
 											{
 												"type": "string"
@@ -698,6 +700,8 @@
 									}
 								],
 								"result": {
+									"description": "tuples identifying matches where `cidrs_or_ips` are contained within `cidrs`",
+									"name": "output",
 									"of": {
 										"static": [
 											{

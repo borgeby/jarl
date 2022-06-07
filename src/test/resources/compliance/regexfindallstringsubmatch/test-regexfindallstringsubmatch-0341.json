@@ -364,12 +364,18 @@
 							"decl": {
 								"args": [
 									{
+										"description": "regular expression",
+										"name": "pattern",
 										"type": "string"
 									},
 									{
+										"description": "string to match",
+										"name": "value",
 										"type": "string"
 									},
 									{
+										"description": "number of matches to return; `-1` means all matches",
+										"name": "number",
 										"type": "number"
 									}
 								],
@@ -380,6 +386,7 @@
 										},
 										"type": "array"
 									},
+									"name": "output",
 									"type": "array"
 								},
 								"type": "function"

@@ -560,6 +560,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the array or set to be sorted",
+										"name": "collection",
 										"of": [
 											{
 												"dynamic": {
@@ -578,9 +580,11 @@
 									}
 								],
 								"result": {
+									"description": "the sorted array",
 									"dynamic": {
 										"type": "any"
 									},
+									"name": "n",
 									"type": "array"
 								},
 								"type": "function"

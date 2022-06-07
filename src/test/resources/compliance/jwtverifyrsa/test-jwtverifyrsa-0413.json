@@ -456,13 +456,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "JWT token whose signature is to be verified",
+										"name": "jwt",
 										"type": "string"
 									},
 									{
+										"description": "PEM encoded certificate, PEM encoded public key, or the JWK key (set) used to verify the signature",
+										"name": "certificate",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`true` if the signature is valid, `false` otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

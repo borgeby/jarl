@@ -336,19 +336,28 @@
 							"decl": {
 								"args": [
 									{
+										"description": "template expression containing `0..n` regular expressions",
+										"name": "template",
 										"type": "string"
 									},
 									{
+										"description": "string to match",
+										"name": "value",
 										"type": "string"
 									},
 									{
+										"description": "start delimiter of the regular expression in `template`",
+										"name": "delimiter_start",
 										"type": "string"
 									},
 									{
+										"description": "end delimiter of the regular expression in `template`",
+										"name": "delimiter_end",
 										"type": "string"
 									}
 								],
 								"result": {
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

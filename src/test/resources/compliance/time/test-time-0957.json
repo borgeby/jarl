@@ -902,13 +902,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "number"
 									},
 									{
+										"name": "y",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the product of `x` and `y`",
+									"name": "z",
 									"type": "number"
 								},
 								"type": "function"
@@ -919,6 +923,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "a number representing the nanoseconds since the epoch (UTC); or a two-element array of the nanoseconds, and a timezone string",
+										"name": "x",
 										"of": [
 											{
 												"type": "number"
@@ -939,6 +945,8 @@
 									}
 								],
 								"result": {
+									"description": "the `hour`, `minute` (0-59), and `second` (0-59) representing the time of day for the nanoseconds since epoch in the supplied timezone (or UTC)",
+									"name": "output",
 									"static": [
 										{
 											"type": "number"

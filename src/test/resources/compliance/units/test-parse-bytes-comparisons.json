@@ -1,7 +1,7 @@
 {
 	"cases": [
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"8kb\") \u003e units.parse_bytes(\"7kb\")\n}\n"
@@ -398,13 +398,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is greater than `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -415,10 +419,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -457,7 +465,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"8gb\") \u003e units.parse_bytes(\"8mb\")\n}\n"
@@ -854,13 +862,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is greater than `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -871,10 +883,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -913,7 +929,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"1234kb\") \u003c units.parse_bytes(\"1gb\")\n}\n"
@@ -1310,13 +1326,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is less than `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -1327,10 +1347,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1369,7 +1393,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"1024\") == units.parse_bytes(\"1KiB\")\n}\n"
@@ -1746,10 +1770,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1788,7 +1816,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"2MiB\") == units.parse_bytes(\"2097152\")\n}\n"
@@ -2165,10 +2193,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -2207,7 +2239,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"3MiB\") \u003e units.parse_bytes(\"3MB\")\n}\n"
@@ -2604,13 +2636,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is greater than `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -2621,10 +2657,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -2663,7 +2703,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"2MiB\") == units.parse_bytes(\"2Mi\")\n}\n"
@@ -3040,10 +3080,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -3082,7 +3126,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"4Mi\") \u003e units.parse_bytes(\"4M\")\n}\n"
@@ -3479,13 +3523,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is greater than `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -3496,10 +3544,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -3538,7 +3590,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"4.1Mi\") \u003e units.parse_bytes(\"4Mi\")\n}\n"
@@ -3935,13 +3987,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is greater than `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -3952,10 +4008,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -3994,7 +4054,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/comparison",
+			"note": "units_parse_bytes/comparison",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"128Gi\") == units.parse_bytes(\"137438953472\")\n}\n"
@@ -4371,10 +4431,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"

@@ -833,6 +833,7 @@
 							"decl": {
 								"args": [
 									{
+										"description": "JWS Protected Header",
 										"dynamic": {
 											"key": {
 												"type": "string"
@@ -841,9 +842,11 @@
 												"type": "any"
 											}
 										},
+										"name": "headers",
 										"type": "object"
 									},
 									{
+										"description": "JWS Payload",
 										"dynamic": {
 											"key": {
 												"type": "string"
@@ -852,9 +855,11 @@
 												"type": "any"
 											}
 										},
+										"name": "payload",
 										"type": "object"
 									},
 									{
+										"description": "JSON Web Key (RFC7517)",
 										"dynamic": {
 											"key": {
 												"type": "string"
@@ -863,10 +868,13 @@
 												"type": "any"
 											}
 										},
+										"name": "key",
 										"type": "object"
 									}
 								],
 								"result": {
+									"description": "signed JWT",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

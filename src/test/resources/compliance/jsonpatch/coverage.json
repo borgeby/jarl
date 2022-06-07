@@ -945,6 +945,7 @@
 							"decl": {
 								"args": [
 									{
+										"name": "object",
 										"type": "any"
 									},
 									{
@@ -973,10 +974,13 @@
 											],
 											"type": "object"
 										},
+										"name": "patches",
 										"type": "array"
 									}
 								],
 								"result": {
+									"description": "result obtained after consecutively applying all patch operations in `patches`",
+									"name": "output",
 									"type": "any"
 								},
 								"type": "function"

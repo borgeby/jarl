@@ -795,13 +795,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "number"
 									},
 									{
+										"name": "y",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the product of `x` and `y`",
+									"name": "z",
 									"type": "number"
 								},
 								"type": "function"
@@ -812,6 +816,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "a number representing the nanoseconds since the epoch (UTC); or a two-element array of the nanoseconds, and a timezone string",
+										"name": "x",
 										"of": [
 											{
 												"type": "number"
@@ -832,6 +838,8 @@
 									}
 								],
 								"result": {
+									"description": "an array of `year`, `month` (1-12), and `day` (1-31)",
+									"name": "date",
 									"static": [
 										{
 											"type": "number"

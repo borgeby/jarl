@@ -872,10 +872,13 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "pairs of `path` and `value`: `path` is an array representing the pointer to `value` in `x`",
+									"name": "output",
 									"static": [
 										{
 											"dynamic": {

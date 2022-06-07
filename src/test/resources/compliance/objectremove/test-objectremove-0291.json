@@ -402,6 +402,7 @@
 							"decl": {
 								"args": [
 									{
+										"description": "object to remove keys from",
 										"dynamic": {
 											"key": {
 												"type": "any"
@@ -410,9 +411,12 @@
 												"type": "any"
 											}
 										},
+										"name": "object",
 										"type": "object"
 									},
 									{
+										"description": "keys to remove from x",
+										"name": "keys",
 										"of": [
 											{
 												"dynamic": {
@@ -442,6 +446,8 @@
 									}
 								],
 								"result": {
+									"description": "result of removing the specified `keys` from `object`",
+									"name": "output",
 									"type": "any"
 								},
 								"type": "function"

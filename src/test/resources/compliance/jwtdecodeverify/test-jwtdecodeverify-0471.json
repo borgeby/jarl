@@ -610,9 +610,12 @@
 							"decl": {
 								"args": [
 									{
+										"description": "JWT token whose signature is to be verified and whose claims are to be checked",
+										"name": "jwt",
 										"type": "string"
 									},
 									{
+										"description": "claim verification constraints",
 										"dynamic": {
 											"key": {
 												"type": "string"
@@ -621,10 +624,13 @@
 												"type": "any"
 											}
 										},
+										"name": "constraints",
 										"type": "object"
 									}
 								],
 								"result": {
+									"description": "`[valid, header, payload]`:  if the input token is verified and meets the requirements of `constraints` then `valid` is `true`; `header` and `payload` are objects containing the JOSE header and the JWT claim set; otherwise, `valid` is `false`, `header` and `payload` are `{}`",
+									"name": "output",
 									"static": [
 										{
 											"type": "boolean"

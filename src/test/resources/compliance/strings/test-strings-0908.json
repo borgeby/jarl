@@ -462,16 +462,24 @@
 							"decl": {
 								"args": [
 									{
+										"description": "string being processed",
+										"name": "x",
 										"type": "string"
 									},
 									{
+										"description": "substring to replace",
+										"name": "old",
 										"type": "string"
 									},
 									{
+										"description": "string to replace `old` with",
+										"name": "new",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "string with replaced substrings",
+									"name": "y",
 									"type": "string"
 								},
 								"type": "function"

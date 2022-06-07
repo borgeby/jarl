@@ -460,16 +460,24 @@
 							"decl": {
 								"args": [
 									{
+										"description": "JWS Protected Header",
+										"name": "headers",
 										"type": "string"
 									},
 									{
+										"description": "JWS Payload",
+										"name": "payload",
 										"type": "string"
 									},
 									{
+										"description": "JSON Web Key (RFC7517)",
+										"name": "key",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "signed JWT",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

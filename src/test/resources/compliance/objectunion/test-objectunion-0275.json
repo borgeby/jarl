@@ -517,6 +517,7 @@
 												"type": "any"
 											}
 										},
+										"name": "a",
 										"type": "object"
 									},
 									{
@@ -528,10 +529,13 @@
 												"type": "any"
 											}
 										},
+										"name": "b",
 										"type": "object"
 									}
 								],
 								"result": {
+									"description": "a new object which is the result of an asymmetric recursive union of two objects where conflicts are resolved by choosing the key from the right-hand object `b`",
+									"name": "output",
 									"type": "any"
 								},
 								"type": "function"

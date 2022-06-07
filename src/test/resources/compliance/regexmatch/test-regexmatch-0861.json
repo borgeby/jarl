@@ -461,13 +461,18 @@
 							"decl": {
 								"args": [
 									{
+										"description": "regular expression",
+										"name": "pattern",
 										"type": "string"
 									},
 									{
+										"description": "value to match against `pattern`",
+										"name": "value",
 										"type": "string"
 									}
 								],
 								"result": {
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

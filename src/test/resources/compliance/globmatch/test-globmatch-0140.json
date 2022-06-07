@@ -462,19 +462,25 @@
 							"decl": {
 								"args": [
 									{
+										"name": "pattern",
 										"type": "string"
 									},
 									{
+										"description": "glob pattern delimiters, e.g. `[\".\", \":\"]`, defaults to `[\".\"]` if unset.",
 										"dynamic": {
 											"type": "string"
 										},
+										"name": "delimiters",
 										"type": "array"
 									},
 									{
+										"name": "match",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "true if `match` can be found in `pattern` which is separated by `delimiters`",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

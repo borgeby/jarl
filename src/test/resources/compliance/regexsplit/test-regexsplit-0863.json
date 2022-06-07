@@ -733,16 +733,22 @@
 							"decl": {
 								"args": [
 									{
+										"description": "regular expression",
+										"name": "pattern",
 										"type": "string"
 									},
 									{
+										"description": "string to match",
+										"name": "value",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parts obtained by splitting `value`",
 									"dynamic": {
 										"type": "string"
 									},
+									"name": "output",
 									"type": "array"
 								},
 								"type": "function"

@@ -359,19 +359,27 @@
 							"decl": {
 								"args": [
 									{
+										"description": "regular expression",
+										"name": "pattern",
 										"type": "string"
 									},
 									{
+										"description": "string to match",
+										"name": "value",
 										"type": "string"
 									},
 									{
+										"description": "number of matches to return, if `-1`, returns all matches",
+										"name": "number",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "collected matches",
 									"dynamic": {
 										"type": "string"
 									},
+									"name": "output",
 									"type": "array"
 								},
 								"type": "function"

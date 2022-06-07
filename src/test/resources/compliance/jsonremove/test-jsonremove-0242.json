@@ -619,9 +619,12 @@
 												"type": "any"
 											}
 										},
+										"name": "object",
 										"type": "object"
 									},
 									{
+										"description": "JSON string paths",
+										"name": "paths",
 										"of": [
 											{
 												"dynamic": {
@@ -662,6 +665,8 @@
 									}
 								],
 								"result": {
+									"description": "result of removing all keys specified in `paths`",
+									"name": "output",
 									"type": "any"
 								},
 								"type": "function"

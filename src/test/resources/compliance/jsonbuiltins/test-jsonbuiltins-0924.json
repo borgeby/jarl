@@ -581,10 +581,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the term to serialize",
+										"name": "x",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "the JSON string representation of `x`",
+									"name": "y",
 									"type": "string"
 								},
 								"type": "function"

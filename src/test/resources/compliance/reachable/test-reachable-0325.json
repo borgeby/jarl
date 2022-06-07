@@ -537,6 +537,7 @@
 							"decl": {
 								"args": [
 									{
+										"description": "object containing a set or array of neighboring vertices",
 										"dynamic": {
 											"key": {
 												"type": "any"
@@ -559,9 +560,12 @@
 												"type": "any"
 											}
 										},
+										"name": "graph",
 										"type": "object"
 									},
 									{
+										"description": "set or array of root vertices",
+										"name": "initial",
 										"of": [
 											{
 												"dynamic": {
@@ -580,6 +584,8 @@
 									}
 								],
 								"result": {
+									"description": "set of vertices reachable from the `initial` vertices in the directed `graph`",
+									"name": "output",
 									"of": {
 										"type": "any"
 									},
@@ -593,6 +599,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the array or set to be sorted",
+										"name": "collection",
 										"of": [
 											{
 												"dynamic": {
@@ -611,9 +619,11 @@
 									}
 								],
 								"result": {
+									"description": "the sorted array",
 									"dynamic": {
 										"type": "any"
 									},
+									"name": "n",
 									"type": "array"
 								},
 								"type": "function"

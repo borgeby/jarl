@@ -454,10 +454,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "a duration like \"3m\"; seethe [Go `time` package documentation](https://golang.org/pkg/time/#ParseDuration) for more details",
+										"name": "duration",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the `duration` in nanoseconds",
+									"name": "ns",
 									"type": "number"
 								},
 								"type": "function"

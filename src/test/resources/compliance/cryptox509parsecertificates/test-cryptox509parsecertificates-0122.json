@@ -853,10 +853,13 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base64 encoded DER or PEM data containing one or more certificates or a PEM string of one or more certificates",
+										"name": "certs",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "parsed X.509 certificates represented as objects",
 									"dynamic": {
 										"dynamic": {
 											"key": {
@@ -868,6 +871,7 @@
 										},
 										"type": "object"
 									},
+									"name": "output",
 									"type": "array"
 								},
 								"type": "function"

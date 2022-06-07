@@ -1,7 +1,7 @@
 {
 	"cases": [
 		{
-			"note": "parse_bytes/removes quotes and lowercases string",
+			"note": "units_parse_bytes/removes quotes and lowercases string",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"\\\"100TIB\\\"\") == 109951162777600\n}\n"
@@ -359,10 +359,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -401,7 +405,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/zero",
+			"note": "units_parse_bytes/zero",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"0\") == 0\n}\n"
@@ -759,10 +763,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -798,7 +806,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/zero float",
+			"note": "units_parse_bytes/zero float",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"0.0\") == 0\n}\n"
@@ -1156,10 +1164,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1198,7 +1210,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/zero bare float",
+			"note": "units_parse_bytes/zero bare float",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\".0\") == 0\n}\n"
@@ -1556,10 +1568,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1598,7 +1614,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/raw number",
+			"note": "units_parse_bytes/raw number",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"12345\") == 12345\n}\n"
@@ -1956,10 +1972,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1995,7 +2015,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 kilobytes uppercase",
+			"note": "units_parse_bytes/10 kilobytes uppercase",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10KB\") == 10000\n}\n"
@@ -2353,10 +2373,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -2395,7 +2419,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 KiB uppercase",
+			"note": "units_parse_bytes/10 KiB uppercase",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10KIB\") == 10240\n}\n"
@@ -2753,10 +2777,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -2795,7 +2823,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 KB lowercase",
+			"note": "units_parse_bytes/10 KB lowercase",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10kb\") == 10000\n}\n"
@@ -3153,10 +3181,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -3195,7 +3227,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 KiB mixed case",
+			"note": "units_parse_bytes/10 KiB mixed case",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10Kib\") == 10240\n}\n"
@@ -3553,10 +3585,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -3595,7 +3631,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/200 megabytes as mb",
+			"note": "units_parse_bytes/200 megabytes as mb",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"200mb\") == 200000000\n}\n"
@@ -3953,10 +3989,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -3995,7 +4035,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/300 GiB",
+			"note": "units_parse_bytes/300 GiB",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"300GiB\") == 322122547200\n}\n"
@@ -4353,10 +4393,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -4395,7 +4439,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/1.1 KB floating point",
+			"note": "units_parse_bytes/1.1 KB floating point",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"1.1KB\") == 1100\n}\n"
@@ -4753,10 +4797,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -4795,7 +4843,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/1.1 KiB floating point rounded",
+			"note": "units_parse_bytes/1.1 KiB floating point rounded",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"1.1KiB\") == 1126\n}\n"
@@ -5153,10 +5201,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -5195,7 +5247,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/.5 KB bare floating point",
+			"note": "units_parse_bytes/.5 KB bare floating point",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\".5KB\") == 500\n}\n"
@@ -5553,10 +5605,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -5595,7 +5651,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 kilobytes as k",
+			"note": "units_parse_bytes/100 kilobytes as k",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100k\") == 100000\n}\n"
@@ -5953,10 +6009,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -5995,7 +6055,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 kilobytes as kb",
+			"note": "units_parse_bytes/100 kilobytes as kb",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100kb\") == 100000\n}\n"
@@ -6353,10 +6413,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -6395,7 +6459,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 kibibytes as ki",
+			"note": "units_parse_bytes/100 kibibytes as ki",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100ki\") == 102400\n}\n"
@@ -6753,10 +6817,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -6795,7 +6863,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 kibibytes as kib",
+			"note": "units_parse_bytes/100 kibibytes as kib",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100kib\") == 102400\n}\n"
@@ -7153,10 +7221,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -7195,7 +7267,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 megabytes as m",
+			"note": "units_parse_bytes/100 megabytes as m",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100m\") == 100000000\n}\n"
@@ -7553,10 +7625,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -7595,7 +7671,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 megabytes as mb",
+			"note": "units_parse_bytes/100 megabytes as mb",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100mb\") == 100000000\n}\n"
@@ -7953,10 +8029,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -7995,7 +8075,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 mebibytes as mi",
+			"note": "units_parse_bytes/100 mebibytes as mi",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100mi\") == 104857600\n}\n"
@@ -8353,10 +8433,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -8395,7 +8479,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 mebibytes as mib",
+			"note": "units_parse_bytes/100 mebibytes as mib",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100mib\") == 104857600\n}\n"
@@ -8753,10 +8837,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -8795,7 +8883,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 gigabytes as g",
+			"note": "units_parse_bytes/100 gigabytes as g",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100g\") == 100000000000\n}\n"
@@ -9153,10 +9241,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -9195,7 +9287,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 gigabytes as gb",
+			"note": "units_parse_bytes/100 gigabytes as gb",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100gb\") == 100000000000\n}\n"
@@ -9553,10 +9645,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -9595,7 +9691,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 gibibytes as gi",
+			"note": "units_parse_bytes/100 gibibytes as gi",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100gi\") == 107374182400\n}\n"
@@ -9953,10 +10049,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -9995,7 +10095,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 gibibytes as gib",
+			"note": "units_parse_bytes/100 gibibytes as gib",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100gib\") == 107374182400\n}\n"
@@ -10353,10 +10453,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -10395,7 +10499,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 terabytes as t",
+			"note": "units_parse_bytes/100 terabytes as t",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100t\") == 100000000000000\n}\n"
@@ -10753,10 +10857,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -10795,7 +10903,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 terabytes as tb",
+			"note": "units_parse_bytes/100 terabytes as tb",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100tb\") == 100000000000000\n}\n"
@@ -11153,10 +11261,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -11195,7 +11307,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 tebibytes as ti",
+			"note": "units_parse_bytes/100 tebibytes as ti",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100ti\") == 109951162777600\n}\n"
@@ -11553,10 +11665,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -11595,7 +11711,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 tebibytes as tib",
+			"note": "units_parse_bytes/100 tebibytes as tib",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100tib\") == 109951162777600\n}\n"
@@ -11953,10 +12069,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -11995,7 +12115,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 petabytes as p",
+			"note": "units_parse_bytes/100 petabytes as p",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100p\") == 100000000000000000\n}\n"
@@ -12353,10 +12473,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -12395,7 +12519,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 petabytes as pb",
+			"note": "units_parse_bytes/100 petabytes as pb",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100pb\") == 100000000000000000\n}\n"
@@ -12753,10 +12877,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -12795,7 +12923,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 pebibytes as pi",
+			"note": "units_parse_bytes/100 pebibytes as pi",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100pi\") == 112589990684262400\n}\n"
@@ -13153,10 +13281,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -13195,7 +13327,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/100 pebibytes as pib",
+			"note": "units_parse_bytes/100 pebibytes as pib",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100pib\") == 112589990684262400\n}\n"
@@ -13553,10 +13685,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -13595,7 +13731,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 etabytes as e",
+			"note": "units_parse_bytes/10 etabytes as e",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10e\") == 10000000000000000000\n}\n"
@@ -13953,10 +14089,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -13995,7 +14135,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 etabytes as eb",
+			"note": "units_parse_bytes/10 etabytes as eb",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10eb\") == 10000000000000000000\n}\n"
@@ -14353,10 +14493,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -14395,7 +14539,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 ebibytes as ei",
+			"note": "units_parse_bytes/10 ebibytes as ei",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10ei\") == 11529215046068469760\n}\n"
@@ -14753,10 +14897,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -14795,7 +14943,7 @@
 			}
 		},
 		{
-			"note": "parse_bytes/10 ebibytes as eib",
+			"note": "units_parse_bytes/10 ebibytes as eib",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"10eib\") == 11529215046068469760\n}\n"
@@ -15153,10 +15301,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"

@@ -415,9 +415,13 @@
 							"decl": {
 								"args": [
 									{
+										"description": "file name to attach to AST nodes' locations",
+										"name": "filename",
 										"type": "string"
 									},
 									{
+										"description": "Rego module",
+										"name": "rego",
 										"type": "string"
 									}
 								],
@@ -430,6 +434,7 @@
 											"type": "any"
 										}
 									},
+									"name": "output",
 									"type": "object"
 								},
 								"type": "function"

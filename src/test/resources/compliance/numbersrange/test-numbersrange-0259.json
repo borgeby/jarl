@@ -618,16 +618,20 @@
 							"decl": {
 								"args": [
 									{
+										"name": "a",
 										"type": "number"
 									},
 									{
+										"name": "b",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the range between `a` and `b`",
 									"dynamic": {
 										"type": "number"
 									},
+									"name": "range",
 									"type": "array"
 								},
 								"type": "function"

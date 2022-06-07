@@ -384,6 +384,7 @@
 							"decl": {
 								"args": [
 									{
+										"description": "replacement pairs",
 										"dynamic": {
 											"key": {
 												"type": "string"
@@ -392,13 +393,17 @@
 												"type": "string"
 											}
 										},
+										"name": "patterns",
 										"type": "object"
 									},
 									{
+										"description": "string to replace substring matches in",
+										"name": "value",
 										"type": "string"
 									}
 								],
 								"result": {
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

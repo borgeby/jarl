@@ -476,13 +476,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "format used for parsing, see the [Go `time` package documentation](https://golang.org/pkg/time/#Parse) for more details",
+										"name": "layout",
 										"type": "string"
 									},
 									{
+										"description": "input to parse according to `layout`",
+										"name": "value",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`value` in nanoseconds since epoch",
+									"name": "ns",
 									"type": "number"
 								},
 								"type": "function"
@@ -864,13 +870,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "format used for parsing, see the [Go `time` package documentation](https://golang.org/pkg/time/#Parse) for more details",
+										"name": "layout",
 										"type": "string"
 									},
 									{
+										"description": "input to parse according to `layout`",
+										"name": "value",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`value` in nanoseconds since epoch",
+									"name": "ns",
 									"type": "number"
 								},
 								"type": "function"
@@ -1239,13 +1251,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "format used for parsing, see the [Go `time` package documentation](https://golang.org/pkg/time/#Parse) for more details",
+										"name": "layout",
 										"type": "string"
 									},
 									{
+										"description": "input to parse according to `layout`",
+										"name": "value",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`value` in nanoseconds since epoch",
+									"name": "ns",
 									"type": "number"
 								},
 								"type": "function"

@@ -341,13 +341,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "string to trim",
+										"name": "value",
 										"type": "string"
 									},
 									{
+										"description": "prefix to cut off",
+										"name": "prefix",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "string with `prefix` cut off",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

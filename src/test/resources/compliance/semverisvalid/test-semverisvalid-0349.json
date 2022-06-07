@@ -347,10 +347,13 @@
 							"decl": {
 								"args": [
 									{
+										"name": "vsn",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "`true` if `vsn` is a valid SemVer; `false` otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

@@ -458,13 +458,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "JWT token whose signature is to be verified",
+										"name": "jwt",
 										"type": "string"
 									},
 									{
+										"description": "plain text secret used to verify the signature",
+										"name": "secret",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "`true` if the signature is valid, `false` otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

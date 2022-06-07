@@ -386,13 +386,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is equal to `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -7870,13 +7874,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "number"
 									},
 									{
+										"name": "y",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the sum of `x` and `y`",
+									"name": "z",
 									"type": "number"
 								},
 								"type": "function"
@@ -14638,16 +14646,20 @@
 							"decl": {
 								"args": [
 									{
+										"name": "a",
 										"type": "number"
 									},
 									{
+										"name": "b",
 										"type": "number"
 									}
 								],
 								"result": {
+									"description": "the range between `a` and `b`",
 									"dynamic": {
 										"type": "number"
 									},
+									"name": "range",
 									"type": "array"
 								},
 								"type": "function"

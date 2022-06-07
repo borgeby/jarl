@@ -409,6 +409,7 @@
 							"decl": {
 								"args": [
 									{
+										"description": "object to get `key` from",
 										"dynamic": {
 											"key": {
 												"type": "any"
@@ -417,16 +418,23 @@
 												"type": "any"
 											}
 										},
+										"name": "object",
 										"type": "object"
 									},
 									{
+										"description": "key to lookup in `object`",
+										"name": "key",
 										"type": "any"
 									},
 									{
+										"description": "default to use when lookup fails",
+										"name": "default",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "`object[key]` if present, otherwise `default`",
+									"name": "value",
 									"type": "any"
 								},
 								"type": "function"

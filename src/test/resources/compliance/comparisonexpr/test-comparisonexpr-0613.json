@@ -631,13 +631,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is less than or equal to `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

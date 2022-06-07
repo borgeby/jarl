@@ -648,10 +648,13 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base64 string containing either a PEM encoded or DER CSR or a string containing a PEM CSR",
+										"name": "csr",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "X.509 CSR represented as an object",
 									"dynamic": {
 										"key": {
 											"type": "string"
@@ -660,6 +663,7 @@
 											"type": "any"
 										}
 									},
+									"name": "output",
 									"type": "object"
 								},
 								"type": "function"

@@ -1000,12 +1000,14 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"of": {
 											"type": "any"
 										},
 										"type": "set"
 									},
 									{
+										"name": "y",
 										"of": {
 											"type": "any"
 										},
@@ -1013,6 +1015,8 @@
 									}
 								],
 								"result": {
+									"description": "the union of `x` and `y`",
+									"name": "z",
 									"of": {
 										"type": "any"
 									},

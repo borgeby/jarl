@@ -523,13 +523,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base string",
+										"name": "base",
 										"type": "string"
 									},
 									{
+										"description": "search string",
+										"name": "search",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "result of the prefix check",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -1095,13 +1101,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base string",
+										"name": "base",
 										"type": "string"
 									},
 									{
+										"description": "search string",
+										"name": "search",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "result of the prefix check",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -1891,12 +1903,14 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"of": {
 											"type": "any"
 										},
 										"type": "set"
 									},
 									{
+										"name": "y",
 										"of": {
 											"type": "any"
 										},
@@ -1904,6 +1918,8 @@
 									}
 								],
 								"result": {
+									"description": "the union of `x` and `y`",
+									"name": "z",
 									"of": {
 										"type": "any"
 									},
@@ -1917,13 +1933,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base string",
+										"name": "base",
 										"type": "string"
 									},
 									{
+										"description": "search string",
+										"name": "search",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "result of the prefix check",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -2712,12 +2734,14 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"of": {
 											"type": "any"
 										},
 										"type": "set"
 									},
 									{
+										"name": "y",
 										"of": {
 											"type": "any"
 										},
@@ -2725,6 +2749,8 @@
 									}
 								],
 								"result": {
+									"description": "the union of `x` and `y`",
+									"name": "z",
 									"of": {
 										"type": "any"
 									},
@@ -2738,13 +2764,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base string",
+										"name": "base",
 										"type": "string"
 									},
 									{
+										"description": "search string",
+										"name": "search",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "result of the prefix check",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -3632,13 +3664,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base string",
+										"name": "base",
 										"type": "string"
 									},
 									{
+										"description": "search string",
+										"name": "search",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "result of the prefix check",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -4538,13 +4576,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "base string",
+										"name": "base",
 										"type": "string"
 									},
 									{
+										"description": "search string",
+										"name": "search",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "result of the prefix check",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
@@ -5165,13 +5209,17 @@
 							"decl": {
 								"args": [
 									{
+										"name": "x",
 										"type": "any"
 									},
 									{
+										"name": "y",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "true if `x` is not equal to `y`; false otherwise",
+									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"

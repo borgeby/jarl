@@ -1,7 +1,7 @@
 {
 	"cases": [
 		{
-			"note": "parse_bytes/failure",
+			"note": "units_parse_bytes/failure",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"\")\n}\n"
@@ -333,10 +333,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -368,7 +372,7 @@
 			"want_plan_result": null
 		},
 		{
-			"note": "parse_bytes/failure",
+			"note": "units_parse_bytes/failure",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"GB\")\n}\n"
@@ -700,10 +704,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -735,7 +743,7 @@
 			"want_plan_result": null
 		},
 		{
-			"note": "parse_bytes/failure",
+			"note": "units_parse_bytes/failure",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"foo\")\n}\n"
@@ -1067,10 +1075,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1102,7 +1114,7 @@
 			"want_plan_result": null
 		},
 		{
-			"note": "parse_bytes/failure",
+			"note": "units_parse_bytes/failure",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"0.0.0\")\n}\n"
@@ -1434,10 +1446,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1469,7 +1485,7 @@
 			"want_plan_result": null
 		},
 		{
-			"note": "parse_bytes/failure",
+			"note": "units_parse_bytes/failure",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\".5.2\")\n}\n"
@@ -1801,10 +1817,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -1836,7 +1856,7 @@
 			"want_plan_result": null
 		},
 		{
-			"note": "parse_bytes/failure",
+			"note": "units_parse_bytes/failure",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\"100 kb\")\n}\n"
@@ -2168,10 +2188,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"
@@ -2203,7 +2227,7 @@
 			"want_plan_result": null
 		},
 		{
-			"note": "parse_bytes/failure",
+			"note": "units_parse_bytes/failure",
 			"query": "data.test.p = x",
 			"modules": [
 				"package test\np {\n    units.parse_bytes(\" 327MiB \")\n}\n"
@@ -2535,10 +2559,14 @@
 							"decl": {
 								"args": [
 									{
+										"description": "the byte unit to parse",
+										"name": "x",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "the parsed number",
+									"name": "y",
 									"type": "number"
 								},
 								"type": "function"

@@ -783,6 +783,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "set of sets to merge",
+										"name": "xs",
 										"of": {
 											"of": {
 												"type": "any"
@@ -793,6 +795,8 @@
 									}
 								],
 								"result": {
+									"description": "the union of all `xs` sets",
+									"name": "y",
 									"of": {
 										"type": "any"
 									},

@@ -341,13 +341,19 @@
 							"decl": {
 								"args": [
 									{
+										"description": "string to trim",
+										"name": "value",
 										"type": "string"
 									},
 									{
+										"description": "string of characters that are cut off on the left",
+										"name": "cutset",
 										"type": "string"
 									}
 								],
 								"result": {
+									"description": "string left-trimmed of `cutset` characters",
+									"name": "output",
 									"type": "string"
 								},
 								"type": "function"

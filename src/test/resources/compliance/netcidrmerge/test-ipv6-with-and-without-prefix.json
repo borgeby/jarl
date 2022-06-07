@@ -358,6 +358,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "CIDRs or IP addresses",
+										"name": "addrs",
 										"of": [
 											{
 												"dynamic": {
@@ -381,6 +383,8 @@
 									}
 								],
 								"result": {
+									"description": "smallest possible set of CIDRs obtained after merging the provided list of IP addresses and subnets in `addrs`",
+									"name": "output",
 									"of": {
 										"type": "string"
 									},
@@ -791,6 +795,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "CIDRs or IP addresses",
+										"name": "addrs",
 										"of": [
 											{
 												"dynamic": {
@@ -814,6 +820,8 @@
 									}
 								],
 								"result": {
+									"description": "smallest possible set of CIDRs obtained after merging the provided list of IP addresses and subnets in `addrs`",
+									"name": "output",
 									"of": {
 										"type": "string"
 									},
@@ -1224,6 +1232,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "CIDRs or IP addresses",
+										"name": "addrs",
 										"of": [
 											{
 												"dynamic": {
@@ -1247,6 +1257,8 @@
 									}
 								],
 								"result": {
+									"description": "smallest possible set of CIDRs obtained after merging the provided list of IP addresses and subnets in `addrs`",
+									"name": "output",
 									"of": {
 										"type": "string"
 									},
@@ -1642,6 +1654,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "CIDRs or IP addresses",
+										"name": "addrs",
 										"of": [
 											{
 												"dynamic": {
@@ -1665,6 +1679,8 @@
 									}
 								],
 								"result": {
+									"description": "smallest possible set of CIDRs obtained after merging the provided list of IP addresses and subnets in `addrs`",
+									"name": "output",
 									"of": {
 										"type": "string"
 									},
@@ -2064,6 +2080,8 @@
 							"decl": {
 								"args": [
 									{
+										"description": "CIDRs or IP addresses",
+										"name": "addrs",
 										"of": [
 											{
 												"dynamic": {
@@ -2087,6 +2105,8 @@
 									}
 								],
 								"result": {
+									"description": "smallest possible set of CIDRs obtained after merging the provided list of IP addresses and subnets in `addrs`",
+									"name": "output",
 									"of": {
 										"type": "string"
 									},
