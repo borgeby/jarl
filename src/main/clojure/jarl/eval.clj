@@ -385,14 +385,15 @@
       (recur (next blocks) ((first blocks) state)))))
 
 (defn- map-args-by-params [params args]
-  (loop [params params
+  (loop [i 0
+         params params
          mapped-args {}]
     (if (empty? params)
       mapped-args
       (let [param (first params)]
         (if (contains? args param)
-          (recur (next params) (assoc mapped-args param (get args param)))
-          (recur (next params) mapped-args))))))
+          (recur (inc i) (next params) (assoc mapped-args param (get args i)))
+          (recur (inc i) (next params) mapped-args))))))
 
 (defn eval-func [name params return-index blocks args state]
   (log/debugf "func - executing <%s>" name)
