@@ -394,7 +394,7 @@
     (if (empty? params)
       mapped-args
       (let [param (first params)]
-        (if (contains? args param)
+        (if (contains? args i)
           (recur (inc i) (next params) (assoc mapped-args param (get args i)))
           (recur (inc i) (next params) mapped-args))))))
 
