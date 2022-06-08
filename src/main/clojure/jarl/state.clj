@@ -101,7 +101,7 @@
 
 (defn pop-while-stack [state]
   (let [stack (get state :while-stack [])
-        stack (butlast stack)]
+        stack (vec (butlast stack))]
     (if (empty? stack)
       (dissoc state :while-stack)
       (assoc state :while-stack stack))))
