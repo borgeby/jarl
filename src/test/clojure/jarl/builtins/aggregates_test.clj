@@ -9,7 +9,10 @@
     (is (= (builtin-count []) 0))
     (is (= (builtin-count [1]) 1))
     (is (= (builtin-count [1 "a"]) 2))
-    (is (= (builtin-count "abc") 3))))
+    (is (= (builtin-count "abc") 3))
+    (is (= (builtin-count "🍧🍨🧁🍰🍮") 5)))
+  (testing "multiple codepoints"
+    (is (= (builtin-count "🇩🇪") 2))))
 
 (deftest builtin-sum-test
   (testing "sum"

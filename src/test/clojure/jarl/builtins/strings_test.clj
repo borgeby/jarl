@@ -19,7 +19,8 @@
   (testing "contains"
     (is (= (builtin-contains "some text included" "text") true))
     (is (= (builtin-contains "some ünicÖde works" "ünicÖde") true))
-    (is (= (builtin-contains "negative test" "positive") false))))
+    (is (= (builtin-contains "negative test" "positive") false))
+    (is (= (builtin-contains "🍧🍨🧁🍰🍮" "🍨🧁🍰") true))))
 
 (deftest builtin-endswith-test
   (testing "endswith"
@@ -44,7 +45,8 @@
   (testing "indexof_n"
     (is (= (builtin-indexof-n "some text included" "e") [3 6 16]))
     (is (= (builtin-indexof-n "some ünicÖde" "Ö") [9]))
-    (is (= (builtin-indexof-n "negative test" "positive") []))))
+    (is (= (builtin-indexof-n "negative test" "positive") []))
+    (is (= (builtin-indexof-n "🍧🍮🍨🧁🍰🍮" "🍮") [1 5]))))
 
 (deftest builtin-lower-test
   (testing "lower"
@@ -91,6 +93,12 @@
     (is (= (builtin-substring "ünicÖde" 4 1) "Ö"))
     (is (= (builtin-substring "a" 0 100) "a"))
     (is (= (builtin-substring "everything" 0 -1) "everything")))
+  (testing "code points"
+    (is (= (builtin-substring "⭐🚀🙂" 0 1) "⭐"))
+    (is (= (builtin-substring "⭐🚀🙂" 1 1) "🚀"))
+    (is (= (builtin-substring "⭐🚀🙂" 0 -1) "⭐🚀🙂"))
+    (is (= (builtin-substring "⭐🚀🙂" 1 -1) "🚀🙂"))
+    (is (= (builtin-substring "𨦇𨦈𥻘" 1 2) "𨦈𥻘")))
   (testing "negative offset"
     (is (thrown-with-msg? BuiltinException #"negative offset" (builtin-substring "a" -1 1)))))
 
