@@ -22,8 +22,8 @@
       root
       io/file
       file-seq
-      (filter #(.isFile %))
-      (filter #(.matches is-json (.getFileName (.toPath %))))
+      (filter #(.isFile ^File %))
+      (filter #(.matches is-json (.getFileName (.toPath ^File %))))
       (mapv #(json->test-cases %))
       flatten)))
 
@@ -61,7 +61,7 @@
                 (let [result-set (plan info data input)]
                   (is (not (nil? result-set)) "Exception must be thrown"))
                 (catch JarlException e
-                  (is (= (.getMessage e) want-error))
+                  (is (.contains (.getMessage e) want-error))
                   (is (= (.getType e) want-error-code)))
                 (catch Throwable e
                   (println "Unexpected error" e)

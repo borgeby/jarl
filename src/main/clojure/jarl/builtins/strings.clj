@@ -2,8 +2,48 @@
   (:require [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [check-args]]
             [clojure.string :as str])
-  (:import (java.util.regex Pattern)
-           (java.text Normalizer$Form Normalizer)))
+  (:import (java.util.regex Pattern)))
+
+(defn cp-count
+  "Count using code points rather than characters"
+  [^String s]
+  (.codePointCount s 0 (.length s)))
+
+(defn- cp-seq
+  "Return seq of codepoints (ints) from string"
+  [^String s]
+  (iterator-seq (.iterator (.codePoints s))))
+
+(defn- cp-seq->str
+  "Turn sequence of code points (ints) back to string"
+  [cps]
+  (str/join (map #(Character/toString ^int %) cps)))
+
+(defn- cp-substring
+  "Substring using codepoints"
+  [^String s start len]
+  (->> (cp-seq s)
+       (drop start)
+       (take len)
+       (cp-seq->str)))
+
+; https://stackoverflow.com/a/15224865/11849243
+(defn subseq-pos
+  "Find position of all sub-sequences in seq"
+  [sq sub]
+  (->>
+    (partition (count sub) 1 sq)
+    (map-indexed vector)
+    (filter #(= (second %) sub))
+    (map first)))
+
+(defn cp-indexof-n
+  [s search]
+  (subseq-pos (cp-seq s) (cp-seq search)))
+
+(defn cp-indexof
+  [s search]
+  (first (cp-indexof-n s search)))
 
 (defn- trim-left [s cutset]
   (let [s-vec (str/split s #"")
@@ -14,17 +54,6 @@
   (let [s-vec (str/split (str/reverse s) #"")
         chars (set (str/split cutset #""))]
     (str/reverse (str/join "" (drop-while #(contains? chars %) s-vec)))))
-
-(defn- normalize [^CharSequence s]
-  (Normalizer/normalize s Normalizer$Form/NFC))
-
-; https://stackoverflow.com/a/51709133/11849243
-(defn- index-of-codepoints [^CharSequence s ^CharSequence search]
-  (let [s (normalize s)]
-    (when-some [char-index (str/index-of s (normalize search))]
-      (-> (subs s 0 char-index)
-          (.codePoints)
-          (.count)))))
 
 (defn builtin-concat
   "Implementation of concat built-in"
@@ -59,18 +88,14 @@
   {:builtin "indexof" :args-types ["string" "string"]}
   [s search]
   (check-args (meta #'builtin-indexof) s search)
-  (or (index-of-codepoints s search) -1))
+  (or (cp-indexof s search) -1))
 
 (defn builtin-indexof-n
   "Implementation of indexof_n built-in"
   {:builtin "indexof_n" :args-types ["string" "string"]}
   [s search]
   (check-args (meta #'builtin-indexof-n) s search)
-  (loop [index (str/index-of s search)
-         indices []]
-    (if (nil? index)
-      indices
-      (recur (str/index-of s search (inc index)) (conj indices index)))))
+  (cp-indexof-n s search))
 
 (defn builtin-lower
   "Implementation of lower built-in"
@@ -120,12 +145,12 @@
   (check-args (meta #'builtin-substring) s start len)
   (if (neg-int? start)
     (throw (errors/builtin-ex "negative offset"))
-    (if (>= start (count s))
-      ""
-      (let [end (+ start len)]
-        (if (or (> end (count s)) (neg-int? len))
-          (subs s start (count s))
-          (subs s start end))))))
+    (let [cpc (cp-count s)]
+      (if (>= start cpc)
+        ""
+        (if (neg-int? len)
+          (cp-substring s start cpc)
+          (cp-substring s start len))))))
 
 (defn builtin-trim
   "Implementation of trim built-in"

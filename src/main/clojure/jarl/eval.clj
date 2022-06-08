@@ -106,8 +106,9 @@
     (log/tracef "CallStmt - realized args: %s" args)
     (call-func func target func-name args state)))
 
-(defn eval-DotStmt [source-info key-info target-index state]
+(defn eval-DotStmt
   "Gets value with key described by `key-info` from source described by `source-info` and stores it in local var at `target-index`"
+  [source-info key-info target-index state]
   (let [source (state/get-value state source-info)
         key (state/get-value state key-info)]
     (if (nil? source)
@@ -177,8 +178,9 @@
         (state/set-local state target len))
       (throw (Exception. "invalid argument(s)")))))
 
-(defn eval-MakeNumberRefStmt [index target state]
+(defn eval-MakeNumberRefStmt
   "Parses the static string at `index` into a number, putting the result in local var `target`"
+  [index target state]
   (let [val (edn/read-string (state/get-static-string state index))]
     (log/debugf "MakeNumberRefStmt - putting parsed number '%s' in local var <%d>" val target)
     (state/set-local state target val)))
@@ -300,8 +302,9 @@
             (log/debugf "SetAddStmt - Adding '%s' to <%s>" val set-index)
             (state/set-local state set-index (conj set val))))))))
 
-(defn eval-ScanStmt [source-index key-index value-index block-stmt state]
+(defn eval-ScanStmt
   "Scan list/set/map local var at `source-index`; executing `block-stmt` for every key/index-value pair encountered"
+  [source-index key-index value-index block-stmt state]
   (log/debugf "ScanStmt - scanning <%d>" source-index)
   (let [source (state/get-local state source-index)]
     (if (or (nil? source) (not (coll? source)) (empty? source))
