@@ -22,7 +22,7 @@
 
 (defn get-local
   ([state index]
-   (let [stack (get state :while-stack)
+   (let [stack (get state :with-stack)
          local (get state :local)
          value (get local index)]
      (upsert-local value stack index)))
@@ -42,7 +42,7 @@
                  stack)))))
 
 (defn contains-local? [state index]
-  (or (contains? (get state :local) index) (stack-contains? (get state :while-stack) index)))
+  (or (contains? (get state :local) index) (stack-contains? (get state :with-stack) index)))
 
 (defn dissoc-local [state index]
   (let [local (get state :local)]
@@ -94,17 +94,17 @@
   (let [result-set (get state :result)]
     (assoc state :result-set (conj result-set value))))
 
-(defn push-while-stack [state local-index path value]
-  (let [stack (get state :while-stack [])
+(defn push-with-stack [state local-index path value]
+  (let [stack (get state :with-stack [])
         frame [local-index path value]]
-    (assoc state :while-stack (conj stack frame))))
+    (assoc state :with-stack (conj stack frame))))
 
-(defn pop-while-stack [state]
-  (let [stack (get state :while-stack [])
+(defn pop-with-stack [state]
+  (let [stack (get state :with-stack [])
         stack (vec (butlast stack))]
     (if (empty? stack)
-      (dissoc state :while-stack)
-      (assoc state :while-stack stack))))
+      (dissoc state :with-stack)
+      (assoc state :with-stack stack))))
 
 ; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
 (defn- data-from-plan-info [plan-info]

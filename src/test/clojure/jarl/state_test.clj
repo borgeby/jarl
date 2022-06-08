@@ -16,7 +16,7 @@
 
 (ns jarl.state_test
   (:require [clojure.test :refer [deftest is testing]]
-            [jarl.state :refer [get-local push-while-stack]]))
+            [jarl.state :refer [get-local push-with-stack]]))
 
 
 (deftest get-local-test
@@ -50,35 +50,35 @@
           default-value 1337
           result (get-local state index default-value)]
       (is (= result default-value))))
-  (testing "get while-stack miss"
+  (testing "get with-stack miss"
     (let [value {"a" {"b" "foo"
                       "c" "bar"}}
           index 2
           state {:local {index value}}
-          state (push-while-stack state 3 ["a" "b"] 42)
+          state (push-with-stack state 3 ["a" "b"] 42)
           result (get-local state index)]
       (is (= result value))))
-  (testing "get while-stack miss (no path)"
+  (testing "get with-stack miss (no path)"
     (let [value {"a" {"b" "foo"
                       "c" "bar"}}
           index 2
           state {:local {index value}}
-          state (push-while-stack state 3 [] 42)
+          state (push-with-stack state 3 [] 42)
           result (get-local state index)]
       (is (= result value))))
-  (testing "get while-stack hit"
+  (testing "get with-stack hit"
     (let [value {"a" {"b" "foo"
                       "c" "bar"}}
           index 1
           state {:local {index value}}
-          state (push-while-stack state index ["a" "b"] 42)
+          state (push-with-stack state index ["a" "b"] 42)
           result (get-local state index)]
       (is (= result {"a" {"b" 42
                           "c" "bar"}}))))
-  (testing "get while-stack hit (key-type mismatch)"
+  (testing "get with-stack hit (key-type mismatch)"
     (let [value {"a" [1 2 3 4]}
           index 1
           state {:local {index value}}
-          state (push-while-stack state index ["a" "b"] 42)
+          state (push-with-stack state index ["a" "b"] 42)
           result (get-local state index)]
       (is (= result {"a" {"b" 42}})))))

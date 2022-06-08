@@ -70,7 +70,7 @@
 (defn- call-func [func target func-name args state]
   (if (nil? func)
     (throw (Exception. (format "unknown function '%s'" func-name)))
-    (let [func-state (select-keys state [:static :funcs :builtin-funcs :strict-builtin-errors])
+    (let [func-state (select-keys state [:static :funcs :builtin-funcs :strict-builtin-errors :with-stack])
           result (func args func-state)]
       (if (contains? result :result)
         (do
@@ -336,12 +336,12 @@
 (defn eval-WithStmt [local-index path value-info stmts state]
   (let [str-path (int-path-to-str-path state path)
         value (state/get-value state value-info)
-        state (state/push-while-stack state local-index str-path value)]
+        state (state/push-with-stack state local-index str-path value)]
     (log/debugf "WithStmt - replacing <%s> in local var <%d> with '%s'" str-path local-index value)
-    (state/pop-while-stack (stmts state))))
+    (state/pop-with-stack (stmts state))))
 
 (defn eval-stmt [type stmt state]
-  (log/tracef "%s - calling with vars: %s; with-stack: %s" type (get state :local) (get state :while-stack))
+  (log/tracef "%s - calling with vars: %s; with-stack: %s" type (get state :local) (get state :with-stack))
   (try
     (stmt state)
     (catch UndefinedException e
