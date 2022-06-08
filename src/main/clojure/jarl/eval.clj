@@ -135,7 +135,7 @@
 
 (defn eval-IsArrayStmt [source state]
   (let [obj (state/get-value state source)]
-    (if (or (list? obj) (set? obj))
+    (if (or (list? obj) (set? obj) (vector? obj))
       (do
         (log/debugf "IsArrayStmt - <%s> is array" source)
         state)
