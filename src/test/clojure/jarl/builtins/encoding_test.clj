@@ -3,7 +3,8 @@
             [jarl.builtins.encoding :refer [builtin-base64-encode builtin-base64-decode builtin-base64-url-encode
                                             builtin-base64-url-encode-no-pad builtin-base64-url-decode
                                             builtin-url-query-encode builtin-url-query-decode builtin-json-unmarshal
-                                            builtin-json-is-valid builtin-hex-encode builtin-hex-decode]]))
+                                            builtin-json-is-valid builtin-hex-encode builtin-hex-decode]])
+  (:import (se.fylling.jarl BuiltinException)))
 
 (deftest builtin-base64-encode-test
   (testing "base64.encode"
@@ -77,4 +78,6 @@
   (testing "hex.decode"
     (is (= (builtin-hex-decode "666f6f626172") "foobar"))
     (is (= (builtin-hex-decode "f09f8dba") "🍺"))
-    (is (= (builtin-hex-decode "686578212068657821") "hex! hex!"))))
+    (is (= (builtin-hex-decode "686578212068657821") "hex! hex!")))
+  (testing "invalid hex"
+    (is (thrown-with-msg? BuiltinException #"invalid byte: U\+0067 'g'" (builtin-hex-decode "fghijkl")))))

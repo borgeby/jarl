@@ -9,226 +9,170 @@
 (declare make-blocks)
 (declare make-stmts)
 
-(defn make-ArrayAppendStmt [stmt-info]
+(defn make-ArrayAppendStmt [{:strs [array value]}]
   (log/debug "making ArrayAppendStmt stmt")
-  (let [array-index (get stmt-info "array")
-        value-index (get stmt-info "value")]
-    (fn [state]
-      (eval/eval-ArrayAppendStmt array-index value-index state))))
+  (fn [state]
+    (eval/eval-ArrayAppendStmt array value state)))
 
-(defn make-AssignIntStmt [stmt-info]
+(defn make-AssignIntStmt [{:strs [value target]}]
   (log/debug "making AssignIntStmt stmt")
-  (let [value (get stmt-info "value")
-        target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-AssignIntStmt value target state))))
+  (fn [state]
+    (eval/eval-AssignIntStmt value target state)))
 
-(defn make-AssignVarStmt [stmt-info]
+(defn make-AssignVarStmt [{:strs [target source]}]
   (log/debug "making AssignVarStmt stmt")
-  (let [source-index (get stmt-info "source")
-        target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-AssignVarStmt source-index target state))))
+  (fn [state]
+    (eval/eval-AssignVarStmt source target state)))
 
-(defn make-AssignVarOnceStmt [stmt-info]
+(defn make-AssignVarOnceStmt [{:strs [target source]}]
   (log/debug "making AssignVarOnceStmt stmt")
-  (let [source-index (get stmt-info "source")
-        target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-AssignVarOnceStmt source-index target state))))
+  (fn [state]
+    (eval/eval-AssignVarOnceStmt source target state)))
 
-(defn make-BlockStmt [stmt-info]
+(defn make-BlockStmt [{:strs [blocks] :as stmt-info}]
   (log/debug "making BlockStmt stmt")
   (log/tracef "info: %s" stmt-info)
-  (let [blocks (make-blocks (get stmt-info "blocks"))]
-    (fn [state]
-      (eval/eval-BlockStmt blocks state))))
+  (fn [state]
+    (eval/eval-BlockStmt (make-blocks blocks) state)))
 
-(defn make-BreakStmt [stmt-info]
+(defn make-BreakStmt [{:strs [index]}]
   (log/debug "making BreakStmt stmt")
-  (let [index (get stmt-info "index")]
-    (fn [state]
-      (eval/eval-BreakStmt index state))))
+  (fn [state]
+    (eval/eval-BreakStmt index state)))
 
-(defn make-CallDynamicStmt [stmt-info]
+(defn make-CallDynamicStmt [{:strs [result path args]}]
   (log/debug "making CallDynamicStmt stmt")
-  (let [result (get stmt-info "result")
-        path (get stmt-info "path")
-        args (get stmt-info "args")]
-    (fn [state]
-      (eval/eval-CallDynamicStmt result path args state))))
+  (fn [state]
+    (eval/eval-CallDynamicStmt result path args state)))
 
-(defn make-CallStmt [stmt-info]
+(defn make-CallStmt [{:strs [result func args]}]
   (log/debug "making CallStmt stmt")
-  (let [result (get stmt-info "result")
-        func-name (get stmt-info "func")
-        args (get stmt-info "args")]
-    (fn [state]
-      (eval/eval-CallStmt result func-name args state))))
+  (fn [state]
+    (eval/eval-CallStmt result func args state)))
 
-(defn make-DotStmt [stmt-info]
-  (let [source-index (get stmt-info "source")
-        key-index (get stmt-info "key")
-        target (get stmt-info "target")]
-    (log/debug "making DotStmt stmt")
-    (fn [state]
-      (eval/eval-DotStmt source-index key-index target state))))
+(defn make-DotStmt [{:strs [target source key]}]
+  (log/debug "making DotStmt stmt")
+  (fn [state]
+    (eval/eval-DotStmt source key target state)))
 
-(defn make-EqualStmt [stmt-info]
+(defn make-EqualStmt [{:strs [a b]}]
   (log/debug "making EqualStmt stmt")
-  (let [a-index (get stmt-info "a")
-        b-index (get stmt-info "b")]
-    (fn [state]
-      (eval/eval-EqualStmt a-index b-index state))))
+  (fn [state]
+    (eval/eval-EqualStmt a b state)))
 
-(defn make-IsArrayStmt [stmt-info]
+(defn make-IsArrayStmt [{:strs [source]}]
   (log/debug "making IsArrayStmt stmt")
-  (let [source (get stmt-info "source")]
-    (fn [state]
-      (eval/eval-IsArrayStmt source state))))
+  (fn [state]
+    (eval/eval-IsArrayStmt source state)))
 
-(defn make-IsDefinedStmt [stmt-info]
+(defn make-IsDefinedStmt [{:strs [source]}]
   (log/debug "making IsDefinedStmt stmt")
-  (let [source (get stmt-info "source")]
-    (fn [state]
-      (eval/eval-IsDefinedStmt source state))))
+  (fn [state]
+    (eval/eval-IsDefinedStmt source state)))
 
-(defn make-IsObjectStmt [stmt-info]
+(defn make-IsObjectStmt [{:strs [source]}]
   (log/debug "making IsObjectStmt stmt")
-  (let [source (get stmt-info "source")]
-    (fn [state]
-      (eval/eval-IsObjectStmt source state))))
+  (fn [state]
+    (eval/eval-IsObjectStmt source state)))
 
-(defn make-IsUndefinedStmt [stmt-info]
+(defn make-IsUndefinedStmt [{:strs [source]}]
   (log/debug "making IsUndefinedStmt stmt")
-  (let [source (get stmt-info "source")]
-    (fn [state]
-      (eval/eval-IsUndefinedStmt source state))))
+  (fn [state]
+    (eval/eval-IsUndefinedStmt source state)))
 
-(defn make-LenStmt [stmt-info]
+(defn make-LenStmt [{:strs [source target]}]
   (log/debug "making LenStmt stmt")
-  (let [source (get stmt-info "source")
-        target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-LenStmt source target state))))
+  (fn [state]
+    (eval/eval-LenStmt source target state)))
 
-(defn make-MakeNumberRefStmt [stmt-info]
+(defn make-MakeNumberRefStmt [{:strs [target] index "Index"}] ; NOTE: 'Index' is capitalized
   (log/debug "making MakeNumberRefStmt stmt")
-  (let [index (get stmt-info "Index")                       ; NOTE: 'Index' is capitalized
-        target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-MakeNumberRefStmt index target state))))
+  (fn [state]
+    (eval/eval-MakeNumberRefStmt index target state)))
 
-(defn make-MakeArrayStmt [stmt-info]
+(defn make-MakeArrayStmt [{:strs [target] :as stmt-info}]
   (log/debugf "making MakeArrayStmt stmt: %s" stmt-info)
-  (let [target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-MakeArrayStmt target state))))
+  (fn [state]
+    (eval/eval-MakeArrayStmt target state)))
 
-(defn make-MakeNullStmt [stmt-info]
+(defn make-MakeNullStmt [{:strs [target] :as stmt-info}]
   (log/debugf "making MakeNullStmt stmt: %s" stmt-info)
-  (let [target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-MakeNullStmt target state))))
+  (fn [state]
+    (eval/eval-MakeNullStmt target state)))
 
-(defn make-MakeNumberIntStmt [stmt-info]
+(defn make-MakeNumberIntStmt [{:strs [value target] :as stmt-info}]
   (log/debugf "making MakeNumberIntStmt stmt: %s" stmt-info)
-  (let [value (get stmt-info "value")
-        target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-MakeNumberIntStmt value target state))))
+  (fn [state]
+    (eval/eval-MakeNumberIntStmt value target state)))
 
-(defn make-MakeObjectStmt [stmt-info]
+(defn make-MakeObjectStmt [{:strs [target] :as stmt-info}]
   (log/debugf "making MakeObjectStmt stmt: %s" stmt-info)
-  (let [target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-MakeObjectStmt target state))))
+  (fn [state]
+    (eval/eval-MakeObjectStmt target state)))
 
-(defn make-MakeSetStmt [stmt-info]
+(defn make-MakeSetStmt [{:strs [target] :as stmt-info}]
   (log/debugf "making MakeSetStmt stmt: %s" stmt-info)
-  (let [target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-MakeSetStmt target state))))
+  (fn [state]
+    (eval/eval-MakeSetStmt target state)))
 
 (defn make-NopStmt [stmt-info]
   (log/debugf "making NopStmt stmt: %s" stmt-info)
   (fn [state]
     (eval/eval-NopStmt state)))
 
-(defn make-NotEqualStmt [stmt-info]
+(defn make-NotEqualStmt [{:strs [a b]}]
   (log/debug "making NotEqualStmt stmt")
-  (let [a-index (get stmt-info "a")
-        b-index (get stmt-info "b")]
-    (fn [state]
-      (eval/eval-NotEqualStmt a-index b-index state))))
+  (fn [state]
+    (eval/eval-NotEqualStmt a b state)))
 
-(defn make-NotStmt [stmt-info]
+(defn make-NotStmt [{:strs [block]}]
   (log/debug "making NotStmt stmt")
-  (let [block (make-stmts (get (get stmt-info "block") "stmts"))]
-    (fn [state]
-      (eval/eval-NotStmt block state))))
+  (fn [state]
+    (eval/eval-NotStmt (make-stmts (get block "stmts")) state)))
 
-(defn make-ObjectInsertOnceStmt [stmt-info]
+(defn make-ObjectInsertOnceStmt [{:strs [key value object]}]
   (log/debug "making ObjectInsertOnceStmt stmt")
-  (let [key-index (get stmt-info "key")
-        value-index (get stmt-info "value")
-        object-index (get stmt-info "object")]
-    (fn [state]
-      (eval/eval-ObjectInsertOnceStmt key-index value-index object-index state))))
+  (fn [state]
+    (eval/eval-ObjectInsertOnceStmt key value object state)))
 
-(defn make-ObjectInsertStmt [stmt-info]
+(defn make-ObjectInsertStmt [{:strs [key value object]}]
   (log/debug "making ObjectInsertStmt stmt")
-  (let [key-index (get stmt-info "key")
-        value-index (get stmt-info "value")
-        object-index (get stmt-info "object")]
-    (fn [state]
-      (eval/eval-ObjectInsertStmt key-index value-index object-index state))))
+  (fn [state]
+    (eval/eval-ObjectInsertStmt key value object state)))
 
-(defn make-ObjectMergeStmt [stmt-info]
+(defn make-ObjectMergeStmt [{:strs [a b target]}]
   (log/debug "making ObjectMergeStmt stmt")
-  (let [to-key (get stmt-info "a")
-        from-key (get stmt-info "b")
-        target-key (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-ObjectMergeStmt to-key from-key target-key state))))
+  (fn [state]
+    (eval/eval-ObjectMergeStmt a b target state)))
 
-(defn make-ResetLocalStmt [stmt-info]
+(defn make-ResetLocalStmt [{:strs [target]}]
   (log/debug "making ResetLocalStmt stmt")
-  (let [target (get stmt-info "target")]
-    (fn [state]
-      (eval/eval-ResetLocalStmt target state))))
+  (fn [state]
+    (eval/eval-ResetLocalStmt target state)))
 
-(defn make-ResultSetAddStmt [stmt-info]
+(defn make-ResultSetAddStmt [{:strs [value]}]
   (log/debug "making ResultSetAddStmt stmt")
-  (let [value (get stmt-info "value")]
-    (fn [state]
-      (eval/eval-ResultSetAddStmt value state))))
+  (fn [state]
+    (eval/eval-ResultSetAddStmt value state)))
 
 (defn make-ReturnLocalStmt [_]
   (log/debug "making ReturnLocalStmt stmt")
   (fn [state]
     (eval/eval-ReturnLocalStmt state)))
 
-(defn make-SetAddStmt [stmt-info]
+(defn make-SetAddStmt [{:strs [set value]}]
   (log/debug "making SetAddStmt stmt")
-  (let [set-index (get stmt-info "set")
-        value-index (get stmt-info "value")]
-    (fn [state]
-      (eval/eval-SetAddStmt set-index value-index state))))
+  (fn [state]
+    (eval/eval-SetAddStmt set value state)))
 
-(defn make-ScanStmt [stmt-info]
+(defn make-ScanStmt [{:strs [source key value block]}]
   (log/debug "making ScanStmt stmt")
-  (let [source-index (get stmt-info "source")
-        key-index (get stmt-info "key")
-        value-index (get stmt-info "value")
-        block-stmt (make-block (get stmt-info "block"))]
-    (fn [state]
-      (eval/eval-ScanStmt source-index key-index value-index block-stmt state))))
+  (fn [state]
+    (eval/eval-ScanStmt source key value (make-block block) state)))
 
-(defn make-stmt [stmt-info]
+(defn make-stmt [{:strs [type] :as stmt-info}]
   (log/debugf "making stmt: %s" stmt-info)
-  (let [type (get stmt-info "type")
-        stmt-info (get stmt-info "stmt")
+  (let [{stmt-info "stmt"} stmt-info
         stmt (case type
                "ArrayAppendStmt" (make-ArrayAppendStmt stmt-info)
                "AssignIntStmt" (make-AssignIntStmt stmt-info)
@@ -274,12 +218,10 @@
     (fn [state]
       (eval/eval-stmts stmts state))))
 
-(defn make-block [block-info]
+(defn make-block [{:strs [stmts]}]
   (log/debug "making block")
-  (let [stmts-info (get block-info "stmts")
-        stmts (make-stmts stmts-info)]
-    (fn [state]
-      (eval/eval-block stmts state))))
+  (fn [state]
+    (eval/eval-block (make-stmts stmts) state)))
 
 (defn make-blocks [blocks-info]
   (log/debug "making blocks")
@@ -289,15 +231,14 @@
       (eval/eval-blocks blocks state))))
 
 ; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
-(defn data-from-plan-info [plan-info]
-  (let [plan-name (get plan-info "name")]
-    (if (pos? (count plan-name))
-      (loop [components (reverse (str/split plan-name #"/"))
-             result {}]
-        (if (empty? components)
-          result
-          (recur (next components) {(first components) result})))
-      {})))
+(defn data-from-plan-info [{plan-name "name"}]
+  (if (pos? (count plan-name))
+    (loop [components (reverse (str/split plan-name #"/"))
+           result {}]
+      (if (empty? components)
+        result
+        (recur (next components) {(first components) result})))
+    {}))
 
 (defn make-data [plan-info data]
   (merge data (data-from-plan-info plan-info)))
@@ -305,33 +246,27 @@
 (defn- align-result-set [result-set]
   (json/read-str (json/write-str result-set)))
 
-(defn make-plan [plan-info]
-  (let [name (get plan-info "name")
-        blocks-info (get plan-info "blocks")]
-    (log/debugf "making plan '%s'" name)
-    (log/tracef "plan: %s" plan-info)
-    (let [blocks (make-blocks blocks-info)]
-      ; return a [name fn] pair
-      [name (fn [info data input]
-              (let [state (assoc info :local {0 input
-                                              1 (make-data plan-info data)})]
-                (log/debugf "Plan - executing '%s'" name)
-                (let [state (blocks state)
-                      result-set (get state :result-set)]
-                  (log/debugf "Plan - result-set: %s" result-set)
-                  (align-result-set result-set))))])))
+(defn make-plan [{:strs [name] blocks-info "blocks" :as plan-info}]
+  (log/debugf "making plan '%s'" name)
+  (log/tracef "plan: %s" plan-info)
+  (let [blocks (make-blocks blocks-info)]
+    ; return a [name fn] pair
+    [name (fn [info data input]
+            (let [state (assoc info :local {0 input
+                                            1 (make-data plan-info data)})]
+              (log/debugf "Plan - executing '%s'" name)
+              (let [state (blocks state)
+                    result-set (get state :result-set)]
+                (log/debugf "Plan - result-set: %s" result-set)
+                (align-result-set result-set))))]))
 
-(defn make-plans [plans-info]
+(defn make-plans [{:strs [plans]}]
   (log/debug "making plans")
-  (into-array (doall (for [plan-info (get plans-info "plans")]
+  (into-array (doall (for [plan-info plans]
                        (make-plan plan-info)))))
 
-(defn make-func [func-info]
-  (let [name (get func-info "name")
-        path (get func-info "path")
-        return-index (get func-info "return")
-        blocks-info (get func-info "blocks")
-        blocks (make-blocks blocks-info)]
+(defn make-func [{:strs [name path] return-index "return" blocks-info "blocks"}]
+  (let [blocks (make-blocks blocks-info)]
     (log/debugf "making func <%s>" name)
     [name path (fn [state]
                  (eval/eval-func name return-index blocks state))]))
@@ -347,9 +282,8 @@
             func-map (assoc func-map path func)]            ; bind function to path
         (recur (next func-infos) func-map)))))
 
-(defn make-builtin-func [func-info]
-  (let [name (get func-info "name")
-        builtin-func (builtins/get-builtin name)]
+(defn make-builtin-func [{:strs [name]}]
+  (let [builtin-func (builtins/get-builtin name)]
     (log/debugf "making built-in func <%s>" name)
     (if (nil? builtin-func)
       (throw (Exception. (format "unknown function '%s'" name)))
@@ -367,14 +301,12 @@
 
 (defn parse
   "Parses the incoming Intermediate Representation map"
-  [ir] (let [static (get ir "static")
-             plans-info (get ir "plans")
-             funcs-info (get ir "funcs")
-             builtin-funcs-info (get (get ir "static") "builtin_funcs")]
-         {:plans         (make-plans plans-info)
-          :funcs         (make-funcs funcs-info)
-          :builtin-funcs (make-builtin-funcs builtin-funcs-info)
-          :static        static}))
+  [{:strs [static plans funcs]}]
+  (let [builtin-funcs-info (get static "builtin_funcs")]
+    {:plans         (make-plans plans)
+     :funcs         (make-funcs funcs)
+     :builtin-funcs (make-builtin-funcs builtin-funcs-info)
+     :static        static}))
 
 (defn parse-json
   "Parses the incoming string"
@@ -382,6 +314,6 @@
 
 (defn parse-file
   "Reads and parses the incoming file"
-  ([file]
-   (log/infof "Parsing file '%s'" file)
-   (parse-json (slurp file))))
+  [file]
+  (log/infof "Parsing file '%s'" file)
+  (parse-json (slurp file)))

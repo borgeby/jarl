@@ -11,13 +11,15 @@
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
   :direct-linking true
-  :aliases {"clj-kondo" ["with-profile" "+clj-kondo" "clj-kondo" "--lint" "src"]
+  :aliases {"clj-kondo" ["with-profile" "+clj-kondo" "clj-kondo" "--debug" "--lint" "src"]
             "eastwood" ["with-profile" "+eastwood" "eastwood"]
             "kibit" ["with-profile" "+kibit" "kibit"]}
   :source-paths ["src/main/clojure"]
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
   :test-paths ["src/test/clojure"]
+  :test-selectors {:unit       (complement :compliance)
+                   :compliance :compliance}
   :profiles {:dev  {:dependencies [[junit/junit "4.13.2"]]
                     :global-vars  {*warn-on-reflection* true}
                     :plugins      [[lein-ancient "1.0.0-RC3"]]}

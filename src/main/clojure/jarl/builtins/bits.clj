@@ -64,11 +64,11 @@
   {:builtin "bits.lsh" :args-types ["number" "number"]}
   [a b]
   (ensure-pos-ints "bits.lsh" a b)
-  (bit-shift-left a b))
+  (.shiftLeft (biginteger a) b))
 
 (defn builtin-bits-rsh
   "Implementation of bits.rsh built-in"
   {:builtin "bits.rsh" :args-types ["number" "number"]}
   [a b]
   (ensure-pos-ints "bits.rsh" a b)
-  (bit-shift-right a b))
+  (.shiftRight (biginteger a) b))

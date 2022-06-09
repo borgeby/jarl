@@ -148,12 +148,17 @@ https://github.com/google/re2j
 
 ## Development
 
+### Testing
+
+* `lein test` to run all tests
+* `lein test :unit` to run the Clojure unit tests
+* `lein test :compliance` to run the OPA compliance test suite
+
 ### Linters
 
 * `lein kibit` to run [kibit](https://github.com/jonase/kibit)
 * `lein eastwood` ro run [eastwood](https://github.com/jonase/eastwood)
 * `lein clj-kondo --lint src test` to run [clj-kondo](https://github.com/clj-kondo/clj-kondo)
-* `lein lint` to run all linters
 
 ## License
 
