@@ -10,7 +10,8 @@
 (deftest builtin-regex-is-valid-test
   (testing "regex.is_valid"
     (is (= (builtin-regex-is-valid "[\\d]+") true))
-    (is (= (builtin-regex-is-valid "+++") false))))
+    (is (= (builtin-regex-is-valid "+++") false))
+    (is (= (builtin-regex-is-valid 5) false))))
 
 (deftest builtin-regex-split-test
   (testing "regex.split"

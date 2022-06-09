@@ -1,6 +1,7 @@
 (ns jarl.builtins.regex
-  (:require [jarl.exceptions :as errors])
-  (:import [com.google.re2j Pattern PatternSyntaxException]))
+  (:require [jarl.exceptions :as errors]
+            [jarl.builtins.utils :refer [check-args]])
+  (:import [com.google.re2j Pattern]))
 
 (defn builtin-regex-match
   "Implementation of regex.match built-in"
@@ -15,12 +16,13 @@
   {:builtin "regex.is_valid" :args-types ["string"]}
   [pattern]
   (try (and (Pattern/compile pattern) true)
-       (catch PatternSyntaxException _ false)))
+       (catch Exception _ false)))
 
 (defn builtin-regex-split
   "Implementation of regex.split built-in"
-  {:builtin "regex.split" :args-types ["string"]}
+  {:builtin "regex.split" :args-types ["string" "string"]}
   [pattern ^String value]
+  (check-args (meta #'builtin-regex-split) pattern value)
   (-> (Pattern/compile pattern)
       (.split value)
       (vec)))
@@ -45,4 +47,4 @@
   "Implementation of regex.find_all_string_submatch_n built-in"
   {:builtin "regex.find_all_string_submatch_n" :args-types ["string" "string" "number"]}
   [pattern ^String value number]
-  (throw (errors/builtin-ex "not implemented %s %s %s" pattern value number?)))
+  (throw (errors/builtin-ex "not implemented %s %s %s" pattern value number)))

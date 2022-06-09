@@ -1,5 +1,5 @@
 (ns jarl.compliance-test
-  (:require [clojure.test :refer [is test-vars]]
+  (:require [clojure.test :refer [is test-vars deftest]]
             [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.data.json :as json]
@@ -27,27 +27,24 @@
       (mapv #(json->test-cases %))
       flatten)))
 
-
 (defn- get-plan [plans name]
   (get (first (filter #(= name (get % 0)) plans)) 1))
 
-(defn- do-test [test-case]
-  (let [entry-points (get test-case "entrypoints")
-        want-results (get test-case "want_plan_result")
-        input (if (contains? test-case "input_term")
+(defn- do-test [{:strs [data]
+                 entry-points    "entrypoints"
+                 want-results    "want_plan_result"
+                 want-error-code "want_error_code"
+                 want-error      "want_error"
+                 ir              "plan"
+                 :as test-case}]
+  (let [input (if (contains? test-case "input_term")
                 (json/read-str (get test-case "input_term"))
                 (get test-case "input"))
-        data (get test-case "data")
-        ir (get test-case "plan")
-        info (parse ir)
-        info (if (true? (get test-case "strict_error"))
-               (assoc info :strict-builtin-errors true)
-               info)]
+        info (cond-> (parse ir)
+                     (true? (get test-case "strict_error")) (assoc :strict-builtin-errors true))]
     (doseq [entry-point entry-points]
       (let [want-result (get want-results entry-point)
-            plan (get-plan (get info :plans) entry-point)
-            want-error-code (get test-case "want_error_code")
-            want-error (get test-case "want_error")]
+            plan (get-plan (get info :plans) entry-point)]
         (is (not (nil? plan)))
         (when-not (nil? plan)
           (if (and (nil? want-error-code) (nil? want-error))
@@ -65,8 +62,7 @@
                   (is (= (.getType e) want-error-code)))
                 (catch Throwable e
                   (println "Unexpected error" e)
-                  (is false "JarlException must be thrown")))
-              )))))))
+                  (is false "JarlException must be thrown"))))))))))
 
 ;
 ; Test generator
@@ -87,23 +83,28 @@
           (println "Unsupported built-ins:" unsupported)
           false)))))
 
-(let [test-cases (read-test-cases)]
-  (doseq [test-case test-cases]
-    (let [note (get test-case "note")
-          sanitized-note (str/replace note #"[/\s]" "_")
-          test-name sanitized-note
-          ir (get test-case "plan")]
-      ;(if (and (ir-supported? ir) (= test-name "withkeyword_bug_1100"))
-      (if (ir-supported? ir)
+(defn- generate-tests
+  "Generate tests and intern them in the namespace"
+  []
+  (doseq [test-case (read-test-cases)]
+    (let [{:strs [note plan]} test-case
+          test-name (str/replace note #"[/\s]" "_")]
+      (if (ir-supported? plan)
         (add-test test-name
                   'jarl.compliance-test
-                  #(do-test test-case))
+                  #(do-test test-case)
+                  {:compliance true})
         (println "Ignoring" test-name)))))
 
+; Trick `lein test` into consider this namespace before the tests have been generated
+(deftest ^:compliance phony
+  (is (= true true)))
 
 (defn test-ns-hook
   "Run tests in a sorted order."
   []
+  (generate-tests)
   (test-vars (->> (ns-interns 'jarl.compliance-test) vals (sort-by str))))
 
-;(clojure.test/run-tests 'jarl.compliance-test)
+(comment
+  (test-ns-hook))

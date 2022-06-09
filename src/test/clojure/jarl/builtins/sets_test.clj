@@ -13,6 +13,7 @@
 
 (deftest builtin-intersection-test
   (testing "intersection"
+    (is (= (builtin-intersection #{}) #{}))
     (is (= (builtin-intersection #{#{1 5 4} #{1 2 3} #{7 1 4}}) #{1}))
     (is (= (builtin-intersection #{#{1 5 4} #{1 2 3 4} #{7 1 4}}) #{1 4}))
     (is (= (builtin-intersection #{#{1 5 4} #{2 3} #{7 5}}) #{}))))
