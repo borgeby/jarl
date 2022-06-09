@@ -41,40 +41,34 @@
                      (= frame-index index)))
                  stack)))))
 
-(defn contains-local? [state index]
-  (or (contains? (get state :local) index) (stack-contains? (get state :with-stack) index)))
+(defn contains-local? [{:keys [local with-stack]} index]
+  (or (contains? local index) (stack-contains? with-stack index)))
 
-(defn dissoc-local [state index]
-  (let [local (get state :local)]
-    (assoc state :local (dissoc local index))))
+(defn dissoc-local [{:keys [local] :as state} index]
+  (assoc state :local (dissoc local index)))
 
-(defn get-string [state index]
-  (get (get (get (get state :static) "strings") index) "value"))
+(defn get-string [{:keys [static]} index]
+  (get-in static ["strings" index "value"]))
 
 (defn contains-string? [state index]
   (contains? (get (get state :static) "strings") index))
 
-(defn set-local [state index value]
-  (let [local (get state :local)]
-    (assoc state :local (assoc local index value))))
+(defn set-local [{:keys [local] :as state} index value]
+  (assoc state :local (assoc local index value)))
 
-(defn get-value [state key]
-  (let [key-type (get key "type")
-        key-value (get key "value")]
-    (case key-type
-      "local" (get-local state key-value)
-      "string_index" (get-string state key-value)
-      "bool" key-value
-      (throw (Exception. (format "unknown value type '%s'" key-type))))))
+(defn get-value [state {key-type "type" key-value "value"}]
+  (case key-type
+    "local" (get-local state key-value)
+    "string_index" (get-string state key-value)
+    "bool" key-value
+    (throw (Exception. (format "unknown value type '%s'" key-type)))))
 
-(defn contains-value? [state key]
-  (let [key-type (get key "type")
-        key-value (get key "value")]
-    (case key-type
-      "local" (contains-local? state key-value)
-      "string_index" (contains-string? state key-value)
-      "bool" true
-      (throw (Exception. (format "unknown value type '%s'" key-type))))))
+(defn contains-value? [state {key-type "type" key-value "value"}]
+  (case key-type
+    "local" (contains-local? state key-value)
+    "string_index" (contains-string? state key-value)
+    "bool" true
+    (throw (Exception. (format "unknown value type '%s'" key-type)))))
 
 (defn must-get-value [state key]
   (if-not (contains-value? state key)
@@ -85,14 +79,13 @@
   (get-value state {"type" "string_index" "value" index}))
 
 (defn get-func [state name]
-  (let [func (get (get state :funcs) name)]
+  (let [func (get-in state [:funcs name])]
     (if-not (nil? func)
       func
-      (get (get state :builtin-funcs) name))))
+      (get-in state [:builtin-funcs name]))))
 
-(defn add-result [state value]
-  (let [result-set (get state :result)]
-    (assoc state :result-set (conj result-set value))))
+(defn add-result [{:keys [result] :as state} value]
+  (assoc state :result-set (conj result value)))
 
 (defn push-with-stack [state local-index path value]
   (let [stack (get state :with-stack [])

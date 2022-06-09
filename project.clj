@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/data.json "2.4.0"]
                  [org.clojure/tools.logging "1.2.4"]
-                 [com.google.re2j/re2j "1.6"]]
+                 [com.google.re2j/re2j "1.6"]
+                 [clj-commons/clj-yaml "0.7.108"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
