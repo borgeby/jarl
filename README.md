@@ -137,12 +137,12 @@ https://github.com/google/re2j
 - [ ] `urlquery.encode_object`
 - [x] `urlquery.decode`
 - [ ] `urlquery.decode_object`
-- [ ] `json.marshal`
+- [x] `json.marshal`
 - [x] `json.unmarshal`
 - [x] `json.is_valid`
-- [ ] `yaml.marshal`
-- [ ] `yaml.unmarshal`
-- [ ] `yaml.is_valid`
+- [x] `yaml.marshal`
+- [x] `yaml.unmarshal`
+- [x] `yaml.is_valid`
 - [x] `hex.encode`
 - [x] `hex.decode`
 

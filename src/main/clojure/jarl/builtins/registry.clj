@@ -99,10 +99,14 @@
    "base64url.decode"         encoding/builtin-base64-url-decode
    "urlquery.encode"          encoding/builtin-url-query-encode
    "urlquery.decode"          encoding/builtin-url-query-decode
+   "json.marshal"             encoding/builtin-json-marshal
    "json.unmarshal"           encoding/builtin-json-unmarshal
    "json.is_valid"            encoding/builtin-json-is-valid
    "hex.encode"               encoding/builtin-hex-encode
-   "hex.decode"               encoding/builtin-hex-decode})
+   "hex.decode"               encoding/builtin-hex-decode
+   "yaml.marshal"             encoding/builtin-yaml-marshal
+   "yaml.unmarshal"           encoding/builtin-yaml-unmarshal
+   "yaml.is_valid"            encoding/builtin-yaml-is-valid})
 
 (defn get-builtin [name]
   (get builtins name))
