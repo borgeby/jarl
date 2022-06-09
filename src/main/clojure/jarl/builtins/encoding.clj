@@ -97,11 +97,21 @@
   (check-args (meta #'builtin-hex-encode) s)
   (str/join (map #(format "%02x" %) (.getBytes s StandardCharsets/UTF_8))))
 
+(defn- hex? [s]
+  (some? (re-matches #"[0-9a-fA-F]+" s)))
+
+(defn- non-hex-error-msg [s]
+  (let [first-non-hex-char (.charAt ^String (first (remove hex? (map str s))) 0)
+        unicode-str (str "U+" (subs (Integer/toHexString (bit-or (int first-non-hex-char) 0x10000)) 1))]
+    (str "invalid byte: " unicode-str " '" first-non-hex-char "'")))
+
 (defn builtin-hex-decode
   "Implementation of hex.decode built-in"
   {:builtin "hex.decode" :args-types ["string"]}
   [^String s]
   (check-args (meta #'builtin-hex-decode) s)
-  (let [from-hex (fn [[x y]] (unchecked-byte (Integer/parseInt (str x y) 16)))
-        bytes ^bytes (into-array Byte/TYPE (map from-hex (partition 2 s)))]
-    (String. bytes StandardCharsets/UTF_8)))
+  (if (hex? s)
+    (let [from-hex (fn [[x y]] (unchecked-byte (Integer/parseInt (str x y) 16)))
+          bytes ^bytes (into-array Byte/TYPE (map from-hex (partition 2 s)))]
+      (String. bytes StandardCharsets/UTF_8))
+    (throw (errors/builtin-ex (non-hex-error-msg s)))))

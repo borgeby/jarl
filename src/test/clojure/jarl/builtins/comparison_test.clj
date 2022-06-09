@@ -42,6 +42,8 @@
     (is (= (builtin-neq 1 1) false))
     (is (= (builtin-neq 1 1.0) false))
     (is (= (builtin-neq -3.334 -3.3340000) false)))
+  (testing "bigint"
+    (is (= (builtin-neq 28857836529306024611913 28857836529306024611912) true)))
   (testing "strings"
     (is (= (builtin-neq "a" "a") false))
     (is (= (builtin-neq "a" "A") true))

@@ -82,4 +82,5 @@
   (testing "numbers.range"
     (is (= (builtin-numbers-range 1 5) [1 2 3 4 5]))
     (is (= (builtin-numbers-range 1 1) [1]))
-    (is (= (builtin-numbers-range 5 1) [5 4 3 2 1]))))
+    (is (= (builtin-numbers-range 5 1) [5 4 3 2 1]))
+    (is (= (builtin-numbers-range 49649733057 49649733060) [49649733057, 49649733058, 49649733059, 49649733060]))))

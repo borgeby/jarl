@@ -59,7 +59,8 @@
   (testing "bits.lsh"
     (is (= (builtin-bits-lsh 10 20) 10485760))
     (is (= (builtin-bits-lsh 1 4) 16))
-    (is (= (builtin-bits-lsh 1 8) 256)))
+    (is (= (builtin-bits-lsh 1 8) 256))
+    (is (= (builtin-bits-lsh 9223372036854775807 1) 18446744073709551614N)))
   (testing "non-integers"
     (is (thrown-with-msg? UndefinedException
                           #"eval_type_error: bits.lsh: operand 1 must be integer number but got floating-point number"

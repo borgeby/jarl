@@ -23,7 +23,9 @@
   {:builtin "intersection" :args-types ["set"]}
   [s]
   (check-args (meta #'builtin-intersection) s)
-  (apply set/intersection s))
+  (if (empty? s)
+    s
+    (apply set/intersection s)))
 
 (defn builtin-union
   "Implementation of union built-in"

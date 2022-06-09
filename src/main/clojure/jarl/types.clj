@@ -1,6 +1,6 @@
 (ns jarl.types
   (:require [jarl.exceptions :as errors])
-  (:import (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap PersistentTreeSet)))
+  (:import (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap PersistentTreeSet BigInt)))
 
 ; From the OPA go docs on ast.Compare:
 ;
@@ -15,6 +15,9 @@
 ; < With < Body < Rule < Import < Package < Module.
 
 (declare rego-compare)
+
+(defn bigint? [x]
+  (instance? BigInt x))
 
 (defn java->rego
   "Translates provided Java type to equivalent Rego type name"
@@ -104,9 +107,11 @@
 (defn rego-compare [a b]
   (cond
     (= a b) 0
-    (and (number? a) (number? b)) (compare (double a) (double b))
+    (every? bigint? [a b]) (compare a b)
+    (every? number? [a b]) (compare (double a) (double b))
+    (every? vector? [a b]) (vector-compare a b)
+    (every? map?    [a b]) (map-compare a b)
+    (every? set?    [a b]) (set-compare a b)
+
     (not= (class a) (class b))    (compare (type-sort-order a) (type-sort-order b))
-    (and (vector? a) (vector? b)) (vector-compare a b)
-    (and (map? a) (map? b))       (map-compare a b)
-    (and (set? a) (set? b))       (set-compare a b)
     :else                         (compare a b)))

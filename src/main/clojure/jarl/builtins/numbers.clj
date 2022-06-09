@@ -1,6 +1,7 @@
 (ns jarl.builtins.numbers
   (:require [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [check-args possibly-int]]
+            [jarl.types :as types]
             [clojure.set :as set]))
 
 (defn builtin-plus
@@ -18,7 +19,10 @@
   ; (check-args (meta #'builtin-minus) a b)
   (if (and (set? a) (set? b))
     (set/difference a b)
-    (possibly-int (- a b))))
+    (if (and (number? a) (number? b))
+      (possibly-int (- a b))
+      (throw (errors/type-ex "minus: operand %s must be number but got %s"
+                             (if-not (number? a) 1 2) (types/java->rego (if-not (number? a) a b)))))))
 
 (defn builtin-mul
   "Implementation of mul built-in"
