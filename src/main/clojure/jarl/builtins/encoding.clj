@@ -2,7 +2,8 @@
   (:require [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [check-args]]
             [clojure.data.json :as json]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [clj-yaml.core :as yaml])
   (:import (java.util Base64)
            (java.net URLEncoder URLDecoder)
            (java.nio.charset StandardCharsets)
@@ -67,6 +68,14 @@
   (check-args (meta #'builtin-url-query-decode) s)
   (URLDecoder/decode s StandardCharsets/UTF_8))
 
+(defn builtin-json-marshal
+  "Implementation of json.marshal built-in"
+  {:builtin "json.marshal" :args-types ["any"]}
+  [x]
+  (try
+    (json/json-str x)
+    (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.marshal: %s" (.getMessage e))))))
+
 (defn builtin-json-unmarshal
   "Implementation of json.unmarshal built-in"
   {:builtin "json.unmarshal" :args-types ["string"]}
@@ -115,3 +124,39 @@
           bytes ^bytes (into-array Byte/TYPE (map from-hex (partition 2 s)))]
       (String. bytes StandardCharsets/UTF_8))
     (throw (errors/builtin-ex (non-hex-error-msg s)))))
+
+(defn builtin-yaml-marshal
+  "Implementation of yaml.marshal built-in"
+  {:builtin "yaml.marshal" :args-types ["any"]}
+  [x]
+  (check-args (meta #'builtin-yaml-marshal) x)
+  (try
+    ; Notable difference from OPA: this YAML marshaller does not re-order the output, so we'll sort it beforehand
+    (yaml/generate-string (cond->> x (map? x) (into (sorted-map))) :dumper-options {:flow-style :block})
+    (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: yaml.marshal: %s" (.getMessage e))))))
+
+; Mimic the error message from OPA
+(defn- yaml-unmarshal-err-msg [s]
+  (when (.contains s "expected ',' or ']'")
+    (when-let [line (re-find #"line [\d]+" s)]
+      (str "yaml: " line  ": did not find expected ',' or ']'"))))
+
+(defn builtin-yaml-unmarshal
+  "Implementation of yaml.unmarshal built-in"
+  {:builtin "yaml.unmarshal" :args-types ["string"]}
+  [s]
+  (check-args (meta #'builtin-yaml-unmarshal) s)
+  (try
+    (yaml/parse-string s :keywords false)
+    (catch Exception e (let [msg (.getMessage e)]
+                         (throw (errors/builtin-ex "eval_builtin_error: yaml.unmarshal: %s"
+                                                 (or (yaml-unmarshal-err-msg msg) msg)))))))
+
+(defn builtin-yaml-is-valid
+  "Implementation of yaml.is_valid built-in"
+  {:builtin "yaml.is_valid" :args-types ["string"]}
+  [s]
+  (try
+    (let [_ (yaml/parse-string s)]
+      true)
+    (catch Exception _ false)))

@@ -3,7 +3,8 @@
             [jarl.builtins.encoding :refer [builtin-base64-encode builtin-base64-decode builtin-base64-url-encode
                                             builtin-base64-url-encode-no-pad builtin-base64-url-decode
                                             builtin-url-query-encode builtin-url-query-decode builtin-json-unmarshal
-                                            builtin-json-is-valid builtin-hex-encode builtin-hex-decode]])
+                                            builtin-json-is-valid builtin-hex-encode builtin-hex-decode
+                                            builtin-yaml-marshal builtin-yaml-unmarshal builtin-yaml-is-valid]])
   (:import (se.fylling.jarl BuiltinException)))
 
 (deftest builtin-base64-encode-test
@@ -81,3 +82,22 @@
     (is (= (builtin-hex-decode "686578212068657821") "hex! hex!")))
   (testing "invalid hex"
     (is (thrown-with-msg? BuiltinException #"invalid byte: U\+0067 'g'" (builtin-hex-decode "fghijkl")))))
+
+(deftest builtin-yaml-marshal-test
+  (testing "yaml.marshal"
+    (is (= (builtin-yaml-marshal {"foo" "bar"}) "foo: bar\n")))
+  (testing "sorted keys"
+    (is (= (builtin-yaml-marshal {"foo" "bar" "baz" {"x" 5}}) "baz:\n  x: 5\nfoo: bar\n"))))
+
+(deftest builtin-yaml-unmarshal-test
+  (testing "yaml.unmarshal"
+    (is (= (builtin-yaml-unmarshal "foo: bar") {"foo" "bar"})))
+  (testing "mimic error message from OPA"
+    (is (thrown-with-msg? BuiltinException
+                          #"eval_builtin_error: yaml.unmarshal: yaml: line 1: did not find expected ',' or ']'"
+                          (builtin-yaml-unmarshal "[1, 2")))))
+
+(deftest builtin-yaml-is-valid-test
+  (testing "yaml.is_valid"
+    (is (= (builtin-yaml-is-valid "foo: bar") true))
+    (is (= (builtin-yaml-is-valid "[[") false))))
