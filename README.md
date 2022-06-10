@@ -126,6 +126,10 @@ https://github.com/google/re2j
 - [x] `bits.lsh`
 - [x] `bits.rsh`
 
+### Conversions
+
+- [x] `to_number`
+
 ### Encoding
 
 - [x] `base64.encode`
@@ -145,6 +149,16 @@ https://github.com/google/re2j
 - [x] `yaml.is_valid`
 - [x] `hex.encode`
 - [x] `hex.decode`
+
+### Deprecated
+
+- [x] `re_match`
+- [x] `cast_array`
+- [x] `cast_set`
+- [x] `cast_string`
+- [x] `cast_boolean`
+- [x] `cast_null`
+- [x] `cast_object`
 
 ## Development
 

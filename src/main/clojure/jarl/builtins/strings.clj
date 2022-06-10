@@ -6,7 +6,7 @@
 
 (defn cp-count
   "Count using code points rather than characters"
-  [^String s]
+  [{[^String s] :args}]
   (.codePointCount s 0 (.length s)))
 
 (defn- cp-seq
@@ -21,7 +21,7 @@
 
 (defn- cp-substring
   "Substring using codepoints"
-  [^String s start len]
+  [{[^String s start len] :args}]
   (->> (cp-seq s)
        (drop start)
        (take len)
@@ -58,70 +58,70 @@
 (defn builtin-concat
   "Implementation of concat built-in"
   {:builtin "concat" :args-types ["string" #{"array", "set"}]}
-  [^String delim coll]
+  [{[^String delim coll] :args}]
   (check-args (meta #'builtin-concat) delim coll)
   (str/join delim coll))
 
 (defn builtin-contains
   "Implementation of contains built-in"
   {:builtin "contains" :args-types ["string" "string"]}
-  [^String s ^String search]
+  [{[^String s ^String search] :args}]
   (check-args (meta #'builtin-contains) s search)
   (.contains s search))
 
 (defn builtin-endswith
   "Implementation of endswith built-in"
   {:builtin "endswith" :args-types ["string" "string"]}
-  [s search]
+  [{[s search] :args}]
   (check-args (meta #'builtin-endswith) s search)
   (str/ends-with? s search))
 
 (defn builtin-format-int
   "Implementation of format_int built-in"
   {:builtin "format_int" :args-types ["number" "number"]}
-  [number base]
+  [{[number base] :args}]
   (check-args (meta #'builtin-format-int) number base)
   (Integer/toString number base))
 
 (defn builtin-indexof
   "Implementation of indexof built-in"
   {:builtin "indexof" :args-types ["string" "string"]}
-  [s search]
+  [{[s search] :args}]
   (check-args (meta #'builtin-indexof) s search)
   (or (cp-indexof s search) -1))
 
 (defn builtin-indexof-n
   "Implementation of indexof_n built-in"
   {:builtin "indexof_n" :args-types ["string" "string"]}
-  [s search]
+  [{[s search] :args}]
   (check-args (meta #'builtin-indexof-n) s search)
   (cp-indexof-n s search))
 
 (defn builtin-lower
   "Implementation of lower built-in"
   {:builtin "lower" :args-types ["string"]}
-  [^String s]
+  [{[^String s] :args}]
   (check-args (meta #'builtin-lower) s)
   (.toLowerCase s))
 
 (defn builtin-replace
   "Implementation of replace built-in"
   {:builtin "replace" :args-types ["string" "string" "string"]}
-  [s old new]
+  [{[s old new] :args}]
   (check-args (meta #'builtin-replace) s old new)
   (str/replace s old new))
 
 (defn builtin-strings-reverse
   "Implementation of strings.reverse built-in"
   {:builtin "strings.reverse" :args-types ["string"]}
-  [s]
+  [{[s] :args}]
   (check-args (meta #'builtin-strings-reverse) s)
   (str/reverse s))
 
 (defn builtin-split
   "Implementation of split built-in"
   {:builtin "split" :args-types ["string" "string"]}
-  [s delim]
+  [{[s delim] :args}]
   (check-args (meta #'builtin-split) s)
   (if (= s delim)
     ; Rego quirk? Not sure why this is so, or if there are more cases like this,
@@ -132,7 +132,7 @@
 (defn builtin-startswith
   "Implementation of startswith built-in"
   {:builtin "startswith" :args-types ["string" "string"]}
-  [s search]
+  [{[s search] :args}]
   (check-args (meta #'builtin-startswith) s search)
   (str/starts-with? s search))
 
@@ -141,35 +141,35 @@
 (defn builtin-substring
   "Implementation of substring built-in"
   {:builtin "substring" :args-types ["string" "number" "number"]}
-  [s start len]
+  [{[s start len] :args}]
   (check-args (meta #'builtin-substring) s start len)
   (if (neg-int? start)
-    (throw (errors/builtin-ex "negative offset"))
-    (let [cpc (cp-count s)]
+    (throw (errors/builtin-ex "substring: negative offset"))
+    (let [cpc (cp-count {:args [s]})]
       (if (>= start cpc)
         ""
         (if (neg-int? len)
-          (cp-substring s start cpc)
-          (cp-substring s start len))))))
+          (cp-substring {:args [s start cpc]})
+          (cp-substring {:args [s start len]}))))))
 
 (defn builtin-trim
   "Implementation of trim built-in"
   {:builtin "trim" :args-types ["string" "string"]}
-  [s cutset]
+  [{[s cutset] :args}]
   (check-args (meta #'builtin-trim) s cutset)
   (-> s (trim-left cutset) (trim-right cutset)))
 
 (defn builtin-trim-left
   "Implementation of trim_left built-in"
   {:builtin "trim_left" :args-types ["string" "string"]}
-  [s cutset]
+  [{[s cutset] :args}]
   (check-args (meta #'builtin-trim-left) s cutset)
   (trim-left s cutset))
 
 (defn builtin-trim-prefix
   "Implementation of trim_prefix built-in"
   {:builtin "trim_prefix" :args-types ["string" "string"]}
-  [s prefix]
+  [{[s prefix] :args}]
   (check-args (meta #'builtin-trim-prefix) s prefix)
   (if (str/starts-with? s prefix)
     (subs s (count prefix))
@@ -178,14 +178,14 @@
 (defn builtin-trim-right
   "Implementation of trim_right built-in"
   {:builtin "trim_right" :args-types ["string" "string"]}
-  [s cutset]
+  [{[s cutset] :args}]
   (check-args (meta #'builtin-trim-right) s cutset)
   (trim-right s cutset))
 
 (defn builtin-trim-suffix
   "Implementation of trim_suffix built-in"
   {:builtin "trim_suffix" :args-types ["string" "string"]}
-  [s suffix]
+  [{[s suffix] :args}]
   (check-args (meta #'builtin-trim-suffix) s suffix)
   (if (str/ends-with? s suffix)
     (subs s 0 (- (count s) (count suffix)))
@@ -194,13 +194,13 @@
 (defn builtin-trim-space
   "Implementation of trim_space built-in"
   {:builtin "trim_space" :args-types ["string"]}
-  [s]
+  [{[s] :args}]
   (check-args (meta #'builtin-trim-space) s)
   (str/trim s))
 
 (defn builtin-upper
   "Implementation of upper built-in"
   {:builtin "upper" :args-types ["string"]}
-  [^String s]
+  [{[^String s] :args}]
   (check-args (meta #'builtin-upper) s)
   (.toUpperCase s))

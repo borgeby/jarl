@@ -1,4 +1,5 @@
-(ns jarl.utils)
+(ns jarl.utils
+  (:import (java.time Instant)))
 
 ; FIXME: drop "undefined" values? (new 'Undefined' type required)
 (defn map-by-index [array]
@@ -25,5 +26,11 @@
             m
             {})]
     (if ks
-      (assoc m k (indiscriminate-assoc-in (get m k) ks v))
+      (update m k indiscriminate-assoc-in ks v)
       (assoc m k v))))
+
+(defn time-now-ns
+  "Current time nanos — not as precise as its OPA/Go equivalent function, but not in any way that matters"
+  []
+  (let [now (Instant/now)]
+    (+ (* (.getEpochSecond now) 1000000000) (.getNano now))))

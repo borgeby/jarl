@@ -245,7 +245,7 @@
 
 (defn- stringify-coll-keys [val]
   (cond
-    (or (list? val) (set? val) (vector? val)) (into [] (map stringify-coll-keys val))
+    (or (list? val) (set? val) (vector? val)) (vec (map stringify-coll-keys val))
     (map? val) (loop [pairs (seq val)
                       map {}]
                  (if (empty? pairs)

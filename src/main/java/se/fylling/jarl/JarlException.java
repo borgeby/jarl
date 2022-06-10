@@ -16,4 +16,12 @@ public class JarlException extends Exception {
     public String getType() {
         return type;
     }
+
+    @Override
+    public String getMessage() {
+        if (!"".equals(type)) {
+            return type + ": " + super.getMessage();
+        }
+        return super.getMessage();
+    }
 }

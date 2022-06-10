@@ -8,7 +8,7 @@
 (defn builtin-regex-match
   "Implementation of regex.match built-in"
   {:builtin "regex.match" :args-types ["string", "string"]}
-  [pattern ^String value]
+  [{[pattern ^String value] :args}]
   (try
     (-> (Pattern/compile pattern)
         (.matcher value)
@@ -17,31 +17,30 @@
       (throw (errors/builtin-ex (str "eval_builtin_error: regex.match: " (.getMessage e)))))))
 
 ; Deprecated in OPA - only here for test conformance
-(defn builtin-re-match [pattern ^String value]
+(defn builtin-re-match [{[pattern ^String value] :args}]
   (try
-    (builtin-regex-match pattern value)
+    (builtin-regex-match {:args [pattern value]})
     (catch BuiltinException e (str/replace (.getMessage e) #"regex\.match" "re_match"))))
 
 (defn builtin-regex-is-valid
   "Implementation of regex.is_valid built-in"
   {:builtin "regex.is_valid" :args-types ["string"]}
-  [pattern]
-  (try (and (Pattern/compile pattern) true)
-       (catch Exception _ false)))
+  [{[pattern] :args}]
+  (not (errors/throws? #(Pattern/compile pattern))))
 
 (defn builtin-regex-split
   "Implementation of regex.split built-in"
   {:builtin "regex.split" :args-types ["string" "string"]}
-  [pattern ^String value]
+  [{[pattern ^String value] :args}]
   (check-args (meta #'builtin-regex-split) pattern value)
   (-> (Pattern/compile pattern)
-      (.split value)
+      (.split value -1)
       (vec)))
 
 (defn builtin-regex-find-n
   "Implementation of regex.find_n built-in"
   {:builtin "regex.find_n" :args-types ["string" "string" "number"]}
-  [pattern ^String value number]
+  [{[pattern ^String value number] :args}]
   (let [matcher (.matcher (Pattern/compile pattern) value)]
     (loop [i 0
            matches []
@@ -57,5 +56,5 @@
 (defn builtin-regex-find-all-string-submatch-n
   "Implementation of regex.find_all_string_submatch_n built-in"
   {:builtin "regex.find_all_string_submatch_n" :args-types ["string" "string" "number"]}
-  [pattern ^String value number]
+  [{[pattern ^String value number] :args}]
   (throw (errors/builtin-ex "not implemented %s %s %s" pattern value number)))

@@ -1,5 +1,6 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.comparison :as comparison]
+            [jarl.builtins.conversions :as conversions]
             [jarl.builtins.numbers :as numbers]
             [jarl.builtins.aggregates :as aggregates]
             [jarl.builtins.array :as array]
@@ -48,6 +49,7 @@
 
    "object.get"               objects/builtin-object-get
    "object.remove"            objects/builtin-object-remove
+   "object.filter"            objects/builtin-object-filter
    "object.union"             objects/builtin-object-union
    "object.union_n"           objects/builtin-object-union-n
 
@@ -92,6 +94,14 @@
    "bits.xor"                 bits/builtin-bits-xor
    "bits.lsh"                 bits/builtin-bits-lsh
    "bits.rsh"                 bits/builtin-bits-rsh
+
+   "to_number"                conversions/builtin-to-number
+   "cast_array"               conversions/builtin-cast-array   ; deprecated
+   "cast_set"                 conversions/builtin-cast-set     ; deprecated
+   "cast_string"              conversions/builtin-cast-string  ; deprecated
+   "cast_boolean"             conversions/builtin-cast-boolean ; deprecated
+   "cast_null"                conversions/builtin-cast-null    ; deprecated
+   "cast_object"              conversions/builtin-cast-object  ; deprecated
 
    "base64.encode"            encoding/builtin-base64-encode
    "base64.decode"            encoding/builtin-base64-decode
