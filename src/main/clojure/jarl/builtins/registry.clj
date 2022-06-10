@@ -71,6 +71,7 @@
    "trim_space"               strings/builtin-trim-space
    "upper"                    strings/builtin-upper
 
+   "re_match"                 regex/builtin-re-match ; deprecated
    "regex.match"              regex/builtin-regex-match
    "regex.is_valid"           regex/builtin-regex-is-valid
    "regex.split"              regex/builtin-regex-split

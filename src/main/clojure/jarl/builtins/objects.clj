@@ -1,6 +1,9 @@
 (ns jarl.builtins.objects
   (:require [clojure.string :as str]
-            [jarl.builtins.utils :refer [str->int]]))
+            [jarl.builtins.utils :refer [check-args str->int]]
+            [jarl.exceptions :as errors]
+            )
+  (:import (se.fylling.jarl TypeException)))
 
 (defn builtin-object-get
   "Implementation of object.get built-in"
@@ -12,22 +15,30 @@
 
 (defn builtin-object-remove
   "Implementation of object.remove built-in"
-  {:builtin "object.remove" :args-types ["object", "any"]}
+  {:builtin "object.remove" :args-types ["object" #{"object", "set", "array"}]}
   [object ks]
-  (if (map? ks)
-    (builtin-object-remove object (keys ks))
+  (try
+    (check-args (meta #'builtin-object-remove) object ks)
+    (catch TypeException e
+      ; Handle wrong error message in OPA until resolved
+      ; https://github.com/open-policy-agent/opa/issues/4767
+      (throw (errors/type-ex (str/replace (.getMessage e) #"set" "string")))))
+  (if (and (map? ks) (not-empty ks))
+    (builtin-object-remove object (vec (keys ks)))
     (apply dissoc object ks)))
 
 (defn builtin-object-union
   "Implementation of object.union built-in"
   {:builtin "object.union" :args-types ["object", "object"]}
   [o1 o2]
+  (check-args (meta #'builtin-object-union) o1 o2)
   (merge o1 o2))
 
 (defn builtin-object-union-n
   "Implementation of object.union_n built-in"
   {:builtin "object.union" :args-types ["array"]}
   [objects]
+  (check-args (meta #'builtin-object-union-n) objects)
   (apply merge objects))
 
 (defn builtin-object-filter
