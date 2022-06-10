@@ -38,7 +38,9 @@
             value (nth entry 2)
             provided-type (types/java->rego value)]
         (when-not (type-match? expected-type provided-type)
-          (throw (errors/type-ex "%s: operand %s must be %s but got %s" name pos expected-type provided-type)))))))
+          (if (set? expected-type)
+            (throw (errors/type-ex "%s: operand %s must be one of {%s} but got %s" name pos (str/join ", " expected-type) provided-type))
+            (throw (errors/type-ex "%s: operand %s must be %s but got %s" name pos expected-type provided-type))))))))
 
 (defn typed-seq
   "Ensure that array/set only contains allowed Rego types"
