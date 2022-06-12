@@ -20,14 +20,14 @@
     (do
       (log/infof "ArrayAppendStmt - <%s> is not a local var" array-index)
       (break state))
-    (let [val (state/get-value state value-index)]
-      (if (nil? val)
-        (do
-          (log/debugf "ArrayAppendStmt - value <%s> not present" value-index)
-          (break state))
+    (if (state/contains-value? state value-index)
+      (let [val (state/get-value state value-index)]
         (let [array (state/get-local state array-index)]
           (log/debugf "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
-          (state/set-local state array-index (conj array val)))))))
+          (state/set-local state array-index (conj array val))))
+      (do
+        (log/debugf "ArrayAppendStmt - value <%s> not present" value-index)
+        (break state)))))
 
 (defn eval-AssignIntStmt [value target state]
   (when (or (not (number? value))
