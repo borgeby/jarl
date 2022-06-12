@@ -313,7 +313,7 @@
   [source-index key-index value-index block-stmt state]
   (log/debugf "ScanStmt - scanning <%d>" source-index)
   (let [source (state/get-local state source-index)]
-    (if (or (nil? source) (not (coll? source)))             ; OPA IR docs states 'source' may not be an empty collection; but of we 'break' for such, statements like 'every x in [] { x != x }' will be 'undefined'.
+    (if (not (coll? source))                                ; OPA IR docs states 'source' may not be an empty collection; but if we 'break' for such, statements like 'every x in [] { x != x }' will be 'undefined'.
       (do
         (log/debugf "ScanStmt - '%s' is empty or not a collection" source-index)
         (break state))
