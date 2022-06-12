@@ -101,13 +101,13 @@
         func-name (string/join "." path)]
     (log/debugf "CallDynamicStmt - calling dynamic func <%s>" path)
     (let [func (state/get-func state path)
-          args (create-func-args state args)]
+          args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))]
       (call-func func target func-name args state))))
 
 (defn eval-CallStmt [target func-name args state]
   (log/debugf "CallStmt - calling func <%s> with args: %s; target <%d>" func-name args target)
   (let [func (state/get-func state func-name)
-        args (create-func-args state args)]
+        args (create-func-args state args)]                 ; OPA IR docs claims args to be 'positional' (local), but they are of 'operand' type.
     (log/tracef "CallStmt - realized args: %s" args)
     (call-func func target func-name args state)))
 
