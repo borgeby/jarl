@@ -213,9 +213,10 @@
   (log/debug "NopStmt - Doing nothing")
   state)
 
-(defn eval-NotEqualStmt [a-index b-index state]
-  (let [a (state/get-value state a-index)
-        b (state/get-value state b-index)
+(defn eval-NotEqualStmt [a-pos b-pos state]
+  (log/tracef "NotEqualStmt - <%s> != <%s>" a-pos b-pos)
+  (let [a (state/get-value state a-pos)
+        b (state/get-value state b-pos)
         result (not= a b)]
     (log/debugf "NotEqualStmt - ('%s' != '%s') == %s" a b result)
     (if result
@@ -320,7 +321,7 @@
           (if (empty? source-indexed)
             (do
               (log/trace "ScanStmt - done")
-              (break state))
+              state)
             (let [entry (first source-indexed)
                   value (get entry 1)
                   key (if is-set value (get entry 0))       ; Rego set entries are indexed by their value
