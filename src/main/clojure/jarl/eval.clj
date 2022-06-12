@@ -6,7 +6,10 @@
             [jarl.utils :as utils]
             [clojure.tools.logging :as log]
             [jarl.exceptions :as errors])
-  (:import (se.fylling.jarl BuiltinException UndefinedException)))
+  (:import (se.fylling.jarl BuiltinException
+                            UndefinedException
+                            ConflictException
+                            MultipleOutputsConflictException)))
 
 (defn break
   ([state] (assoc state :break-index 0))
@@ -17,14 +20,14 @@
     (do
       (log/infof "ArrayAppendStmt - <%s> is not a local var" array-index)
       (break state))
-    (let [val (state/get-value state value-index)]
-      (if (nil? val)
-        (do
-          (log/debugf "ArrayAppendStmt - value <%s> not present" value-index)
-          (break state))
-        (let [array (state/get-local state array-index)]
-          (log/debugf "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
-          (state/set-local state array-index (conj array val)))))))
+    (if (state/contains-value? state value-index)
+      (let [val (state/get-value state value-index)
+            array (state/get-local state array-index)]
+        (log/debugf "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
+        (state/set-local state array-index (conj array val)))
+      (do
+        (log/debugf "ArrayAppendStmt - value <%s> not present" value-index)
+        (break state)))))
 
 (defn eval-AssignIntStmt [value target state]
   (when (or (not (number? value))
@@ -53,7 +56,9 @@
         (let [orig-value (state/get-local state target)]
           (if (types/rego-equal? value orig-value)
             state                                           ; do nothing, existing value == new value
-            (throw (errors/conflict-ex "complete rules must not produce multiple outputs"))))
+            (do
+              (log/debugf "AssignVarOnceStmt - <%s> already assigned" source-index)
+              (throw (errors/conflict-ex "<%s> already assigned" source-index)))))
         (do
           (log/debugf "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" value source-index target)
           (state/set-local state target value)))))
@@ -96,13 +101,13 @@
         func-name (string/join "." path)]
     (log/debugf "CallDynamicStmt - calling dynamic func <%s>" path)
     (let [func (state/get-func state path)
-          args (create-func-args state args)]
+          args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))]
       (call-func func target func-name args state))))
 
 (defn eval-CallStmt [target func-name args state]
   (log/debugf "CallStmt - calling func <%s> with args: %s; target <%d>" func-name args target)
   (let [func (state/get-func state func-name)
-        args (create-func-args state args)]
+        args (create-func-args state args)]                 ; OPA IR docs claims args to be 'positional' (local), but they are of 'operand' type.
     (log/tracef "CallStmt - realized args: %s" args)
     (call-func func target func-name args state)))
 
@@ -310,7 +315,7 @@
   (let [source (state/get-local state source-index)]
     (if (not (coll? source))                                ; OPA IR docs states 'source' may not be an empty collection; but if we 'break' for such, statements like 'every x in [] { x != x }' will be 'undefined'.
       (do
-        (log/debugf "ScanStmt - '%s' is not a collection" source-index)
+        (log/debugf "ScanStmt - '%s' is empty or not a collection" source-index)
         (break state))
       (let [is-set (set? source)]
         (log/trace "ScanStmt - source is list or map")
@@ -402,15 +407,24 @@
 (defn eval-func [name params return-index blocks args state]
   (log/debugf "func - executing <%s>" name)
   (let [local (map-args-by-params params args)
-        state (assoc state :local local)
-        state (blocks state)]
-    (if (state/contains-local? state return-index)
-      (let [result (state/get-local state return-index)]
-        (log/debugf "function <%s> returning '%s'" name result)
-        {:result result})
-      (do
-        (log/debugf "function <%s> undefined" name)
-        {}))))
+        state (assoc state :local local)]
+    (try
+      (let [state (blocks state)]
+        (if (state/contains-local? state return-index)
+          (let [result (state/get-local state return-index)]
+            (log/debugf "function <%s> returning '%s'" name result)
+            {:result result})
+          (do
+            (log/debugf "function <%s> undefined" name)
+            {})))
+      (catch MultipleOutputsConflictException e
+        (log/tracef "re-throwing: %s", e)
+        (throw e))                                          ; ConflictException has already been made more specific by nested function/rule call; re-throw
+      (catch ConflictException e
+        (log/tracef "nested call threw ConflictException: %s", (.getMessage e))
+        (if (> (count params) 2)                            ; 'input' and 'data' documents are always present as args 0 and 1, respectively; additional args means this is a function call, otherwise a rule.
+          (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
+          (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs")))))))
 
 (defn eval-builtin-func [name builtin-func args state]
   (log/debugf "executing built-in func <%s> with args: %s" name, args)
