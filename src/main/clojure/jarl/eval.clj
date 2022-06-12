@@ -6,7 +6,10 @@
             [jarl.utils :as utils]
             [clojure.tools.logging :as log]
             [jarl.exceptions :as errors])
-  (:import (se.fylling.jarl BuiltinException UndefinedException)))
+  (:import (se.fylling.jarl BuiltinException
+                            UndefinedException
+                            ConflictException
+                            MultipleOutputsConflictException)))
 
 (defn break
   ([state] (assoc state :break-index 0))
@@ -53,7 +56,9 @@
         (let [orig-value (state/get-local state target)]
           (if (types/rego-equal? value orig-value)
             state                                           ; do nothing, existing value == new value
-            (throw (errors/conflict-ex "complete rules must not produce multiple outputs"))))
+            (do
+              (log/debugf "AssignVarOnceStmt - <%s> already assigned" source-index)
+              (throw (errors/conflict-ex "<%s> already assigned" source-index)))))
         (do
           (log/debugf "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" value source-index target)
           (state/set-local state target value)))))
@@ -402,15 +407,24 @@
 (defn eval-func [name params return-index blocks args state]
   (log/debugf "func - executing <%s>" name)
   (let [local (map-args-by-params params args)
-        state (assoc state :local local)
-        state (blocks state)]
-    (if (state/contains-local? state return-index)
-      (let [result (state/get-local state return-index)]
-        (log/debugf "function <%s> returning '%s'" name result)
-        {:result result})
-      (do
-        (log/debugf "function <%s> undefined" name)
-        {}))))
+        state (assoc state :local local)]
+    (try
+      (let [state (blocks state)]
+        (if (state/contains-local? state return-index)
+          (let [result (state/get-local state return-index)]
+            (log/debugf "function <%s> returning '%s'" name result)
+            {:result result})
+          (do
+            (log/debugf "function <%s> undefined" name)
+            {})))
+      (catch MultipleOutputsConflictException e
+        (log/tracef "re-throwing: %s", e)
+        (throw e))                                          ; ConflictException has already been made more specific by nested function/rule call; re-throw
+      (catch ConflictException e
+        (log/tracef "nested call threw ConflictException: %s", (.getMessage e))
+        (if (> (count params) 2)
+          (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
+          (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs")))))))
 
 (defn eval-builtin-func [name builtin-func args state]
   (log/debugf "executing built-in func <%s> with args: %s" name, args)
