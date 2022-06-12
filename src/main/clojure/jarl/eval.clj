@@ -20,14 +20,14 @@
     (do
       (log/infof "ArrayAppendStmt - <%s> is not a local var" array-index)
       (break state))
-    (let [val (state/get-value state value-index)]
-      (if (nil? val)
-        (do
-          (log/debugf "ArrayAppendStmt - value <%s> not present" value-index)
-          (break state))
-        (let [array (state/get-local state array-index)]
-          (log/debugf "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
-          (state/set-local state array-index (conj array val)))))))
+    (if (state/contains-value? state value-index)
+      (let [val (state/get-value state value-index)
+            array (state/get-local state array-index)]
+        (log/debugf "ArrayAppendStmt - Appending '%s' to <%s>" val array-index)
+        (state/set-local state array-index (conj array val)))
+      (do
+        (log/debugf "ArrayAppendStmt - value <%s> not present" value-index)
+        (break state)))))
 
 (defn eval-AssignIntStmt [value target state]
   (when (or (not (number? value))
@@ -101,13 +101,13 @@
         func-name (string/join "." path)]
     (log/debugf "CallDynamicStmt - calling dynamic func <%s>" path)
     (let [func (state/get-func state path)
-          args (create-func-args state args)]
+          args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))]
       (call-func func target func-name args state))))
 
 (defn eval-CallStmt [target func-name args state]
   (log/debugf "CallStmt - calling func <%s> with args: %s; target <%d>" func-name args target)
   (let [func (state/get-func state func-name)
-        args (create-func-args state args)]
+        args (create-func-args state args)]                 ; OPA IR docs claims args to be 'positional' (local), but they are of 'operand' type.
     (log/tracef "CallStmt - realized args: %s" args)
     (call-func func target func-name args state)))
 
