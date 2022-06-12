@@ -32,8 +32,9 @@
 (defn make-BlockStmt [{:strs [blocks] :as stmt-info}]
   (log/debug "making BlockStmt stmt")
   (log/tracef "info: %s" stmt-info)
-  (fn [state]
-    (eval/eval-BlockStmt (make-blocks blocks) state)))
+  (let [blocks (make-blocks blocks)]
+    (fn [state]
+      (eval/eval-BlockStmt blocks state))))
 
 (defn make-BreakStmt [{:strs [index]}]
   (log/debug "making BreakStmt stmt")
@@ -168,8 +169,9 @@
 
 (defn make-ScanStmt [{:strs [source key value block]}]
   (log/debug "making ScanStmt stmt")
-  (fn [state]
-    (eval/eval-ScanStmt source key value (make-block block) state)))
+  (let [block (make-block block)]
+    (fn [state]
+      (eval/eval-ScanStmt source key value block state))))
 
 (defn make-WithStmt [stmt-info]
   (log/debug "making WithStmt stmt")
@@ -230,8 +232,9 @@
 
 (defn make-block [{:strs [stmts]}]
   (log/debug "making block")
-  (fn [state]
-    (eval/eval-block (make-stmts stmts) state)))
+  (let [stmts (make-stmts stmts)]
+    (fn [state]
+      (eval/eval-block stmts state))))
 
 (defn make-blocks [blocks-info]
   (log/debug "making blocks")
