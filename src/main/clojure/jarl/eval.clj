@@ -422,7 +422,7 @@
         (throw e))                                          ; ConflictException has already been made more specific by nested function/rule call; re-throw
       (catch ConflictException e
         (log/tracef "nested call threw ConflictException: %s", (.getMessage e))
-        (if (> (count params) 2)
+        (if (> (count params) 2)                            ; 'input' and 'data' documents are always present as args 0 and 1, respectively; additional args means this is a function call, otherwise a rule.
           (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
           (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs")))))))
 
