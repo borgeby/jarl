@@ -30,13 +30,14 @@
 (defn- get-plan [plans name]
   (get (first (filter #(= name (get % 0)) plans)) 1))
 
-(defn- do-test [{:strs [data]
+(defn- do-test [{:strs           [data note]
                  entry-points    "entrypoints"
                  want-results    "want_plan_result"
                  want-error-code "want_error_code"
                  want-error      "want_error"
                  ir              "plan"
-                 :as test-case}]
+                 :as             test-case}]
+  (println "Running test case:" note)
   (let [input (if (contains? test-case "input_term")
                 (json/read-str (get test-case "input_term"))
                 (get test-case "input"))
