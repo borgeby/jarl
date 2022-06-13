@@ -243,8 +243,23 @@
     (fn [state]
       (eval/eval-blocks blocks state))))
 
+(defn- stringify-coll-keys [val]
+  (cond
+    (or (list? val) (set? val) (vector? val)) (into [] (map stringify-coll-keys val))
+    (map? val) (loop [pairs (seq val)
+                      map {}]
+                 (if (empty? pairs)
+                   map
+                   (let [[key val] (first pairs)
+                         key (if (string? key)
+                               key
+                               (json/write-str key))
+                         val (stringify-coll-keys val)]
+                     (recur (next pairs) (assoc map key val)))))
+    :else val))
+
 (defn- align-result-set [result-set]
-  (json/read-str (json/write-str result-set)))
+  (stringify-coll-keys result-set))
 
 (defn make-plan [{:strs [name] blocks-info "blocks" :as plan-info}]
   (log/debugf "making plan '%s'" name)
@@ -255,9 +270,10 @@
             (let [state (state/init-state info input data)]
               (log/debugf "Plan - executing '%s'" name)
               (let [state (blocks state)
-                    result-set (get state :result-set)]
+                    result-set (get state :result-set)
+                    result-set (align-result-set result-set)]
                 (log/debugf "Plan - result-set: %s" result-set)
-                (align-result-set result-set))))]))
+                result-set)))]))
 
 (defn make-plans [{:strs [plans]}]
   (log/debug "making plans")
