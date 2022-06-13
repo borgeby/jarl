@@ -293,20 +293,19 @@
   (log/debug "ReturnLocalStmt - exiting function")          ; TODO: Do we need to recursively break out of all nested blocks to exit the function?
   state)                                                    ; No-op, the function itself knows what local var is the result
 
-(defn eval-SetAddStmt [set-index value-index state]
+(defn eval-SetAddStmt [set-index value-pos state]
   (let [set (state/get-local state set-index)]
-    (if (nil? set)
+    (if-not (set? set)
       (do
-        (log/debugf "SetAddStmt - <%s> is not a local var" set-index)
+        (log/debugf "SetAddStmt - local var <%s> is not a set" set-index)
         (break state))
-      (let [val (state/get-value state value-index)]
-        (if (nil? val)
-          (do
-            (log/debugf "SetAddStmt - value <%s> not present" value-index)
-            (break state))
-          (do
-            (log/debugf "SetAddStmt - Adding '%s' to <%s>" val set-index)
-            (state/set-local state set-index (conj set val))))))))
+      (if-not (state/contains-value? state value-pos)
+        (do
+          (log/debugf "SetAddStmt - value <%s> not present" value-pos)
+          (break state))
+        (let [val (state/get-value state value-pos)]
+          (log/debugf "SetAddStmt - Adding '%s' to <%s>" val set-index)
+          (state/set-local state set-index (conj set val)))))))
 
 (defn eval-ScanStmt
   "Scan list/set/map local var at `source-index`; executing `block-stmt` for every key/index-value pair encountered"

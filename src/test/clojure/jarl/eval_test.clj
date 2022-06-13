@@ -5,7 +5,8 @@
                                eval-AssignVarOnceStmt
                                eval-IsObjectStmt eval-LenStmt
                                eval-MakeNumberIntStmt
-                               eval-MakeObjectStmt]]
+                               eval-MakeObjectStmt
+                               eval-SetAddStmt]]
             [jarl.state :refer [get-local set-local]])
   (:import (se.fylling.jarl UndefinedException)))
 
@@ -130,7 +131,8 @@
           state {:local {}}
           state (set-local state target existing-value)
           state (set-local state 3 value)]
-      (is (thrown-with-msg? Exception #"complete rules must not produce multiple outputs" (eval-AssignVarOnceStmt source-index target state)))))
+      (is (thrown-with-msg? Exception (re-pattern "<\\{\"type\" \"local\", \"value\" 3}> already assigned")
+                            (eval-AssignVarOnceStmt source-index target state)))))
   (testing "assign non-existent value"
     (let [source-index (make-local-value-key 3)
           target 2
@@ -354,3 +356,57 @@
           target 3
           state {}]
       (is (thrown-with-msg? Exception #"'null' is not an integer" (eval-MakeNumberIntStmt value target state))))))
+
+(deftest eval-SetAddStmt-test
+  (testing "add to empty set"
+    (let [set #{}
+          value 1
+          set-index 2
+          value-index (make-local-value-key 3)
+          state {:local {}}
+          state (set-local state 2 set)
+          state (set-local state 3 value)
+          result-state (eval-SetAddStmt set-index value-index state)
+          result (get-local result-state set-index)]
+      (is (= result #{value}))
+      (is (not (contains? result-state :break-index)))))
+  (testing "add to non-empty set"
+    (let [set #{"foo" "bar"}
+          value "baz"
+          set-index 2
+          value-index (make-local-value-key 3)
+          state {:local {}}
+          state (set-local state 2 set)
+          state (set-local state 3 value)
+          result-state (eval-SetAddStmt set-index value-index state)
+          result (get-local result-state set-index)]
+      (is (= result #{"foo" "bar" "baz"}))
+      (is (not (contains? result-state :break-index)))))
+  (testing "add overlapping value to non-empty set"
+    (let [set #{"foo" "bar"}
+          value "bar"
+          set-index 2
+          value-index (make-local-value-key 3)
+          state {:local {}}
+          state (set-local state 2 set)
+          state (set-local state 3 value)
+          result-state (eval-SetAddStmt set-index value-index state)
+          result (get-local result-state set-index)]
+      (is (= result #{"foo" "bar"}))
+      (is (not (contains? result-state :break-index)))))
+  (testing "append to non-existent set"
+    (let [value 1
+          set-index 2
+          value-index (make-local-value-key 3)
+          state {:local {}}
+          state (set-local state 3 value)
+          result-state (eval-SetAddStmt set-index value-index state)]
+      (is (contains? result-state :break-index))))
+  (testing "append non-existent value to set"
+    (let [set [1 2]
+          set-index 2
+          value-index (make-local-value-key 3)
+          state {:local {}}
+          state (set-local state 2 set)
+          result-state (eval-SetAddStmt set-index value-index state)]
+      (is (contains? result-state :break-index)))))
