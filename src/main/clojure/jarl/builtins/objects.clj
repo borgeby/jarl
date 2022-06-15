@@ -1,8 +1,7 @@
 (ns jarl.builtins.objects
   (:require [clojure.string :as str]
             [jarl.builtins.utils :refer [check-args str->int]]
-            [jarl.exceptions :as errors]
-            )
+            [jarl.exceptions :as errors])
   (:import (se.fylling.jarl TypeException)))
 
 (defn builtin-object-get
@@ -50,8 +49,7 @@
     (catch TypeException e
       ; Handle wrong error message in OPA until resolved
       ; https://github.com/open-policy-agent/opa/issues/4767
-      (throw (errors/type-ex (str/replace (.getMessage e) #"set" "string")))))
-  (check-args (meta #'builtin-object-filter) object ks)
+      (throw (errors/type-ex (str/replace (str/replace (.getMessage e) #"set" "string") #"eval_type_error: " "")))))
   (if (and (map? ks) (not-empty ks))
     (builtin-object-filter {:args [object (vec (keys ks))]})
     (select-keys object ks)))

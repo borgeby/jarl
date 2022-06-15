@@ -50,7 +50,11 @@
                          ; else - not exception
                          `(is (= (~func {:args ~args}) ~expect)))
                        ; else - not vector
-                       `(is (= (~func {:args ~args}) ~expect))))
+                       (if (map? args)
+                         ; allow providing the entire request map if needed
+                         `(is (= (~func ~args) ~expect))
+                         ; but since most tests only care for the args, a vector of those is more convenient
+                         `(is (= (~func {:args ~args}) ~expect)))))
                    pairs)]
     `(clojure.test/testing ~func-name
        ~@stmts)))

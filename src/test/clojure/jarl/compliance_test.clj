@@ -64,13 +64,14 @@
               (log/infof "Want error: %s: %s" want-error-code want-error)
               (try
                 (let [result-set (plan info data input)]
-                  (is (not (nil? result-set)) "Exception must be thrown"))
+                  (is (nil? result-set) (str "Exception must be thrown, got " result-set)))
                 (catch JarlException e
                   (is (.contains (.getMessage e) want-error) (str "Got error message: " (ex-message e)))
                   (is (= (.getType e) want-error-code) (str "Got error code: " (.getType e))))
                 (catch Throwable e
-                  (println "Unexpected error" e)
-                  (is false "JarlException must be thrown"))))))))))
+                  (do
+                    (println "Unexpected error" e)
+                    (is false "JarlException must be thrown")))))))))))
 
 ;
 ; Test generator

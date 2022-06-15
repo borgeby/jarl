@@ -39,6 +39,12 @@
      (catch Exception _#
        ~default)))
 
+(defn try-or-throw [func ex]
+  (try
+    (func)
+    (catch Throwable _
+      (throw ex))))
+
 (defn throws?
   "Return true if invoking func throws exception"
   [func]

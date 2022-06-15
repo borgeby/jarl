@@ -1,6 +1,7 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.comparison :as comparison]
             [jarl.builtins.conversions :as conversions]
+            [jarl.builtins.crypto :as crypto]
             [jarl.builtins.numbers :as numbers]
             [jarl.builtins.aggregates :as aggregates]
             [jarl.builtins.array :as array]
@@ -9,8 +10,10 @@
             [jarl.builtins.strings :as strings]
             [jarl.builtins.regex :as regex]
             [jarl.builtins.types :as types]
+            [jarl.builtins.time :as time]
             [jarl.builtins.bits :as bits]
-            [jarl.builtins.encoding :as encoding]))
+            [jarl.builtins.encoding :as encoding]
+            [jarl.builtins.opa :as opa]))
 
 (def builtins
   {"equal"                    comparison/builtin-equal
@@ -109,7 +112,9 @@
    "base64url.encode_no_pad"  encoding/builtin-base64-url-encode-no-pad
    "base64url.decode"         encoding/builtin-base64-url-decode
    "urlquery.encode"          encoding/builtin-url-query-encode
+   "urlquery.encode_object"   encoding/builtin-url-query-encode-object
    "urlquery.decode"          encoding/builtin-url-query-decode
+   "urlquery.decode_object"   encoding/builtin-url-query-decode-object
    "json.marshal"             encoding/builtin-json-marshal
    "json.unmarshal"           encoding/builtin-json-unmarshal
    "json.is_valid"            encoding/builtin-json-is-valid
@@ -117,7 +122,22 @@
    "hex.decode"               encoding/builtin-hex-decode
    "yaml.marshal"             encoding/builtin-yaml-marshal
    "yaml.unmarshal"           encoding/builtin-yaml-unmarshal
-   "yaml.is_valid"            encoding/builtin-yaml-is-valid})
+   "yaml.is_valid"            encoding/builtin-yaml-is-valid
+
+   "time.now_ns"              time/builtin-time-now-ns
+   "time.weekday"             time/builtin-time-weekday
+   "time.parse_rfc3339_ns"    time/builtin-time-parse-rfc3339-ns
+
+   "crypto.hmac.md5"          crypto/builtin-crypto-hmac-md5
+   "crypto.hmac.sha1"         crypto/builtin-crypto-hmac-sha1
+   "crypto.hmac.sha256"       crypto/builtin-crypto-hmac-sha256
+   "crypto.hmac.sha512"       crypto/builtin-crypto-hmac-sha512
+   "crypto.md5"               crypto/builtin-crypto-md5
+   "crypto.sha1"              crypto/builtin-crypto-sha1
+   "crypto.sha256"            crypto/builtin-crypto-sha256
+
+   "opa.runtime"              opa/builtin-opa-runtime
+   })
 
 (defn get-builtin [name]
   (get builtins name))

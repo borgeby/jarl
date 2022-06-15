@@ -1,11 +1,11 @@
 (ns jarl.builtins.encoding
   (:require [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [check-args]]
+            [jarl.utils :refer [base64-encode hex-encode url-decode url-encode]]
             [clojure.data.json :as json]
-            [clojure.string :as str]
-            [clj-yaml.core :as yaml])
+            [clj-yaml.core :as yaml]
+            [clojure.string :as str])
   (:import (java.util Base64)
-           (java.net URLEncoder URLDecoder)
            (java.nio.charset StandardCharsets)
            (java.io EOFException)))
 
@@ -14,9 +14,7 @@
   {:builtin "base64.encode" :args-types ["string"]}
   [{[^String s] :args}]
   (check-args (meta #'builtin-base64-encode) s)
-  (.encodeToString
-    (Base64/getEncoder)
-    (.getBytes s StandardCharsets/UTF_8)))
+  (base64-encode s))
 
 (defn builtin-base64-decode
   "Implementation of base64.decode built-in"
@@ -59,14 +57,38 @@
   {:builtin "urlquery.encode" :args-types ["string"]}
   [{[^String s] :args}]
   (check-args (meta #'builtin-url-query-encode) s)
-  (URLEncoder/encode s StandardCharsets/UTF_8))
+  (url-encode s))
+
+(defn builtin-url-query-encode-object
+  "Implementation of urlquery.encode_object built-in"
+  {:builtin "urlquery.encode_object" :args-types ["object"]}
+  [{[o] :args}]
+  (check-args (meta #'builtin-url-query-encode-object) o)
+  (let [kv-str (fn [[k vals]]
+                 (let [vals (if (string? vals) [vals] vals)]
+                   (str/join "&" (for [v vals] (str (url-encode k) "=" (url-encode v))))))]
+    (str/join "&" (map kv-str o))))
 
 (defn builtin-url-query-decode
   "Implementation of urlquery.decode built-in"
   {:builtin "urlquery.decode" :args-types ["string"]}
   [{[^String s] :args}]
   (check-args (meta #'builtin-url-query-decode) s)
-  (URLDecoder/decode s StandardCharsets/UTF_8))
+  (url-decode s))
+
+(defn builtin-url-query-decode-object
+  "Implementation of urlquery.decode_object built-in"
+  {:builtin "urlquery.decode_object" :args-types ["string"]}
+  [{[^String s] :args}]
+  (check-args (meta #'builtin-url-query-decode-object) s)
+  (let [assoc-param (fn [map key val] (assoc map key (conj (get map key []) val)))]
+    (reduce
+      (fn [param-map encoded-param]
+        (if-let [[_ key val] (re-matches #"([^=]+)=?(.*)" encoded-param)]
+          (assoc-param param-map (url-decode key) (url-decode (or val "")))
+          param-map))
+      {}
+      (str/split s #"&"))))
 
 (defn builtin-json-marshal
   "Implementation of json.marshal built-in"
@@ -101,7 +123,7 @@
   {:builtin "hex.encode" :args-types ["string"]}
   [{[^String s] :args}]
   (check-args (meta #'builtin-hex-encode) s)
-  (str/join (map #(format "%02x" %) (.getBytes s StandardCharsets/UTF_8))))
+  (hex-encode s))
 
 (defn- hex? [s]
   (some? (re-matches #"[0-9a-fA-F]+" s)))
@@ -153,4 +175,5 @@
   "Implementation of yaml.is_valid built-in"
   {:builtin "yaml.is_valid" :args-types ["string"]}
   [{[s] :args}]
+  (check-args (meta #'builtin-yaml-is-valid) s)
   (not (errors/throws? #(yaml/parse-string s))))

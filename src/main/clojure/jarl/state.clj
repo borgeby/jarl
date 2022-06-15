@@ -114,8 +114,10 @@
   (merge data (data-from-plan-info plan-info)))
 
 (defn init-state [info input data]
-  (-> info
-      (assoc :builtin-context {:time-now-ns (utils/time-now-ns)})
-      (assoc :local (cond-> {}
-                            (some? input) (assoc 0 input)
-                            (some? data) (assoc 1 (make-data info data))))))
+  (cond-> info
+          ; if builtin-context has been provided already, use that
+          (not (contains? info :builtin-context)) (assoc :builtin-context {:time-now-ns (utils/time-now-ns)
+                                                                           :env (System/getenv)})
+          true (assoc :local (cond-> {}
+                                     (some? input) (assoc 0 input)
+                                     (some? data) (assoc 1 (make-data info data))))))
