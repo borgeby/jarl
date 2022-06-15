@@ -3,13 +3,14 @@
             [jarl.exceptions :as errors]
             [jarl.types :as types]))
 
-
 (defn possibly-int
   "present e.g. 1.0 as 1"
   [num]
-  (if (zero? (mod num 1))
-    (long num)
-    num))
+  (if (integer? num)
+    num
+    (if (zero? (mod num 1))
+      (long num)
+      num)))
 
 (defn str->int
   "Converts a numeric string to int, or returns the string if not a number"

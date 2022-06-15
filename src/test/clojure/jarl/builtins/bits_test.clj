@@ -46,8 +46,8 @@
     [10.1 1] [TypeException "operand 1 must be integer number but got floating-point number"]
     [2 2.22] [TypeException "operand 2 must be integer number but got floating-point number"]
     ; negative integers
-    [-10 1]  [TypeException "operand 1 must be an unsigned integer number but got a negative number"]
-    [2 -2]   [TypeException "operand 2 must be an unsigned integer number but got a negative number"]))
+    [-10 1]  [TypeException "operand 1 must be an unsigned integer number but got a negative integer"]
+    [2 -2]   [TypeException "operand 2 must be an unsigned integer number but got a negative integer"]))
 
 (deftest builtin-bits-rsh-test
   (testing-builtin "bits.rsh"
@@ -58,5 +58,5 @@
     [10.1 1] [TypeException "operand 1 must be integer number but got floating-point number"]
     [2 2.22] [TypeException "operand 2 must be integer number but got floating-point number"]
     ; negative integers
-    [-10 1]  [TypeException "operand 1 must be an unsigned integer number but got a negative number"]
-    [2 -2]   [TypeException "operand 2 must be an unsigned integer number but got a negative number"]))
+    [-10 1]  [TypeException "operand 1 must be an unsigned integer number but got a negative integer"]
+    [2 -2]   [TypeException "operand 2 must be an unsigned integer number but got a negative integer"]))

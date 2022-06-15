@@ -44,11 +44,29 @@
     ["blå"] "bl%C3%A5"
     ["/&="] "%2F%26%3D"))
 
+(deftest builtin-url-query-encode-object-test
+  (testing-builtin "urlquery.encode_object"
+    [{"foo" ["bar"]}]                             "foo=bar"
+    [{"foo" ["bar" "baz"]}]                       "foo=bar&foo=baz"
+    [{"foo" ["bar" "baz"] "a" ["b"] "c" ["d"]}]   "foo=bar&foo=baz&a=b&c=d"
+    ; string values
+    [{"a" "b" "c" "d"}                            "a=b&c=d"]))
+
 (deftest builtin-url-query-decode-test
   (testing-builtin "urlquery.decode"
-    ["foo+bar"] "foo bar"
-    ["bl%C3%A5"] "blå"
+    ["foo+bar"]   "foo bar"
+    ["bl%C3%A5"]  "blå"
     ["%2F%26%3D"] "/&="))
+
+(deftest builtin-url-query-decode-object-test
+  (testing-builtin "urlquery.decode_object"
+    ["foo=bar"]                                 {"foo" ["bar"]}
+    ["foo=bar&bar=baz"]                         {"foo" ["bar"] "bar" ["baz"]}
+    ["foo=bar&bar=baz&foo=qux"]                 {"foo" ["bar" "qux"] "bar" ["baz"]}
+    ["f%20o%20o=b%20a%20r&f%20o%20o=b%20a%20z"] {"f o o" ["b a r" "b a z"]}
+    ["f+o+o=b+a+r&f+o+o=b+a+z"]                 {"f o o" ["b a r" "b a z"]}
+    ; empty parameter
+    ["a=1&b"]                                   {"a" ["1"] "b" [""]}))
 
 (deftest builtin-json-unmarshal-test
   (testing-builtin "json.unmarshal"

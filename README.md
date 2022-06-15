@@ -101,17 +101,6 @@ https://github.com/google/re2j
 - [x] `regex.find_n`
 - [ ] `regex.find_all_string_submatch_n`
 
-### Types
-
-- [x] `is_number`
-- [x] `is_string`
-- [x] `is_boolean`
-- [x] `is_array`
-- [x] `is_set`
-- [x] `is_object`
-- [x] `is_null`
-- [x] `type_name`
-
 ### Glob
 
 - [ ] `glob.match`
@@ -130,6 +119,22 @@ https://github.com/google/re2j
 
 - [x] `to_number`
 
+### Units
+
+- [ ] `units.parse`
+- [ ] `units.parse_bytes`
+
+### Types
+
+- [x] `is_number`
+- [x] `is_string`
+- [x] `is_boolean`
+- [x] `is_array`
+- [x] `is_set`
+- [x] `is_object`
+- [x] `is_null`
+- [x] `type_name`
+
 ### Encoding
 
 - [x] `base64.encode`
@@ -138,9 +143,9 @@ https://github.com/google/re2j
 - [x] `base64url.encode_no_pad`
 - [x] `base64url.decode`
 - [x] `urlquery.encode`
-- [ ] `urlquery.encode_object`
+- [x] `urlquery.encode_object`
 - [x] `urlquery.decode`
-- [ ] `urlquery.decode_object`
+- [x] `urlquery.decode_object`
 - [x] `json.marshal`
 - [x] `json.unmarshal`
 - [x] `json.is_valid`
@@ -149,6 +154,111 @@ https://github.com/google/re2j
 - [x] `yaml.is_valid`
 - [x] `hex.encode`
 - [x] `hex.decode`
+
+### Token Signing
+
+- [ ] `io.jwt.encode_sign`
+- [ ] `io.jwt.encode_sign_raw`
+
+### Token Verification
+
+- [ ] `io.jwt.decode`
+- [ ] `io.jwt.decode_verify`
+- [ ] `io.jwt.verify_es256`
+- [ ] `io.jwt.verify_es384`
+- [ ] `io.jwt.verify_es512`
+- [ ] `io.jwt.verify_hs256`
+- [ ] `io.jwt.verify_hs384`
+- [ ] `io.jwt.verify_hs512`
+- [ ] `io.jwt.verify_ps256`
+- [ ] `io.jwt.verify_ps384`
+- [ ] `io.jwt.verify_ps512`
+- [ ] `io.jwt.verify_rs256`
+- [ ] `io.jwt.verify_rs384`
+- [ ] `io.jwt.verify_rs512`
+
+### Time
+
+- [ ] `time.add_date`
+- [ ] `time.clock`
+- [ ] `time.date`
+- [ ] `time.diff`
+- [x] `time.now_ns`
+- [ ] `time.parse_duration_ns`
+- [ ] `time.parse_ns`
+- [ ] `time.parse_rfc3339_ns`
+- [x] `time.weekday`
+
+### Cryptography
+
+- [x] `crypto.hmac.md5`   
+- [x] `crypto.hmac.sha1`
+- [x] `crypto.hmac.sha256`
+- [x] `crypto.hmac.sha512`
+- [x] `crypto.md5`        
+- [x] `crypto.sha1`
+- [x] `crypto.sha256`
+- [ ] `crypto.x509.parse_and_verify_certificates`
+- [ ] `crypto.x509.parse_certificate_request`
+- [ ] `crypto.x509.parse_certificates`
+- [ ] `crypto.x509.parse_rsa_private_key`
+
+### Graphs
+
+- [ ] `graph.reachable`
+- [ ] `graph.reachable_paths`
+- [ ] `walk`
+
+### GraphQL
+
+- [ ] `graphql.is_valid`
+- [ ] `graphql.parse`
+- [ ] `graphql.parse_and_verify`
+- [ ] `graphql.parse_query`
+- [ ] `graphql.parse_schema`
+
+### HTTP
+
+- [ ] `http.send`
+
+### Net
+
+- [ ] `net.cidr_contains`
+- [ ] `net.cidr_contains_matches`
+- [ ] `net.cidr_expand`
+- [ ] `net.cidr_intersects`
+- [ ] `net.cidr_merge`
+- [ ] `net.cidr_overlap`
+- [ ] `net.lookup_ip_addr`
+
+### UUID
+
+- [ ] `uuid.rfc4122`
+
+### Semantic Versions
+
+- [ ] `semver.compare`
+- [ ] `semver.is_valid`
+
+### Rego
+
+- [ ] `rego.metadata.chain`
+- [ ] `rego.metadata.rule`
+- [ ] `rego.parse_module`
+
+### Debugging
+
+Note: `print` calls are erased from plans, so likely can't be supported without support in OPA, or through some hack.
+
+- [ ] `print`
+
+### Tracing
+
+- [ ] `trace`
+
+### OPA
+
+- [x] `opa.runtime`
 
 ### Deprecated
 

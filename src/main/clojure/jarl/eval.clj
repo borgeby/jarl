@@ -430,7 +430,7 @@
 (defn eval-builtin-func [name builtin-func args state]
   (log/debugf "executing built-in func <%s> with args: %s" name, args)
   (try
-    (let [result (builtin-func {:args (utils/indexed-map-to-array args)
+    (let [result (builtin-func {:args (utils/indexed-map->array args)
                                       :builtin-context (:builtin-context state)})]
       (log/debugf "built-in function <%s> returning '%s'" name result)
       {:result result})

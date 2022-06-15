@@ -9,7 +9,7 @@
   {:builtin "plus" :args-types ["number" "number"]}
   [{[a b] :args}]
   (check-args (meta #'builtin-plus) a b)
-  (possibly-int (+ a b)))
+  (possibly-int (+' a b)))
 
 (defn builtin-minus
   "Implementation of minus built-in"
@@ -20,7 +20,7 @@
   (if (and (set? a) (set? b))
     (set/difference a b)
     (if (and (number? a) (number? b))
-      (possibly-int (- a b))
+      (possibly-int (-' a b))
       (throw (errors/type-ex "minus: operand %s must be number but got %s"
                              (if-not (number? a) 1 2) (types/java->rego (if-not (number? a) a b)))))))
 
@@ -29,7 +29,7 @@
   {:builtin "mul" :args-types ["number" "number"]}
   [{[a b] :args}]
   (check-args (meta #'builtin-mul) a b)
-  (possibly-int (* a b)))
+  (possibly-int (*' a b)))
 
 (defn builtin-div
   "Implementation of div built-in"
@@ -39,8 +39,6 @@
   (if (zero? b)
     (throw (errors/builtin-ex "div: divide by zero"))
     (possibly-int (double (/ a b)))))
-
-
 
 (defn builtin-rem
   "Implementation of rem built-in"
@@ -102,6 +100,9 @@
   {:builtin "numbers.range" :args-types ["number" "number"]}
   [{[a b] :args}]
   (check-args (meta #'builtin-numbers-range) a b)
-  (if (> a b)
-    (rseq (vec (range b (inc a))))
-    (vec (range a (inc b)))))
+  (if-not (and (integer? a) (integer? b))
+    (throw (errors/type-ex "numbers.range: operand %d must be integer number but got floating-point number"
+                           (if (integer? a) 2 1)))
+    (if (> a b)
+      (rseq (vec (range b (inc a))))
+      (vec (range a (inc b))))))
