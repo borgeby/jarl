@@ -297,31 +297,33 @@
             func-map (assoc func-map path func)]            ; bind function to path
         (recur (next func-infos) func-map)))))
 
-(defn make-builtin-func [{:strs [name]}]
-  (let [builtin-func (builtins/get-builtin name)]
+(defn make-builtin-func [{:strs [name]} builtin-resolver]
+  (let [builtin-func (builtin-resolver name)]
     (log/debugf "making built-in func <%s>" name)
     (if (nil? builtin-func)
       (throw (Exception. (format "unknown function '%s'" name)))
       [name (fn [args state]
               (eval/eval-builtin-func name builtin-func args state))])))
 
-(defn make-builtin-funcs [builtin-funcs-info]
+(defn make-builtin-funcs [builtin-funcs-info builtin-resolver]
   (log/debug "making built-in funcs")
   (loop [func-infos builtin-funcs-info
          func-map {}]
     (if (empty? func-infos)
       func-map
-      (let [[name func] (make-builtin-func (first func-infos))]
+      (let [[name func] (make-builtin-func (first func-infos) builtin-resolver)]
         (recur (next func-infos) (assoc func-map name func))))))
 
 (defn parse
   "Parses the incoming Intermediate Representation map"
-  [{:strs [static plans funcs]}]
-  (let [builtin-funcs-info (get static "builtin_funcs")]
-    {:plans         (make-plans plans)
-     :funcs         (make-funcs funcs)
-     :builtin-funcs (make-builtin-funcs builtin-funcs-info)
-     :static        static}))
+  ([ir]
+   (parse ir builtins/get-builtin))
+  ([{:strs [static plans funcs]} builtin-resolver]
+   (let [builtin-funcs-info (get static "builtin_funcs")]
+     {:plans         (make-plans plans)
+      :funcs         (make-funcs funcs)
+      :builtin-funcs (make-builtin-funcs builtin-funcs-info builtin-resolver)
+      :static        static})))
 
 (defn parse-json
   "Parses the incoming string"
