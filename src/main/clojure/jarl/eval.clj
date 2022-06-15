@@ -99,10 +99,12 @@
 (defn eval-CallDynamicStmt [target path args state]
   (let [path (map #(state/get-value state %) path)
         func-name (string/join "." path)]
-    (log/debugf "CallDynamicStmt - calling dynamic func <%s>" path)
+    (log/debugf "CallDynamicStmt - calling dynamic func <%s>" func-name)
     (let [func (state/get-func state path)
           args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))]
-      (call-func func target func-name args state))))
+      (if (nil? func)
+        (break state)                                       ; dynamic func miss
+        (call-func func target func-name args state)))))
 
 (defn eval-CallStmt [target func-name args state]
   (log/debugf "CallStmt - calling func <%s> with args: %s; target <%d>" func-name args target)
