@@ -44,11 +44,12 @@
 
 (defn typed-seq
   "Ensure that array/set only contains allowed Rego types"
-  [arr-or-set allowed-types]
+  [builtin-name arr-or-set allowed-types]
   (let [allowed-set (set allowed-types)
         allow (if (contains? allowed-set "number") (conj allowed-set "floating-point number") allowed-set)
         forbidden (fn [x] (not (contains? allow (types/java->rego x))))]
     (when-let [violation (first (filter forbidden arr-or-set))]
-      (throw (errors/builtin-ex "operand must be array or set of %s but got array or set containing %s"
-                                (str/join "," allowed-types)
-                                (types/java->rego violation))))))
+      (throw (errors/type-ex "%s: operand must be array or set of %s but got array or set containing %s"
+                             builtin-name
+                             (str/join "," allowed-types)
+                             (types/java->rego violation))))))

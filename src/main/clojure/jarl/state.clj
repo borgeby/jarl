@@ -114,11 +114,8 @@
   (merge data (data-from-plan-info plan-info)))
 
 (defn init-state [info input data]
-  (let [local {}
-        local (if-not (nil? input)
-                (assoc local 0 input)
-                local)
-        local (if-not (nil? data)
-                (assoc local 1 (make-data info data))
-                local)]
-    (assoc info :local local)))
+  (-> info
+      (assoc :builtin-context {:time-now-ns (utils/time-now-ns)})
+      (assoc :local (cond-> {}
+                            (some? input) (assoc 0 input)
+                            (some? data) (assoc 1 (make-data info data))))))

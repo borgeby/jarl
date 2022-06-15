@@ -3,6 +3,7 @@
             [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.data.json :as json]
+            [clojure.tools.logging :as log]
             [test.utils :refer [add-test]]
             [jarl.builtins.registry :as registry]
             [jarl.parser :refer [parse]])
@@ -30,6 +31,12 @@
 (defn- get-plan [plans name]
   (get (first (filter #(= name (get % 0)) plans)) 1))
 
+; Temporary workaround since we can't parse non-JSON terms
+(defn parse-input-term [term]
+  (condp = term
+    "{\"foo\": {{1}}}" {"foo" #{#{1}}}
+    (json/read-str term)))
+
 (defn- do-test [{:strs           [data note]
                  entry-points    "entrypoints"
                  want-results    "want_plan_result"
@@ -39,7 +46,7 @@
                  :as             test-case}]
   (println "Running test case:" note)
   (let [input (if (contains? test-case "input_term")
-                (json/read-str (get test-case "input_term"))
+                (parse-input-term (get test-case "input_term"))
                 (get test-case "input"))
         info (cond-> (parse ir)
                      (true? (get test-case "strict_error")) (assoc :strict-builtin-errors true))]
@@ -54,13 +61,13 @@
               ;(println (str "Want: " want-result "\n\nGot: " result "\n"))
               (is (= result want-result)))
             (do
-              (println (str "Want error: " want-error-code ": " want-error "\n"))
+              (log/infof "Want error: %s: %s" want-error-code want-error)
               (try
                 (let [result-set (plan info data input)]
                   (is (not (nil? result-set)) "Exception must be thrown"))
                 (catch JarlException e
-                  (is (.contains (.getMessage e) want-error))
-                  (is (= (.getType e) want-error-code)))
+                  (is (.contains (.getMessage e) want-error) (str "Got error message: " (ex-message e)))
+                  (is (= (.getType e) want-error-code) (str "Got error code: " (.getType e))))
                 (catch Throwable e
                   (println "Unexpected error" e)
                   (is false "JarlException must be thrown"))))))))))

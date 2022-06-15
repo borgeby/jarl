@@ -1,41 +1,30 @@
 (ns jarl.builtins.array_test
-  (:require [clojure.test :refer [deftest is testing]]
-            [jarl.builtins.array :refer [builtin-concat builtin-reverse builtin-slice]])
+  (:require [clojure.test :refer [deftest]]
+            [test.utils :refer [testing-builtin]])
   (:import (se.fylling.jarl TypeException)))
 
 (deftest builtin-concat-test
-  (testing "concat arrays"
-    (is (= (builtin-concat [1 2] [3]) [1 2 3]))
-    (is (= (builtin-concat [1 2 3] []) [1 2 3]))
-    (is (= (builtin-concat [1] ["a"]) [1 "a"]))))
-
-(deftest builtin-concat-test-exceptions
-  (testing "concat non-arrays"
-    (is (thrown-with-msg? TypeException #"array.concat: operand 1 must be array but got string" (builtin-concat "a" [3])))
-    (is (thrown-with-msg? TypeException #"array.concat: operand 2 must be array but got string" (builtin-concat [3] "a")))))
+  (testing-builtin "array.concat"
+    [[1 2] [3]]   [1 2 3]
+    [[1 2 3] []]  [1 2 3]
+    [[1] ["a"]]   [1 "a"]
+    ["a" [3]]     [TypeException "operand 1 must be array but got string"]
+    [[3] "a"]     [TypeException "operand 2 must be array but got string"]))
 
 (deftest builtin-reverse-test
-  (testing "reverse arrays"
-    (is (= (builtin-reverse [1 2 3]) [3 2 1]))
-    (is (= (builtin-reverse ["c" "b" "a"]) ["a" "b" "c"]))
-    (is (= (builtin-reverse []) []))))
-
-(deftest builtin-reverse-test-exceptions
-  (testing "reverse non-arrays"
-    (is (thrown-with-msg? TypeException #"array.reverse: operand 1 must be array but got string" (builtin-reverse "abc")))
-    (is (thrown-with-msg? TypeException #"array.reverse: operand 1 must be array but got number" (builtin-reverse 12345)))))
+  (testing-builtin "array.reverse"
+    [[1 2 3]]         [3 2 1]
+    [["c" "b" "a"]]   ["a" "b" "c"]
+    [[]]              []
+    ["abc"]           [TypeException "operand 1 must be array but got string"]
+    [12345]           [TypeException "operand 1 must be array but got number" ]))
 
 (deftest builtin-slice-test
-  (testing "slice arrays"
-    (is (= [1 2 3] (builtin-slice [1 2 3 4 5] 0 3)))
-    (is (= [3 4] (builtin-slice [1 2 3 4 5] 2 4))))
-  (testing "stop > start"
-    (is (= [] (builtin-slice [1 2 3 4 5] 4 1))))
-  (testing "out of bounds"
-    (is (= [1 2 3] (builtin-slice [1 2 3] -10 10)))))
-
-(deftest builtin-slice-test-exceptions
-  (testing "slice type errors"
-    (is (thrown-with-msg? TypeException #"array.slice: operand 1 must be array but got string" (builtin-slice "10" -10 10)))
-    (is (thrown-with-msg? TypeException #"array.slice: operand 2 must be integer but got floating-point number" (builtin-slice [10] 10.01 10)))
-    (is (thrown-with-msg? TypeException #"array.slice: operand 3 must be number but got string" (builtin-slice [10] 0 "f")))))
+  (testing-builtin "array.slice"
+    [[1 2 3 4 5] 0 3]     [1 2 3]
+    [[1 2 3 4 5] 2 4]     [3 4]
+    [[1 2 3 4 5] 4 1]     []
+    [[1 2 3] -10 10]      [1 2 3]
+    ["10" -10 10]         [TypeException "operand 1 must be array but got string"]
+    [[10] 10.01 10]       [TypeException "operand 2 must be integer but got floating-point number"]
+    [[10] 0 "f"]          [TypeException "operand 3 must be number but got string"]))

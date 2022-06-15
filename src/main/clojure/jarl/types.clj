@@ -19,6 +19,9 @@
 (defn bigint? [x]
   (instance? BigInt x))
 
+(defn non-int-float? [x]
+  (not (zero? (mod x 1))))
+
 (defn java->rego
   "Translates provided Java type to equivalent Rego type name"
   [value]
@@ -117,4 +120,4 @@
     :else                         (compare a b)))
 
 (defn rego-equal? [a b]
-  (= (rego-compare a b) 0))
+  (zero? (rego-compare a b)))

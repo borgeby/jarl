@@ -1,7 +1,7 @@
 package se.fylling.jarl;
 
-public class UndefinedException extends Exception {
+public class UndefinedException extends JarlException {
     public UndefinedException(String message) {
-        super(message);
+        super("", message);
     }
 }

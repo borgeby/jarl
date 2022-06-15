@@ -75,7 +75,7 @@
 (defn- call-func [func target func-name args state]
   (if (nil? func)
     (throw (Exception. (format "unknown function '%s'" func-name)))
-    (let [func-state (select-keys state [:static :funcs :builtin-funcs :strict-builtin-errors :with-stack])
+    (let [func-state (dissoc state :local :plans)
           result (func args func-state)]
       (if (contains? result :result)
         (do
@@ -312,7 +312,7 @@
   [source-index key-index value-index block-stmt state]
   (log/debugf "ScanStmt - scanning <%d>" source-index)
   (let [source (state/get-local state source-index)]
-    (if (not (coll? source))                                ; OPA IR docs states 'source' may not be an empty collection; but if we 'break' for such, statements like 'every x in [] { x != x }' will be 'undefined'.
+    (if-not (coll? source) ; OPA IR docs states 'source' may not be an empty collection; but if we 'break' for such, statements like 'every x in [] { x != x }' will be 'undefined'.
       (do
         (log/debugf "ScanStmt - '%s' is empty or not a collection" source-index)
         (break state))
@@ -336,7 +336,7 @@
               (recur (next source-indexed) (block-stmt state)))))))))
 
 (defn- int-path-to-str-path [state int-path]
-  (into [] (map #(state/get-string state %) int-path)))     ; doall doesn't realize the array in a way that can be logged properly
+  (vec (map #(state/get-string state %) int-path)))     ; doall doesn't realize the array in a way that can be logged properly
 
 (defn eval-WithStmt [local-index path value-info stmts state]
   (let [str-path (int-path-to-str-path state path)
@@ -428,8 +428,8 @@
 (defn eval-builtin-func [name builtin-func args state]
   (log/debugf "executing built-in func <%s> with args: %s" name, args)
   (try
-    (let [arg-list (utils/indexed-map-to-array args)
-          result (apply builtin-func arg-list)]
+    (let [result (builtin-func {:args (utils/indexed-map-to-array args)
+                                      :builtin-context (:builtin-context state)})]
       (log/debugf "built-in function <%s> returning '%s'" name result)
       {:result result})
     (catch BuiltinException e

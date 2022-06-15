@@ -7,14 +7,14 @@
 (defn builtin-plus
   "Implementation of plus built-in"
   {:builtin "plus" :args-types ["number" "number"]}
-  [a b]
+  [{[a b] :args}]
   (check-args (meta #'builtin-plus) a b)
   (possibly-int (+ a b)))
 
 (defn builtin-minus
   "Implementation of minus built-in"
   {:builtin "minus" :args-types ["number" "number"]}
-  [a b]
+  [{[a b] :args}]
   ; Disable args check until we have a way to express union types
   ; (check-args (meta #'builtin-minus) a b)
   (if (and (set? a) (set? b))
@@ -27,36 +27,40 @@
 (defn builtin-mul
   "Implementation of mul built-in"
   {:builtin "mul" :args-types ["number" "number"]}
-  [a b]
+  [{[a b] :args}]
   (check-args (meta #'builtin-mul) a b)
   (possibly-int (* a b)))
 
 (defn builtin-div
   "Implementation of div built-in"
   {:builtin "div" :args-types ["number" "number"]}
-  [a b]
+  [{[a b] :args}]
   (check-args (meta #'builtin-div) a b)
   (if (zero? b)
-    (throw (errors/undefined-ex "div: divide by zero"))
+    (throw (errors/builtin-ex "div: divide by zero"))
     (possibly-int (double (/ a b)))))
+
+
 
 (defn builtin-rem
   "Implementation of rem built-in"
   {:builtin "rem" :args-types ["number" "number"]}
-  [a b]
+  [{[a b] :args}]
   (check-args (meta #'builtin-rem) a b)
   (when (zero? b)
     (throw (errors/builtin-ex "modulo by zero")))
+  (when (or (types/non-int-float? a) (types/non-int-float? b))
+    (throw (errors/builtin-ex "rem: modulo on floating-point number")))
   (let [res (rem a b)]
-    (if (zero? (mod res 1))
-      (possibly-int res)
+    (if (types/non-int-float? res)
       ; OPA returns undefined for rem resulting in floating point numbers
-      (throw (errors/undefined-ex "remainder is not an integer")))))
+      (throw (errors/builtin-ex "rem: remainder is not an integer"))
+      (possibly-int res))))
 
 (defn builtin-round
   "Implementation of round built-in"
   {:builtin "round" :args-types ["number"]}
-  [x]
+  [{[x] :args}]
   (check-args (meta #'builtin-round) x)
   (cond
     (int? x) x
@@ -66,7 +70,7 @@
 (defn builtin-ceil
   "Implementation of ceil built-in"
   {:builtin "ceil" :args-types ["number"]}
-  [x]
+  [{[x] :args}]
   (check-args (meta #'builtin-ceil) x)
   (cond
     (int? x) x
@@ -76,7 +80,7 @@
 (defn builtin-floor
   "Implementation of floor built-in"
   {:builtin "floor" :args-types ["number"]}
-  [x]
+  [{[x] :args}]
   (check-args (meta #'builtin-floor) x)
   (cond
     (int? x) x
@@ -86,7 +90,7 @@
 (defn builtin-abs
   "Implementation of abs built-in"
   {:builtin "abs" :args-types ["number"]}
-  [x]
+  [{[x] :args}]
   (check-args (meta #'builtin-abs) x)
   ; Clojure 1.11 has `abs` in core, but lein clj-kondo seems to depend on an older version, which fails
   ; on calling abs as "unresolved". I've asked the maintainers to have that bumped, and will replace this once fixed.
@@ -96,7 +100,7 @@
 (defn builtin-numbers-range
   "Implementation of numbers.range built-in"
   {:builtin "numbers.range" :args-types ["number" "number"]}
-  [a b]
+  [{[a b] :args}]
   (check-args (meta #'builtin-numbers-range) a b)
   (if (> a b)
     (rseq (vec (range b (inc a))))

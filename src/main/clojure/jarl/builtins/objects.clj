@@ -8,7 +8,7 @@
 (defn builtin-object-get
   "Implementation of object.get built-in"
   {:builtin "object.get" :args-types ["object", "any", "any"]}
-  [object key default]
+  [{[object key default] :args}]
   (if (vector? key)
     (get-in object key default)
     (get object key default)))
@@ -16,7 +16,7 @@
 (defn builtin-object-remove
   "Implementation of object.remove built-in"
   {:builtin "object.remove" :args-types ["object" #{"object", "set", "array"}]}
-  [object ks]
+  [{[object ks] :args}]
   (try
     (check-args (meta #'builtin-object-remove) object ks)
     (catch TypeException e
@@ -24,29 +24,36 @@
       ; https://github.com/open-policy-agent/opa/issues/4767
       (throw (errors/type-ex (str/replace (.getMessage e) #"set" "string")))))
   (if (and (map? ks) (not-empty ks))
-    (builtin-object-remove object (vec (keys ks)))
+    (builtin-object-remove {:args [object (vec (keys ks))]})
     (apply dissoc object ks)))
 
 (defn builtin-object-union
   "Implementation of object.union built-in"
   {:builtin "object.union" :args-types ["object", "object"]}
-  [o1 o2]
+  [{[o1 o2] :args}]
   (check-args (meta #'builtin-object-union) o1 o2)
   (merge o1 o2))
 
 (defn builtin-object-union-n
   "Implementation of object.union_n built-in"
   {:builtin "object.union" :args-types ["array"]}
-  [objects]
+  [{[objects] :args}]
   (check-args (meta #'builtin-object-union-n) objects)
   (apply merge objects))
 
 (defn builtin-object-filter
   "Implementation of object.filter built-in"
-  {:builtin "object.filter" :args-types ["object", "any"]}
-  [object ks]
-  (if (map? ks)
-    (builtin-object-filter object (keys ks))
+  {:builtin "object.filter" :args-types ["object", #{"object" "set" "array"}]}
+  [{[object ks] :args}]
+  (try
+    (check-args (meta #'builtin-object-filter) object ks)
+    (catch TypeException e
+      ; Handle wrong error message in OPA until resolved
+      ; https://github.com/open-policy-agent/opa/issues/4767
+      (throw (errors/type-ex (str/replace (.getMessage e) #"set" "string")))))
+  (check-args (meta #'builtin-object-filter) object ks)
+  (if (and (map? ks) (not-empty ks))
+    (builtin-object-filter {:args [object (vec (keys ks))]})
     (select-keys object ks)))
 
 ; Modified version of:
@@ -65,5 +72,5 @@
 (defn builtin-json-filter
   "Implementation of json.filter built-in"
   {:builtin "json.filter" :args-types ["object", "any"]}
-  [object paths]
+  [{[object paths] :args}]
   (select-keys* object paths))

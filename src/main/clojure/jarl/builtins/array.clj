@@ -6,21 +6,21 @@
 (defn builtin-concat
   "Implementation of array.concat built-in"
   {:builtin "array.concat" :args-types ["array" "array"]}
-  [a b]
+  [{[a b] :args}]
   (check-args (meta #'builtin-concat) a b)
   (concat a b))
 
 (defn builtin-reverse
   "Implementation of array.reverse built-in"
   {:builtin "array.reverse" :args-types ["array"]}
-  [arr]
+  [{[arr] :args}]
   (check-args (meta #'builtin-reverse) arr)
   (reverse arr))
 
 (defn builtin-slice
   "Implementation of array.slice built-in"
   {:builtin "array.slice" :args-types ["array", "number", "number"]}
-  [arr start stop]
+  [{[arr start stop] :args}]
   (check-args (meta #'builtin-slice) arr start stop)
   (let [start (max start 0)
         stop (min stop (count arr))]
