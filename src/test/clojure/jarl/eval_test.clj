@@ -3,6 +3,7 @@
             [jarl.eval :refer [eval-ArrayAppendStmt
                                eval-AssignVarStmt
                                eval-AssignVarOnceStmt
+                               eval-DotStmt
                                eval-IsObjectStmt eval-LenStmt
                                eval-MakeNumberIntStmt
                                eval-MakeObjectStmt
@@ -139,6 +140,72 @@
           state {:local {}}
           result-state (eval-AssignVarOnceStmt source-index target state)]
       (is (= result-state state)))))
+
+(deftest eval-DotStmt-test
+  (testing "get in object"
+    (let [target-index 42
+          key 13
+          key-index 3
+          key-pos (make-local-value-key key-index)
+          value 37
+          source-value {key value}
+          source-index 2
+          source-pos (make-local-value-key source-index)
+          state {}
+          state (set-local state key-index key)
+          state (set-local state source-index source-value)
+          result-state (eval-DotStmt source-pos key-pos target-index state)
+          result (get-local result-state target-index)]
+      (is (not (contains? result-state :break-index)))
+      (is (= result value))))
+  (testing "get in empty object"
+    (let [target-index 42
+          key 13
+          key-index 3
+          key-pos (make-local-value-key key-index)
+          source-value {}
+          source-index 2
+          source-pos (make-local-value-key source-index)
+          state {}
+          state (set-local state key-index key)
+          state (set-local state source-index source-value)
+          result-state (eval-DotStmt source-pos key-pos target-index state)]
+      (is (contains? result-state :break-index))))
+  (testing "get in array"
+    (let [target-index 42
+          key 13
+          key-index 3
+          key-pos (make-local-value-key key-index)
+          source-value [1 2 3]
+          source-index 2
+          source-pos (make-local-value-key source-index)
+          state {}
+          state (set-local state key-index key)
+          state (set-local state source-index source-value)
+          result-state (eval-DotStmt source-pos key-pos target-index state)]
+      (is (contains? result-state :break-index))))
+  (testing "key not present"
+    (let [target-index 42
+          key-index 3
+          key-pos (make-local-value-key key-index)
+          source-value [1 2 3]
+          source-index 2
+          source-pos (make-local-value-key source-index)
+          state {}
+          state (set-local state source-index source-value)
+          result-state (eval-DotStmt source-pos key-pos target-index state)]
+      (is (contains? result-state :break-index))))
+  (testing "source not present"
+    (let [target-index 42
+          key 13
+          key-index 3
+          key-pos (make-local-value-key key-index)
+          source-index 2
+          source-pos (make-local-value-key source-index)
+          state {}
+          state (set-local state key-index key)
+          result-state (eval-DotStmt source-pos key-pos target-index state)]
+      (is (contains? result-state :break-index)))))
 
 (deftest eval-MakeObjectStmt-test
   (testing "make an empty object"

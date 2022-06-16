@@ -101,15 +101,17 @@
 (defn- generate-tests
   "Generate tests and intern them in the namespace"
   []
-  (doseq [test-case (read-test-cases)]
-    (let [{:strs [note plan]} test-case
-          test-name (str/replace note #"[/\s]" "_")]
-      (if (ir-supported? plan)
-        (add-test test-name
-                  'jarl.compliance-test
-                  #(do-test test-case)
-                  {:compliance true})
-        (println "Ignoring" test-name)))))
+  (let [test-to-run (get (System/getenv) "TEST")]
+    (doseq [test-case (read-test-cases)]
+      (let [{:strs [note plan]} test-case
+            test-name (str/replace note #"[/\s]" "_")]
+        (if (and (or (nil? test-to-run) (= note test-to-run))
+                 (ir-supported? plan))
+          (add-test test-name
+                    'jarl.compliance-test
+                    #(do-test test-case)
+                    {:compliance true})
+          (println "Ignoring" test-name))))))
 
 ; Trick `lein test` into consider this namespace before the tests have been generated
 (deftest ^:compliance phony

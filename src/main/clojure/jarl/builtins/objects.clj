@@ -8,6 +8,7 @@
   "Implementation of object.get built-in"
   {:builtin "object.get" :args-types ["object", "any", "any"]}
   [{[object key default] :args}]
+  (check-args (meta #'builtin-object-get) object key)
   (if (vector? key)
     (get-in object key default)
     (get object key default)))
