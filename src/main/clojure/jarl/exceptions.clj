@@ -49,6 +49,11 @@
     (catch Throwable _
       (throw ex))))
 
+(defn get-or-throw [m key ex]
+  (if-not (contains? m key)
+    (throw ex)
+    (get m key)))
+
 (defn throws?
   "Return true if invoking func throws exception"
   [func]

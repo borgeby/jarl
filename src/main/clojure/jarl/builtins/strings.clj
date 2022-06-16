@@ -81,7 +81,10 @@
   {:builtin "format_int" :args-types ["number" "number"]}
   [{[number base] :args}]
   (check-args (meta #'builtin-format-int) number base)
-  (Integer/toString number base))
+  (if-not (contains? #{2 8 10 16} base)
+    (throw (errors/type-ex "format_int: operand 2 must be one of {2, 8, 10, 16}"))
+    (Integer/toString number base)))
+
 
 (defn builtin-indexof
   "Implementation of indexof built-in"

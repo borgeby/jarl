@@ -20,7 +20,8 @@
 (defn builtin-re-match [{[pattern ^String value] :args}]
   (try
     (builtin-regex-match {:args [pattern value]})
-    (catch BuiltinException e (str/replace (.getMessage e) #"regex\.match" "re_match"))))
+    (catch BuiltinException e
+      (throw (errors/builtin-ex (str/replace (.getMessage e) #"regex\.match" "re_match"))))))
 
 (defn builtin-regex-is-valid
   "Implementation of regex.is_valid built-in"

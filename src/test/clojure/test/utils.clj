@@ -52,9 +52,9 @@
                        ; else - not vector
                        (if (map? args)
                          ; allow providing the entire request map if needed
-                         `(is (= (~func ~args) ~expect))
+                         `(is (= (~func ~args) ~expect) (str "For input: " ~args))
                          ; but since most tests only care for the args, a vector of those is more convenient
-                         `(is (= (~func {:args ~args}) ~expect)))))
+                         `(is (= (~func {:args ~args}) ~expect) (str "For input: " ~args)))))
                    pairs)]
     `(clojure.test/testing ~func-name
        ~@stmts)))

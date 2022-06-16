@@ -1,9 +1,15 @@
 (ns jarl.builtins.regex-test
   (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]]))
+            [test.utils :refer [testing-builtin]])
+  (:import (se.fylling.jarl BuiltinException)))
 
 (deftest builtin-regex-match-test
   (testing-builtin "regex.match"
+    ["[\\d]+" "123"] true
+    ["][" "foo[\"bar\"]"] [BuiltinException "error parsing regexp: missing closing ]"]))
+
+(deftest builtin-re-match-test
+  (testing-builtin "re_match"
     ["[\\d]+" "123"] true))
 
 (deftest builtin-regex-is-valid-test
