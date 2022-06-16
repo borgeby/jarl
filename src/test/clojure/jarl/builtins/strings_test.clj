@@ -143,3 +143,8 @@
   (testing-builtin "upper"
     ["abba"] "ABBA"
     ["ûnicöde"] "ÛNICÖDE"))
+
+;(deftest builtin-sprintf-test
+;  (testing-builtin "sprintf"
+;    ["ab%s%s" ["c" "d"]] "abcd"
+;    ["%v", [(BigDecimal. "2e308")]] "2e308"))

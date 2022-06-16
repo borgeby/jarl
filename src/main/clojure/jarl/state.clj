@@ -33,13 +33,7 @@
        value))))
 
 (defn- stack-contains? [stack index]
-  (if (or (nil? stack) (empty? stack))
-    false
-    (not (nil? (some
-                 (fn [frame]
-                   (let [frame-index (first frame)]
-                     (= frame-index index)))
-                 stack)))))
+  (some? (some (fn [[frame-index]] (= frame-index index)) stack)))
 
 (defn contains-local? [{:keys [local with-stack]} index]
   (or (contains? local index) (stack-contains? with-stack index)))
@@ -51,7 +45,7 @@
   (get-in static ["strings" index "value"]))
 
 (defn contains-string? [state index]
-  (contains? (get (get state :static) "strings") index))
+  (contains? (get-in state [:static "strings"]) index))
 
 (defn set-local [{:keys [local] :as state} index value]
   (assoc state :local (assoc local index value)))
@@ -79,10 +73,8 @@
   (get-value state {"type" "string_index" "value" index}))
 
 (defn get-func [state name]
-  (let [func (get-in state [:funcs name])]
-    (if-not (nil? func)
-      func
-      (get-in state [:builtin-funcs name]))))
+  (get-in state [:funcs name]
+          (get-in state [:builtin-funcs name])))
 
 (defn add-result [{:keys [result] :as state} value]
   (assoc state :result-set (conj result value)))

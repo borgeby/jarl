@@ -3,13 +3,13 @@
             [jarl.exceptions :as errors]
             [jarl.utils :refer [instant-to-ns ns-to-instant]]
             [clojure.string :as str])
-  (:import (java.time ZoneId LocalDateTime ZoneOffset ZonedDateTime Duration)
+  (:import (java.time ZoneId LocalDateTime ZoneOffset ZonedDateTime Duration LocalDate Period)
            (java.time.format TextStyle DateTimeFormatter)
            (java.util Locale)
            (java.time.temporal ChronoUnit)))
 
 ; Courtesy of https://github.com/newm4n/go-dfe
-(def go->java-map
+(def ^:private go->java-map
   {; Go          Java
    "January"   "MMMM"
    "Jan"       "MMM"
@@ -50,7 +50,7 @@
   (let [cmp (compare (count y) (count x))]
     (if (zero? cmp) -1 cmp)))
 
-(def go->java-sorted-map (into (sorted-map-by key-length-sorter) go->java-map))
+(def ^:private go->java-sorted-map (into (sorted-map-by key-length-sorter) go->java-map))
 
 (defn- go->java-formatter ^String [format]
   (reduce (fn [acc [go java]] (str/replace acc go java)) format go->java-sorted-map))
@@ -59,7 +59,9 @@
   ([s]
    (parse-iso-datetime s DateTimeFormatter/ISO_LOCAL_DATE_TIME))
   ([s f]
-   (-> s (LocalDateTime/parse f) (.toInstant ZoneOffset/UTC))))
+   (let [ldt (errors/try-or (LocalDateTime/parse s f)
+                            (.atStartOfDay (LocalDate/parse s f)))] ; if only date, i.e. 2012-12-12
+       (.toInstant ^LocalDateTime ldt ZoneOffset/UTC))))
 
 (defn parse-iso-zoned-datetime
   ([s]
@@ -98,6 +100,61 @@
   ([^Duration d1 ^Duration d2 & more]
    (reduce d+ (d+ d1 d2) more)))
 
+(defn- ns-with-tz
+  "Many of the time.* functions take either an ns number, or a vector of [ns, tz] —
+   this normalizes the two variants into the latter, using UTC unless provided"
+  ^ZonedDateTime
+  [x builtin-name]
+  (let [arr (if (vector? x) x [x "UTC"])
+        tz (second arr)
+        time (errors/try-or-throw #(long (first arr))
+                                  (errors/builtin-ex "%s: timestamp too big" builtin-name))]
+    (.atZone (ns-to-instant time) (ZoneId/of (if (empty? tz) "UTC" tz)))))
+
+(defn builtin-time-add-date
+  "Implementation of time.add_date"
+  {:builtin "time.add_date" :args-types ["number", "number", "number", "number"]}
+  [{[^long ns ^long years ^long months ^long days] :args}]
+  (check-args (meta #'builtin-time-add-date) ns years months days)
+  (let [result (instant-to-ns (-> (ZonedDateTime/ofInstant (ns-to-instant ns) (ZoneId/of "UTC"))
+                                  (.plus years   ChronoUnit/YEARS)
+                                  (.plus months  ChronoUnit/MONTHS)
+                                  (.plus days    ChronoUnit/DAYS)
+                                  (.toInstant)))]
+    (errors/try-or-throw #(long result) (errors/builtin-ex "time.add_date: time outside of valid range"))))
+
+(defn builtin-time-clock
+  "Implementation of time.clock built-in"
+  {:builtin "time.clock" :args-types [#{"number", "array"}]}
+  [{[x] :args}]
+  (check-args (meta #'builtin-time-clock) x)
+  (let [ins (ns-with-tz x "time.clock")]
+    [(.getHour ins) (.getMinute ins) (.getSecond ins)]))
+
+(defn builtin-time-date
+  "Implementation of time.date built-in"
+  {:builtin "time.date" :args-types [#{"number", "array"}]}
+  [{[x] :args}]
+  (check-args (meta #'builtin-time-date) x)
+  (let [ins (ns-with-tz x "time.date")]
+    [(.getYear ins) (.getMonthValue ins) (.getDayOfMonth ins)]))
+
+; TODO: Commented out in registry - needs to work with both Period and Duration
+(defn builtin-time-diff
+  "Implementation of time.diff built-in"
+  {:builtin "time.diff" :args-types [#{"number", "array"} #{"number", "array"}]}
+  [{[x y] :args}]
+  (check-args (meta #'builtin-time-diff) x y)
+  (let [ns1  (ns-with-tz x "time.diff")
+        ns2  (ns-with-tz y "time.diff")
+        per  ^Period (Period/between (.toLocalDate ns1) (.toLocalDate ns2))]
+    [(.getYears  per)
+     (.getMonths per)
+     (.getDays   per)
+     (- (.getHour ns1) (.getHour ns2))
+     (- (.getMinute ns1) (.getMinute ns2))
+     (- (.getSecond ns1) (.getSecond ns2))]))
+
 (defn builtin-time-now-ns
   "Implementation of time.now_ns built-in"
   {:builtin "time.now_ns" :args-types []}
@@ -109,11 +166,9 @@
   {:builtin "time.weekday" :args-types [#{"number", "array"}]}
   [{[x] :args}]
   (check-args (meta #'builtin-time-weekday) x)
-  (let [v (if (vector? x) x [x])]
-      (-> (ns-to-instant (errors/try-or-throw #(long (first v)) (errors/builtin-ex "time.weekday: timestamp too big")))
-          (.atZone (ZoneId/of (or (second v) "UTC")))
-          (.getDayOfWeek)
-          (.getDisplayName TextStyle/FULL Locale/ENGLISH))))
+  (-> (ns-with-tz x "time.weekday")
+      (.getDayOfWeek)
+      (.getDisplayName TextStyle/FULL Locale/ENGLISH)))
 
 (defn unknown-duration-ex [unit time]
   (errors/builtin-ex "time.parse_duration_ns: time: unknown unit \"%s\" in duration \"%s\""

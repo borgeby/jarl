@@ -173,12 +173,9 @@
     (fn [state]
       (eval/eval-ScanStmt source key value block state))))
 
-(defn make-WithStmt [stmt-info]
+(defn make-WithStmt [{:strs [block local path value]}]
   (log/debug "making WithStmt stmt")
-  (let [local (get stmt-info "local")
-        path (get stmt-info "path")
-        value (get stmt-info "value")
-        stmts (make-stmts (get (get stmt-info "block") "stmts"))]
+  (let [stmts (make-stmts (get block "stmts"))]
     (fn [state]
       (eval/eval-WithStmt local path value stmts state))))
 
@@ -286,16 +283,12 @@
     [name path (fn [args state]
                  (eval/eval-func name params return-index blocks args state))]))
 
-(defn make-funcs [funcs-info]
+(defn make-funcs [{:strs [funcs]}]
   (log/debug "making funcs")
-  (loop [func-infos (get funcs-info "funcs")
-         func-map {}]
-    (if (empty? func-infos)
-      func-map
-      (let [[name path func] (make-func (first func-infos))
-            func-map (assoc func-map name func)             ; bind function to name
-            func-map (assoc func-map path func)]            ; bind function to path
-        (recur (next func-infos) func-map)))))
+  (let [assoc-func (fn [func-map func-info]
+                     (let [[name path func] (make-func func-info)]
+                       (-> func-map (assoc name func) (assoc path func))))]
+    (reduce assoc-func {} funcs)))
 
 (defn make-builtin-func [{:strs [name]} builtin-resolver]
   (let [builtin-func (builtin-resolver name)]

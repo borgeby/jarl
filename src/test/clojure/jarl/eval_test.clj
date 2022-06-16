@@ -6,6 +6,7 @@
                                eval-DotStmt
                                eval-IsObjectStmt eval-LenStmt
                                eval-MakeNumberIntStmt
+                               eval-MakeNumberRefStmt
                                eval-MakeObjectStmt
                                eval-SetAddStmt]]
             [jarl.state :refer [get-local set-local]])
@@ -423,6 +424,18 @@
           target 3
           state {}]
       (is (thrown-with-msg? Exception #"'null' is not an integer" (eval-MakeNumberIntStmt value target state))))))
+
+(deftest eval-MakeNumberRefStmt-test
+  ; Test to assert issue: https://github.com/johanfylling/jarl/issues/59
+  ; Should be fixed to have Jarl handle numbers of this type
+  (testing "big decimal"
+    (let [target 0
+          state {:static {"strings" [{"value" "2e308"}]}
+                 :local  {}}
+          result-state (eval-MakeNumberRefStmt 0 target state)
+          result (get-local result-state target)]
+      ; Change to assert number was read correctly
+      (is (and (double? result) (infinite? result))))))
 
 (deftest eval-SetAddStmt-test
   (testing "add to empty set"

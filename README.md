@@ -179,9 +179,9 @@ https://github.com/google/re2j
 
 ### Time
 
-- [ ] `time.add_date`
-- [ ] `time.clock`
-- [ ] `time.date`
+- [x] `time.add_date`
+- [x] `time.clock`
+- [x] `time.date`
 - [ ] `time.diff`
 - [x] `time.now_ns`
 - [x] `time.parse_duration_ns`

@@ -6,6 +6,26 @@
   (:import (se.fylling.jarl BuiltinException)
            (java.time.temporal ChronoUnit)))
 
+(deftest builtin-time-add-date-test
+  (testing-builtin "time.add_date"
+    [0 1 1 1] 34300800000000000))
+
+(deftest builtin-time-clock-test
+  (let [ns (instant-to-ns (parse-iso-datetime "2022-01-01T01:02:03"))]
+    (testing-builtin "time.clock"
+      [ns] [1 2 3])))
+
+(deftest builtin-time-date-test
+  (let [ns (instant-to-ns (parse-iso-datetime "2022-03-04T01:02:03"))]
+    (testing-builtin "time.date"
+      [ns] [2022 3 4])))
+
+;(deftest builtin-time-diff-test
+;  (let [ns1 (instant-to-ns (parse-iso-datetime "2022-01-01T00:00:00"))
+;        ns2 (instant-to-ns (parse-iso-datetime "2023-02-02T01:02:03"))]
+;    (testing-builtin "time.diff"
+;      [ns1 ns2] [1 1 1 1 1 3])))
+
 (deftest builtin-time-now-ns-test
   (testing-builtin "time.now_ns"
     {:args [] :builtin-context {:time-now-ns 1655283296943749000}} 1655283296943749000))
@@ -47,8 +67,11 @@
       ; Reference time format
       ["01/02 03:04:05PM '06 -0700" "01/01 12:12:12PM '22 -0000"]         ref-time
       ["01/02 03:04:05PM '06 -0700" "06/02 07:00:00PM '17 -0700"]         1496455200000000000
+      ; Date only
+      ["2006-01-02" "2022-01-01"] 1640995200000000000
       ; exceptions
-      ["2006-01-02T15:04:05Z07:00" "2262-04-11T23:47:16.854775808-00:00"] [BuiltinException "time outside of valid range"])))
+      ["2006-01-02T15:04:05Z07:00" "2262-04-11T23:47:16.854775808-00:00"] [BuiltinException "time outside of valid range"]
+      )))
 
 (deftest builtin-time-parse-rfc3339-ns-test
   (testing-builtin "time.parse_rfc3339_ns"
