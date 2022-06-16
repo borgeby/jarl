@@ -1,4 +1,4 @@
-(ns jarl.builtins.strings_test
+(ns jarl.builtins.strings-test
   (:require [clojure.test :refer [deftest]]
             [test.utils :refer [testing-builtin]])
   (:import (se.fylling.jarl BuiltinException)))

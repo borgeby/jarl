@@ -1,4 +1,4 @@
-(ns jarl.eval_test
+(ns jarl.eval-test
   (:require [clojure.test :refer [deftest is testing]]
             [jarl.eval :refer [eval-ArrayAppendStmt
                                eval-AssignVarStmt

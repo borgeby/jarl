@@ -1,4 +1,4 @@
-(ns jarl.state_test
+(ns jarl.state-test
   (:require [clojure.test :refer [deftest is testing]]
             [jarl.state :refer [get-local push-with-stack]]))
 
