@@ -37,6 +37,12 @@
     "{\"foo\": {{1}}}" {"foo" #{#{1}}}
     (json/read-str term)))
 
+(def test-builtins
+  {"opa.runtime" (fn [_] {})})
+
+(defn compliance-builtin-resolver [builtin-name]
+  (get test-builtins builtin-name (registry/get-builtin builtin-name)))
+
 (defn- do-test [{:strs           [data note]
                  entry-points    "entrypoints"
                  want-results    "want_plan_result"
@@ -48,7 +54,7 @@
   (let [input (if (contains? test-case "input_term")
                 (parse-input-term (get test-case "input_term"))
                 (get test-case "input"))
-        info (cond-> (parse ir)
+        info (cond-> (parse ir compliance-builtin-resolver)
                      (true? (get test-case "strict_error")) (assoc :strict-builtin-errors true))]
     (doseq [entry-point entry-points]
       (let [want-result (get want-results entry-point)

@@ -5,10 +5,6 @@
            (java.util Base64)
            (java.net URLDecoder URLEncoder)))
 
-; FIXME: drop "undefined" values? (new 'Undefined' type required)
-(defn map-by-index [array]
-  (zipmap (range (count array)) array))
-
 (defn base64-encode [^String s]
   (.encodeToString (Base64/getEncoder) (.getBytes s StandardCharsets/UTF_8)))
 
