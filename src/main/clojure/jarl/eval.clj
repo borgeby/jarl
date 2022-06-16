@@ -6,10 +6,10 @@
             [jarl.utils :as utils]
             [clojure.tools.logging :as log]
             [jarl.exceptions :as errors])
-  (:import (se.fylling.jarl BuiltinException
-                            UndefinedException
-                            ConflictException
-                            MultipleOutputsConflictException)))
+  (:import (se.fylling.jarl AssignmentConflictException
+                            BuiltinException
+                            MultipleOutputsConflictException
+                            UndefinedException)))
 
 (defn break
   ([state] (assoc state :break-index 0))
@@ -58,7 +58,7 @@
             state                                           ; do nothing, existing value == new value
             (do
               (log/debugf "AssignVarOnceStmt - <%s> already assigned" source-index)
-              (throw (errors/conflict-ex "<%s> already assigned" source-index)))))
+              (throw (errors/assignment-conflict-ex "<%s> already assigned" source-index)))))
         (do
           (log/debugf "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" value source-index target)
           (state/set-local state target value)))))
@@ -115,21 +115,28 @@
 
 (defn eval-DotStmt
   "Gets value with key described by `key-info` from source described by `source-info` and stores it in local var at `target-index`"
-  [source-info key-info target-index state]
-  (let [source (state/get-value state source-info)
-        key (state/get-value state key-info)]
-    (if (nil? source)
-      (do
-        (log/debugf "DotStmt - <%s> not present" source-info)
-        (break state))
-      (let [val (get source key)]
-        (if-not (nil? val)
-          (do
-            (log/debugf "DotStmt - got '%s' to var <%s>" val target-index)
-            (state/set-local state target-index val))
-          (do
-            (log/debugf "DotStmt - <%s> not present in <%s>" key source-info)
-            (break state)))))))
+  [source-pos key-pos target-index state]
+  (log/debugf "DotStmt - getting <%s> from <%s> to <%d>" key-pos source-pos target-index)
+  (cond
+    (not (state/contains-value? state source-pos)) (do
+                                                     (log/debugf "DotStmt - source <%s> not present" source-pos)
+                                                     (break state))
+    (not (state/contains-value? state key-pos)) (do
+                                                  (log/debugf "DotStmt - key <%s> not present" key-pos)
+                                                  (break state))
+    :else (let [source (state/get-value state source-pos)
+                key (state/get-value state key-pos)]
+            (if-not (coll? source)
+              (do
+                (log/debugf "DotStmt - '%s' at <%s> is not a collection" source source-pos)
+                (break state))
+              (if (contains? source key)
+                (let [value (get source key)]
+                  (log/debugf "DotStmt - got '%s' to var <%s>" value target-index)
+                  (state/set-local state target-index value))
+                (do
+                  (log/debugf "DotStmt - <%s> not present in <%s>" key source-pos)
+                  (break state)))))))
 
 (defn eval-EqualStmt [a-index b-index state]
   (let [a (state/get-value state a-index)
@@ -256,7 +263,7 @@
         (if (and (not (nil? old-value)) (not= old-value value))
           (do
             (log/debugf "ObjectInsertOnceStmt - object <%s> already contains key <%s> with different value" object-index key-index)
-            (break state))
+            (throw (errors/conflict-ex "object keys must be unique")))
           (do
             (log/debugf "ObjectInsertOnceStmt - inserting '%s' at <%s> to var <%d>" value key object-index)
             (state/set-local state object-index (assoc object key value))))))))
@@ -314,7 +321,7 @@
   [source-index key-index value-index block-stmt state]
   (log/debugf "ScanStmt - scanning <%d>" source-index)
   (let [source (state/get-local state source-index)]
-    (if-not (coll? source) ; OPA IR docs states 'source' may not be an empty collection; but if we 'break' for such, statements like 'every x in [] { x != x }' will be 'undefined'.
+    (if-not (coll? source)                                  ; OPA IR docs states 'source' may not be an empty collection; but if we 'break' for such, statements like 'every x in [] { x != x }' will be 'undefined'.
       (do
         (log/debugf "ScanStmt - '%s' is empty or not a collection" source-index)
         (break state))
@@ -338,7 +345,7 @@
               (recur (next source-indexed) (block-stmt state)))))))))
 
 (defn- int-path-to-str-path [state int-path]
-  (vec (map #(state/get-string state %) int-path)))     ; doall doesn't realize the array in a way that can be logged properly
+  (vec (map #(state/get-string state %) int-path)))         ; doall doesn't realize the array in a way that can be logged properly
 
 (defn eval-WithStmt [local-index path value-info stmts state]
   (let [str-path (int-path-to-str-path state path)
@@ -421,8 +428,8 @@
       (catch MultipleOutputsConflictException e
         (log/tracef "re-throwing: %s", e)
         (throw e))                                          ; ConflictException has already been made more specific by nested function/rule call; re-throw
-      (catch ConflictException e
-        (log/tracef "nested call threw ConflictException: %s", (.getMessage e))
+      (catch AssignmentConflictException e
+        (log/tracef "nested call threw AssignmentConflictException: %s", (.getMessage e))
         (if (> (count params) 2)                            ; 'input' and 'data' documents are always present as args 0 and 1, respectively; additional args means this is a function call, otherwise a rule.
           (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
           (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs")))))))
@@ -430,8 +437,8 @@
 (defn eval-builtin-func [name builtin-func args state]
   (log/debugf "executing built-in func <%s> with args: %s" name, args)
   (try
-    (let [result (builtin-func {:args (utils/indexed-map->array args)
-                                      :builtin-context (:builtin-context state)})]
+    (let [result (builtin-func {:args            (utils/indexed-map->array args)
+                                :builtin-context (:builtin-context state)})]
       (log/debugf "built-in function <%s> returning '%s'" name result)
       {:result result})
     (catch BuiltinException e

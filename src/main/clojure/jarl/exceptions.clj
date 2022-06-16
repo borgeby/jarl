@@ -1,10 +1,11 @@
 (ns jarl.exceptions
-  (:import (se.fylling.jarl BuiltinException
+  (:import (se.fylling.jarl AssignmentConflictException
+                            BuiltinException
                             ConflictException
+                            JarlException
                             MultipleOutputsConflictException
                             TypeException
-                            UndefinedException
-                            JarlException)))
+                            UndefinedException)))
 
 (defn builtin-ex [message & args]
   (BuiltinException. (apply format message args)))
@@ -14,6 +15,9 @@
 
 (defn conflict-ex [message & args]
   (ConflictException. (apply format message args)))
+
+(defn assignment-conflict-ex [message & args]
+  (AssignmentConflictException. (apply format message args)))
 
 (defn multiple-outputs-conflict-ex [cause message & args]
   (MultipleOutputsConflictException. (apply format message args) cause))
