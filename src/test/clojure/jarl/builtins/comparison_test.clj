@@ -1,4 +1,4 @@
-(ns jarl.builtins.comparison_test
+(ns jarl.builtins.comparison-test
   (:require [clojure.test :refer [deftest]]
             [test.utils :refer [testing-builtin]]))
 

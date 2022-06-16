@@ -1,4 +1,4 @@
-(ns jarl.builtins.utils_test
+(ns jarl.builtins.utils-test
   (:require [clojure.test :refer [deftest is testing]]
             [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [typed-seq]])

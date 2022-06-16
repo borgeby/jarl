@@ -1,4 +1,4 @@
-(ns jarl.builtins.objects_test
+(ns jarl.builtins.objects-test
   (:require [clojure.test :refer [deftest]]
             [test.utils :refer [testing-builtin]]))
 

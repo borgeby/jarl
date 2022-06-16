@@ -1,4 +1,4 @@
-(ns jarl.builtins.types_test
+(ns jarl.builtins.types-test
   (:require [clojure.test :refer [deftest]]
             [test.utils :refer [testing-builtin]])
   (:import (se.fylling.jarl UndefinedException)))
