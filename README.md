@@ -184,9 +184,9 @@ https://github.com/google/re2j
 - [ ] `time.date`
 - [ ] `time.diff`
 - [x] `time.now_ns`
-- [ ] `time.parse_duration_ns`
-- [ ] `time.parse_ns`
-- [ ] `time.parse_rfc3339_ns`
+- [x] `time.parse_duration_ns`
+- [x] `time.parse_ns`
+- [x] `time.parse_rfc3339_ns`
 - [x] `time.weekday`
 
 ### Cryptography

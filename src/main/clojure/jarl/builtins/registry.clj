@@ -126,6 +126,8 @@
 
    "time.now_ns"              time/builtin-time-now-ns
    "time.weekday"             time/builtin-time-weekday
+   "time.parse_duration_ns"   time/builtin-time-parse-duration-ns
+   "time.parse_ns"            time/builtin-time-parse-ns
    "time.parse_rfc3339_ns"    time/builtin-time-parse-rfc3339-ns
 
    "crypto.hmac.md5"          crypto/builtin-crypto-hmac-md5

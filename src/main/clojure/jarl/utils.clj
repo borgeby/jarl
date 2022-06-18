@@ -37,6 +37,9 @@
 (defn instant-to-ns [^Instant instant]
   (+' (*' (.getEpochSecond instant) 1000000000) (.getNano instant)))
 
+(defn ns-to-instant ^Instant [ns]
+  (Instant/ofEpochSecond 0 ns))
+
 (defn time-now-ns
   "Current time nanos — not as precise as its OPA/Go equivalent function, but not in any way that matters"
   []
