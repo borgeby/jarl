@@ -3,7 +3,6 @@
             [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.data.json :as json]
-            [clojure.tools.logging :as log]
             [test.utils :refer [add-test]]
             [jarl.builtins.registry :as registry]
             [jarl.parser :refer [parse]])
@@ -43,9 +42,35 @@
 (defn compliance-builtin-resolver [builtin-name]
   (get test-builtins builtin-name (registry/get-builtin builtin-name)))
 
+(defn- eval-entry-points-for-results [info entry-points data input]
+  (loop [entry-points entry-points
+         result {}]
+    (if (empty? entry-points)
+      result
+      (let [entry-point (first entry-points)
+            plan (get-plan (get info :plans) entry-point)
+            entry-point-result-set (plan info data input)
+            entry-point-result (get (first entry-point-result-set) "result")
+            result (assoc result entry-point entry-point-result)]
+        (recur (next entry-points) result)))))
+
+(defn- eval-entry-points-for-errors [info entry-points data input]
+  (loop [entry-points entry-points
+         errors []]
+    (if (empty? entry-points)
+      errors
+      (let [entry-point (first entry-points)
+            plan (get-plan (get info :plans) entry-point)
+            errors (try
+                     (plan info data input)                 ; We don't care about the result set
+                     errors
+                     (catch JarlException e                 ; Blow up on non-jarl exceptions
+                       (conj errors e)))]
+        (recur (next entry-points) errors)))))
+
 (defn- do-test [{:strs           [data note]
                  entry-points    "entrypoints"
-                 want-results    "want_plan_result"
+                 want-result     "want_plan_result"
                  want-error-code "want_error_code"
                  want-error      "want_error"
                  ir              "plan"
@@ -56,28 +81,19 @@
                 (get test-case "input"))
         info (cond-> (parse ir compliance-builtin-resolver)
                      (true? (get test-case "strict_error")) (assoc :strict-builtin-errors true))]
-    (doseq [entry-point entry-points]
-      (let [want-result (get want-results entry-point)
-            plan (get-plan (get info :plans) entry-point)]
-        (is (not (nil? plan)))
-        (when-not (nil? plan)
-          (if (and (nil? want-error-code) (nil? want-error))
-            (let [result-set (plan info data input)
-                  result (get (first result-set) "result")]
-              ;(println (str "Want: " want-result "\n\nGot: " result "\n"))
-              (is (= result want-result)))
-            (do
-              (log/infof "Want error: %s: %s" want-error-code want-error)
-              (try
-                (let [result-set (plan info data input)]
-                  (is (nil? result-set) (str "Exception must be thrown, got " result-set)))
-                (catch JarlException e
-                  (is (.contains (.getMessage e) want-error) (str "Got error message: " (ex-message e)))
-                  (is (= (.getType e) want-error-code) (str "Got error code: " (.getType e))))
-                (catch Throwable e
-                  (do
-                    (println "Unexpected error" e)
-                    (is false "JarlException must be thrown")))))))))))
+    (if (and (nil? want-error-code) (nil? want-error))
+      (let [result (eval-entry-points-for-results info entry-points data input)]
+        (is (= result want-result)))
+      (let [errors (eval-entry-points-for-errors info entry-points data input)
+            error-filter (fn [^JarlException error]
+                           (and
+                             (= (.getType error) want-error-code)
+                             (.contains (.getMessage error) want-error)))
+            jarl-errors (filter error-filter errors)]
+        ; There might be other errors generated than what is expected by the test case definition, but the test case
+        ; doesn't know we're executing multiple entry-points, so we can't count unexpected JarlExceptions as violations
+        (is (not-empty jarl-errors)
+            (str "Expected error code:" want-error-code "; message: " want-error ", got" errors))))))
 
 ;
 ; Test generator

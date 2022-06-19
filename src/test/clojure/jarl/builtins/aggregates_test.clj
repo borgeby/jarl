@@ -5,13 +5,13 @@
 
 (deftest builtin-count-test
   (testing-builtin "count"
-    [[]]              0
-    [[1]]             1
-    [[1 "a"]]         2
-    ["abc"]           3
-    [(range 11)]      11
-    ["🍧🍨🧁🍰🍮"]   5
-    ["🇩🇪"]            2))
+    [[]]               0
+    [[1]]              1
+    [[1 "a"]]          2
+    ["abc"]            3
+    [(vec (range 11))] 11
+    ["🍧🍨🧁🍰🍮"]      5
+    ["🇩🇪"]             2))
 
 (deftest builtin-sum-test
   (testing-builtin "sum"
