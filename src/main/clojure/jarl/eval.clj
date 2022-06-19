@@ -9,7 +9,7 @@
   (:import (se.fylling.jarl AssignmentConflictException
                             BuiltinException
                             MultipleOutputsConflictException
-                            UndefinedException)))
+                            UndefinedException TypeException)))
 
 (defn break
   ([state] (assoc state :break-index 0))
@@ -138,9 +138,10 @@
                   (log/debugf "DotStmt - <%s> not present in <%s>" key source-pos)
                   (break state)))))))
 
-(defn eval-EqualStmt [a-index b-index state]
-  (let [a (state/get-value state a-index)
-        b (state/get-value state b-index)
+(defn eval-EqualStmt [a-pos b-pos state]
+  (log/tracef "NotStmt - <%s> == <%s>" a-pos b-pos)
+  (let [a (state/get-value state a-pos)
+        b (state/get-value state b-pos)
         result (= a b)]
     (log/debugf "EqualStmt - ('%s' == '%s') == %s" a b result)
     (if result
@@ -195,6 +196,7 @@
 (defn eval-MakeNumberRefStmt
   "Parses the static string at `index` into a number, putting the result in local var `target`"
   [index target state]
+  (log/tracef "MakeNumberRefStmt - parsing local number <%d> to local var <%d>" index target)
   (let [val (edn/read-string (state/get-static-string state index))]
     (log/debugf "MakeNumberRefStmt - putting parsed number '%s' in local var <%d>" val target)
     (state/set-local state target val)))
@@ -441,10 +443,13 @@
                                 :builtin-context (:builtin-context state)})]
       (log/debugf "built-in function <%s> returning '%s'" name result)
       {:result result})
-    (catch BuiltinException e
-      (log/tracef "function <%s> threw error: %s" name (.getMessage e))
-      (if (true? (get state :strict-builtin-errors))
-        (throw e)
+    (catch Exception e
+      (if (or (instance? BuiltinException e) (instance? TypeException e))
         (do
-          (log/debugf "function <%s> returned undefined value" name)
-          {})))))
+          (log/tracef "function <%s> threw error: %s" name (.getMessage e))
+          (if (true? (get state :strict-builtin-errors))
+            (throw e)
+            (do
+              (log/debugf "function <%s> returned undefined value" name)
+              {})))
+        (throw e)))))
