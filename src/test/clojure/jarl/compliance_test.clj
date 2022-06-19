@@ -3,7 +3,6 @@
             [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.data.json :as json]
-            [clojure.tools.logging :as log]
             [test.utils :refer [add-test]]
             [jarl.builtins.registry :as registry]
             [jarl.parser :refer [parse]])
@@ -63,9 +62,8 @@
       (let [entry-point (first entry-points)
             plan (get-plan (get info :plans) entry-point)
             errors (try
-                     (do
-                       (plan info data input)               ; We don't care about the result set
-                       errors)
+                     (plan info data input)                 ; We don't care about the result set
+                     errors
                      (catch JarlException e                 ; Blow up on non-jarl exceptions
                        (conj errors e)))]
         (recur (next entry-points) errors)))))
@@ -89,10 +87,12 @@
       (let [errors (eval-entry-points-for-errors info entry-points data input)]
         ; There might be other errors generated than what is expected by the test case definition, but the test case
         ; doesn't know we're executing multiple entry-points, so we can't count unexpected JarlExceptions as violations
-        (is (>= (count (filter #(and
-                                  (= (.getType %) want-error-code)
-                                  (.contains (.getMessage %) want-error))
-                               errors))
+        (is (>= (count (filter
+                         (fn [^JarlException error]
+                           (and
+                             (= (.getType error) want-error-code)
+                             (.contains (.getMessage error) want-error)))
+                         errors))
                 1) (str "Expected error code:" want-error-code "; message: " want-error ", got" errors))))))
 
 ;
