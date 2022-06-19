@@ -2,12 +2,13 @@
   (:require [jarl.exceptions :as errors]
             [jarl.types :as types]
             [jarl.builtins.strings :refer [cp-count]]
-            [jarl.builtins.utils :refer [possibly-int typed-seq]]))
+            [jarl.builtins.utils :refer [check-args possibly-int typed-seq]]))
 
 (defn builtin-count
   "Implementation of count built-in"
-  {:builtin "count" :args-types ["any"]}
+  {:builtin "count" :args-types [#{"string", "object", "set", "array"}]}
   [{[x] :args}]
+  (check-args (meta #'builtin-count) x)
   (if (string? x)
     (cp-count {:args [x]})
     (count x)))
