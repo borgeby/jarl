@@ -84,16 +84,16 @@
     (if (and (nil? want-error-code) (nil? want-error))
       (let [result (eval-entry-points-for-results info entry-points data input)]
         (is (= result want-result)))
-      (let [errors (eval-entry-points-for-errors info entry-points data input)]
-        ; There might be other errors generated than what is expected by the test case definition, but the test case
-        ; doesn't know we're executing multiple entry-points, so we can't count unexpected JarlExceptions as violations
-        (is (>= (count (filter
-                         (fn [^JarlException error]
+      (let [errors (eval-entry-points-for-errors info entry-points data input)
+            error-filter (fn [^JarlException error]
                            (and
                              (= (.getType error) want-error-code)
                              (.contains (.getMessage error) want-error)))
-                         errors))
-                1) (str "Expected error code:" want-error-code "; message: " want-error ", got" errors))))))
+            jarl-errors (filter error-filter errors)]
+        ; There might be other errors generated than what is expected by the test case definition, but the test case
+        ; doesn't know we're executing multiple entry-points, so we can't count unexpected JarlExceptions as violations
+        (is (not-empty jarl-errors)
+            (str "Expected error code:" want-error-code "; message: " want-error ", got" errors))))))
 
 ;
 ; Test generator
