@@ -1,7 +1,6 @@
 (ns jarl.state
   (:require [jarl.utils :as utils])
-  (:require [clojure.string :as str]
-            [clojure.tools.logging :as log])
+  (:require [clojure.tools.logging :as log])
   (:import (se.fylling.jarl UndefinedException)))
 
 (defn- upsert-local [value stack index]
@@ -99,25 +98,11 @@
       (dissoc state :with-stack)
       (assoc state :with-stack stack))))
 
-; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
-(defn- data-from-plan-info [plan-info]
-  (let [plan-name (get plan-info "name")]
-    (if (pos? (count plan-name))
-      (loop [components (reverse (str/split plan-name #"/"))
-             result {}]
-        (if (empty? components)
-          result
-          (recur (next components) {(first components) result})))
-      {})))
-
-(defn- make-data [plan-info data]
-  (merge data (data-from-plan-info plan-info)))
-
 (defn init-state [info input data]
   (cond-> info
           ; if builtin-context has been provided already, use that
           (not (contains? info :builtin-context)) (assoc :builtin-context {:time-now-ns (utils/time-now-ns)
-                                                                           :env (System/getenv)})
+                                                                           :env         (System/getenv)})
           true (assoc :local (cond-> {}
                                      (some? input) (assoc 0 input)
-                                     (some? data) (assoc 1 (make-data info data))))))
+                                     (some? data) (assoc 1 data)))))
