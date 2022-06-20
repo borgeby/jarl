@@ -48,3 +48,34 @@
   {:builtin "sort" :args-types ["any"]}
   [{[coll] :args}]
   (sort types/rego-compare coll))
+
+(defn seq-contains? [coll target]
+  (or (some #(= target %) coll) false))
+
+(defn in
+  ([x coll]
+    (cond
+      (set?    coll) (contains? coll x)
+      (vector? coll) (seq-contains? coll x)
+      (map?    coll) (seq-contains? (vals coll) x)
+      :else           false))
+  ([k v coll]
+   ; sets aren't supported by this construct
+   (= v (get coll k :not-found))))
+
+; x in coll
+(defn builtin-internal-member-2
+  "Implementation of internal.member_2 built-in"
+  {:builtin "internal.member_2" :args-types ["any" "any"]}
+  [{[x coll] :args}]
+  (in x coll))
+
+; x, y in coll
+(defn builtin-internal-member-3
+  "Implementation of internal.member_3 built-in"
+  {:builtin "internal.member_3" :args-types ["any" "any", "any"]}
+  [{[x y coll] :args}]
+  (in x y coll))
+
+(defn -main []
+  (println (some #(= {"foo" {"baz" 2000}} %) [{"foo" {"baz" 2000}}])))

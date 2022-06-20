@@ -2,7 +2,9 @@
   (:require [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [check-args]]
             [clojure.string :as str])
-  (:import (java.util.regex Pattern)))
+  (:import (java.util.regex Pattern)
+           (java.util Locale)
+           (clojure.lang PersistentVector)))
 
 (defn cp-count
   "Count using code points rather than characters"
@@ -207,3 +209,21 @@
   [{[^String s] :args}]
   (check-args (meta #'builtin-upper) s)
   (.toUpperCase s))
+
+(defn format-value [el]
+  (condp instance? el
+    BigDecimal       (str/lower-case (str/replace (str el) #"\+" ""))
+    PersistentVector (str "[" (str/join ", " (for [x el] (if (string? x) (str "\"" x "\"") x))) "]")
+    el))
+
+; TODO: Not yet in registry. WIP hacked together to first pass the compliance test.
+; Definitely needs a more robust implementation!
+(defn builtin-sprintf
+  "Implementation of sprintf built-in"
+  {:builtin "sprintf" :args-types ["string" "array"]}
+  [{[^String s arr] :args}]
+  (check-args (meta #'builtin-sprintf) s arr)
+  (let [as-java (map format-value arr)]
+    (String/format Locale/US
+                   (str/replace s #"%v" "%s")
+                   (to-array as-java))))
