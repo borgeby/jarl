@@ -45,9 +45,12 @@
    "internal.member_2"        aggregates/builtin-internal-member-2
    "internal.member_3"        aggregates/builtin-internal-member-3
 
-   "array.concat"             array/builtin-concat
-   "array.reverse"            array/builtin-reverse
-   "array.slice"              array/builtin-slice
+   "all"                      aggregates/builtin-all  ; deprecated
+   "any"                      aggregates/builtin-any  ; deprecated
+
+   "array.concat"             array/builtin-array-concat
+   "array.reverse"            array/builtin-array-reverse
+   "array.slice"              array/builtin-array-slice
 
    "and"                      sets/builtin-and
    "or"                       sets/builtin-or

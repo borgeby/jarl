@@ -17,7 +17,7 @@
 (defn url-encode [^String s]
   (URLEncoder/encode s StandardCharsets/UTF_8))
 
- (defn indexed-map->array
+ (defn indexed-map->vector
   "Created array from map values, with nil values in places for missing indices"
   [map]
   (if (empty? map)

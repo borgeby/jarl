@@ -8,9 +8,10 @@
                                eval-MakeNumberIntStmt
                                eval-MakeNumberRefStmt
                                eval-MakeObjectStmt
-                               eval-SetAddStmt]]
+                               eval-SetAddStmt
+                               type-check-args]]
             [jarl.state :refer [get-local set-local]])
-  (:import (se.fylling.jarl UndefinedException)))
+  (:import (se.fylling.jarl UndefinedException TypeException)))
 
 (defn make-value-key [type value]
   {"type"  type
@@ -490,3 +491,17 @@
           state (set-local state 2 set)
           result-state (eval-SetAddStmt set-index value-index state)]
       (is (contains? result-state :break-index)))))
+
+; Just some very basic tests here as this is heavily utilized (and hence, covered) by the compliance tests
+(deftest type-check-args-test
+  (testing "type checking from provided builtin definition"
+    (is (nil? (type-check-args "count"
+                               [{"name" "count" "decl" {"args" [{"type" "any"}]}}]
+                               ["foobar"])))
+    (is (nil? (type-check-args "my-func"
+                               [{"name" "count"} {"name" "my-func" "decl" {"args" [{"type" "string"}]}}]
+                               ["string!"])))
+    (is (thrown-with-msg? TypeException #"eval_type_error: my-func: operand 1 must be string but got number"
+                          (type-check-args "my-func"
+                                           [{"name" "count"} {"name" "my-func" "decl" {"args" [{"type" "string"}]}}]
+                                           [1983])))))

@@ -1,6 +1,5 @@
 (ns jarl.builtins.time
-  (:require [jarl.builtins.utils :refer [check-args]]
-            [jarl.exceptions :as errors]
+  (:require [jarl.exceptions :as errors]
             [jarl.utils :refer [instant-to-ns ns-to-instant]]
             [clojure.string :as str])
   (:import (java.time ZoneId LocalDateTime ZoneOffset ZonedDateTime Duration LocalDate Period)
@@ -112,10 +111,7 @@
     (.atZone (ns-to-instant time) (ZoneId/of (if (empty? tz) "UTC" tz)))))
 
 (defn builtin-time-add-date
-  "Implementation of time.add_date"
-  {:builtin "time.add_date" :args-types ["number", "number", "number", "number"]}
   [{[^long ns ^long years ^long months ^long days] :args}]
-  (check-args (meta #'builtin-time-add-date) ns years months days)
   (let [result (instant-to-ns (-> (ZonedDateTime/ofInstant (ns-to-instant ns) (ZoneId/of "UTC"))
                                   (.plus years   ChronoUnit/YEARS)
                                   (.plus months  ChronoUnit/MONTHS)
@@ -124,27 +120,18 @@
     (errors/try-or-throw #(long result) (errors/builtin-ex "time.add_date: time outside of valid range"))))
 
 (defn builtin-time-clock
-  "Implementation of time.clock built-in"
-  {:builtin "time.clock" :args-types [#{"number", "array"}]}
   [{[x] :args}]
-  (check-args (meta #'builtin-time-clock) x)
   (let [ins (ns-with-tz x "time.clock")]
     [(.getHour ins) (.getMinute ins) (.getSecond ins)]))
 
 (defn builtin-time-date
-  "Implementation of time.date built-in"
-  {:builtin "time.date" :args-types [#{"number", "array"}]}
   [{[x] :args}]
-  (check-args (meta #'builtin-time-date) x)
   (let [ins (ns-with-tz x "time.date")]
     [(.getYear ins) (.getMonthValue ins) (.getDayOfMonth ins)]))
 
 ; TODO: Commented out in registry - needs to work with both Period and Duration
 (defn builtin-time-diff
-  "Implementation of time.diff built-in"
-  {:builtin "time.diff" :args-types [#{"number", "array"} #{"number", "array"}]}
   [{[x y] :args}]
-  (check-args (meta #'builtin-time-diff) x y)
   (let [ns1  (ns-with-tz x "time.diff")
         ns2  (ns-with-tz y "time.diff")
         per  ^Period (Period/between (.toLocalDate ns1) (.toLocalDate ns2))]
@@ -156,16 +143,11 @@
      (- (.getSecond ns1) (.getSecond ns2))]))
 
 (defn builtin-time-now-ns
-  "Implementation of time.now_ns built-in"
-  {:builtin "time.now_ns" :args-types []}
   [{bctx :builtin-context}]
   (get bctx :time-now-ns))
 
 (defn builtin-time-weekday
-  "Implementation of time.weekday built-in"
-  {:builtin "time.weekday" :args-types [#{"number", "array"}]}
   [{[x] :args}]
-  (check-args (meta #'builtin-time-weekday) x)
   (-> (ns-with-tz x "time.weekday")
       (.getDayOfWeek)
       (.getDisplayName TextStyle/FULL Locale/ENGLISH)))
@@ -178,10 +160,7 @@
   (d (Long/parseLong time) (errors/get-or-throw unit->temporal unit (unknown-duration-ex unit time))))
 
 (defn builtin-time-parse-duration-ns
-  "Implementation of time.parse_duration_ns built-in"
-  {:builtin "time.parse_duration_ns" :args-types ["string"]}
   [{[s] :args}]
-  (check-args (meta #'builtin-time-parse-duration-ns) s)
   (if-let [time-unit-pairs (re-seq #"(\d+)(\p{L}+)" s)] ; returns a seq of [full match, time, unit]
     (.toNanos ^Duration (reduce d+ (map to-duration time-unit-pairs)))
     (if (errors/throws? #(Long/parseLong s))
@@ -189,17 +168,11 @@
       (throw (errors/builtin-ex "time.parse_duration_ns: time: missing unit in duration \"%s\"" s)))))
 
 (defn builtin-time-parse-ns
-  "Implementation of time.parse_ns built-in"
-  {:builtin "time.parse_ns" :args-types ["string" "string"]}
   [{[layout value] :args}]
-  (check-args (meta #'builtin-time-parse-ns) value layout)
   (let [nanos (instant-to-ns (parse-formatted-datetime value layout))]
     (errors/try-or-throw #(long nanos) (errors/builtin-ex "time.parse_ns: time outside of valid range"))))
 
 (defn builtin-time-parse-rfc3339-ns
-  "Implementation of time.parse_rfc3339_ns built-in"
-  {:builtin "time.parse_rfc3339_ns" :args-types ["string"]}
   [{[s] :args}]
-  (check-args (meta #'builtin-time-parse-rfc3339-ns) s)
   (let [nanos (instant-to-ns (parse-iso-zoned-datetime s))]
     (errors/try-or-throw #(long nanos) (errors/builtin-ex "time.parse_rfc3339_ns: time outside of valid range"))))
