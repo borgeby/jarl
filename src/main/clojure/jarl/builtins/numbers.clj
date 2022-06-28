@@ -15,8 +15,7 @@
     (set/difference a b)
     (if (and (number? a) (number? b))
       (possibly-int (-' a b))
-      (throw (errors/type-ex "minus: operand %s must be number but got %s"
-                             (if-not (number? a) 1 2) (types/->rego (if-not (number? a) a b)))))))
+      (throw (errors/type-ex "minus: operand 2 must be %s but got %s" (types/->rego a) (types/->rego b))))))
 
 (defn builtin-mul
   [{[a b] :args}]
