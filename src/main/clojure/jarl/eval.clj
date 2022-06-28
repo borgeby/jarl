@@ -1,6 +1,7 @@
 (ns jarl.eval
   (:require [clojure.edn :as edn]
             [clojure.string :as string]
+            [jarl.builtins.utils :refer [check-args]]
             [jarl.state :as state]
             [jarl.types :as types]
             [jarl.utils :as utils]
@@ -436,20 +437,43 @@
           (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
           (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs")))))))
 
+(defn- ->type [{:strs [type of]}]
+  (if (nil? of)
+    type
+    (if (vector? of)
+      (let [types (set (map #(get % "type") of))]
+        (if (= types #{"any"}) "any" types)) ; special case for type_name built-in, which is declared as "any of any"
+      (get of "type"))))
+
+(defn type-check-args [builtin-name plan-builtins argv]
+  (when-not (zero? (count argv)) ; no check for zero-arity functions
+    (if-let [args-def (-> (filterv #(= builtin-name (get % "name")) plan-builtins)
+                          (first)
+                          (get-in ["decl" "args"]))]
+      (let [types-def (mapv ->type args-def)]
+        (check-args builtin-name types-def argv))
+      (throw (errors/type-ex "Arguments definition for builtin %s not provided in plan" builtin-name)))))
+
 (defn eval-builtin-func [name builtin-func args state]
   (log/debugf "executing built-in func <%s> with args: %s" name, args)
-  (try
-    (let [result (builtin-func {:args            (utils/indexed-map->array args)
-                                :builtin-context (:builtin-context state)})]
-      (log/debugf "built-in function <%s> returning '%s'" name result)
-      {:result result})
-    (catch Exception e
-      (if (or (instance? BuiltinException e) (instance? TypeException e))
-        (do
-          (log/tracef "function <%s> threw error: %s" name (.getMessage e))
-          (if (true? (get state :strict-builtin-errors))
-            (throw e)
+    (try
+      (let [argv (utils/indexed-map->vector args)
+            plan-builtins (get-in state [:static "builtin_funcs"])
+            _ (type-check-args name plan-builtins argv)
+            result (builtin-func {:args argv :builtin-context (:builtin-context state)})]
+        (log/debugf "built-in function <%s> returning '%s'" name result)
+        {:result result})
+      (catch Exception e
+        (if (or (instance? BuiltinException e) (instance? TypeException e))
+          (if (= name "regex.is_valid")
+            ; Special case - type checking failure here evaluates to false
+            ; we should probably deal with this in a better way later
+            {:result false}
             (do
-              (log/debugf "function <%s> returned undefined value" name)
-              {})))
-        (throw e)))))
+              (log/tracef "function <%s> threw error: %s" name (.getMessage e))
+              (if (true? (get state :strict-builtin-errors))
+                (throw e)
+                (do
+                  (log/debugf "function <%s> returned undefined value" name)
+                  {}))))
+            (throw e)))))

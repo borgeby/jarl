@@ -3,64 +3,48 @@
             [jarl.types :as types]))
 
 (defn builtin-is-number
-  "Implementation of is_number built-in"
-  {:builtin "is_number" :args-types ["any"]}
   [{[x] :args}]
   (if (number? x)
     true
     (throw (errors/undefined-ex "is_number: %s is not a number" x))))
 
 (defn builtin-is-string
-  "Implementation of is_string built-in"
-  {:builtin "is_string" :args-types ["any"]}
   [{[x] :args}]
   (if (string? x)
     true
     (throw (errors/undefined-ex "is_string: %s is not a string" x))))
 
 (defn builtin-is-boolean
-  "Implementation of is_boolean built-in"
-  {:builtin "is_boolean" :args-types ["any"]}
   [{[x] :args}]
   (if (boolean? x)
     true
     (throw (errors/undefined-ex "is_boolean: %s is not a boolean" x))))
 
 (defn builtin-is-array
-  "Implementation of is_array built-in"
-  {:builtin "is_array" :args-types ["any"]}
   [{[x] :args}]
   (if (vector? x)
     true
     (throw (errors/undefined-ex "is_array: %s is not an array" x))))
 
 (defn builtin-is-set
-  "Implementation of is_set built-in"
-  {:builtin "is_set" :args-types ["any"]}
   [{[x] :args}]
   (if (set? x)
     true
     (throw (errors/undefined-ex "is_set: %s is not a set" x))))
 
 (defn builtin-is-object
-  "Implementation of is_object built-in"
-  {:builtin "is_object" :args-types ["any"]}
   [{[x] :args}]
   (if (map? x)
     true
     (throw (errors/undefined-ex "is_object: %s is not an object" x))))
 
 (defn builtin-is-null
-  "Implementation of is_null built-in"
-  {:builtin "is_null" :args-types ["any"]}
   [{[x] :args}]
   (if (nil? x)
     true
     (throw (errors/undefined-ex "is_null: %s is not null" x))))
 
 (defn builtin-type-name
-  "Implementation of type_name built-in"
-  {:builtin "type_name" :args-types ["any"]}
   [{[x] :args}]
   (let [type-name (types/java->rego x)]
     (if (= type-name "floating-point number")
