@@ -5,36 +5,149 @@
     <title>Perf</title>
 </head>
 <body>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <div id="chart"></div>
+<canvas id="jarlChart" width="400" height="200"></canvas>
+<canvas id="opaChart" width="400" height="200"></canvas>
+<canvas id="comparisonChart" width="400" height="200"></canvas>
 </body>
 <script>
-  google.charts.load('current', {packages: ['corechart', 'line']});
-  google.charts.setOnLoadCallback(drawCvs);
 
-  function drawCvs() {
-    var queryOptions = {
-      csvColumns: ['string', 'number', 'number' /* Or whatever the columns in the CSV file are */],
-      csvHasHeader: true /* This should be false if your CSV file doesn't have a header */
-    }
-    /* csvUrl is the path to your csv */
-    var query = new google.visualization.Query('https://johanfylling.github.io/jarl/perf/jarl-perf.csv', queryOptions);
-    query.send(handleQueryResponse);
 
-    function handleQueryResponse(response) {
+</script>
 
-      if (response.isError()) {
-        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-        return;
-      }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+        integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
 
-      var data = response.getDataTable();
+<script>
+  const COLORS = [
+    '#4dc9f6',
+    '#f67019',
+    '#f53794',
+    '#537bc4',
+    '#acc236',
+    '#166a8f',
+    '#00a950',
+    '#58595b',
+    '#8549ba'
+  ];
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart'));
-      // Draw your chart with the data table here.
-       chart.draw(data, queryOptions);
-    }
+  function parseCsv(csv) {
+    return csv.split("\n")
+      .map((row) => row.split(","));
   }
+
+  function renderLineChart(data, ctx, title) {
+    const titles = data[0].slice(1);
+    const rows = data.slice(1);
+    const labels = rows.map((row) => row[0]);
+
+    const datasets = titles.map((title, i) => {
+      const data = rows.map((row) => row[i + 1]);
+      return {
+        label: title,
+        data: data,
+        borderColor: COLORS[i % COLORS.length],
+        backgroundColor: COLORS[i % COLORS.length],
+      }
+    });
+
+    const chartData = {
+      labels,
+      datasets
+    };
+
+    const config = {
+      type: 'line',
+      data: chartData,
+      options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        stacked: false,
+        plugins: {
+          title: {
+            display: true,
+            text: title
+          }
+        },
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: 'micros'
+            },
+            type: 'linear',
+            display: true,
+            position: 'left',
+          }
+        }
+      },
+    };
+
+    new Chart(ctx, config);
+  }
+
+  function renderBarChart(data, ctx, title) {
+    const labels = data[0].slice(1);
+    const rows = data.slice(1)
+    const datasets = rows.map((row, i) => {
+      return {
+        label: row[0],
+        data: row.slice(1),
+        borderColor: COLORS[i % COLORS.length],
+        backgroundColor: COLORS[i % COLORS.length],
+      }
+    });
+
+    const chartData = {
+      labels,
+      datasets
+    };
+
+    const config = {
+      type: 'bar',
+      data: chartData,
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: title
+          }
+        },
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: 'micros'
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    }
+
+    new Chart(ctx, config);
+  }
+
+  Promise.all(
+    [fetch('jarl-perf.csv')
+      .then(response => response.text())
+      .then(parseCsv),
+      fetch('opa-perf.csv')
+        .then(response => response.text())
+        .then(parseCsv)])
+    .then(([jarlCsv, opaCsv]) => {
+      renderLineChart(jarlCsv, document.getElementById('jarlChart'), 'Jarl - Performance')
+      renderLineChart(opaCsv, document.getElementById('opaChart'), 'OPA - Performance')
+
+      const mergedCsv = [jarlCsv[0]]; // csv headers should be identical
+      jarlCsv.slice(1).forEach((row) => mergedCsv.push(["jarl-" + row[0], ...row.slice(1)]));
+      opaCsv.slice(1).forEach((row) => mergedCsv.push(["opa-" + row[0], ...row.slice(1)]));
+      renderBarChart(mergedCsv, document.getElementById('comparisonChart'), 'OPA/Jarl - Comparison')
+    })
+    .catch(err => console.error(err));
 </script>
 </html>

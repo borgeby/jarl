@@ -36,7 +36,7 @@
   (let [result (shell/sh (get-opa) "eval" "--metrics" "-d" policy query)
         err (:err result)]
     (when (not (string/blank? err))
-      (throw (ex-info "Failed to get OPA version" {:err err})))
+      (throw (ex-info "Failed to run OPA eval" {:err err})))
     (let [output (:out result)]
       (json/read-str output))))
 
@@ -111,11 +111,11 @@
 (defn benchmark [f ir-file csv-file version]
   (let [csv (csv-read csv-file)
         ir (parser/parse-file ir-file)
-        data {"version" version}
+        data {"label" version}
         data (conj data (benchmark-baseline))
         data (conj data (f ir))
         csv (csv-add csv data)]
-    (csv-write csv csv-file ["version" "baseline"])))
+    (csv-write csv csv-file ["label" "baseline"])))
 
 (defn -main
   ([category]
