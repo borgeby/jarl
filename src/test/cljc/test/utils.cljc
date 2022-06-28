@@ -1,15 +1,9 @@
 (ns test.utils
-  (:require [clojure.test :refer [is]]
+  (:require #?(:clj  [clojure.test     :refer [is testing]]
+               :cljs [cljs.test :refer-macros [is testing]])
             [clojure.string :as str]
             [jarl.exceptions :as errors]
             [jarl.builtins.registry :as registry]))
-
-; inspired by https://gist.github.com/joelittlejohn/2ecc1256e5d184d78f30fd6c4641099e
-
-(defn add-test
-  "Add a test to the given namespace."
-  [name ns test-fn & [metadata]]
-  (intern ns (with-meta (symbol name) (merge metadata {:test #(test-fn)})) (fn [])))
 
 (defmacro testing-builtin
   "Given the name of a builtin (as named in OPA, e.g. 'base64.encode'),
@@ -38,13 +32,13 @@
         pairs (partition 2 forms)
         stmts (map (fn [[args expect]]
                      (if (vector? expect)
-                       (if-let [expect-ex (errors/resolve-jarl-exception (first expect))]
-                         (let [ex-type (errors/rego-ex-type-from-class expect-ex)
+                       (if (isa? (first expect) :jarl.exceptions/jarl-exception)
+                         (let [ex-type (errors/rego-type (first expect))
                                ex-type-str (if (= ex-type "") "" (str ex-type ": "))
                                expect-pattern (re-pattern (str ex-type-str name ": " (second expect)))
-                               provided-ex (try (func {:args args}) (catch Exception e e))]
+                               provided-ex (errors/try-return #(func {:args args}))]
                            `(do
-                              (is (= ~(type provided-ex) ~expect-ex))
+                              (is (= ~(errors/rego-type provided-ex) ~ex-type))
                               (is (re-find ~expect-pattern ~(ex-message provided-ex))
                                   ~(str "Expected match for pattern '" expect-pattern "' but '" (ex-message provided-ex) "' does not match"))))
                          ; else - not exception
@@ -56,5 +50,5 @@
                          ; but since most tests only care for the args, a vector of those is more convenient
                          `(is (= (~func {:args ~args}) ~expect) (str "For input: " ~args)))))
                    pairs)]
-    `(clojure.test/testing ~func-name
+    `(testing ~func-name
        ~@stmts)))

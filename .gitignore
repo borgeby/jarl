@@ -1,6 +1,7 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/clojure,leiningen,intellij,visualstudiocode,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=clojure,leiningen,intellij,visualstudiocode,macos
+### Generated tests
+
+src/test/*/test/compliance/generated/
 
 ### Clojure ###
 pom.xml
@@ -20,18 +21,12 @@ pom.xml.asc
 
 .eastwood
 .clj-kondo/.cache
+.cljs_node_repl/
 
 ### Intellij ###
 
 .idea/
-
 *.iml
-
-# CMake
-cmake-build-*/
-
-# File-based project format
-*.iws
 
 # IntelliJ
 out/

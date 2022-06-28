@@ -1,16 +1,16 @@
 (ns jarl.eval
-  (:require [clojure.edn :as edn]
-            [clojure.string :as string]
+  (:require [clojure.string :as string]
             [jarl.builtins.utils :refer [check-args]]
+            [jarl.formatting :refer [sprintf]]
             [jarl.state :as state]
             [jarl.types :as types]
             [jarl.utils :as utils]
-            [clojure.tools.logging :as log]
-            [jarl.exceptions :as errors])
-  (:import (se.fylling.jarl AssignmentConflictException
-                            BuiltinException
-                            MultipleOutputsConflictException
-                            UndefinedException TypeException)))
+            [jarl.exceptions :as errors]
+            #?(:clj  [clojure.edn :as edn]
+               :cljs [cljs.tools.reader.edn :as edn])
+            #?(:clj  [clojure.tools.logging :as log]
+               :cljs [jarl.tmp-logging :as log]))
+  #?(:clj (:import  (clojure.lang ExceptionInfo))))
 
 (defn break
   ([state] (assoc state :break-index 0))
@@ -33,7 +33,7 @@
 (defn eval-AssignIntStmt [value target state]
   (when (or (not (number? value))
             (not (zero? (mod value 1))))
-    (throw (Exception. (format "'%s' is not an integer" value))))
+    (throw (ex-info (sprintf "'%s' is not an integer" value) {:type :eval-exception})))
   (log/debugf "AssignIntStmt - assigning '%d' to local var %d" value target)
   (state/set-local state target (int value)))
 
@@ -75,7 +75,7 @@
 
 (defn- call-func [func target func-name args state]
   (if (nil? func)
-    (throw (Exception. (format "unknown function '%s'" func-name)))
+    (throw (ex-info (sprintf "unknown function '%s'" func-name) {:type :eval-exception}))
     (let [func-state (dissoc state :local :plans)
           result (func args func-state)]
       (if (contains? result :result)
@@ -192,7 +192,7 @@
     (if (or (coll? val) (string? val))
       (let [len (count val)]
         (state/set-local state target len))
-      (throw (Exception. "invalid argument(s)")))))
+      (throw (ex-info "invalid argument(s)" {:type :eval-exception})))))
 
 (defn eval-MakeNumberRefStmt
   "Parses the static string at `index` into a number, putting the result in local var `target`"
@@ -213,7 +213,7 @@
 (defn eval-MakeNumberIntStmt [value target state]
   (when (or (not (number? value))
             (not (zero? (mod value 1))))
-    (throw (Exception. (format "'%s' is not an integer" value))))
+    (throw (ex-info (sprintf "'%s' is not an integer" value) {:type :eval-exception})))
   (let [value (int value)]
     (log/debugf "MakeNumberIntStmt - assigning '%d' to local var <%d>" value target)
     (state/set-local state target value)))
@@ -361,12 +361,15 @@
   (log/tracef "%s - calling with vars: %s; with-stack: %s" type (get state :local) (get state :with-stack))
   (try
     (stmt state)
-    (catch UndefinedException e
-      (log/debugf "statement type %s produced undefined result: %s" type (.getMessage e))
-      (break state))))
+    (catch ExceptionInfo e
+      (if (errors/undefined-ex? e)
+        (do
+          (log/debugf "statement type %s produced undefined result: %s" type (ex-message e))
+          (break state))
+        (throw e)))))
 
 (defn eval-stmts [stmts state]
-  (log/debug "executing statements")
+  ;(log/debug "executing statements")
   (loop [stmts stmts
          state state]
     (let [stmts-count (count stmts)]
@@ -378,7 +381,7 @@
         (recur (next stmts) ((first stmts) state))))))
 
 (defn eval-block [stmts state]
-  (log/debug "block - executing")
+  ;(log/debug "block - executing")
   (let [state (stmts state)
         break-index (get state :break-index)]
     (if-not (nil? break-index)
@@ -428,14 +431,20 @@
           (do
             (log/debugf "function <%s> undefined" name)
             {})))
-      (catch MultipleOutputsConflictException e
-        (log/tracef "re-throwing: %s", e)
-        (throw e))                                          ; ConflictException has already been made more specific by nested function/rule call; re-throw
-      (catch AssignmentConflictException e
-        (log/tracef "nested call threw AssignmentConflictException: %s", (.getMessage e))
-        (if (> (count params) 2)                            ; 'input' and 'data' documents are always present as args 0 and 1, respectively; additional args means this is a function call, otherwise a rule.
-          (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
-          (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs")))))))
+      (catch ExceptionInfo e
+        (condp = (errors/ex-type e)
+          :jarl.exceptions/multiple-outputs-conflict-ex
+          (do
+            (log/tracef e "re-throwing")
+            (throw e)) ; ConflictException has already been made more specific by nested function/rule call; re-throw
+          ::errors/assignment-conflict-exception
+          (do
+            (log/tracef "nested call threw AssignmentConflictException: %s" (ex-message e))
+            (if (> (count params) 2) ; 'input' and 'data' documents are always present as args 0 and 1, respectively; additional args means this is a function call, otherwise a rule.
+              (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
+              (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs"))))
+          ; default
+          (throw e))))))
 
 (defn- ->type [{:strs [type of]}]
   (if (nil? of)
@@ -463,20 +472,21 @@
             result (builtin-func {:args argv :builtin-context (:builtin-context state)})]
         (log/debugf "built-in function <%s> returning '%s'" name result)
         {:result result})
-      (catch Exception e
-        (if (or (instance? BuiltinException e) (instance? TypeException e))
-          (if (= name "regex.is_valid")
-            ; Special case - type checking failure here evaluates to false
-            ; we should probably deal with this in a better way later
-            {:result false}
-            (do
-              (log/tracef "function <%s> threw error: %s" name (.getMessage e))
-              (if (true? (get state :strict-builtin-errors))
-                (throw e)
-                (do
-                  (log/debugf "function <%s> returned undefined value" name)
-                  {}))))
-            (throw e)))))
+      (catch ExceptionInfo e
+        (let [type (errors/ex-type e)]
+          (if (or (= type :jarl.exceptions/builtin-exception) (= type :jarl.exceptions/type-exception))
+            (if (= name "regex.is_valid")
+              ; Special case - type checking failure here evaluates to false
+              ; we should probably deal with this in a better way later
+              {:result false}
+              (do
+                (log/tracef "function <%s> threw error: %s" name (ex-message e))
+                (if (true? (get state :strict-builtin-errors))
+                  (throw e)
+                  (do
+                    (log/debugf "function <%s> returned undefined value" name)
+                    {}))))
+            (throw e))))))
 
 (defn find-plan [info entry-point]
   (let [plan (some (fn [[name plan]] (when (= name entry-point) plan)) (:plans info))]

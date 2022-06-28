@@ -1,6 +1,6 @@
 (ns jarl.types
   (:require [jarl.exceptions :as errors])
-  (:import (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap PersistentTreeSet BigInt)))
+  #?(:clj (:import (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap PersistentTreeSet BigInt))))
 
 ; From the OPA go docs on ast.Compare:
 ;
@@ -16,36 +16,53 @@
 
 (declare rego-compare)
 
+#_:clj-kondo/ignore
 (defn bigint? [x]
-  (instance? BigInt x))
+  #?(:clj  (instance? BigInt x)
+     :cljs false)) ; TODO
 
 (defn non-int-float? [x]
-  (not (zero? (mod x 1))))
+  (and (number? x)
+       (not (zero? (mod x 1)))))
 
-(defn java->rego
-  "Translates provided Java type to equivalent Rego type name"
+(defn ->rego
+  "Translates provided type from host to equivalent Rego type name"
   [value]
   (if (nil? value)
     "null"
-    (condp instance? value
-      String "string"
-      Boolean "boolean"
-      Double "floating-point number"
-      Float "floating-point number"
-      Integer "number"
-      Long "number"
-      Number "number"
-      PersistentVector "array"
-      PersistentHashSet "set"
-      PersistentTreeSet "set"
-      PersistentArrayMap "object"
-      PersistentHashMap "object"
-      (str "unknown type: " (type value) " from value: " value))))
+    #?(:clj
+       (condp instance? value
+         String               "string"
+         Boolean              "boolean"
+         Double               "floating-point number"
+         Float                "floating-point number"
+         Integer              "number"
+         Long                 "number"
+         Number               "number"
+         PersistentVector     "array"
+         PersistentHashSet    "set"
+         PersistentTreeSet    "set"
+         PersistentArrayMap   "object"
+         PersistentHashMap    "object"
+         (str "unknown type: " (type value) " from value: " value))
+
+       :cljs
+       (cond
+         (nil?            value) "null"
+         (string?         value) "string"
+         (non-int-float?  value) "floating-point number"
+         (number?         value) "number"
+         (boolean?        value) "boolean"
+         (vector?         value) "array"
+         (set?            value) "set"
+         (map?            value) "object"
+         :else                   (str "unknown type: " (type value) " from value: " value)))))
+
 
 (defn type-sort-order
   "Return the sort order value for any given Rego type - lower value means higher precedence"
   [val]
-  (let [rego-type (java->rego val)
+  (let [rego-type (->rego val)
         precedence-table {"null"   0 "boolean" 1
                           "number" 2 "floating-point number" 2
                           "string" 3 "array" 4
@@ -116,8 +133,8 @@
     (every? map?    [a b]) (map-compare a b)
     (every? set?    [a b]) (set-compare a b)
 
-    (not= (class a) (class b))    (compare (type-sort-order a) (type-sort-order b))
-    :else                         (compare a b)))
+    (not= (type a) (type b)) (compare (type-sort-order a) (type-sort-order b))
+    :else                    (compare a b)))
 
 (defn rego-equal? [a b]
   (zero? (rego-compare a b)))

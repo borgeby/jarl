@@ -1,7 +1,7 @@
 (ns jarl.builtins.encoding
   (:require [jarl.exceptions :as errors]
-            [jarl.utils :refer [base64-encode hex-encode url-decode url-encode]]
-            [clojure.data.json :as json]
+            [jarl.utils :refer [base64-encode hex-decode hex-encode int->hex url-decode url-encode]]
+            [jarl.json :as json]
             [clj-yaml.core :as yaml]
             [clojure.string :as str])
   (:import (java.util Base64)
@@ -65,15 +65,15 @@
 (defn builtin-json-marshal
   [{[x] :args}]
   (try
-    (json/json-str x)
-    (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.marshal: %s" (.getMessage e))))))
+    (json/write-str x)
+    (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.marshal: %s" (ex-message e))))))
 
 (defn builtin-json-unmarshal
   [{[^String s] :args}]
   (try
     (json/read-str s)
     (catch EOFException _ (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: unexpected EOF")))
-    (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: %s" (.getMessage e))))))
+    (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: %s" (ex-message e))))))
 
 (defn builtin-json-is-valid
   [{[^String s] :args}]
@@ -91,15 +91,13 @@
 
 (defn- non-hex-error-msg [s]
   (let [first-non-hex-char (.charAt ^String (first (remove hex? (map str s))) 0)
-        unicode-str (str "U+" (subs (Integer/toHexString (bit-or (int first-non-hex-char) 0x10000)) 1))]
+        unicode-str (str "U+" (subs (int->hex (bit-or (int first-non-hex-char) 0x10000)) 1))]
     (str "invalid byte: " unicode-str " '" first-non-hex-char "'")))
 
 (defn builtin-hex-decode
   [{[^String s] :args}]
   (if (hex? s)
-    (let [from-hex (fn [[x y]] (unchecked-byte (Integer/parseInt (str x y) 16)))
-          bytes ^bytes (into-array Byte/TYPE (map from-hex (partition 2 s)))]
-      (String. bytes StandardCharsets/UTF_8))
+    (hex-decode s)
     (throw (errors/builtin-ex (str "hex.decode: " (non-hex-error-msg s))))))
 
 (defn builtin-yaml-marshal

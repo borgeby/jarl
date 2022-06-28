@@ -1,7 +1,7 @@
 (ns jarl.state
-  (:require [jarl.utils :as utils])
-  (:require [clojure.tools.logging :as log])
-  (:import (se.fylling.jarl UndefinedException)))
+  (:require [jarl.utils :as utils]
+            #?(:clj  [clojure.tools.logging :as log]
+               :cljs [jarl.tmp-logging :as log])))
 
 (defn- upsert-local [value stack index]
   (if (or (nil? stack) (empty? stack))
@@ -54,18 +54,21 @@
     "local" (get-local state key-value)
     "string_index" (get-string state key-value)
     "bool" key-value
-    (throw (Exception. (format "unknown value type '%s'" key-type)))))
+    (throw (ex-info (str"unknown value type '" key-type "'")
+                    {:type :unknown-value-type}))))
 
 (defn contains-value? [state {key-type "type" key-value "value"}]
   (case key-type
     "local" (contains-local? state key-value)
     "string_index" (contains-string? state key-value)
     "bool" true
-    (throw (Exception. (format "unknown value type '%s'" key-type)))))
+    (throw (ex-info (str "unknown value type '" key-type "'")
+                    {:type :unknown-value-type}))))
 
 (defn must-get-value [state key]
   (if-not (contains-value? state key)
-    (throw (UndefinedException. (format "value with key '%s' is undefined" key)))
+    (throw (ex-info (str "value with key '" key "' is undefined")
+                    {:type :undefined-exception}))
     (get-value state key)))
 
 (defn get-static-string [state index]
@@ -94,7 +97,7 @@
   (cond-> info
           ; if builtin-context has been provided already, use that
           (not (contains? info :builtin-context)) (assoc :builtin-context {:time-now-ns (utils/time-now-ns)
-                                                                           :env         (System/getenv)})
+                                                                           :env         (utils/env)})
           true (assoc :local (cond-> {}
                                      (some? input) (assoc 0 input)
                                      (some? data) (assoc 1 data)))))

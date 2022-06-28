@@ -1,7 +1,6 @@
 (ns jarl.builtins.strings-test
   (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]])
-  (:import (se.fylling.jarl BuiltinException)))
+            [test.utils :refer [testing-builtin]]))
 
 (deftest builtin-concat-test
   (testing-builtin "concat"
@@ -96,7 +95,7 @@
     ["⭐🚀🙂" 1 -1] "🚀🙂"
     ["𨦇𨦈𥻘" 1 2] "𨦈𥻘"
     ; negative offset
-    ["a" -1 1] [BuiltinException "negative offset"]))
+    ["a" -1 1] [:jarl.exceptions/builtin-exception "negative offset"]))
 
 (deftest builtin-trim-test
   (testing-builtin "trim"

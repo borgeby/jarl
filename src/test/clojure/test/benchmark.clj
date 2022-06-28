@@ -1,9 +1,10 @@
 (ns test.benchmark
   (:require [clojure.java.shell :as shell]
             [clojure.string :as string]
-            [clojure.data.json :as json]
             [criterium.core :as criterium]
             [test.csv :as csv]
+            [jarl.io :as jio]
+            [jarl.json :as json]
             [jarl.parser :as parser]
             [test.git :as git]))
 
@@ -80,7 +81,7 @@
 
 (defn benchmark [f ir-file csv-file version]
   (let [csv (csv/read-file csv-file)
-        ir (parser/parse-file ir-file)
+        ir (parser/parse-json (jio/read-file ir-file))
         data {"label" version}
         data (conj data (benchmark-baseline))
         data (conj data (f ir))

@@ -1,17 +1,20 @@
 (ns jarl.eval-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require #?(:clj  [clojure.test :refer [deftest testing is]]
+               :cljs [cljs.test :refer [deftest testing is]])
+            [clojure.string :as str]
             [jarl.eval :refer [eval-ArrayAppendStmt
                                eval-AssignVarStmt
                                eval-AssignVarOnceStmt
                                eval-DotStmt
-                               eval-IsObjectStmt eval-LenStmt
+                               eval-IsObjectStmt
+                               eval-LenStmt
                                eval-MakeNumberIntStmt
                                eval-MakeNumberRefStmt
                                eval-MakeObjectStmt
                                eval-SetAddStmt
                                type-check-args]]
-            [jarl.state :refer [get-local set-local]])
-  (:import (se.fylling.jarl UndefinedException TypeException)))
+            [jarl.state :refer [get-local set-local]]
+            [jarl.exceptions :as errors]))
 
 (defn make-value-key [type value]
   {"type"  type
@@ -133,9 +136,9 @@
           target 2
           state {:local {}}
           state (set-local state target existing-value)
-          state (set-local state 3 value)]
-      (is (thrown-with-msg? Exception (re-pattern "<\\{\"type\" \"local\", \"value\" 3}> already assigned")
-                            (eval-AssignVarOnceStmt source-index target state)))))
+          state (set-local state 3 value)
+          ex (errors/try-return #(eval-AssignVarOnceStmt source-index target state))]
+      (is (str/includes? (ex-message ex) "<{\"type\" \"local\", \"value\" 3}> already assigned"))))
   (testing "assign non-existent value"
     (let [source-index (make-local-value-key 3)
           target 2
@@ -388,12 +391,12 @@
           result-state (eval-LenStmt source target state)
           result (get-local result-state target)]
       (is (= result 5))))
-  (testing "undefined local"
-    (let [index 42
-          target 3
-          source (make-local-value-key index)
-          state {}]
-      (is (thrown? UndefinedException (eval-LenStmt source target state))))))
+(testing "undefined local"
+  (let [index 42
+        source (make-local-value-key index)
+        state {}
+        result-state (eval-IsObjectStmt source state)]
+    (is (contains? result-state :break-index)))))
 
 (deftest eval-MakeNumberIntStmt-test
   (testing "integer"
@@ -413,18 +416,21 @@
   (testing "invalid float"
     (let [value 42.9
           target 3
-          state {}]
-      (is (thrown-with-msg? Exception #"'42.9' is not an integer" (eval-MakeNumberIntStmt value target state)))))
+          state {}
+          ex (errors/try-return #(eval-MakeNumberIntStmt value target state))]
+      (is (str/includes? (ex-message ex) "'42.9' is not an integer"))))
   (testing "string"
     (let [value "foobar"
           target 3
-          state {}]
-      (is (thrown-with-msg? Exception #"'foobar' is not an integer" (eval-MakeNumberIntStmt value target state)))))
+          state {}
+          ex (errors/try-return #(eval-MakeNumberIntStmt value target state))]
+      (is (str/includes? (ex-message ex) "'foobar' is not an integer"))))
   (testing "nil"
     (let [value nil
           target 3
-          state {}]
-      (is (thrown-with-msg? Exception #"'null' is not an integer" (eval-MakeNumberIntStmt value target state))))))
+          state {}
+          ex (errors/try-return #(eval-MakeNumberIntStmt value target state))]
+      (is (str/includes? (ex-message ex) "'null' is not an integer")))))
 
 (deftest eval-MakeNumberRefStmt-test
   ; Test to assert issue: https://github.com/johanfylling/jarl/issues/59
@@ -501,7 +507,8 @@
     (is (nil? (type-check-args "my-func"
                                [{"name" "count"} {"name" "my-func" "decl" {"args" [{"type" "string"}]}}]
                                ["string!"])))
-    (is (thrown-with-msg? TypeException #"eval_type_error: my-func: operand 1 must be string but got number"
-                          (type-check-args "my-func"
-                                           [{"name" "count"} {"name" "my-func" "decl" {"args" [{"type" "string"}]}}]
-                                           [1983])))))
+    (let [ex (errors/try-return #(type-check-args "my-func"
+                                                  [{"name" "count"} {"name" "my-func" "decl" {"args" [{"type" "string"}]}}]
+                                                  [1983]))]
+      (is (= (errors/ex-type ex) ::errors/type-exception))
+      (is (= (ex-message ex) "eval_type_error: my-func: operand 1 must be string but got number")))))

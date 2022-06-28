@@ -4,7 +4,35 @@ The _JVM Alternative for the Rego Language_ (JARL) is an OPA evaluator for the J
 
 ## Usage
 
-FIXME
+Simple example policy compiled to plan by OPA, and executed by Jarl.
+
+**policy.rego**
+```rego
+package policy
+
+import future.keywords
+
+default allow := false
+
+allow {
+    "admin" in input.user.roles
+}
+```
+```shell
+opa build --target plan --entrypoint policy/allow policy.rego
+```
+This creates a bundle, containing the `plan.json` file. Since this is the only file we care for here, let's extract it
+from the bundle:
+```shell
+tar -zxf bundle.tar.gz /plan.json && rm bundle.tar.gz
+```
+We now have a plan file that we may submit for execution by Jarl!
+```shell
+lein run plan.json '{"user": {"roles": ["admin"]}}'
+```
+
+Note that the above constitutes a simple flow for development and testing only. Production artifacts, or a fixed API for
+integrations, will be here at a later point in time.
 
 ## Supported built-in functions
 
@@ -278,11 +306,87 @@ Note: `print` calls are erased from plans, so likely can't be supported without 
 * `lein test :unit` to run the Clojure unit tests
 * `lein test :compliance` to run the OPA compliance test suite
 
+#### Compliance Tests
+
+Jarl uses plans generated from the "[YAML test suite](https://github.com/open-policy-agent/opa/tree/main/test/cases/testdata)"
+of OPA in order to ensure that the result of running a plan via Jarl is the same as it would be when running the
+corresponding policy in OPA. This ensures that we stay compliant with at least the documented behavior of OPA. Now,
+there are obviously tons of things not tested there, but having more than 1000 tests at least provides some level of
+assurance. When encountering behavior which likely differs between OPA and Jarl, it is recommended to consider adding a
+test for that to the OPA test suite, and then have it added to Jarl via the [opa-compliance-test](https://github.com/johanfylling/opa-compliance-test)
+tool.
+
+In order to run the compliance tests, these must first be **generated**. This process entails taking the JSON files
+found under `src/test/resources/compliance` and turning them into Clojure/ClojureScript test cases — a process done by
+the [compliance test generator](./src/test/clojure/test/compliance/generator.clj). Running the generator is as easy as
+executing the main function in that namespace, which can conveniently be done with:
+
+```shell
+lein gen-compliance
+```
+If you only want to generate tests for a single target, you may optionally provide either `:clj` or `:cljs` as an
+argument to the above command.
+
+NOTE that you need only to generate the compliance tests cases when there have been either changes coming in upstream,
+or you have added new builtin functions for either target.
+
 ### Linters
 
 * `lein kibit` to run [kibit](https://github.com/jonase/kibit)
 * `lein eastwood` ro run [eastwood](https://github.com/jonase/eastwood)
 * `lein clj-kondo --lint src test` to run [clj-kondo](https://github.com/clj-kondo/clj-kondo)
+
+### ClojureScript
+
+Jarl currently has experimental support for ClojureScript as an alternative to Clojure. In order to avoid duplication of
+code, we use `.cljc` files and [reader conditionals](https://clojure.org/guides/reader_conditionals) where possible, and
+try to use `.clj` (Clojure) and `.cljs` (ClojureScript) files only when a particular namespace relies extensively on
+features found in the host system (such as functions related to date and time).
+
+Most notable things currently missing for full ClojureScript support:
+
+* Unit tests don't currently work with the `testingbuiltin` macro. As we rely heavily on this macro, fixing this should
+  be high up on the list of priorities.
+* Node is currently assumed as the JS environment. Only a few places rely on Node-specific functionality, and those
+  should be clearly isolated as such. Running Jarl both in Node and in the browser is definitely our goal.
+
+#### Building ClojureScript
+
+To build all targets (`main`, `test`, `compliance`):
+```shell
+lein cljsbuild once
+```
+The above command may optionally be followed by the name of one of the targets to build only that. Additionally, if 
+you're hacking on ClojureScript for a while, you may prefer `lein cljsbuild auto` to have it automatically build your
+code on changes. This is _much_ faster than building once.
+
+#### Running ClojureScript
+
+Running Jarl core:
+```shell
+node target/cljs-main.js
+```
+Running unit tests:
+```shell
+node target/cljs-test.js
+```
+Running compliance tests:
+```shell
+node target/cljs-compliance.js
+```
+
+#### REPL
+
+https://github.com/nrepl/piggieback
+
+```shell
+$ lein repl
+user=> (require 'cljs.repl.node)
+nil
+user=> (cider.piggieback/cljs-repl (cljs.repl.node/repl-env))
+To quit, type: :cljs/quit
+nil
+```
 
 ## License
 

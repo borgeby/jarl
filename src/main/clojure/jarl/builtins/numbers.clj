@@ -16,7 +16,7 @@
     (if (and (number? a) (number? b))
       (possibly-int (-' a b))
       (throw (errors/type-ex "minus: operand %s must be number but got %s"
-                             (if-not (number? a) 1 2) (types/java->rego (if-not (number? a) a b)))))))
+                             (if-not (number? a) 1 2) (types/->rego (if-not (number? a) a b)))))))
 
 (defn builtin-mul
   [{[a b] :args}]

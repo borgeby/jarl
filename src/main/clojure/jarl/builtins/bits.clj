@@ -9,19 +9,19 @@
   (when (neg? a)
     (throw (errors/type-ex "%s: operand 1 must be an unsigned integer number but got a negative %s"
                            builtin-name
-                           (if (integer? a) "integer" (types/java->rego a)))))
+                           (if (integer? a) "integer" (types/->rego a)))))
   (when (neg? b)
     (throw (errors/type-ex "%s: operand 2 must be an unsigned integer number but got a negative %s"
                            builtin-name
-                           (if (integer? b) "integer" (types/java->rego b))))))
+                           (if (integer? b) "integer" (types/->rego b))))))
 
 (defn- ensure-ints [builtin-name a b]
   (when (non-integer? a)
     (throw (errors/type-ex "%s: operand 1 must be integer number but got %s"
-                           builtin-name (types/java->rego a))))
+                           builtin-name (types/->rego a))))
   (when (non-integer? b)
     (throw (errors/type-ex "%s: operand 2 must be integer number but got %s"
-                           builtin-name (types/java->rego b)))))
+                           builtin-name (types/->rego b)))))
 
 (defn- ensure-pos-ints [builtin-name a b]
   (ensure-ints builtin-name a b)
@@ -41,7 +41,7 @@
   [{[a] :args}]
   (when (non-integer? a)
     (throw (errors/type-ex "eval_type_error: bits.negate: operand 1 must be integer number but got %s"
-                           (types/java->rego a))))
+                           (types/->rego a))))
   (bit-not a))
 
 (defn builtin-bits-xor
