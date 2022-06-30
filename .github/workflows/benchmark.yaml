@@ -1,0 +1,19 @@
+name: Benchmark
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-metrics:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Update Jarl CSV
+      run: lein perf-jarl
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      commit-message: Updating performance metrics
+      signoff: true
+      branch: bench
+      delete-branch: true
+      branch-suffix: short-commit-hash
