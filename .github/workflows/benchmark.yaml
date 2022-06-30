@@ -13,6 +13,8 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v4
       commit-message: Updating performance metrics
+      title: Updating performance metrics
+      body: Please do a "Rebase and merge", so the revision in the CSV stays relevant.
       signoff: true
       branch: bench
       delete-branch: true
