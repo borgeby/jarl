@@ -21,7 +21,7 @@
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
   :test-paths ["src/test/clojure"]
-  :test-selectors {:unit        (complement :compliance)
+  :test-selectors {:unit        (complement (and :compliance :performance))
                    :compliance  :compliance
                    :performance :performance}
   :profiles {:dev       {:dependencies [[junit/junit "4.13.2"]
