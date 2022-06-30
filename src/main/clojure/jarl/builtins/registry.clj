@@ -41,9 +41,16 @@
    "min"                      aggregates/builtin-min
    "sort"                     aggregates/builtin-sort
 
-   "array.concat"             array/builtin-concat
-   "array.reverse"            array/builtin-reverse
-   "array.slice"              array/builtin-slice
+   ; in keyword
+   "internal.member_2"        aggregates/builtin-internal-member-2
+   "internal.member_3"        aggregates/builtin-internal-member-3
+
+   "all"                      aggregates/builtin-all  ; deprecated
+   "any"                      aggregates/builtin-any  ; deprecated
+
+   "array.concat"             array/builtin-array-concat
+   "array.reverse"            array/builtin-array-reverse
+   "array.slice"              array/builtin-array-slice
 
    "and"                      sets/builtin-and
    "or"                       sets/builtin-or
@@ -75,6 +82,7 @@
    "trim_suffix"              strings/builtin-trim-suffix
    "trim_space"               strings/builtin-trim-space
    "upper"                    strings/builtin-upper
+   ;"sprintf"                  strings/builtin-sprintf
 
    "re_match"                 regex/builtin-re-match ; deprecated
    "regex.match"              regex/builtin-regex-match
@@ -124,6 +132,10 @@
    "yaml.unmarshal"           encoding/builtin-yaml-unmarshal
    "yaml.is_valid"            encoding/builtin-yaml-is-valid
 
+   "time.add_date"            time/builtin-time-add-date
+   "time.clock"               time/builtin-time-clock
+   "time.date"                time/builtin-time-date
+   ;"time.diff"                time/builtin-time-diff
    "time.now_ns"              time/builtin-time-now-ns
    "time.weekday"             time/builtin-time-weekday
    "time.parse_duration_ns"   time/builtin-time-parse-duration-ns

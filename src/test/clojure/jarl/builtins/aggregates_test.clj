@@ -53,3 +53,13 @@
     [#{3 2 1}]                                  [1 2 3]
     [[2 1 nil]]                                 [nil 1 2]
     [[#{1} "str" 10 {"x" 3} [2.2] 1 nil false]] [nil false 1 10 "str" [2.2] {"x" 3} #{1}]))
+
+(deftest builtin-internal-member-2-test
+  (testing-builtin "internal.member_2"
+    [1 [1]] true
+    [{"foo" {"baz" 2000}} [{"foo" {"baz" 2000}}]] true))
+
+(deftest builtin-internal-member-3-test
+  (testing-builtin "internal.member_3"
+    [0 1 [1]] true
+    ["foo" {"baz" 2000} {"foo" {"baz" 2000}}] true))

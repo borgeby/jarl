@@ -24,15 +24,14 @@
   (or (= expected-type "any")
       (= expected-type provided-type)
       (and (set? expected-type) (contains? expected-type provided-type))
+      (and (set? expected-type) (contains? expected-type "number") (= provided-type "floating-point number"))
       (and (= expected-type "number") (= provided-type "floating-point number"))))
 
 (defn check-args
   "Check types of provided values, and ensure they match the type names provided in the function metadata"
-  [builtin-meta & values]
-  (let [name (:builtin builtin-meta)
-        types (:args-types builtin-meta)
-        operands (vec (range 1 (inc (count types))))
-        zipped (mapv vector operands types values)]
+  [builtin-name types-def argv]
+  (let [operands (vec (range 1 (inc (count types-def))))
+        zipped (mapv vector operands types-def argv)]
     (doseq [entry zipped]
       (let [pos (first entry)
             expected-type (second entry)
@@ -40,8 +39,8 @@
             provided-type (types/java->rego value)]
         (when-not (type-match? expected-type provided-type)
           (if (set? expected-type)
-            (throw (errors/type-ex "%s: operand %s must be one of {%s} but got %s" name pos (str/join ", " expected-type) provided-type))
-            (throw (errors/type-ex "%s: operand %s must be %s but got %s" name pos expected-type provided-type))))))))
+            (throw (errors/type-ex "%s: operand %s must be one of {%s} but got %s" builtin-name pos (str/join ", " expected-type) provided-type))
+            (throw (errors/type-ex "%s: operand %s must be %s but got %s" builtin-name pos expected-type provided-type))))))))
 
 (defn typed-seq
   "Ensure that array/set only contains allowed Rego types"

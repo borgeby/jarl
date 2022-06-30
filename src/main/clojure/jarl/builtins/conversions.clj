@@ -1,10 +1,7 @@
 (ns jarl.builtins.conversions
-  (:require [jarl.exceptions :as errors]
-            [jarl.builtins.utils :refer [check-args]]))
+  (:require [jarl.exceptions :as errors]))
 
 (defn builtin-to-number
-  "Implementation of to_number built-in"
-  {:builtin "to_number" :args-types ["any"]}
   [{[x] :args}]
   (if (nil? x)
     0
@@ -20,43 +17,37 @@
 ; Deprecated
 
 (defn builtin-cast-array
-  "Implementation of cast_array built-in"
-  {:builtin "cast_array" :args-types [(sorted-set "array" "set")]}
   [{[x] :args}]
-  (check-args (meta #'builtin-cast-array) x)
-  (vec x))
+  (if (or (vector? x) (set? x))
+    (vec x)
+    (throw (errors/type-ex "cast_array: operand 1 must be one of {array, set}"))))
 
 (defn builtin-cast-set
-  "Implementation of cast_set built-in"
-  {:builtin "cast_set" :args-types [(sorted-set "array" "set")]}
   [{[x] :args}]
-  (check-args (meta #'builtin-cast-set) x)
-  (set x))
+  (if (or (vector? x) (set? x))
+    (set x)
+    (throw (errors/type-ex "cast_set: operand 1 must be one of {array, set}"))))
 
 (defn builtin-cast-string
-  "Implementation of cast_string built-in"
-  {:builtin "cast_string" :args-types ["string"]}
   [{[x] :args}]
-  (check-args (meta #'builtin-cast-string) x)
-  x)
+  (if (string? x)
+    x
+    (throw (errors/type-ex "cast_string: operand 1 must be boolean"))))
 
 (defn builtin-cast-boolean
-  "Implementation of cast_boolean built-in"
-  {:builtin "cast_boolean" :args-types ["boolean"]}
   [{[x] :args}]
-  (check-args (meta #'builtin-cast-boolean) x)
-  x)
+  (if (boolean? x)
+    x
+    (throw (errors/type-ex "cast_boolean: operand 1 must be boolean"))))
 
 (defn builtin-cast-null
-  "Implementation of cast_null built-in"
-  {:builtin "cast_null" :args-types ["null"]}
   [{[x] :args}]
-  (check-args (meta #'builtin-cast-null) x)
-  x)
+  (if (nil? x)
+    x
+    (throw (errors/type-ex "cast_null: operand 1 must be null"))))
 
 (defn builtin-cast-object
-  "Implementation of cast_object built-in"
-  {:builtin "cast_object" :args-types ["object"]}
   [{[x] :args}]
-  (check-args (meta #'builtin-cast-object) x)
-  x)
+  (if (map? x)
+    x
+    (throw (errors/type-ex "cast_object: operand 1 must be object"))))

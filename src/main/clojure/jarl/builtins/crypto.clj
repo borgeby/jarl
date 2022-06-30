@@ -1,6 +1,5 @@
 (ns jarl.builtins.crypto
-  (:require [clojure.string :as str]
-            [jarl.builtins.utils :refer [check-args]])
+  (:require [clojure.string :as str])
   (:import (javax.crypto.spec SecretKeySpec)
            (javax.crypto Mac)
            (java.nio.charset StandardCharsets)
@@ -25,50 +24,29 @@
     (str padding sig)))
 
 (defn builtin-crypto-hmac-md5
-  "Implementation of crypto.hmac.md5 built-in"
-  {:builtin "crypto.hmac.md5" :args-types ["string" "string"]}
   [{[x key] :args}]
-  (check-args (meta #'builtin-crypto-hmac-md5) x key)
   (hmac-string "HmacMD5" x key))
 
 (defn builtin-crypto-hmac-sha1
-  "Implementation of crypto.hmac.sha1 built-in"
-  {:builtin "crypto.hmac.sha1" :args-types ["string" "string"]}
   [{[x key] :args}]
-  (check-args (meta #'builtin-crypto-hmac-sha1) x key)
   (hmac-string "HmacSHA1" x key))
 
 (defn builtin-crypto-hmac-sha256
-  "Implementation of crypto.hmac.sha256 built-in"
-  {:builtin "crypto.hmac.sha256" :args-types ["string" "string"]}
   [{[x key] :args}]
-  (check-args (meta #'builtin-crypto-hmac-sha256) x key)
   (hmac-string "HmacSHA256" x key))
 
 (defn builtin-crypto-hmac-sha512
-  "Implementation of crypto.hmac.sha512 built-in"
-  {:builtin "crypto.hmac.sha512" :args-types ["string" "string"]}
   [{[x key] :args}]
-  (check-args (meta #'builtin-crypto-hmac-sha512) x key)
   (hmac-string "HmacSHA512" x key))
 
 (defn builtin-crypto-md5
-  "Implementation of crypto.md5 built-in"
-  {:builtin "crypto.md5" :args-types ["string"]}
   [{[x] :args}]
-  (check-args (meta #'builtin-crypto-md5) x)
   (hash-string "MD5" x))
 
 (defn builtin-crypto-sha1
-  "Implementation of crypto.sha1 built-in"
-  {:builtin "crypto.sha1" :args-types ["string"]}
   [{[x] :args}]
-  (check-args (meta #'builtin-crypto-sha1) x)
   (hash-string "SHA-1" x))
 
 (defn builtin-crypto-sha256
-  "Implementation of crypto.sha256 built-in"
-  {:builtin "crypto.sha256" :args-types ["string"]}
   [{[x] :args}]
-  (check-args (meta #'builtin-crypto-sha256) x)
   (hash-string "SHA-256" x))

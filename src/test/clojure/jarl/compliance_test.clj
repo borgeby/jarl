@@ -68,6 +68,13 @@
                        (conj errors e)))]
         (recur (next entry-points) errors)))))
 
+(defn match-one-of [provided-msg expected-msg]
+  (let [pr-set (into #{} (map str/trim (str/split (second (re-find #"one of \{(.*)\}" provided-msg)) #",")))
+        ex-set (into #{} (map str/trim (str/split (second (re-find #"one of \{(.*)\}" expected-msg)) #",")))]
+    (and (= pr-set ex-set)
+         (= (second (re-find #"but got (.*)" provided-msg))
+            (second (re-find #"but got (.*)" expected-msg))))))
+
 (defn- do-test [{:strs           [data note]
                  entry-points    "entrypoints"
                  want-result     "want_plan_result"
@@ -88,7 +95,8 @@
             error-filter (fn [^JarlException error]
                            (and
                              (= (.getType error) want-error-code)
-                             (.contains (.getMessage error) want-error)))
+                             (or (.contains (.getMessage error) want-error)
+                                 (match-one-of (.getMessage error) want-error))))
             jarl-errors (filter error-filter errors)]
         ; There might be other errors generated than what is expected by the test case definition, but the test case
         ; doesn't know we're executing multiple entry-points, so we can't count unexpected JarlExceptions as violations

@@ -1,15 +1,14 @@
 (ns jarl.builtins.time
-  (:require [jarl.builtins.utils :refer [check-args]]
-            [jarl.exceptions :as errors]
+  (:require [jarl.exceptions :as errors]
             [jarl.utils :refer [instant-to-ns ns-to-instant]]
             [clojure.string :as str])
-  (:import (java.time ZoneId LocalDateTime ZoneOffset ZonedDateTime Duration)
+  (:import (java.time ZoneId LocalDateTime ZoneOffset ZonedDateTime Duration LocalDate Period)
            (java.time.format TextStyle DateTimeFormatter)
            (java.util Locale)
            (java.time.temporal ChronoUnit)))
 
 ; Courtesy of https://github.com/newm4n/go-dfe
-(def go->java-map
+(def ^:private go->java-map
   {; Go          Java
    "January"   "MMMM"
    "Jan"       "MMM"
@@ -50,7 +49,7 @@
   (let [cmp (compare (count y) (count x))]
     (if (zero? cmp) -1 cmp)))
 
-(def go->java-sorted-map (into (sorted-map-by key-length-sorter) go->java-map))
+(def ^:private go->java-sorted-map (into (sorted-map-by key-length-sorter) go->java-map))
 
 (defn- go->java-formatter ^String [format]
   (reduce (fn [acc [go java]] (str/replace acc go java)) format go->java-sorted-map))
@@ -59,7 +58,9 @@
   ([s]
    (parse-iso-datetime s DateTimeFormatter/ISO_LOCAL_DATE_TIME))
   ([s f]
-   (-> s (LocalDateTime/parse f) (.toInstant ZoneOffset/UTC))))
+   (let [ldt (errors/try-or (LocalDateTime/parse s f)
+                            (.atStartOfDay (LocalDate/parse s f)))] ; if only date, i.e. 2012-12-12
+       (.toInstant ^LocalDateTime ldt ZoneOffset/UTC))))
 
 (defn parse-iso-zoned-datetime
   ([s]
@@ -98,22 +99,58 @@
   ([^Duration d1 ^Duration d2 & more]
    (reduce d+ (d+ d1 d2) more)))
 
+(defn- ns-with-tz
+  "Many of the time.* functions take either an ns number, or a vector of [ns, tz] —
+   this normalizes the two variants into the latter, using UTC unless provided"
+  ^ZonedDateTime
+  [x builtin-name]
+  (let [arr (if (vector? x) x [x "UTC"])
+        tz (second arr)
+        time (errors/try-or-throw #(long (first arr))
+                                  (errors/builtin-ex "%s: timestamp too big" builtin-name))]
+    (.atZone (ns-to-instant time) (ZoneId/of (if (empty? tz) "UTC" tz)))))
+
+(defn builtin-time-add-date
+  [{[^long ns ^long years ^long months ^long days] :args}]
+  (let [result (instant-to-ns (-> (ZonedDateTime/ofInstant (ns-to-instant ns) (ZoneId/of "UTC"))
+                                  (.plus years   ChronoUnit/YEARS)
+                                  (.plus months  ChronoUnit/MONTHS)
+                                  (.plus days    ChronoUnit/DAYS)
+                                  (.toInstant)))]
+    (errors/try-or-throw #(long result) (errors/builtin-ex "time.add_date: time outside of valid range"))))
+
+(defn builtin-time-clock
+  [{[x] :args}]
+  (let [ins (ns-with-tz x "time.clock")]
+    [(.getHour ins) (.getMinute ins) (.getSecond ins)]))
+
+(defn builtin-time-date
+  [{[x] :args}]
+  (let [ins (ns-with-tz x "time.date")]
+    [(.getYear ins) (.getMonthValue ins) (.getDayOfMonth ins)]))
+
+; TODO: Commented out in registry - needs to work with both Period and Duration
+(defn builtin-time-diff
+  [{[x y] :args}]
+  (let [ns1  (ns-with-tz x "time.diff")
+        ns2  (ns-with-tz y "time.diff")
+        per  ^Period (Period/between (.toLocalDate ns1) (.toLocalDate ns2))]
+    [(.getYears  per)
+     (.getMonths per)
+     (.getDays   per)
+     (- (.getHour ns1) (.getHour ns2))
+     (- (.getMinute ns1) (.getMinute ns2))
+     (- (.getSecond ns1) (.getSecond ns2))]))
+
 (defn builtin-time-now-ns
-  "Implementation of time.now_ns built-in"
-  {:builtin "time.now_ns" :args-types []}
   [{bctx :builtin-context}]
   (get bctx :time-now-ns))
 
 (defn builtin-time-weekday
-  "Implementation of time.weekday built-in"
-  {:builtin "time.weekday" :args-types [#{"number", "array"}]}
   [{[x] :args}]
-  (check-args (meta #'builtin-time-weekday) x)
-  (let [v (if (vector? x) x [x])]
-      (-> (ns-to-instant (errors/try-or-throw #(long (first v)) (errors/builtin-ex "time.weekday: timestamp too big")))
-          (.atZone (ZoneId/of (or (second v) "UTC")))
-          (.getDayOfWeek)
-          (.getDisplayName TextStyle/FULL Locale/ENGLISH))))
+  (-> (ns-with-tz x "time.weekday")
+      (.getDayOfWeek)
+      (.getDisplayName TextStyle/FULL Locale/ENGLISH)))
 
 (defn unknown-duration-ex [unit time]
   (errors/builtin-ex "time.parse_duration_ns: time: unknown unit \"%s\" in duration \"%s\""
@@ -123,10 +160,7 @@
   (d (Long/parseLong time) (errors/get-or-throw unit->temporal unit (unknown-duration-ex unit time))))
 
 (defn builtin-time-parse-duration-ns
-  "Implementation of time.parse_duration_ns built-in"
-  {:builtin "time.parse_duration_ns" :args-types ["string"]}
   [{[s] :args}]
-  (check-args (meta #'builtin-time-parse-duration-ns) s)
   (if-let [time-unit-pairs (re-seq #"(\d+)(\p{L}+)" s)] ; returns a seq of [full match, time, unit]
     (.toNanos ^Duration (reduce d+ (map to-duration time-unit-pairs)))
     (if (errors/throws? #(Long/parseLong s))
@@ -134,17 +168,11 @@
       (throw (errors/builtin-ex "time.parse_duration_ns: time: missing unit in duration \"%s\"" s)))))
 
 (defn builtin-time-parse-ns
-  "Implementation of time.parse_ns built-in"
-  {:builtin "time.parse_ns" :args-types ["string" "string"]}
   [{[layout value] :args}]
-  (check-args (meta #'builtin-time-parse-ns) value layout)
   (let [nanos (instant-to-ns (parse-formatted-datetime value layout))]
     (errors/try-or-throw #(long nanos) (errors/builtin-ex "time.parse_ns: time outside of valid range"))))
 
 (defn builtin-time-parse-rfc3339-ns
-  "Implementation of time.parse_rfc3339_ns built-in"
-  {:builtin "time.parse_rfc3339_ns" :args-types ["string"]}
   [{[s] :args}]
-  (check-args (meta #'builtin-time-parse-rfc3339-ns) s)
   (let [nanos (instant-to-ns (parse-iso-zoned-datetime s))]
     (errors/try-or-throw #(long nanos) (errors/builtin-ex "time.parse_rfc3339_ns: time outside of valid range"))))

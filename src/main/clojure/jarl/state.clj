@@ -1,7 +1,6 @@
 (ns jarl.state
   (:require [jarl.utils :as utils])
-  (:require [clojure.string :as str]
-            [clojure.tools.logging :as log])
+  (:require [clojure.tools.logging :as log])
   (:import (se.fylling.jarl UndefinedException)))
 
 (defn- upsert-local [value stack index]
@@ -33,13 +32,7 @@
        value))))
 
 (defn- stack-contains? [stack index]
-  (if (or (nil? stack) (empty? stack))
-    false
-    (not (nil? (some
-                 (fn [frame]
-                   (let [frame-index (first frame)]
-                     (= frame-index index)))
-                 stack)))))
+  (some? (some (fn [[frame-index]] (= frame-index index)) stack)))
 
 (defn contains-local? [{:keys [local with-stack]} index]
   (or (contains? local index) (stack-contains? with-stack index)))
@@ -51,7 +44,7 @@
   (get-in static ["strings" index "value"]))
 
 (defn contains-string? [state index]
-  (contains? (get (get state :static) "strings") index))
+  (contains? (get-in state [:static "strings"]) index))
 
 (defn set-local [{:keys [local] :as state} index value]
   (assoc state :local (assoc local index value)))
@@ -79,10 +72,8 @@
   (get-value state {"type" "string_index" "value" index}))
 
 (defn get-func [state name]
-  (let [func (get-in state [:funcs name])]
-    (if-not (nil? func)
-      func
-      (get-in state [:builtin-funcs name]))))
+  (get-in state [:funcs name]
+          (get-in state [:builtin-funcs name])))
 
 (defn add-result [{:keys [result] :as state} value]
   (assoc state :result-set (conj result value)))
@@ -99,25 +90,11 @@
       (dissoc state :with-stack)
       (assoc state :with-stack stack))))
 
-; the data document seems to be expected to be a hierarchy of maps resembling the entry-point path (plan name).
-(defn- data-from-plan-info [plan-info]
-  (let [plan-name (get plan-info "name")]
-    (if (pos? (count plan-name))
-      (loop [components (reverse (str/split plan-name #"/"))
-             result {}]
-        (if (empty? components)
-          result
-          (recur (next components) {(first components) result})))
-      {})))
-
-(defn- make-data [plan-info data]
-  (merge data (data-from-plan-info plan-info)))
-
 (defn init-state [info input data]
   (cond-> info
           ; if builtin-context has been provided already, use that
           (not (contains? info :builtin-context)) (assoc :builtin-context {:time-now-ns (utils/time-now-ns)
-                                                                           :env (System/getenv)})
+                                                                           :env         (System/getenv)})
           true (assoc :local (cond-> {}
                                      (some? input) (assoc 0 input)
-                                     (some? data) (assoc 1 (make-data info data))))))
+                                     (some? data) (assoc 1 data)))))
