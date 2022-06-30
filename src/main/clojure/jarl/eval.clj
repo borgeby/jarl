@@ -479,7 +479,7 @@
             (throw e)))))
 
 (defn find-plan [info entry-point]
-  (let [plan (some (fn [[name plan]] (if (= name entry-point) plan)) (:plans info))]
+  (let [plan (some (fn [[name plan]] (when (= name entry-point) plan)) (:plans info))]
     plan))
 
 (defn eval-plan [info entry-point data input]

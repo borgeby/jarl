@@ -3,6 +3,7 @@
             [clojure.string :as string]
             [clojure.set :refer [union]]
             [clojure.data.json :as json]
+            [clojure.java.io :as io]
             [criterium.core :as criterium]
             [jarl.parser :as parser]))
 
@@ -62,7 +63,7 @@
     {"baseline" (mean bench-result)}))
 
 (defn csv-read [file]
-  (let [lines (with-open [reader (clojure.java.io/reader file)]
+  (let [lines (with-open [reader (io/reader file)]
                 (reduce conj [] (line-seq reader)))
         lines (map #(string/split % #",") lines)
         categories (vec (first lines))
