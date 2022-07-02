@@ -1,0 +1,14 @@
+name: Benchmark
+
+on:
+  push:
+    tags:
+      - '*'
+
+  workflow_dispatch:
+
+jobs:
+  generate-metrics:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
