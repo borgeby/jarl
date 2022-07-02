@@ -26,3 +26,4 @@ jobs:
         branch: bench
         delete-branch: true
         branch-suffix: short-commit-hash
+        base: main # Required for when triggered on tag push
