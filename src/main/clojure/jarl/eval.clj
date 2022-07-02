@@ -143,7 +143,7 @@
   (log/tracef "NotStmt - <%s> == <%s>" a-pos b-pos)
   (let [a (state/get-value state a-pos)
         b (state/get-value state b-pos)
-        result (= a b)]
+        result (types/rego-equal? a b)]
     (log/debugf "EqualStmt - ('%s' == '%s') == %s" a b result)
     (if result
       state
