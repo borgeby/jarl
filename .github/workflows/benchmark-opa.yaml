@@ -26,8 +26,8 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v4
       with:
-        commit-message: Updating OPA performance metrics
-        title: Updating OPA performance metrics
+        commit-message: Updating OPA ${{ inputs.opa_version }} performance metrics
+        title: Updating OPA ${{ inputs.opa_version }} performance metrics
         body: Please do a "Rebase and merge", so the revision in the CSV stays relevant.
         signoff: true
         branch: bench
