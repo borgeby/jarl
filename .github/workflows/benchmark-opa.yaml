@@ -1,29 +1,35 @@
-name: Benchmark Jarl
+name: Benchmark OPA
 
 on:
-  push:
-    tags:
-      - '*'
-
   workflow_dispatch:
+    inputs:
+      opa_version:
+        description: OPA version
+        required: true
+        type: string
 
 jobs:
   generate-metrics:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
 
-    - name: Update Jarl CSV
-      run: lein perf-jarl
+    - name: Setup OPA
+      uses: open-policy-agent/setup-opa@v1
+      with:
+        version: ${{ inputs.opa_version }}
+
+    - name: Update OPA CSV
+      run: lein perf-opa
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v4
       with:
-        commit-message: Updating performance metrics
-        title: Updating performance metrics
+        commit-message: Updating OPA performance metrics
+        title: Updating OPA performance metrics
         body: Please do a "Rebase and merge", so the revision in the CSV stays relevant.
         signoff: true
         branch: bench
         delete-branch: true
         branch-suffix: short-commit-hash
-        base: main # Required for when triggered on tag push
