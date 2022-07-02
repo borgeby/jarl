@@ -1,0 +1,16 @@
+name: Benchmark OPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      opa_version:
+        description: OPA version
+        required: true
+        type: string
+
+jobs:
+  generate-metrics:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
