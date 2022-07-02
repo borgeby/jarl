@@ -23,7 +23,7 @@ jobs:
         title: Updating performance metrics
         body: Please do a "Rebase and merge", so the revision in the CSV stays relevant.
         signoff: true
-        branch: bench
+        branch: opa-bench
         delete-branch: true
-        branch-suffix: short-commit-hash
+        branch-suffix: random
         base: main # Required for when triggered on tag push
