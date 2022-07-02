@@ -6,20 +6,7 @@
 			"modules": [
 				"package generated\n\np[x] {\n  arr = [[1, 2], [1, null], [2, 2]]\n  arr[_] = [x, 2]\n}\n"
 			],
-			"data": {
-				"arr_ref": [
-					1,
-					null
-				],
-				"obj_ref": {
-					"x": 1,
-					"y": null
-				},
-				"obj_ref_missing_key": {
-					"x": 3,
-					"z": 2
-				}
-			},
+			"data": {},
 			"want_result": [
 				{
 					"x": [

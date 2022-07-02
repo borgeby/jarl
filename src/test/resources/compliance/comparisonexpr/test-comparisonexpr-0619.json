@@ -4,129 +4,8 @@
 			"note": "comparisonexpr/undefined: lteq",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np {\n  1 \u003c -1\n}\n"
+				"package generated\n\np {\n  1 \u003c= -1\n}\n"
 			],
-			"data": {
-				"a": [
-					1,
-					2,
-					3,
-					4
-				],
-				"b": {
-					"v1": "hello",
-					"v2": "goodbye"
-				},
-				"c": [
-					{
-						"x": [
-							true,
-							false,
-							"foo"
-						],
-						"y": [
-							null,
-							3.14159
-						],
-						"z": {
-							"p": true,
-							"q": false
-						}
-					}
-				],
-				"d": {
-					"e": [
-						"bar",
-						"baz"
-					]
-				},
-				"f": [
-					{
-						"xs": [
-							1
-						],
-						"ys": [
-							2
-						]
-					},
-					{
-						"xs": [
-							2
-						],
-						"ys": [
-							3
-						]
-					}
-				],
-				"g": {
-					"a": [
-						1,
-						0,
-						0,
-						0
-					],
-					"b": [
-						0,
-						2,
-						0,
-						0
-					],
-					"c": [
-						0,
-						0,
-						0,
-						4
-					]
-				},
-				"h": [
-					[
-						1,
-						2,
-						3
-					],
-					[
-						2,
-						3,
-						4
-					]
-				],
-				"l": [
-					{
-						"a": "bob",
-						"b": -1,
-						"c": [
-							1,
-							2,
-							3,
-							4
-						]
-					},
-					{
-						"a": "alice",
-						"b": 1,
-						"c": [
-							2,
-							3,
-							4,
-							5
-						],
-						"d": null
-					}
-				],
-				"m": [],
-				"numbers": [
-					"1",
-					"2",
-					"3",
-					"4"
-				],
-				"strings": {
-					"bar": 2,
-					"baz": 3,
-					"foo": 1
-				},
-				"three": 3
-			},
 			"want_result": [],
 			"entrypoints": [
 				"generated"
@@ -181,7 +60,7 @@
 												],
 												"col": 3,
 												"file": 0,
-												"func": "lt",
+												"func": "lte",
 												"result": 6,
 												"row": 4
 											},
@@ -486,13 +365,13 @@
 									}
 								],
 								"result": {
-									"description": "true if `x` is less than `y`; false otherwise",
+									"description": "true if `x` is less than or equal to `y`; false otherwise",
 									"name": "result",
 									"type": "boolean"
 								},
 								"type": "function"
 							},
-							"name": "lt"
+							"name": "lte"
 						}
 					],
 					"files": [

@@ -6,12 +6,7 @@
 			"modules": [
 				"package generated\n\np {\n  not data.generated.q.v0\n}\n\nq[x] {\n  data.b[x] = v\n}\n"
 			],
-			"data": {
-				"b": {
-					"v1": "hello",
-					"v2": "goodbye"
-				}
-			},
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -699,10 +694,7 @@
 			"want_plan_result": {
 				"generated": {
 					"p": true,
-					"q": [
-						"v1",
-						"v2"
-					]
+					"q": []
 				}
 			}
 		}

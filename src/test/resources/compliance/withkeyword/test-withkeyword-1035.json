@@ -7,9 +7,7 @@
 				"package generated\n\ndefault p = false\np {\n  data.ex.allow_basic = true with data.a.b as 5\n}\n",
 				"package ex\n\nallow_basic {\n  data.a = \"testdata\"\n}\n"
 			],
-			"data": {
-				"a": "testdata"
-			},
+			"data": {},
 			"want_result": [
 				{
 					"x": false
@@ -915,9 +913,7 @@
 				}
 			},
 			"want_plan_result": {
-				"ex": {
-					"allow_basic": true
-				},
+				"ex": {},
 				"generated": {
 					"p": false
 				}

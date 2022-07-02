@@ -7,8 +7,7 @@
 				"package generated\n\np = x {\n  __local0__ = data.err\n  rego.parse_module(\"x.rego\", __local0__, x)\n}\n"
 			],
 			"data": {
-				"err": "package foo.",
-				"ok": "package foo.bar\n\n\t\timport data.a\n\n\t\tp { a = true }"
+				"err": "package foo."
 			},
 			"want_error_code": "eval_builtin_error",
 			"want_error": "rego_parse_error: unexpected eof token: expected ident",

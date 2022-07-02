@@ -7,127 +7,7 @@
 				"package z\n\np {\n  data.a[i] = x\n  input.req1.foo = x\n  input.req2.bar = x\n  data.z.q[x]\n}\n\nq[x] {\n  input.req1.foo = x\n  input.req2.bar = x\n  data.z.r[x]\n}\n\nr[x] {\n  __local1__ = input.req2.bar\n  __local2__ = input.req1.foo\n  {\"bar\": [x], \"foo\": __local1__} = {\"bar\": [__local2__], \"foo\": x}\n}\n\ns {\n  input.req3.a.b.x[0] = 1\n}\n\nt {\n  input.req4.a.b.x[0] = 1\n}\n\nu[x] {\n  input.req3.a.b[_] = x\n  x \u003e 1\n}\n\nw = [[1, 2], [3, 4]]\n\ngt1 {\n  __local3__ = input.req1\n  __local3__ \u003e 1\n}\n\nkeys[x] = y {\n  data.numbers[_] = x\n  to_number(x, y)\n}\n\nloopback = __local0__ {\n  true\n  __local0__ = input\n}\n\nsets {\n  input.foo[{1}][1] = 1\n}\n",
 				"package topdown_test_partial\n\n__result__ = _result {\n  _result = input\n}\n"
 			],
-			"data": {
-				"a": [
-					1,
-					2,
-					3,
-					4
-				],
-				"b": {
-					"v1": "hello",
-					"v2": "goodbye"
-				},
-				"c": [
-					{
-						"x": [
-							true,
-							false,
-							"foo"
-						],
-						"y": [
-							null,
-							3.14159
-						],
-						"z": {
-							"p": true,
-							"q": false
-						}
-					}
-				],
-				"d": {
-					"e": [
-						"bar",
-						"baz"
-					]
-				},
-				"f": [
-					{
-						"xs": [
-							1
-						],
-						"ys": [
-							2
-						]
-					},
-					{
-						"xs": [
-							2
-						],
-						"ys": [
-							3
-						]
-					}
-				],
-				"g": {
-					"a": [
-						1,
-						0,
-						0,
-						0
-					],
-					"b": [
-						0,
-						2,
-						0,
-						0
-					],
-					"c": [
-						0,
-						0,
-						0,
-						4
-					]
-				},
-				"h": [
-					[
-						1,
-						2,
-						3
-					],
-					[
-						2,
-						3,
-						4
-					]
-				],
-				"l": [
-					{
-						"a": "bob",
-						"b": -1,
-						"c": [
-							1,
-							2,
-							3,
-							4
-						]
-					},
-					{
-						"a": "alice",
-						"b": 1,
-						"c": [
-							2,
-							3,
-							4,
-							5
-						],
-						"d": null
-					}
-				],
-				"m": [],
-				"numbers": [
-					"1",
-					"2",
-					"3",
-					"4"
-				],
-				"strings": {
-					"bar": 2,
-					"baz": 3,
-					"foo": 1
-				},
-				"three": 3
-			},
+			"data": {},
 			"want_result": [],
 			"entrypoints": [
 				"z",
@@ -3729,12 +3609,7 @@
 			"want_plan_result": {
 				"topdown_test_partial": {},
 				"z": {
-					"keys": {
-						"1": 1,
-						"2": 2,
-						"3": 3,
-						"4": 4
-					},
+					"keys": {},
 					"q": [],
 					"r": [],
 					"u": [],
