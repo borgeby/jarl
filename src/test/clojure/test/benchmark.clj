@@ -100,6 +100,20 @@
       (throw (ex-info "Failed to get OPA version" {:err err})))
     (string/trim-newline (:out result))))
 
+(defn git-tag []
+  (let [result (shell/sh "git" "describe" "--tags")
+        err (:err result)]
+    (if (string/blank? err)
+      (string/trim-newline (:out result))
+      nil)))
+
+(defn jarl-version []
+  (let [revision (git-revision)
+        tag (git-tag)]
+    (if-not (nil? tag)
+      (str tag " (" revision ")")
+      revision)))
+
 (defn opa-version []
   (let [result (shell/sh (get-opa) "version")
         err (:err result)]
@@ -122,7 +136,7 @@
   ([category]
    (let [label (if (= category "opa")
                  (opa-version)
-                 (git-revision))]
+                 (jarl-version))]
      (-main category label)))
   ([category label]
    (let [ir-file "src/test/resources/rego/perf/plan.json"
