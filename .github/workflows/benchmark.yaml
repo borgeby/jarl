@@ -1,4 +1,4 @@
-name: Benchmark
+name: Benchmark Jarl
 
 on:
   push:
@@ -12,3 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
+    - name: Update Jarl CSV
+      run: lein perf-jarl
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: Updating performance metrics
+        title: Updating performance metrics
+        body: Please do a "Rebase and merge", so the revision in the CSV stays relevant.
+        signoff: true
+        branch: opa-bench
+        delete-branch: true
+        branch-suffix: random
+        base: main # Required for when triggered on tag push

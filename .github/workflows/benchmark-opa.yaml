@@ -14,3 +14,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Setup OPA
+      uses: open-policy-agent/setup-opa@v1
+      with:
+        version: ${{ inputs.opa_version }}
+
+    - name: Update OPA CSV
+      run: lein perf-opa
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: Updating OPA ${{ inputs.opa_version }} performance metrics
+        title: Updating OPA ${{ inputs.opa_version }} performance metrics
+        body: Please do a "Rebase and merge", so the revision in the CSV stays relevant.
+        signoff: true
+        branch: bench
+        delete-branch: true
+        branch-suffix: short-commit-hash

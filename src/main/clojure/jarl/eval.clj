@@ -477,3 +477,13 @@
                   (log/debugf "function <%s> returned undefined value" name)
                   {}))))
             (throw e)))))
+
+(defn find-plan [info entry-point]
+  (let [plan (some (fn [[name plan]] (when (= name entry-point) plan)) (:plans info))]
+    plan))
+
+(defn eval-plan [info entry-point data input]
+  (let [plan (find-plan info entry-point)]
+    (when (nil? plan)
+      (throw (errors/undefined-ex "no plan for entrypoint: %s" entry-point)))
+    (plan info data input)))
