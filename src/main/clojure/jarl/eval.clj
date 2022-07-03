@@ -140,7 +140,7 @@
                   (break state)))))))
 
 (defn eval-EqualStmt [a-pos b-pos state]
-  (log/tracef "NotStmt - <%s> == <%s>" a-pos b-pos)
+  (log/tracef "EqualStmt - <%s> == <%s>" a-pos b-pos)
   (let [a (state/get-value state a-pos)
         b (state/get-value state b-pos)
         result (types/rego-equal? a b)]
