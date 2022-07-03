@@ -1,11 +1,11 @@
 (ns test.benchmark
   (:require [clojure.java.shell :as shell]
             [clojure.string :as string]
-            [clojure.set :refer [union]]
             [clojure.data.json :as json]
-            [clojure.java.io :as io]
             [criterium.core :as criterium]
-            [jarl.parser :as parser]))
+            [test.csv :as csv]
+            [jarl.parser :as parser]
+            [test.git :as git]))
 
 (defn mean [bench-result]
   (* (first (:sample-mean bench-result)) 1e6))              ; microseconds
@@ -62,54 +62,9 @@
                        (criterium/benchmark* bench-fn {}))]
     {"baseline" (mean bench-result)}))
 
-(defn csv-read [file]
-  (let [lines (with-open [reader (io/reader file)]
-                (reduce conj [] (line-seq reader)))
-        lines (map #(string/split % #",") lines)
-        categories (vec (first lines))
-        entries (next lines)
-        data (vec (map #(zipmap categories %) entries))]
-    {:categories (set categories)
-     :data       data}))
-
-(defn csv-write [csv file ordered-categories]
-  (let [categories (:categories csv)
-        data (:data csv)
-        ordered-categories (vec ordered-categories)         ; enforce insert order of into
-        unordered-categories (sort (filter #(not (some #{%} ordered-categories)) categories))
-        categories (into ordered-categories unordered-categories)
-        header (string/join "," categories)
-        text (loop [rows header
-                    data data]
-               (if (empty? data)
-                 rows
-                 (let [current-data (first data)
-                       row (string/join "," (map #(get current-data % "") categories))]
-                   (recur (str rows "\n" row) (next data)))))]
-    (spit file text)))
-
-(defn csv-add [csv entry]
-  (let [categories (union (:categories csv) (set (keys entry)))]
-    {:categories categories
-     :data       (conj (:data csv) entry)}))
-
-(defn git-revision []
-  (let [result (shell/sh "git" "rev-parse" "--short=10" "HEAD")
-        err (:err result)]
-    (when (not (string/blank? err))
-      (throw (ex-info "Failed to get OPA version" {:err err})))
-    (string/trim-newline (:out result))))
-
-(defn git-tag []
-  (let [result (shell/sh "git" "describe" "--tags")
-        err (:err result)]
-    (if (string/blank? err)
-      (string/trim-newline (:out result))
-      nil)))
-
 (defn jarl-version []
-  (let [revision (git-revision)
-        tag (git-tag)]
+  (let [revision (git/get-revision)
+        tag (git/get-tag)]
     (if-not (nil? tag)
       (str tag " (" revision ")")
       revision)))
@@ -124,13 +79,13 @@
       (nth (re-find matcher) 1))))
 
 (defn benchmark [f ir-file csv-file version]
-  (let [csv (csv-read csv-file)
+  (let [csv (csv/read-file csv-file)
         ir (parser/parse-file ir-file)
         data {"label" version}
         data (conj data (benchmark-baseline))
         data (conj data (f ir))
-        csv (csv-add csv data)]
-    (csv-write csv csv-file ["label" "baseline"])))
+        csv (csv/add csv data)]
+    (csv/write-file csv csv-file ["label" "baseline"])))
 
 (defn -main
   ([category]
