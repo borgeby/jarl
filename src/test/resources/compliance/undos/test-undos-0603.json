@@ -6,20 +6,7 @@
 			"modules": [
 				"package generated\n\np[x] {\n  obj = {\"a\": {\"x\": 1, \"y\": {\"v\": 2}}, \"b\": {\"x\": 1, \"y\": null}, \"c\": {\"x\": 2, \"y\": {\"v\": 2}}}\n  {\"x\": x, \"y\": {\"v\": 2}} = obj[_]\n}\n"
 			],
-			"data": {
-				"arr_ref": [
-					1,
-					null
-				],
-				"obj_ref": {
-					"x": 1,
-					"y": null
-				},
-				"obj_ref_missing_key": {
-					"x": 3,
-					"z": 2
-				}
-			},
+			"data": {},
 			"want_result": [
 				{
 					"x": [

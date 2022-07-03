@@ -6,6 +6,7 @@
 			"modules": [
 				"package test\n\np {\n  in := 1 == 2\n  in == false\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -440,6 +441,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  1 in {1}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -863,6 +865,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  1 in [1]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -1287,6 +1290,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  1 in {\"foo\": 1}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -1717,6 +1721,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  \"foo\", 1 in {\"foo\": 1}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -2154,6 +2159,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  1, \"two\" in [\"one\", \"two\", \"three\"]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -2610,6 +2616,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  1, (2 in [2]) in [false, true]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -3140,6 +3147,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  0, 2 in [2] in [true]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -3657,6 +3665,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  \"foo\", 2 in {\"foo\": 2} in [true]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -4167,6 +4176,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  \"foo\", (2 in {\"bar\": 2}) in {\"foo\": true}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -4683,6 +4693,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  x := 1 in {2}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": false
@@ -5119,6 +5130,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  x := 1 in [2]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": false
@@ -5556,6 +5568,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  x := 1 in {\"foo\": 2}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": false
@@ -5999,6 +6012,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  {1,2} in [{1,2}] in [true]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -6572,6 +6586,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  x := \"foo\"\n  xs := [\"foo\", \"bar\"]\n  x in xs\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -7018,6 +7033,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  not \"foo\" in [\"fox\"]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -7437,6 +7453,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  1+1 in [2]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -7928,6 +7945,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  x := { 1, 1 in [2] }\n  x == { 1, false }\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -8471,6 +8489,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  x := { (1, 1 in [2]) }\n  x == { false }\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -8985,6 +9004,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  x := [ 1, 1 in [2] ]\n  x == [ 1, false ]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -9625,6 +9645,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  x := [ (1, 1 in [2]) ]\n  x == [ false ]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -10206,6 +10227,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  f(1, 1 in [2])\n}\nf(_, _) = true\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -10885,6 +10907,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  f((1, 1 in [2]))\n}\nf(_) = true\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -11553,6 +11576,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  {\"foo\": {\"baz\": 2000}} in [{\"foo\": {\"baz\": 2000}}]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -12087,6 +12111,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  x := 1 in \"foo\"\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": false
@@ -12491,6 +12516,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  x := \"foo\" in 1\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": false
@@ -12895,6 +12921,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  x := 1, \"foo\" in 1\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": false
@@ -13316,6 +13343,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np[x] {\n  some x in [1,2,3]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": [
@@ -13776,6 +13804,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  some \"foo\" in [\"foo\"]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -14182,6 +14211,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  some numbers.range(1,1) in [[1]]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -14700,6 +14730,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  some {\"foo\": x} in [{\"foo\": 100}, {\"what\": \"ever\"}]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": 100
@@ -15255,6 +15286,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  some {\"foo\": x, \"what\": y} in [{\"foo\": 100, \"what\": \"ever\"}]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": 100
@@ -15818,6 +15850,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  some {\"foo\": 100} in [{\"foo\": 100}]\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": true
@@ -16341,6 +16374,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np {\n  some {\"foo\": 0} in [{\"foo\": 100}]\n}\n"
 			],
+			"data": {},
 			"want_result": [],
 			"entrypoints": [
 				"test"
@@ -16861,6 +16895,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  some \"foo\", x in {\"foo\": 100, \"what\": \"ever\"}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": 100
@@ -17292,6 +17327,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  some x, \"ever\" in {\"foo\": 100, \"what\": \"ever\"}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": "what"
@@ -17737,6 +17773,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np[k] = v {\n  some k, v in {\"foo\": 100, \"what\": \"ever\"}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": {
@@ -18176,6 +18213,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np = x {\n  some {\"foo\": x}, \"ever\" in {{\"foo\": 100}: \"ever\"}\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": 100
@@ -20366,6 +20404,7 @@
 			"modules": [
 				"package test\nimport future.keywords.in\np[[k, v]] {\n  some k, v in input with input.foo as \"bar\"\n}\n"
 			],
+			"data": {},
 			"want_result": [
 				{
 					"x": [

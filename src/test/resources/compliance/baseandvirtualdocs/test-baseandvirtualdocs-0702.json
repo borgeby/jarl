@@ -21,44 +21,7 @@
 				"package topdown.missing.input.value\n\np = __local7__ {\n  true\n  __local7__ = input.deadbeef\n}\n",
 				"package topdown.a.b.c\n\np = [1, 2]\n\nq = [3, 4]\n\nr[\"a\"] = 1\n\nr[\"b\"] = 2\n"
 			],
-			"data": {
-				"topdown": {
-					"a": {
-						"b": {
-							"c": {
-								"x": [
-									100,
-									200
-								],
-								"y": false,
-								"z": {
-									"a": "b"
-								}
-							}
-						}
-					},
-					"conflicts": {
-						"k": "foo"
-					},
-					"g": {
-						"h": {
-							"k": [
-								1,
-								2,
-								3
-							]
-						}
-					},
-					"set": {
-						"u": [
-							1,
-							2,
-							3,
-							4
-						]
-					}
-				}
-			},
+			"data": {},
 			"input_term": "{}",
 			"want_result": [
 				{
