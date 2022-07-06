@@ -1,9 +1,7 @@
 (ns test.utils
-  (:require #?(:clj  [clojure.test     :refer [is testing]]
-               :cljs [cljs.test :refer-macros [is testing]])
-            [clojure.string :as str]
-            [jarl.exceptions :as errors]
-            [jarl.builtins.registry :as registry]))
+  (:require [clojure.string :as str]
+            [jarl.builtins.registry]
+            [jarl.exceptions :as errors]))
 
 (defmacro testing-builtin
   "Given the name of a builtin (as named in OPA, e.g. 'base64.encode'),
@@ -27,7 +25,9 @@
   (testing \"sum\"
     [2 0] [BuiltinException \"divide by zero\"]))"
   [name & forms]
-  (let [func (registry/get-builtin name)
+  (let [cljs? (some? (:ns &env))
+        is (if cljs? 'cljs.test/is      'clojure.test/is)
+        testing  (if cljs? 'cljs.test/testing 'clojure.test/testing)
         func-name (str "builtin-" (str/replace name #"[\._]" "-"))
         pairs (partition 2 forms)
         stmts (map (fn [[args expect]]
@@ -35,20 +35,21 @@
                        (if (isa? (first expect) :jarl.exceptions/jarl-exception)
                          (let [ex-type (errors/rego-type (first expect))
                                ex-type-str (if (= ex-type "") "" (str ex-type ": "))
-                               expect-pattern (re-pattern (str ex-type-str name ": " (second expect)))
-                               provided-ex (errors/try-return #(func {:args args}))]
-                           `(do
-                              (is (= ~(errors/rego-type provided-ex) ~ex-type))
-                              (is (re-find ~expect-pattern ~(ex-message provided-ex))
-                                  ~(str "Expected match for pattern '" expect-pattern "' but '" (ex-message provided-ex) "' does not match"))))
+                               expect-pattern (re-pattern (str ex-type-str name ": " (second expect)))]
+                           `(let [provided-ex# (jarl.exceptions/try-return #((jarl.builtins.registry/get-builtin ~name) {:args ~args}))
+                                  provided-msg# (ex-message provided-ex#)]
+                              (~is (= (jarl.exceptions/rego-type provided-ex#) ~ex-type))
+                              (~is (re-find ~expect-pattern provided-msg#)
+                                (str "Expected match for pattern '" ~expect-pattern "' but '" provided-msg# "' does not match"))))
                          ; else - not exception
-                         `(is (= (~func {:args ~args}) ~expect)))
+                         `(~is (= ((jarl.builtins.registry/get-builtin ~name) {:args ~args}) ~expect)))
                        ; else - not vector
                        (if (map? args)
                          ; allow providing the entire request map if needed
-                         `(is (= (~func ~args) ~expect) (str "For input: " ~args))
+                         `(~is (= ((jarl.builtins.registry/get-builtin ~name) ~args) ~expect)
+                            (str "For input: " ~args))
                          ; but since most tests only care for the args, a vector of those is more convenient
-                         `(is (= (~func {:args ~args}) ~expect) (str "For input: " ~args)))))
+                         `(~is (= ((jarl.builtins.registry/get-builtin ~name) {:args ~args}) ~expect)
+                            (str "For input: " ~args)))))
                    pairs)]
-    `(testing ~func-name
-       ~@stmts)))
+    `(~testing ~func-name ~@stmts)))

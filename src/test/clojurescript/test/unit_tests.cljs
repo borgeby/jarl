@@ -1,5 +1,6 @@
 (ns test.unit-tests
   (:require [cljs.test :refer-macros [run-tests]]
+            [jarl.builtins.aggregates-test]
             [jarl.exceptions-test]
             [jarl.types-test]))
 
@@ -15,5 +16,6 @@
 ;names matching the regular expression (with re-matches) will be
 ;tested.
 
-(run-tests 'jarl.exceptions-test
+(run-tests 'jarl.builtins.aggregates-test
+           'jarl.exceptions-test
            'jarl.types-test)

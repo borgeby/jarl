@@ -53,7 +53,7 @@
        (~'let [~'strict-error ~strict-error
                ~'plan (~'get ~'test-plans ~note)
                ~'info (~'cond-> (~'parser/parse ~'plan ~'compliance-builtin-resolver)
-                        (~'true? ~'strict-error) (~'assoc :strict-builtin-errors true))
+                                (~'true? ~'strict-error) (~'assoc :strict-builtin-errors true))
                ~'data ~data
                ~'input ~input
                ~'result (~'eval-entry-points-for-errors ~'info ~entry-points ~'data ~'input)

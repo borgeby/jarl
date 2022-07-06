@@ -33,7 +33,8 @@
                     :resource-paths ["src/test/resources"]
                     :repl-options   {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
                     :plugins        [[lein-cljsbuild "1.1.8"]
-                                     [lein-ancient "1.0.0-RC3"]]}
+                                     [lein-ancient "1.0.0-RC3"]]
+                    :eastwood {:exclude-linters [:constant-test]}}
              :test {:dependencies      [[org.apache.logging.log4j/log4j-core "2.17.2"]
                                         [org.apache.logging.log4j/log4j-api "2.17.2"]]
                     :java-source-paths ["src/test/java"]
@@ -42,6 +43,8 @@
              :cljsbuild {:aot ^:replace []}
              :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "0.1.4"]]}
              :eastwood {:plugins [[jonase/eastwood "1.2.3"]]}
+             ; note that kibit currently seems to not support .cljc files well:
+             ; https://github.com/jonase/kibit/issues/246
              :kibit {:plugins [[lein-kibit "0.1.8"]]}}
   :cljsbuild
   {:builds

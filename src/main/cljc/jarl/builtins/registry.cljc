@@ -1,6 +1,6 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.aggregates :as aggregates]
-            [jarl.builtins.comparison :as comparison]
+            #?(:clj [jarl.builtins.comparison :as comparison])
             #?(:clj [jarl.builtins.conversions :as conversions])
             #?(:clj [jarl.builtins.crypto :as crypto])
             #?(:clj [jarl.builtins.numbers :as numbers])
@@ -153,8 +153,16 @@
       ; opa
       "opa.runtime"              opa/builtin-opa-runtime}
      :cljs
-     {"equal"                    comparison/builtin-equal
-      "count"                    aggregates/builtin-count}))
+     {"count"                    aggregates/builtin-count
+      "sum"                      aggregates/builtin-sum
+      "product"                  aggregates/builtin-product
+      "max"                      aggregates/builtin-max
+      "min"                      aggregates/builtin-min
+      "sort"                     aggregates/builtin-sort
+      "internal.member_2"        aggregates/builtin-internal-member-2
+      "internal.member_3"        aggregates/builtin-internal-member-3
+      "all"                      aggregates/builtin-all
+      "any"                      aggregates/builtin-any}))
 
 (defn get-builtin [name]
   (get builtins name))

@@ -1,5 +1,5 @@
 (ns jarl.types-test
-  (:require [cljs.test :refer [deftest is testing]]
+  (:require [cljs.test :refer [deftest testing is]]
             [jarl.builtins.comparison :refer [builtin-equal]]))
 
 (deftest comparison-test
