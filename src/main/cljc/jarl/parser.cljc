@@ -1,8 +1,10 @@
 (ns jarl.parser
-  (:require [clojure.data.json :as json])
-  (:require [clojure.tools.logging :as log])
-  (:require [jarl.builtins.registry :as builtins])
-  (:require [jarl.eval :as eval]
+  (:require #?(:clj  [clojure.tools.logging :as log]
+               :cljs [jarl.tmp-logging :as log])
+            [jarl.builtins.registry :as builtins]
+            [jarl.eval :as eval]
+            [jarl.formatting :refer [sprintf]]
+            [jarl.json :as json]
             [jarl.state :as state]))
 
 (declare make-block)
@@ -216,7 +218,7 @@
                "ScanStmt" (make-ScanStmt stmt-info)
                "SetAddStmt" (make-SetAddStmt stmt-info)
                "WithStmt" (make-WithStmt stmt-info)
-               (throw (Exception. (format "%s statement type not implemented" type))))]
+               (throw (ex-info (sprintf "%s statement type not implemented" type) {:type :parser-exception})))]
     (fn [state]
       (eval/eval-stmt type stmt state))))
 
@@ -294,7 +296,7 @@
   (let [builtin-func (builtin-resolver name)]
     (log/debugf "making built-in func <%s>" name)
     (if (nil? builtin-func)
-      (throw (Exception. (format "unknown function '%s'" name)))
+      (throw (ex-info (sprintf "unknown function '%s'" name) {:type :parser-exception}))
       [name (fn [args state]
               (eval/eval-builtin-func name builtin-func args state))])))
 
@@ -321,9 +323,3 @@
 (defn parse-json
   "Parses the incoming string"
   [str] (parse (json/read-str str)))
-
-(defn parse-file
-  "Reads and parses the incoming file"
-  [file]
-  (log/infof "Parsing file '%s'" file)
-  (parse-json (slurp file)))

@@ -1,13 +1,13 @@
 (ns jarl.builtins.aggregates
   (:require [jarl.exceptions :as errors]
             [jarl.types :as types]
-            [jarl.builtins.strings :refer [cp-count]]
-            [jarl.builtins.utils :refer [possibly-int typed-seq]]))
+            [jarl.builtins.utils :refer [possibly-int typed-seq]]
+            [jarl.utils :refer [count-str]]))
 
 (defn builtin-count
   [{[x] :args}]
   (if (string? x)
-    (cp-count {:args [x]})
+    (count-str x)
     (count x)))
 
 (defn builtin-sum

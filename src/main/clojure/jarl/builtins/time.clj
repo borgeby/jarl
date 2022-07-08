@@ -58,7 +58,7 @@
   ([s]
    (parse-iso-datetime s DateTimeFormatter/ISO_LOCAL_DATE_TIME))
   ([s f]
-   (let [ldt (errors/try-or (LocalDateTime/parse s f)
+   (let [ldt (errors/try-or #(LocalDateTime/parse s f)
                             (.atStartOfDay (LocalDate/parse s f)))] ; if only date, i.e. 2012-12-12
        (.toInstant ^LocalDateTime ldt ZoneOffset/UTC))))
 
@@ -76,9 +76,10 @@
     ; everything else
     (let [pattern (go->java-formatter f)]
       (if (re-find #"[ZXx]" pattern) ; time zone in pattern
-        (errors/try-or
+        ; TODO: figure out why errors/try-or doesn't work in this context
+        (try
           (parse-iso-zoned-datetime s (DateTimeFormatter/ofPattern pattern))
-          (parse-iso-zoned-datetime s))
+          (catch Throwable _ (parse-iso-zoned-datetime s)))
         (parse-iso-datetime s (DateTimeFormatter/ofPattern pattern))))))
 
 (def unit->temporal

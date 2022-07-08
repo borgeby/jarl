@@ -1,7 +1,6 @@
 (ns jarl.builtins.encoding-test
   (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]])
-  (:import (se.fylling.jarl BuiltinException)))
+            [test.utils :refer [testing-builtin]]))
 
 (deftest builtin-base64-encode-test
   (testing-builtin "base64.encode"
@@ -95,7 +94,7 @@
     ["f09f8dba"] "🍺"
     ["686578212068657821"] "hex! hex!"
     ; invalid hex
-    ["fghijkl"] [BuiltinException "invalid byte: U\\+0067 'g'"]))
+    ["fghijkl"] [:jarl.exceptions/builtin-exception "invalid byte: U\\+0067 'g'"]))
 
 (deftest builtin-yaml-marshal-test
   (testing-builtin "yaml.marshal"
@@ -107,7 +106,7 @@
   (testing-builtin "yaml.unmarshal"
     ["foo: bar"] {"foo" "bar"}
     ; mimic error message from OPA
-    ["[1, 2"] [BuiltinException "yaml: line 1: did not find expected ',' or ']'"]))
+    ["[1, 2"] [:jarl.exceptions/builtin-exception "yaml: line 1: did not find expected ',' or ']'"]))
 
 (deftest builtin-yaml-is-valid-test
   (testing-builtin "yaml.is_valid"

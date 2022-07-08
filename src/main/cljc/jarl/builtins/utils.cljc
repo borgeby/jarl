@@ -15,10 +15,14 @@
 (defn str->int
   "Converts a numeric string to int, or returns the string if not a number"
   [s]
-  (let [numeric? (fn [s] (some? (re-matches #"[\d]+" s)))]
-    (if (numeric? s)
-      (.intValue (bigdec s))
-      s)))
+  #?(:clj
+     (let [numeric? (fn [s] (some? (re-matches #"[\d]+" s)))]
+       (if (numeric? s)
+         (.intValue (bigdec s))
+         s))
+     :cljs
+     (let [n (js/parseFloat s)]
+       (if (= n js/NaN) s n))))
 
 (defn- type-match? [expected-type provided-type]
   (or (= expected-type "any")
@@ -36,7 +40,7 @@
       (let [pos (first entry)
             expected-type (second entry)
             value (nth entry 2)
-            provided-type (types/java->rego value)]
+            provided-type (types/->rego value)]
         (when-not (type-match? expected-type provided-type)
           (if (set? expected-type)
             (throw (errors/type-ex "%s: operand %s must be one of {%s} but got %s" builtin-name pos (str/join ", " expected-type) provided-type))
@@ -47,9 +51,9 @@
   [builtin-name arr-or-set allowed-types]
   (let [allowed-set (set allowed-types)
         allow (if (contains? allowed-set "number") (conj allowed-set "floating-point number") allowed-set)
-        forbidden (fn [x] (not (contains? allow (types/java->rego x))))]
+        forbidden (fn [x] (not (contains? allow (types/->rego x))))]
     (when-let [violation (first (filter forbidden arr-or-set))]
       (throw (errors/type-ex "%s: operand must be array or set of %s but got array or set containing %s"
                              builtin-name
                              (str/join "," allowed-types)
-                             (types/java->rego violation))))))
+                             (types/->rego violation))))))

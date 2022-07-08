@@ -1,8 +1,10 @@
 (ns jarl.builtins.numbers-test
-  (:require [clojure.test :refer [deftest is]]
-            [test.utils :refer [testing-builtin]]
-            [jarl.builtins.numbers :refer [builtin-rem]])
-  (:import (se.fylling.jarl JarlException BuiltinException)))
+  (:require  [test.utils            :refer [testing-builtin]]
+    #?(:clj  [clojure.test          :refer [deftest is]]
+       :cljs [cljs.test             :refer [deftest is]])
+             [jarl.builtins.numbers :refer [builtin-rem]]
+             [jarl.exceptions       :as errors])
+  #?(:clj (:import (clojure.lang ExceptionInfo))))
 
 (deftest builtin-plus-test
   (testing-builtin "plus"
@@ -38,7 +40,7 @@
     [1 3] 0.3333333333333333
     [1 2] 0.5
     ; divide by zero
-    [2 0] [BuiltinException "divide by zero"]))
+    [2 0] [:jarl.exceptions/builtin-exception "divide by zero"]))
 
 (deftest builtin-rem-test
   (testing-builtin "rem"
@@ -46,13 +48,18 @@
     [2 2] 0
     [2.0 2.0] 0
     ; non-int result is undefined
-    [2.0 1.5] [BuiltinException "modulo on floating-point number"]
+    [2.0 1.5] [:jarl.exceptions/builtin-exception "modulo on floating-point number"]
     ; rem by zero
     (try
       (builtin-rem {:args [2 0]})
-      (catch JarlException e
-        (is (= (.getMessage e) "modulo by zero"))
-        (is (= (.getType e) "eval_builtin_error"))))))
+      #?(:clj
+         (catch ExceptionInfo e
+           (is (= (ex-message e) "modulo by zero"))
+           (is (= (errors/ex-type e) "eval_builtin_error")))
+         :cljs
+         (catch js/Object e
+           (is (= (ex-message e) "modulo by zero"))
+           (is (= (errors/ex-type e) "eval_builtin_error")))))))
 
 (deftest builtin-round-test
   (testing-builtin "round"

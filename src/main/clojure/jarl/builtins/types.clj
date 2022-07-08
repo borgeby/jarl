@@ -46,7 +46,7 @@
 
 (defn builtin-type-name
   [{[x] :args}]
-  (let [type-name (types/java->rego x)]
+  (let [type-name (types/->rego x)]
     (if (= type-name "floating-point number")
       "number"
       type-name)))

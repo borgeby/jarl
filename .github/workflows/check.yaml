@@ -2,7 +2,6 @@ name: Check Code
 
 on:
   push:
-    branches: [ main ]
 
   pull_request:
     branches: [ main ]
@@ -35,5 +34,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Run tests
+
+    - name: Generate compliance tests
+      run: lein gen-compliance
+
+    # NOTE: If we want to have "lein test" run all of tests tasks, including cljs, we could use:
+    # `:hooks [leiningen.cljsbuild]` inside of project.clj ... but I don't mind being explicit for now
+    # ... and additionally, hooks seem to not take tags like :unit into account (which might be fixable)
+
+    - name: Run clj tests
       run: lein test
+
+    - name: Run cljs unit tests
+      run: lein cljsbuild test unit
+
+    - name: Run cljs compliance test
+      run: lein cljsbuild test compliance

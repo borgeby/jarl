@@ -1,7 +1,7 @@
 (ns jarl.builtins.aggregates-test
-  (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]])
-  (:import (se.fylling.jarl TypeException)))
+  (:require  [test.utils   :refer [testing-builtin]]
+    #?(:clj  [clojure.test :refer [deftest]]
+       :cljs [cljs.test    :refer [deftest]])))
 
 (deftest builtin-count-test
   (testing-builtin "count"
@@ -23,7 +23,8 @@
     [#{3 2 1}]       6
     [[-1 -1 -1]]    -3
     [[-1.5 1.5 -1]] -1
-    [[1 "3"]]       [TypeException "operand must be array or set of number but got array or set containing string"]))
+    [[1 "3"]]       [:jarl.exceptions/type-exception
+                     "operand must be array or set of number but got array or set containing string"]))
 
 (deftest builtin-product-test
   (testing-builtin "product"
@@ -34,7 +35,8 @@
     [[2.5 3]]           7.5
     [[10.0 10.000 -2]]  -200
     [#{3 2 1}]          6
-    [[1 "3"]]           [TypeException "operand must be array or set of number but got array or set containing string"]))
+    [[1 "3"]]           [:jarl.exceptions/type-exception
+                         "operand must be array or set of number but got array or set containing string"]))
 
 (deftest builtin-max-test
   (testing-builtin "max"

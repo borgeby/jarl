@@ -1,11 +1,14 @@
 (ns jarl.parser-test
   (:require [clojure.test :refer [deftest is testing]]
-            [jarl.parser :refer [parse-file]]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [jarl.parser :refer [parse-json]]))
+
+; TODO: this is not compatible with ClojureScript unless using Node, since we're reading files from disk,
+;       and to do this in the browser we'd need to launch a server to fetch from.. but, good enough for now
 
 (deftest simple-test
   (testing "A simple policy"
-    (let [info (parse-file (io/resource "rego/simple/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/simple/plan.json")))
           plans (get info :plans)]
       (let [[name plan] (get plans 0)]
         (is (= name "simple/p"))
@@ -18,7 +21,7 @@
 
 (deftest simple-data-test
   (testing "A simple policy expecting a data document"
-    (let [info (parse-file (io/resource "rego/data/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/data/plan.json")))
           plans (get info :plans)]
       (is (= (count plans) 1))
       (let [[name plan] (get plans 0)]
@@ -28,7 +31,7 @@
 
 (deftest set-composition-test
   (testing "A policy with set-composition"
-    (let [info (parse-file (io/resource "rego/set-composition/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/set-composition/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "set_composition"))
       (let [result-set (plan info {} {})]
@@ -36,7 +39,7 @@
 
 (deftest object-composition-test
   (testing "A policy with object-composition"
-    (let [info (parse-file (io/resource "rego/object-composition/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/object-composition/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "object_composition"))
       (let [result-set (plan info {} {})]
@@ -46,7 +49,7 @@
 
 (deftest array-comprehension-test
   (testing "A policy with array-comprehension"
-    (let [info (parse-file (io/resource "rego/array-comprehension/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/array-comprehension/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "array_comprehension/p"))
       (let [result-set (plan info {} {})]
@@ -54,7 +57,7 @@
 
 (deftest set-comprehension-test
   (testing "A policy with set-comprehension"
-    (let [info (parse-file (io/resource "rego/set-comprehension/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/set-comprehension/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "set_comprehension/p"))
       (let [result-set (plan info {} {})]
@@ -62,7 +65,7 @@
 
 (deftest object-comprehension-test
   (testing "A policy with object-comprehension"
-    (let [info (parse-file (io/resource "rego/object-comprehension/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/object-comprehension/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "object_comprehension/p"))
       (let [result-set (plan info {} {})]
@@ -72,7 +75,7 @@
 
 (deftest array-built-ins-test
   (testing "A policy with array.* built-ins"
-    (let [info (parse-file (io/resource "rego/array_built-ins/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/array_built-ins/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "array_built_ins/a"))
       (let [result-set (plan info {} {})]
@@ -80,7 +83,7 @@
 
 (deftest aggregates-test
   (testing "A policy with aggregate"
-    (let [info (parse-file (io/resource "rego/aggregates/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/aggregates/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "agg"))
       (let [result-set (plan info {"a" [1 2 3 4]} {})]
@@ -90,7 +93,7 @@
 
 (deftest with-test
   (testing "A policy with while keyword"
-    (let [info (parse-file (io/resource "rego/with/plan.json"))
+    (let [info (parse-json (slurp (io/resource "rego/with/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "w"))
       (let [result-set (plan info {"a" "bar"} {})]

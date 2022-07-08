@@ -1,14 +1,10 @@
 (ns jarl.builtins.strings
-  (:require [jarl.exceptions :as errors]
-            [clojure.string :as str])
+  (:require [clojure.string :as str]
+            [jarl.exceptions :as errors]
+            [jarl.utils :refer [count-str]])
   (:import (java.util.regex Pattern)
            (java.util Locale)
            (clojure.lang PersistentVector)))
-
-(defn cp-count
-  "Count using code points rather than characters"
-  [{[^String s] :args}]
-  (.codePointCount s 0 (.length s)))
 
 (defn- cp-seq
   "Return seq of codepoints (ints) from string"
@@ -113,7 +109,7 @@
   [{[s start len] :args}]
   (if (neg-int? start)
     (throw (errors/builtin-ex "substring: negative offset"))
-    (let [cpc (cp-count {:args [s]})]
+    (let [cpc (count-str s)]
       (if (>= start cpc)
         ""
         (if (neg-int? len)
