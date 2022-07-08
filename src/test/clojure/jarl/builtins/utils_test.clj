@@ -11,8 +11,8 @@
       (is (= (ex-message ex) "eval_builtin_error: my message #1 caused by incompetence"))))
   (testing "no formatting"
     (let [ex (errors/builtin-ex "my message caused by insomnia")]
-      (is (is (errors/builtin-ex? ex))
-          (is (= (ex-message ex) "eval_builtin_error: my message caused by insomnia"))))))
+      (is (errors/builtin-ex? ex))
+      (is (= (ex-message ex) "eval_builtin_error: my message caused by insomnia")))))
 
 (deftest typed-seq-test
   (testing "typed-seq compliant"
