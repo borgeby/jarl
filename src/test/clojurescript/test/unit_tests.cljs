@@ -1,7 +1,11 @@
 (ns test.unit-tests
-  (:require [cljs.test :refer-macros [run-tests]]
-            [jarl.exceptions-test]
-            [jarl.types-test]))
+  (:require [cljs.test :refer [run-tests]]
+            [jarl.builtins.aggregates-test]
+            [jarl.builtins.array-test]
+            [jarl.builtins.comparison-test]
+            [jarl.builtins.numbers-test]
+            [jarl.builtins.sets-test]
+            [jarl.exceptions-test]))
 
 ; For now, include test namespaces manually. Later we might want to switch to run-all-tests:
 
@@ -15,5 +19,9 @@
 ;names matching the regular expression (with re-matches) will be
 ;tested.
 
-(run-tests 'jarl.exceptions-test
-           'jarl.types-test)
+(run-tests 'jarl.builtins.aggregates-test
+           'jarl.builtins.array-test
+           'jarl.builtins.comparison-test
+           'jarl.builtins.numbers-test
+           'jarl.builtins.sets-test
+           'jarl.exceptions-test)

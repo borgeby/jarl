@@ -1,6 +1,7 @@
 (ns jarl.builtins.array-test
-  (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]]))
+  (:require  [test.utils   :refer [testing-builtin]]
+    #?(:clj  [clojure.test :refer [deftest]]
+       :cljs [cljs.test    :refer [deftest]])))
 
 (deftest builtin-array-concat-test
   (testing-builtin "array.concat"

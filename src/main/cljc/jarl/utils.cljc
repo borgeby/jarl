@@ -68,7 +68,22 @@
   #?(:clj (System/getenv)
      :cljs {})) ; TODO - Add Node implementation
 
+; Some tricks / hacks for unicode handling in Javascript / ClojureScript:
+; https://dev.to/coolgoose/quick-and-easy-way-of-counting-utf-8-characters-in-javascript-23ce
+; https://gist.github.com/galdolber/1568e767fe69f9439874cc20c755b80e
+
+#?(:cljs
+   (defn cp-seq [txt]
+     (when txt
+       (let [reg (js* "/(\\P{Mark}\\p{Mark}*)/u")]
+         (map first (re-seq reg txt))))))
+
+#?(:cljs
+  (defn cp-subs
+    ([txt from] (subs txt from (count txt)))
+    ([txt from to]
+     (apply str (take (- to from) (drop from (cp-seq txt)))))))
+
 (defn count-str [s]
   #?(:clj  (.codePointCount ^String s 0 (.length ^String s))
-     ; TODO
-     :cljs (count s)))
+     :cljs (count (cp-seq s))))
