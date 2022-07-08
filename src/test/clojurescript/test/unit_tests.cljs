@@ -1,8 +1,11 @@
 (ns test.unit-tests
-  (:require [cljs.test :refer-macros [run-tests]]
+  (:require [cljs.test :refer [run-tests]]
             [jarl.builtins.aggregates-test]
-            [jarl.exceptions-test]
-            [jarl.types-test]))
+            [jarl.builtins.array-test]
+            [jarl.builtins.comparison-test]
+            [jarl.builtins.numbers-test]
+            [jarl.builtins.sets-test]
+            [jarl.exceptions-test]))
 
 ; For now, include test namespaces manually. Later we might want to switch to run-all-tests:
 
@@ -17,5 +20,8 @@
 ;tested.
 
 (run-tests 'jarl.builtins.aggregates-test
-           'jarl.exceptions-test
-           'jarl.types-test)
+           'jarl.builtins.array-test
+           'jarl.builtins.comparison-test
+           'jarl.builtins.numbers-test
+           'jarl.builtins.sets-test
+           'jarl.exceptions-test)

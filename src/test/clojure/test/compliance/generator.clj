@@ -9,6 +9,15 @@
   (:import (java.nio.file FileSystems)
            (java.io File)))
 
+(def ignored-tests
+  {:clj
+   #{}
+   :cljs
+   #{"arithmetic/big_int"}}) ; bigint not supported in ClojureScript
+
+(defn ignored? [target note]
+  (contains? (get ignored-tests target) note))
+
 (defn json->test-cases [^File file]
   (-> (slurp file)
       (json/read-str)
@@ -149,7 +158,7 @@
         (let [{:strs [note plan]} test-case
               note (inc-note note (:plans result))
               test-case (assoc test-case "note" note)]
-          (if (ir-supported? plan target)
+          (if (and (ir-supported? plan target) (not (ignored? target note)))
             (recur (rest test-cases) (-> result
                                          (assoc-in [:plans note] plan)
                                          (assoc :tests (conj (:tests result) (create-test test-case)))))

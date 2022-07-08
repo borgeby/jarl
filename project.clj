@@ -7,7 +7,7 @@
                  [org.clojure/clojurescript "1.11.57"]
                  [org.clojure/data.json "2.4.0"]
                  [org.clojure/tools.logging "1.2.4"]
-                 [com.google.re2j/re2j "1.6"]
+                 [com.google.re2j/re2j "1.7"]
                  [clj-commons/clj-yaml "0.7.108"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
@@ -35,13 +35,13 @@
                     :plugins        [[lein-cljsbuild "1.1.8"]
                                      [lein-ancient "1.0.0-RC3"]]
                     :eastwood {:exclude-linters [:constant-test]}}
-             :test {:dependencies      [[org.apache.logging.log4j/log4j-core "2.17.2"]
-                                        [org.apache.logging.log4j/log4j-api "2.17.2"]]
+             :test {:dependencies      [[org.apache.logging.log4j/log4j-core "2.18.0"]
+                                        [org.apache.logging.log4j/log4j-api "2.18.0"]]
                     :java-source-paths ["src/test/java"]
                     :resource-paths    ["src/test/resources"]
                     :jvm-opts          ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/log4j2-factory"]}
              :cljsbuild {:aot ^:replace []}
-             :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "0.1.4"]]}
+             :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "0.2.1"]]}
              :eastwood {:plugins [[jonase/eastwood "1.2.3"]]}
              ; note that kibit currently seems to not support .cljc files well:
              ; https://github.com/jonase/kibit/issues/246

@@ -40,28 +40,32 @@ integrations, will be here at a later point in time.
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `==`              |  ✅  |  ❌   |    ❌    |
-| `!=`              |  ✅  |  ❌   |    ❌    |
-| `<`               |  ✅  |  ❌   |    ❌    |
-| `<=`              |  ✅  |  ❌   |    ❌    |
-| `>`               |  ✅  |  ❌   |    ❌    |
-| `>=`              |  ✅  |  ❌   |    ❌    |
+| `==`              |  ✅  |  ✅   |    ✅    |
+| `!=`              |  ✅  |  ✅   |    ✅    |
+| `<`               |  ✅  |  ✅   |    ✅    |
+| `<=`              |  ✅  |  ✅   |    ✅    |
+| `>`               |  ✅  |  ✅   |    ✅    |
+| `>=`              |  ✅  |  ✅   |    ✅    |
 
 ### Numbers
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `+`               |  ✅  |  ❌   |    ❌    |
-| `-`               |  ✅  |  ❌   |    ❌    |
-| `*`               |  ✅  |  ❌   |    ❌    |
-| `/`               |  ✅  |  ❌   |    ❌    |
-| `%`               |  ✅  |  ❌   |    ❌    |
-| `round`           |  ✅  |  ❌   |    ❌    |
-| `ceil`            |  ✅  |  ❌   |    ❌    |
-| `floor`           |  ✅  |  ❌   |    ❌    |
-| `abs`             |  ✅  |  ❌   |    ❌    |
-| `numbers.range`   |  ✅  |  ❌   |    ❌    |
+| `+`               |  ✅  |  ✅   |    ✅    |
+| `-`               |  ✅  |  ✅   |    ✅    |
+| `*`               |  ✅  |  ✅   |    ✅    |
+| `/`               |  ✅  |  ✅   |    ✅    |
+| `%`               |  ✅  |  ✅   |    ✅    |
+| `round`           |  ✅  |  ✅   |    ✅    |
+| `ceil`            |  ✅  |  ✅   |    ✅    |
+| `floor`           |  ✅  |  ✅   |    ✅    |
+| `abs`             |  ✅  |  ✅   |    ✅    |
+| `numbers.range`   |  ✅  |  ✅   |    ✅    |
 | `rand.intn`       |  ❌  |  ❌   |    ❌    |
+
+Note: ClojureScript doesn't handle [BigInt](https://gist.github.com/mfikes/9fc981ed7a190b8e9b2912eee98fdd5e) /
+[BigDecimal](https://blog.janetacarr.com/thoughts-on-clojurescript-and-bigdecimal/) values like Clojure. While we could
+probably work around this, these are generally not used in policy, and as such not prioritized.
 
 ### Aggregates
 
@@ -78,19 +82,19 @@ integrations, will be here at a later point in time.
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `array.concat`    |  ✅  |  ❌   |    ❌    |
-| `array.reverse`   |  ✅  |  ❌   |    ❌    |
-| `array.slice`     |  ✅  |  ❌   |    ❌    |
+| `array.concat`    |  ✅  |  ✅   |    ✅    |
+| `array.reverse`   |  ✅  |  ✅   |    ✅    |
+| `array.slice`     |  ✅  |  ✅   |    ✅    |
 
 ### Sets
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `&`               |  ✅  |   ❌  |    ❌    |
-| `\|`              |  ✅  |   ❌  |    ❌    |
-| `-`               |  ✅  |   ❌  |    ❌    |
-| `intersection`    |  ✅  |   ❌  |    ❌    |
-| `union`           |  ✅  |   ❌  |    ❌    |
+| `&`               |  ✅  |   ✅  |    ✅    |
+| `\|`              |  ✅  |   ✅  |    ✅    |
+| `-`               |  ✅  |   ✅  |    ✅    |
+| `intersection`    |  ✅  |   ✅  |    ✅    |
+| `union`           |  ✅  |   ✅  |    ✅    |
 
 ### Objects
 
@@ -360,9 +364,11 @@ Note: `print` calls are erased from plans, so likely can't be supported without 
 
 ### Testing
 
-* `lein test` to run all tests
+#### Unit Tests
+
+* `lein test` to run all Clojure tests
 * `lein test :unit` to run the Clojure unit tests
-* `lein test :compliance` to run the OPA compliance test suite
+* `lein cljsbuild test unit` to run the ClojureScript unit tests
 
 #### Compliance Tests
 
@@ -386,7 +392,11 @@ If you only want to generate tests for a single target, you may optionally provi
 argument to the above command.
 
 NOTE that you need only to generate the compliance tests cases when there have been either changes coming in upstream,
-or you have added new builtin functions for either target.
+or you have added new builtin functions for either target. Once generated, the tests may be run with the
+following commands:
+
+* `lein test :compliance` to run the OPA compliance test suite for Clojure
+* `lein cljsbuild test compliance` to run the OPA compliance test suite for ClojureScript
 
 ### Linters
 

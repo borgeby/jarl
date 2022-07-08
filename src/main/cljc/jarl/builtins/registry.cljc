@@ -1,11 +1,11 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.aggregates :as aggregates]
-            #?(:clj [jarl.builtins.comparison :as comparison])
+            [jarl.builtins.array      :as array]
+            [jarl.builtins.comparison :as comparison]
+            [jarl.builtins.numbers    :as numbers]
+            [jarl.builtins.sets       :as sets]
             #?(:clj [jarl.builtins.conversions :as conversions])
             #?(:clj [jarl.builtins.crypto :as crypto])
-            #?(:clj [jarl.builtins.numbers :as numbers])
-            #?(:clj [jarl.builtins.array :as array])
-            #?(:clj [jarl.builtins.sets :as sets])
             #?(:clj [jarl.builtins.objects :as objects])
             #?(:clj [jarl.builtins.strings :as strings])
             #?(:clj [jarl.builtins.regex :as regex])
@@ -153,7 +153,26 @@
       ; opa
       "opa.runtime"              opa/builtin-opa-runtime}
      :cljs
-     {"count"                    aggregates/builtin-count
+     {; comparison
+      "equal"                    comparison/builtin-equal
+      "neq"                      comparison/builtin-neq
+      "lt"                       comparison/builtin-lt
+      "lte"                      comparison/builtin-lte
+      "gt"                       comparison/builtin-gt
+      "gte"                      comparison/builtin-gte
+      ; numbers
+      "plus"                     numbers/builtin-plus
+      "minus"                    numbers/builtin-minus
+      "mul"                      numbers/builtin-mul
+      "div"                      numbers/builtin-div
+      "rem"                      numbers/builtin-rem
+      "round"                    numbers/builtin-round
+      "ceil"                     numbers/builtin-ceil
+      "floor"                    numbers/builtin-floor
+      "abs"                      numbers/builtin-abs
+      "numbers.range"            numbers/builtin-numbers-range
+      ; aggregates
+      "count"                    aggregates/builtin-count
       "sum"                      aggregates/builtin-sum
       "product"                  aggregates/builtin-product
       "max"                      aggregates/builtin-max
@@ -162,7 +181,17 @@
       "internal.member_2"        aggregates/builtin-internal-member-2
       "internal.member_3"        aggregates/builtin-internal-member-3
       "all"                      aggregates/builtin-all
-      "any"                      aggregates/builtin-any}))
+      "any"                      aggregates/builtin-any
+      ; arrays
+      "array.concat"             array/builtin-array-concat
+      "array.reverse"            array/builtin-array-reverse
+      "array.slice"              array/builtin-array-slice
+      ; sets
+      "and"                      sets/builtin-and
+      "or"                       sets/builtin-or
+      "intersection"             sets/builtin-intersection
+      "union"                    sets/builtin-union
+      }))
 
 (defn get-builtin [name]
   (get builtins name))

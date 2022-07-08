@@ -1,6 +1,7 @@
 (ns jarl.builtins.comparison-test
-  (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]]))
+  (:require  [test.utils   :refer [testing-builtin]]
+    #?(:clj  [clojure.test :refer [deftest]]
+       :cljs [cljs.test    :refer [deftest]])))
 
 (deftest builtin-equal-test
   (testing-builtin "equal"
@@ -41,8 +42,6 @@
     [1 1] false
     [1 1.0] false
     [-3.334 -3.3340000] false
-    ; bigint
-    [28857836529306024611913 28857836529306024611912] true
     ; strings
     ["a" "a"] false
     ["a" "A"] true
@@ -64,6 +63,12 @@
     ; null
     [nil nil] false
     [nil " "] true))
+
+; bigint
+#?(:clj
+   (deftest builtin-neq-bigint-test
+     (testing-builtin "neq"
+       [28857836529306024611913 28857836529306024611912] true)))
 
 (deftest builtin-lt-test
   (testing-builtin "lt"
