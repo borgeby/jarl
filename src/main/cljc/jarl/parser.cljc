@@ -1,6 +1,5 @@
 (ns jarl.parser
-  (:require #?(:clj  [clojure.tools.logging :as log]
-               :cljs [jarl.tmp-logging :as log])
+  (:require [taoensso.timbre :as log]
             [jarl.builtins.registry :as builtins]
             [jarl.eval :as eval]
             [jarl.formatting :refer [sprintf]]
