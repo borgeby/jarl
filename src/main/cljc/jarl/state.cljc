@@ -1,7 +1,6 @@
 (ns jarl.state
-  (:require [jarl.utils :as utils]
-            #?(:clj  [clojure.tools.logging :as log]
-               :cljs [jarl.tmp-logging :as log])))
+  (:require [taoensso.timbre :as log]
+            [jarl.utils :as utils]))
 
 (defn- upsert-local [value stack index]
   (if (or (nil? stack) (empty? stack))

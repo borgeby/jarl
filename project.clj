@@ -6,27 +6,28 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.11.57"]
                  [org.clojure/data.json "2.4.0"]
-                 [org.clojure/tools.logging "1.2.4"]
+                 [com.taoensso/timbre "5.2.1"]
                  [com.google.re2j/re2j "1.7"]
                  [clj-commons/clj-yaml "0.7.108"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
-  :direct-linking true
   :aliases {"clj-kondo"           ["with-profile" "+clj-kondo" "clj-kondo" "--debug" "--lint" "src"]
             "eastwood"            ["with-profile" "+eastwood" "eastwood"]
             "kibit"               ["with-profile" "+kibit" "kibit"]
             "perf-opa"            ["with-profile" "+test" "run" "-m" "test.benchmark" "opa"]
             "perf-jarl"           ["with-profile" "+test" "run" "-m" "test.benchmark" "jarl"]
-            "gen-compliance"      ["with-profile" "+test" "run" "-m" "test.compliance.generator"]}
+            "gen-compliance"      ["with-profile" "+test" "run" "-m" "test.compliance.generator"]
+            "rebl"                ["trampoline" "run" "-m" "rebel-readline.main"]}
   :source-paths ["src/main/clojure" "src/main/cljc"]
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
   :test-paths ["src/test/clojure" "src/test/cljc"]
-  :test-selectors {:unit       (complement :compliance)
-                   :compliance :compliance
-                   :performance :performance}
+  :test-selectors {:unit (complement :compliance)
+                   :compliance       :compliance
+                   :performance      :performance}
   :profiles {:dev  {:dependencies   [[junit/junit "4.13.2"]
+                                     [com.bhauman/rebel-readline "0.1.4"]
                                      [cider/piggieback "0.5.3"]
                                      [criterium "0.4.6"]
                                      [zprint "1.2.3"]]
@@ -35,12 +36,8 @@
                     :plugins        [[lein-cljsbuild "1.1.8"]
                                      [lein-ancient "1.0.0-RC3"]]
                     :eastwood {:exclude-linters [:constant-test]}}
-             :test {:dependencies      [[org.apache.logging.log4j/log4j-core "2.18.0"]
-                                        [org.apache.logging.log4j/log4j-api "2.18.0"]]
-                    :java-source-paths ["src/test/java"]
-                    :resource-paths    ["src/test/resources"]
-                    :jvm-opts          ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/log4j2-factory"]}
-             :cljsbuild {:aot ^:replace []}
+             :test {:injections [(require 'test.config)
+                                 (taoensso.timbre/set-level! :warn)]}
              :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "0.2.1"]]}
              :eastwood {:plugins [[jonase/eastwood "1.2.3"]]}
              ; note that kibit currently seems to not support .cljc files well:

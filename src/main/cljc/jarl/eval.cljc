@@ -1,5 +1,6 @@
 (ns jarl.eval
   (:require [clojure.string :as string]
+            [taoensso.timbre :as log]
             [jarl.builtins.utils :refer [check-args]]
             [jarl.formatting :refer [sprintf]]
             [jarl.state :as state]
@@ -7,9 +8,7 @@
             [jarl.utils :as utils]
             [jarl.exceptions :as errors]
             #?(:clj  [clojure.edn :as edn]
-               :cljs [cljs.tools.reader.edn :as edn])
-            #?(:clj  [clojure.tools.logging :as log]
-               :cljs [jarl.tmp-logging :as log]))
+               :cljs [cljs.tools.reader.edn :as edn]))
   #?(:clj (:import  (clojure.lang ExceptionInfo))))
 
 (defn break
@@ -19,7 +18,7 @@
 (defn eval-ArrayAppendStmt [array-index value-index state]
   (if-not (state/contains-local? state array-index)
     (do
-      (log/infof "ArrayAppendStmt - <%s> is not a local var" array-index)
+      (log/debugf "ArrayAppendStmt - <%s> is not a local var" array-index)
       (break state))
     (if (state/contains-value? state value-index)
       (let [val (state/get-value state value-index)
@@ -369,7 +368,7 @@
         (throw e)))))
 
 (defn eval-stmts [stmts state]
-  ;(log/debug "executing statements")
+  (log/debug "executing statements")
   (loop [stmts stmts
          state state]
     (let [stmts-count (count stmts)]
@@ -381,7 +380,7 @@
         (recur (next stmts) ((first stmts) state))))))
 
 (defn eval-block [stmts state]
-  ;(log/debug "block - executing")
+  (log/debug "block - executing")
   (let [state (stmts state)
         break-index (get state :break-index)]
     (if-not (nil? break-index)
