@@ -1,10 +1,14 @@
 (ns test.unit-tests
   (:require [cljs.test :refer [run-tests]]
+            [test.config]
             [jarl.builtins.aggregates-test]
             [jarl.builtins.array-test]
             [jarl.builtins.comparison-test]
+            [jarl.builtins.conversions-test]
             [jarl.builtins.numbers-test]
             [jarl.builtins.sets-test]
+            [jarl.builtins.types-test]
+            [jarl.builtins.encoding-test]
             [jarl.exceptions-test]))
 
 ; For now, include test namespaces manually. Later we might want to switch to run-all-tests:
@@ -22,6 +26,9 @@
 (run-tests 'jarl.builtins.aggregates-test
            'jarl.builtins.array-test
            'jarl.builtins.comparison-test
+           'jarl.builtins.conversions-test
            'jarl.builtins.numbers-test
            'jarl.builtins.sets-test
+           'jarl.builtins.types-test
+           'jarl.builtins.encoding-test
            'jarl.exceptions-test)

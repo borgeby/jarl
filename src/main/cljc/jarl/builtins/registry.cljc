@@ -1,18 +1,18 @@
 (ns jarl.builtins.registry
-  (:require [jarl.builtins.aggregates :as aggregates]
-            [jarl.builtins.array      :as array]
-            [jarl.builtins.comparison :as comparison]
-            [jarl.builtins.numbers    :as numbers]
-            [jarl.builtins.sets       :as sets]
-            #?(:clj [jarl.builtins.conversions :as conversions])
+  (:require [jarl.builtins.aggregates  :as aggregates]
+            [jarl.builtins.array       :as array]
+            [jarl.builtins.comparison  :as comparison]
+            [jarl.builtins.numbers     :as numbers]
+            [jarl.builtins.sets        :as sets]
+            [jarl.builtins.conversions :as conversions]
+            [jarl.builtins.types       :as types]
+            [jarl.builtins.encoding :as encoding]
             #?(:clj [jarl.builtins.crypto :as crypto])
             #?(:clj [jarl.builtins.objects :as objects])
             #?(:clj [jarl.builtins.strings :as strings])
             #?(:clj [jarl.builtins.regex :as regex])
-            #?(:clj [jarl.builtins.types :as types])
             #?(:clj [jarl.builtins.time :as time])
             #?(:clj [jarl.builtins.bits :as bits])
-            #?(:clj [jarl.builtins.encoding :as encoding])
             #?(:clj [jarl.builtins.opa :as opa])))
 
 (def builtins
@@ -191,6 +191,41 @@
       "or"                       sets/builtin-or
       "intersection"             sets/builtin-intersection
       "union"                    sets/builtin-union
+      ; conversion
+      "to_number"                conversions/builtin-to-number
+      "cast_array"               conversions/builtin-cast-array   ; deprecated
+      "cast_set"                 conversions/builtin-cast-set     ; deprecated
+      "cast_string"              conversions/builtin-cast-string  ; deprecated
+      "cast_boolean"             conversions/builtin-cast-boolean ; deprecated
+      "cast_null"                conversions/builtin-cast-null    ; deprecated
+      "cast_object"              conversions/builtin-cast-object  ; deprecated
+      ; types
+      "is_number"                types/builtin-is-number
+      "is_string"                types/builtin-is-string
+      "is_boolean"               types/builtin-is-boolean
+      "is_array"                 types/builtin-is-array
+      "is_set"                   types/builtin-is-set
+      "is_object"                types/builtin-is-object
+      "is_null"                  types/builtin-is-null
+      "type_name"                types/builtin-type-name
+      ; encoding
+      "base64.encode"            encoding/builtin-base64-encode
+      "base64.decode"            encoding/builtin-base64-decode
+      "base64url.encode"         encoding/builtin-base64-url-encode
+      "base64url.encode_no_pad"  encoding/builtin-base64-url-encode-no-pad
+      "base64url.decode"         encoding/builtin-base64-url-decode
+      "urlquery.encode"          encoding/builtin-url-query-encode
+      "urlquery.encode_object"   encoding/builtin-url-query-encode-object
+      "urlquery.decode"          encoding/builtin-url-query-decode
+      "urlquery.decode_object"   encoding/builtin-url-query-decode-object
+      "json.marshal"             encoding/builtin-json-marshal
+      "json.unmarshal"           encoding/builtin-json-unmarshal
+      "json.is_valid"            encoding/builtin-json-is-valid
+      "hex.encode"               encoding/builtin-hex-encode
+      "hex.decode"               encoding/builtin-hex-decode
+      ;"yaml.marshal"             encoding/builtin-yaml-marshal
+      ;"yaml.unmarshal"           encoding/builtin-yaml-unmarshal
+      ;"yaml.is_valid"            encoding/builtin-yaml-is-valid
       }))
 
 (defn get-builtin [name]

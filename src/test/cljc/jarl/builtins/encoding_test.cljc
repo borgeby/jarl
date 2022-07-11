@@ -1,6 +1,7 @@
 (ns jarl.builtins.encoding-test
-  (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]]))
+  (:require  [test.utils   :refer [testing-builtin]]
+    #?(:clj  [clojure.test :refer [deftest]]
+       :cljs [cljs.test    :refer [deftest]])))
 
 (deftest builtin-base64-encode-test
   (testing-builtin "base64.encode"
@@ -96,19 +97,22 @@
     ; invalid hex
     ["fghijkl"] [:jarl.exceptions/builtin-exception "invalid byte: U\\+0067 'g'"]))
 
-(deftest builtin-yaml-marshal-test
-  (testing-builtin "yaml.marshal"
-    [{"foo" "bar"}] "foo: bar\n"
-    ; "sorted keys"
-    [{"foo" "bar" "baz" {"x" 5}}] "baz:\n  x: 5\nfoo: bar\n"))
+#?(:clj
+   (deftest builtin-yaml-marshal-test
+     (testing-builtin "yaml.marshal"
+       [{"foo" "bar"}] "foo: bar\n"
+       ; "sorted keys"
+       [{"foo" "bar" "baz" {"x" 5}}] "baz:\n  x: 5\nfoo: bar\n")))
 
-(deftest builtin-yaml-unmarshal-test
-  (testing-builtin "yaml.unmarshal"
-    ["foo: bar"] {"foo" "bar"}
-    ; mimic error message from OPA
-    ["[1, 2"] [:jarl.exceptions/builtin-exception "yaml: line 1: did not find expected ',' or ']'"]))
+#?(:clj
+   (deftest builtin-yaml-unmarshal-test
+     (testing-builtin "yaml.unmarshal"
+       ["foo: bar"] {"foo" "bar"}
+       ; mimic error message from OPA
+       ["[1, 2"] [:jarl.exceptions/builtin-exception "yaml: line 1: did not find expected ',' or ']'"])))
 
-(deftest builtin-yaml-is-valid-test
-  (testing-builtin "yaml.is_valid"
-    ["foo: bar"] true
-    ["[["] false))
+#?(:clj
+   (deftest builtin-yaml-is-valid-test
+     (testing-builtin "yaml.is_valid"
+       ["foo: bar"] true
+       ["[["] false)))

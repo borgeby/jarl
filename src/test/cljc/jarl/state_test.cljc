@@ -1,5 +1,6 @@
 (ns jarl.state-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require #?(:clj  [clojure.test :refer [deftest testing is]]
+               :cljs [cljs.test :refer [deftest testing is]])
             [jarl.state :refer [get-local push-with-stack]]))
 
 (deftest get-local-test

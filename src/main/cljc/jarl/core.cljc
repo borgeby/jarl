@@ -1,6 +1,6 @@
 (ns jarl.core
-  (:require [jarl.io :as jio]
-            [jarl.json :as json]
+  (:require [jarl.encoding.json :as json]
+            [jarl.io :as jio]
             [jarl.parser :as parser]
             #?(:cljs [cljs.nodejs :as nodejs]))
   #?(:clj (:gen-class)))

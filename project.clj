@@ -12,7 +12,7 @@
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
-  :aliases {"clj-kondo"           ["with-profile" "+clj-kondo" "clj-kondo" "--debug" "--lint" "src"]
+  :aliases {"clj-kondo"           ["with-profile" "+clj-kondo" "clj-kondo" "--debug" "--parallel" "--lint" "src"]
             "eastwood"            ["with-profile" "+eastwood" "eastwood"]
             "kibit"               ["with-profile" "+kibit" "kibit"]
             "perf-opa"            ["with-profile" "+test" "run" "-m" "test.benchmark" "opa"]

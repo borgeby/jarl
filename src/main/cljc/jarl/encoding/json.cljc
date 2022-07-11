@@ -1,4 +1,4 @@
-(ns jarl.json
+(ns jarl.encoding.json
   (:require #?(:clj [clojure.data.json])))
 
 (defn read-str [s]
