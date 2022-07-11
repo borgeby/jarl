@@ -1,5 +1,6 @@
 (ns jarl.utils-test
-  (:require [clojure.test :refer [deftest testing is]]
+  (:require #?(:clj  [clojure.test :refer [deftest testing is]]
+               :cljs [cljs.test :refer [deftest testing is]])
             [jarl.utils :refer [indexed-map->vector]]))
 
 (deftest indexed-map->array-test

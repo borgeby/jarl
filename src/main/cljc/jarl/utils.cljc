@@ -1,37 +1,17 @@
 (ns jarl.utils
-  (:require [clojure.string :as str]
-            #?(:cljs [cljs.nodejs :as nodejs]))
+  #?(:cljs (:require [clojure.string :as str]
+                     [cljs.nodejs :as nodejs]))
   #?(:clj (:import (java.nio.charset StandardCharsets)
                    (java.time Instant)
-                   (java.util Base64)
                    (java.net URLDecoder URLEncoder))))
-
-(defn base64-encode [^String s]
-  #?(:clj  (.encodeToString (Base64/getEncoder) (.getBytes s StandardCharsets/UTF_8))
-     :cljs (js/btoa s)))
-
-(defn int->hex [i]
-  #?(:clj (Integer/toHexString i)
-     :cljs (.toString i 16)))
-
-(defn hex-encode [^String s]
-  #?(:clj  (str/join (map #(format "%02x" %) (.getBytes s StandardCharsets/UTF_8)))
-     :cljs (str/join (map #(-> % (.charCodeAt 0) int->hex (.padStart 2 "0")) (-> s (.split ""))))))
-
-(defn hex-decode [^String s]
-  #?(:clj  (let [from-hex (fn [[x y]] (unchecked-byte (Integer/parseInt (str x y) 16)))
-                 bytes ^bytes (into-array Byte/TYPE (map from-hex (partition 2 s)))]
-             (String. bytes StandardCharsets/UTF_8))
-     :cljs (map #(-> % str/join (js/parseInt 16) String/fromCharCode)  (partition 2 s))))
-
 
 (defn url-decode [^String s]
   #?(:clj  (URLDecoder/decode s StandardCharsets/UTF_8)
-     :cljs (js/decodeURI s)))
+     :cljs (js/decodeURIComponent (str/replace s #"\+" " "))))
 
 (defn url-encode [^String s]
   #?(:clj  (URLEncoder/encode s StandardCharsets/UTF_8)
-     :cljs (js/encodeURI s)))
+     :cljs (str/replace (js/encodeURIComponent s) #"%20" "+")))
 
  (defn indexed-map->vector
   "Created array from map values, with nil values in places for missing indices"

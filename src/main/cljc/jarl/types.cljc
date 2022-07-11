@@ -1,6 +1,6 @@
 (ns jarl.types
   (:require [jarl.exceptions :as errors])
-  #?(:clj (:import (clojure.lang PersistentVector PersistentHashSet PersistentArrayMap PersistentHashMap PersistentTreeSet BigInt))))
+  #?(:clj (:import (clojure.lang BigInt))))
 
 ; From the OPA go docs on ast.Compare:
 ;
@@ -28,35 +28,16 @@
 (defn ->rego
   "Translates provided type from host to equivalent Rego type name"
   [value]
-  (if (nil? value)
-    "null"
-    #?(:clj
-       (condp instance? value
-         String               "string"
-         Boolean              "boolean"
-         Double               "floating-point number"
-         Float                "floating-point number"
-         Integer              "number"
-         Long                 "number"
-         Number               "number"
-         PersistentVector     "array"
-         PersistentHashSet    "set"
-         PersistentTreeSet    "set"
-         PersistentArrayMap   "object"
-         PersistentHashMap    "object"
-         (str "unknown type: " (type value) " from value: " value))
-
-       :cljs
-       (cond
-         (nil?            value) "null"
-         (string?         value) "string"
-         (non-int-float?  value) "floating-point number"
-         (number?         value) "number"
-         (boolean?        value) "boolean"
-         (vector?         value) "array"
-         (set?            value) "set"
-         (map?            value) "object"
-         :else                   (str "unknown type: " (type value) " from value: " value)))))
+  (cond
+    (nil?            value) "null"
+    (string?         value) "string"
+    (non-int-float?  value) "floating-point number"
+    (number?         value) "number"
+    (boolean?        value) "boolean"
+    (vector?         value) "array"
+    (set?            value) "set"
+    (map?            value) "object"
+    :else                   (str "unknown type: " (type value) " from value: " value)))
 
 
 (defn type-sort-order
@@ -114,8 +95,7 @@
           values-comp)))))
 
 ; Sets are considered equal if and only if the symmetric difference of a and b
-; is empty.
-; Other comparisons are consistent but not defined.
+; is empty. Other comparisons are consistent but not defined.
 (defn- set-compare [a b]
   (let [vc (vector-compare a b)]
     (if-not (zero? vc)

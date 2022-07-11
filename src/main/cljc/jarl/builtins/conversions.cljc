@@ -1,18 +1,16 @@
 (ns jarl.builtins.conversions
-  (:require [jarl.exceptions :as errors]))
+  (:require [clojure.string :as str]
+            [jarl.exceptions :as errors]))
 
 (defn builtin-to-number
   [{[x] :args}]
-  (if (nil? x)
-    0
-    (condp instance? x
-      Number x
-      Boolean (if (true? x) 1 0)
-      String (let [func (if (.contains ^String x ".") #(Double/parseDouble x) #(Integer/parseInt x))]
-               (try
-                 (func)
-                 (catch Exception _
-                   (throw (errors/builtin-ex "invalid syntax"))))))))
+  (cond
+    (nil?     x) 0
+    (number?  x) x
+    (boolean? x) (if (true? x) 1 0)
+    (string?  x) (let [func (if (str/includes? x ".") parse-double parse-long)]
+                   (or (func x)
+                       (throw (errors/builtin-ex "invalid syntax"))))))
 
 ; Deprecated
 

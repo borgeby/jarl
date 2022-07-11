@@ -21,5 +21,5 @@
     (when-let [err ?err]
      (str enc/system-newline (timbre/stacktrace err)))))
 
-; :min-level set via project.clj
-(timbre/merge-config! {:output-fn output-fn})
+; :min-level overrideable via project.clj, but does not work for ClojureScript as level needs to be set at compile time
+(timbre/merge-config! {:output-fn output-fn :min-level :warn})

@@ -183,36 +183,36 @@ Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `is_number`       |  ✅  |  ❌   |    ❌    |
-| `is_string`       |  ✅  |  ❌   |    ❌    |
-| `is_boolean`      |  ✅  |  ❌   |    ❌    |
-| `is_array`        |  ✅  |  ❌   |    ❌    |
-| `is_set`          |  ✅  |  ❌   |    ❌    |
-| `is_object`       |  ✅  |  ❌   |    ❌    |
-| `is_null`         |  ✅  |  ❌   |    ❌    |
-| `type_name`       |  ✅  |  ❌   |    ❌    |
+| `is_number`       |  ✅  |  ✅   |    ✅    |
+| `is_string`       |  ✅  |  ✅   |    ✅    |
+| `is_boolean`      |  ✅  |  ✅   |    ✅    |
+| `is_array`        |  ✅  |  ✅   |    ✅    |
+| `is_set`          |  ✅  |  ✅   |    ✅    |
+| `is_object`       |  ✅  |  ✅   |    ✅    |
+| `is_null`         |  ✅  |  ✅   |    ✅    |
+| `type_name`       |  ✅  |  ✅   |    ✅    |
 
 ### Encoding
 
 | Built-in Function         | JVM | Node | Browser |
 |---------------------------|:---:|:----:|:-------:|
-| `base64.encode`           |  ✅  |  ❌   |    ❌    |
-| `base64.decode`           |  ✅  |  ❌   |    ❌    |
-| `base64url.encode`        |  ✅  |  ❌   |    ❌    |
-| `base64url.encode_no_pad` |  ✅  |  ❌   |    ❌    |
-| `base64url.decode`        |  ✅  |  ❌   |    ❌    |
-| `urlquery.encode`         |  ✅  |  ❌   |    ❌    |
-| `urlquery.encode_object`  |  ✅  |  ❌   |    ❌    |
-| `urlquery.decode`         |  ✅  |  ❌   |    ❌    |
-| `urlquery.decode_object`  |  ✅  |  ❌   |    ❌    |
-| `json.marshal`            |  ✅  |  ❌   |    ❌    |
-| `json.unmarshal`          |  ✅  |  ❌   |    ❌    |
-| `json.is_valid`           |  ✅  |  ❌   |    ❌    |
+| `base64.encode`           |  ✅  |  ✅   |    ✅    |
+| `base64.decode`           |  ✅  |  ✅   |    ✅    |
+| `base64url.encode`        |  ✅  |  ✅   |    ✅    |
+| `base64url.encode_no_pad` |  ✅  |  ✅   |    ✅    |
+| `base64url.decode`        |  ✅  |  ✅   |    ✅    |
+| `urlquery.encode`         |  ✅  |  ✅   |    ✅    |
+| `urlquery.encode_object`  |  ✅  |  ✅   |    ✅    |
+| `urlquery.decode`         |  ✅  |  ✅   |    ✅    |
+| `urlquery.decode_object`  |  ✅  |  ✅   |    ✅    |
+| `json.marshal`            |  ✅  |  ✅   |    ✅    |
+| `json.unmarshal`          |  ✅  |  ✅   |    ✅    |
+| `json.is_valid`           |  ✅  |  ✅   |    ✅    |
 | `yaml.marshal`            |  ✅  |  ❌   |    ❌    |
 | `yaml.unmarshal`          |  ✅  |  ❌   |    ❌    |
 | `yaml.is_valid`           |  ✅  |  ❌   |    ❌    |
-| `hex.encode`              |  ✅  |  ❌   |    ❌    |
-| `hex.decode`              |  ✅  |  ❌   |    ❌    |
+| `hex.encode`              |  ✅  |  ✅   |    ✅    |
+| `hex.decode`              |  ✅  |  ✅   |    ✅    |
 
 ### Token Signing
 
@@ -353,12 +353,12 @@ Note: `print` calls are erased from plans, so likely can't be supported without 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
 | `re_match`        |  ✅  |  ❌   |    ❌    |
-| `cast_array`      |  ✅  |  ❌   |    ❌    |
-| `cast_set`        |  ✅  |  ❌   |    ❌    |
-| `cast_string`     |  ✅  |  ❌   |    ❌    |
-| `cast_boolean`    |  ✅  |  ❌   |    ❌    |
-| `cast_null`       |  ✅  |  ❌   |    ❌    |
-| `cast_object`     |  ✅  |  ❌   |    ❌    |
+| `cast_array`      |  ✅  |  ✅   |    ✅    |
+| `cast_set`        |  ✅  |  ✅   |    ✅    |
+| `cast_string`     |  ✅  |  ✅   |    ✅    |
+| `cast_boolean`    |  ✅  |  ✅   |    ✅    |
+| `cast_null`       |  ✅  |  ✅   |    ✅    |
+| `cast_object`     |  ✅  |  ✅   |    ✅    |
 
 ## Development
 
@@ -472,6 +472,17 @@ user=> (cider.piggieback/cljs-repl (cljs.repl.node/repl-env))
 To quit, type: :cljs/quit
 nil
 ```
+
+## Logging
+
+Jarl uses [timbre](https://github.com/ptaoussanis/timbre) for logging, with 
+[configuration]https://github.com/ptaoussanis/timbre#configuration provided as a regular Clojure(Script) map. This map
+may be modified using any of the available methods listed in the docs. The default level is `:warn`, which should not 
+log anything unless something unexpected happens.
+
+When running the Clojure tests (`lein test :unit`, `lein test :compliance`), you may change the level provided in the
+`project.clj` file under the `:test` profile. For ClojureScript, you'll currently need to modify the level in the
+`test.config` namespace before building, as this file is sourced into the cljs tests.
 
 ## License
 

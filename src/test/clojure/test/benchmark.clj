@@ -4,7 +4,7 @@
             [criterium.core :as criterium]
             [test.csv :as csv]
             [jarl.io :as jio]
-            [jarl.json :as json]
+            [jarl.encoding.json :as json]
             [jarl.parser :as parser]
             [test.git :as git]))
 
