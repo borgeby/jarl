@@ -1,5 +1,6 @@
 (ns jarl.eval
   (:require [clojure.string :as string]
+            [taoensso.tufte :as tufte]
             [jarl.builtins.utils :refer [check-args]]
             [jarl.formatting :refer [sprintf]]
             [jarl.state :as state]
@@ -357,14 +358,14 @@
     (log/debugf "WithStmt - replacing <%s> in local var <%d> with '%s'" str-path local-index value)
     (state/pop-with-stack (stmts state))))
 
-(defn eval-stmt [type stmt state]
-  (log/tracef "%s - calling with vars: %s; with-stack: %s" type (get state :local) (get state :with-stack))
+(defn eval-stmt [name stmt state]
+  (log/tracef "%s - calling with vars: %s; with-stack: %s" name (get state :local) (get state :with-stack))
   (try
-    (stmt state)
+    (tufte/p name (stmt state))
     (catch ExceptionInfo e
       (if (errors/undefined-ex? e)
         (do
-          (log/debugf "statement type %s produced undefined result: %s" type (ex-message e))
+          (log/debugf "statement type %s produced undefined result: %s" name (ex-message e))
           (break state))
         (throw e)))))
 

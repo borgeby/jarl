@@ -8,7 +8,8 @@
                  [org.clojure/data.json "2.4.0"]
                  [org.clojure/tools.logging "1.2.4"]
                  [com.google.re2j/re2j "1.7"]
-                 [clj-commons/clj-yaml "0.7.108"]]
+                 [clj-commons/clj-yaml "0.7.108"]
+                 [com.taoensso/tufte "2.2.0"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]

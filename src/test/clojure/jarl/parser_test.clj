@@ -1,6 +1,7 @@
 (ns jarl.parser-test
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.java.io :as io]
+            [taoensso.tufte :as tufte]
             [jarl.parser :refer [parse-json]]))
 
 ; TODO: this is not compatible with ClojureScript unless using Node, since we're reading files from disk,
@@ -8,16 +9,24 @@
 
 (deftest simple-test
   (testing "A simple policy"
-    (let [info (parse-json (slurp (io/resource "rego/simple/plan.json")))
-          plans (get info :plans)]
-      (let [[name plan] (get plans 0)]
-        (is (= name "simple/p"))
-        (let [result-set (plan info {} {"x" 42})]
-          (is (= result-set '({"result" true})))))
-      (let [[name plan] (get plans 1)]
-        (is (= name "simple/q"))
-        (let [result-set (plan info {} {"x" 42})]
-          (is (= result-set '({"result" "bar"}))))))))
+    ;(tufte/add-basic-println-handler!
+    ;  {:format-pstats-opts {:columns      [:n-calls :p50 :mean :clock :total]
+    ;                        :format-id-fn name}})
+    (tufte/add-handler! "foo" "*"
+                        (fn [{:keys [?id ?data pstats]}]
+                          (println (tufte/format-pstats pstats))))
+    (let [res (tufte/profile {}
+                             (let [info (parse-json (slurp (io/resource "rego/simple/plan.json")))
+                                   plans (get info :plans)]
+                               (let [[name plan] (get plans 0)]
+                                 (is (= name "simple/p"))
+                                 (let [result-set (plan info {} {"x" 42})]
+                                   (is (= result-set '({"result" true})))))
+                               (let [[name plan] (get plans 1)]
+                                 (is (= name "simple/q"))
+                                 (let [result-set (plan info {} {"x" 42})]
+                                   (is (= result-set '({"result" "bar"})))))))]
+      (println res))))
 
 (deftest simple-data-test
   (testing "A simple policy expecting a data document"
