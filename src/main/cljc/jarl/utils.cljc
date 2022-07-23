@@ -20,7 +20,6 @@
     []
     (mapv #(get map %) (range (inc (key (apply max-key key map)))))))
 
-; Inspired by clojure.core/assoc-in
 (defn indiscriminate-assoc-in
   "Works like [clojure.core/assoc-in], but allows any nested component under `m` to be a non-map type,
   which will then be replaced in case `[k & ks]` overlap."

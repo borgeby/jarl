@@ -8,6 +8,7 @@
             [jarl.builtins.types       :as types]
             [jarl.builtins.encoding :as encoding]
             #?(:clj [jarl.builtins.crypto :as crypto])
+            #?(:clj [jarl.builtins.jwt :as jwt])
             #?(:clj [jarl.builtins.objects :as objects])
             #?(:clj [jarl.builtins.strings :as strings])
             #?(:clj [jarl.builtins.regex :as regex])
@@ -132,6 +133,24 @@
       "yaml.marshal"             encoding/builtin-yaml-marshal
       "yaml.unmarshal"           encoding/builtin-yaml-unmarshal
       "yaml.is_valid"            encoding/builtin-yaml-is-valid
+      ; token signing
+      "io.jwt.encode_sign"       jwt/builtin-io-jwt-encode-sign
+      "io.jwt.encode_sign_raw"   jwt/builtin-io-jwt-encode-sign-raw
+      ; token verification
+      "io.jwt.decode"            jwt/builtin-io-jwt-decode
+      "io.jwt.decode_verify"     jwt/builtin-io-jwt-decode-verify
+      "io.jwt.verify_es256"      jwt/builtin-io-jwt-verify-es256
+      "io.jwt.verify_es384"      jwt/builtin-io-jwt-verify-es384
+      "io.jwt.verify_es512"      jwt/builtin-io-jwt-verify-es512
+      "io.jwt.verify_hs256"      jwt/builtin-io-jwt-verify-hs256
+      "io.jwt.verify_hs384"      jwt/builtin-io-jwt-verify-hs384
+      "io.jwt.verify_hs512"      jwt/builtin-io-jwt-verify-hs512
+      "io.jwt.verify_ps256"      jwt/builtin-io-jwt-verify-ps256
+      "io.jwt.verify_ps384"      jwt/builtin-io-jwt-verify-ps384
+      "io.jwt.verify_ps512"      jwt/builtin-io-jwt-verify-ps512
+      "io.jwt.verify_rs256"      jwt/builtin-io-jwt-verify-rs256
+      "io.jwt.verify_rs384"      jwt/builtin-io-jwt-verify-rs384
+      "io.jwt.verify_rs512"      jwt/builtin-io-jwt-verify-rs512
       ; time
       "time.add_date"            time/builtin-time-add-date
       "time.clock"               time/builtin-time-clock

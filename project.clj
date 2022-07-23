@@ -7,8 +7,10 @@
                  [org.clojure/clojurescript "1.11.57"]
                  [org.clojure/data.json "2.4.0"]
                  [com.taoensso/timbre "5.2.1"]
+                 [com.fzakaria/slf4j-timbre "0.3.21"]
                  [com.google.re2j/re2j "1.7"]
-                 [clj-commons/clj-yaml "0.7.108"]]
+                 [clj-commons/clj-yaml "0.7.108"]
+                 [org.bitbucket.b_c/jose4j "0.7.12"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]

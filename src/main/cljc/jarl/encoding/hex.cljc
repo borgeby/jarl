@@ -10,9 +10,13 @@
   #?(:clj (Integer/toHexString i)
      :cljs (.toString i 16)))
 
+(defn encode-bytes [^bytes bytes]
+  #?(:clj  (str/join (map #(format "%02x" %) bytes))
+     :cljs (crypt/byteArrayToHex bytes)))
+
 (defn encode [^String s]
-  #?(:clj  (str/join (map #(format "%02x" %) (.getBytes s StandardCharsets/UTF_8)))
-     :cljs (crypt/byteArrayToHex (crypt/stringToUtf8ByteArray s))))
+  #?(:clj  (encode-bytes (.getBytes s StandardCharsets/UTF_8))
+     :cljs (encode-bytes (crypt/stringToUtf8ByteArray s))))
 
 (defn decode [^String s]
   #?(:clj  (let [from-hex (fn [[x y]] (unchecked-byte (Integer/parseInt (str x y) 16)))

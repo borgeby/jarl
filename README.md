@@ -218,30 +218,31 @@ Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re
 
 | Built-in Function        | JVM | Node | Browser |
 |--------------------------|:---:|:----:|:-------:|
-| `io.jwt.encode_sign`     |  ❌  |  ❌   |    ❌    |
-| `io.jwt.encode_sign_raw` |  ❌  |  ❌   |    ❌    |
+| `io.jwt.encode_sign`     |  ✅  |  ❌   |    ❌    |
+| `io.jwt.encode_sign_raw` |  ✅  |  ❌   |    ❌    |
 
 ### Token Verification
 
-
 | Built-in Function      | JVM | Node | Browser |
 |------------------------|:---:|:----:|:-------:|
-| `io.jwt.decode`        |  ❌  |  ❌   |    ❌    |
-| `io.jwt.decode_verify` |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_es256`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_es384`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_es512`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_hs256`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_hs384`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_hs512`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_ps256`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_ps384`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_ps512`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_rs256`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_rs384`  |  ❌  |  ❌   |    ❌    |
-| `io.jwt.verify_rs512`  |  ❌  |  ❌   |    ❌    |
+| `io.jwt.decode`        |  ✅  |  ❌   |    ❌    |
+| `io.jwt.decode_verify` |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_es256`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_es384`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_es512`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_hs256`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_hs384`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_hs512`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_ps256`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_ps384`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_ps512`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_rs256`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_rs384`  |  ✅  |  ❌   |    ❌    |
+| `io.jwt.verify_rs512`  |  ✅  |  ❌   |    ❌    |
 
 ### Time
+
+TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt/tick (high-level version)
 
 | Built-in Function        | JVM | Node | Browser |
 |--------------------------|:---:|:----:|:-------:|
