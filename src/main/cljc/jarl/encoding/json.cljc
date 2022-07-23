@@ -6,5 +6,5 @@
      :cljs (js->clj (js/JSON.parse s))))
 
 (defn write-str [x]
-  #?(:clj  (clojure.data.json/write-str x)
+  #?(:clj  (clojure.data.json/write-str x {:escape-slash false})
      :cljs (js/JSON.stringify (clj->js x))))
