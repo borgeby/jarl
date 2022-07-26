@@ -30,14 +30,17 @@
                    :performance      :performance}
   :profiles {:dev  {:dependencies   [[junit/junit "4.13.2"]
                                      [com.bhauman/rebel-readline "0.1.4"]
+                                     [com.clojure-goes-fast/clj-async-profiler "1.0.0"]
                                      [cider/piggieback "0.5.3"]
                                      [criterium "0.4.6"]
                                      [zprint "1.2.3"]]
                     :resource-paths ["src/test/resources"]
+                    :jvm-opts       ["-Djdk.attach.allowAttachSelf"]
                     :repl-options   {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
                     :plugins        [[lein-cljsbuild "1.1.8"]
                                      [lein-ancient "1.0.0-RC3"]]
-                    :eastwood {:exclude-linters [:constant-test]}}
+                    :eastwood {:exclude-linters [:constant-test]
+                               :exclude-namespaces [test.profile]}}
              :test {:injections [(require 'test.config)
                                  (taoensso.timbre/set-level! :warn)]}
              :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "0.2.1"]]}
