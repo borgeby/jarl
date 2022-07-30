@@ -474,10 +474,16 @@
       (catch ExceptionInfo e
         (let [type (errors/ex-type e)]
           (if (or (= type :jarl.exceptions/builtin-exception) (= type :jarl.exceptions/type-exception))
-            (if (= name "regex.is_valid")
+            (condp = name
               ; Special case - type checking failure here evaluates to false
               ; we should probably deal with this in a better way later
-              {:result false}
+              "regex.is_valid" {:result false}
+
+              ; See https://github.com/open-policy-agent/opa/issues/4951 and change this code once that's resolved
+              "graph.reachable"       {:result #{}}
+              "graph.reachable_paths" {:result #{}}
+
+              ; default
               (do
                 (log/tracef "function <%s> threw error: %s" name (ex-message e))
                 (if (true? (get state :strict-builtin-errors))

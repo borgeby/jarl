@@ -73,6 +73,12 @@
           (~'is (~'not-empty ~'jarl-errors)
             (~'str ~(str "Expected error code:" want-error-code "; message: " want-error ", got: ") ~'result))))))
 
+(defn parse-input-term [note term]
+  ; Some hacks to work around the fact that we can't parse non-JSON terms
+  (condp = term
+    "{\"foo\": {{1}}}" {"foo" #{#{1}}}
+    (json/read-str term)))
+
 (defn create-test
   "Creates a deftest form from an OPA compliance test plan"
   [{:strs [data note]
@@ -83,11 +89,7 @@
     strict-error    "strict_error"
     :as             test-case}]
   (println "Creating test case:" note)
-  (let [parse-input-term (fn [term] ; Temporary workaround since we can't parse non-JSON terms
-                           (condp = term
-                             "{\"foo\": {{1}}}" {"foo" #{#{1}}}
-                             (json/read-str term)))
-        input (if (contains? test-case "input_term") (parse-input-term (test-case "input_term")) (test-case "input"))]
+  (let [input (if (contains? test-case "input_term") (parse-input-term note (test-case "input_term")) (test-case "input"))]
     (if (and (nil? want-error-code) (nil? want-error))
       (test-case-want-result note data input entry-points want-result)
       (test-case-want-error note data input entry-points want-error-code want-error strict-error))))

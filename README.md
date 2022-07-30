@@ -216,6 +216,8 @@ Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re
 
 ### Token Signing
 
+For JavaScript support, https://github.com/panva/jose looks like the best candidate
+
 | Built-in Function        | JVM | Node | Browser |
 |--------------------------|:---:|:----:|:-------:|
 | `io.jwt.encode_sign`     |  ✅  |  ❌   |    ❌    |
@@ -276,7 +278,7 @@ TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt
 
 | Built-in Function       | JVM | Node | Browser |
 |-------------------------|:---:|:----:|:-------:|
-| `graph.reachable`       |  ❌  |  ❌   |    ❌    |
+| `graph.reachable`       |  ✅  |  ✅   |    ✅    |
 | `graph.reachable_paths` |  ❌  |  ❌   |    ❌    |
 | `walk`                  |  ❌  |  ❌   |    ❌    |
 
