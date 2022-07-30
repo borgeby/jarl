@@ -2,6 +2,7 @@
   (:require [jarl.builtins.aggregates  :as aggregates]
             [jarl.builtins.array       :as array]
             [jarl.builtins.comparison  :as comparison]
+            [jarl.builtins.graphs      :as graphs]
             [jarl.builtins.numbers     :as numbers]
             [jarl.builtins.sets        :as sets]
             [jarl.builtins.conversions :as conversions]
@@ -169,6 +170,10 @@
       "crypto.md5"               crypto/builtin-crypto-md5
       "crypto.sha1"              crypto/builtin-crypto-sha1
       "crypto.sha256"            crypto/builtin-crypto-sha256
+      ; graphs
+      "graph.reachable"          graphs/builtin-graph-reachable
+      ;"graph.reachable_paths"   graphs/builtin-graph-reachable-paths
+      ;"walk"                    graphs/builtin-walk
       ; opa
       "opa.runtime"              opa/builtin-opa-runtime}
      :cljs
@@ -242,9 +247,13 @@
       "json.is_valid"            encoding/builtin-json-is-valid
       "hex.encode"               encoding/builtin-hex-encode
       "hex.decode"               encoding/builtin-hex-decode
-      ;"yaml.marshal"             encoding/builtin-yaml-marshal
-      ;"yaml.unmarshal"           encoding/builtin-yaml-unmarshal
-      ;"yaml.is_valid"            encoding/builtin-yaml-is-valid
+      ;"yaml.marshal"            encoding/builtin-yaml-marshal
+      ;"yaml.unmarshal"          encoding/builtin-yaml-unmarshal
+      ;"yaml.is_valid"           encoding/builtin-yaml-is-valid
+      ; graphs
+      "graph.reachable"          graphs/builtin-graph-reachable
+      ;"graph.reachable_paths"   graphs/builtin-graph-reachable-paths
+      ;"walk"                    graphs/builtin-walk
       }))
 
 (defn get-builtin [name]
