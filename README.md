@@ -100,11 +100,11 @@ probably work around this, these are generally not used in policy, and as such n
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `object.get`      |  ✅  |  ❌   |    ❌    |
-| `object.remove`   |  ✅  |  ❌   |    ❌    |
-| `object.union`    |  ✅  |  ❌   |    ❌    |
-| `object.union_n`  |  ✅  |  ❌   |    ❌    |
-| `object.filter`   |  ✅  |  ❌   |    ❌    |
+| `object.get`      |  ✅  |  ✅   |    ✅    |
+| `object.remove`   |  ✅  |  ✅   |    ✅    |
+| `object.union`    |  ✅  |  ✅   |    ✅    |
+| `object.union_n`  |  ✅  |  ✅   |    ✅    |
+| `object.filter`   |  ✅  |  ✅   |    ✅    |
 | `json.remove`     |  ❌  |  ❌   |    ❌    |
 | `json.patch`      |  ❌  |  ❌   |    ❌    |
 

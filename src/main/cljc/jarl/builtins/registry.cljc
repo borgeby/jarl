@@ -4,6 +4,7 @@
             [jarl.builtins.comparison  :as comparison]
             [jarl.builtins.graphs      :as graphs]
             [jarl.builtins.numbers     :as numbers]
+            [jarl.builtins.objects     :as objects]
             [jarl.builtins.semver      :as semver]
             [jarl.builtins.sets        :as sets]
             [jarl.builtins.conversions :as conversions]
@@ -11,7 +12,6 @@
             [jarl.builtins.encoding :as encoding]
             #?(:clj [jarl.builtins.crypto :as crypto])
             #?(:clj [jarl.builtins.jwt :as jwt])
-            #?(:clj [jarl.builtins.objects :as objects])
             #?(:clj [jarl.builtins.strings :as strings])
             #?(:clj [jarl.builtins.regex :as regex])
             #?(:clj [jarl.builtins.time :as time])
@@ -219,6 +219,12 @@
       "or"                       sets/builtin-or
       "intersection"             sets/builtin-intersection
       "union"                    sets/builtin-union
+      ; objects
+      "object.get"               objects/builtin-object-get
+      "object.remove"            objects/builtin-object-remove
+      "object.filter"            objects/builtin-object-filter
+      "object.union"             objects/builtin-object-union
+      "object.union_n"           objects/builtin-object-union-n
       ; conversion
       "to_number"                conversions/builtin-to-number
       "cast_array"               conversions/builtin-cast-array   ; deprecated
