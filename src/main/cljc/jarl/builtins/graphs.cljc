@@ -16,12 +16,4 @@
   [{[graph initial] :args}]
   (if (empty? graph)
     #{}
-    (into #{} (mapcat (partial graph-seq graph) initial))))
-
-(defn builtin-graph-reachable-paths
-  [{[graph initial] :args}]
-  (println "not yet"))
-
-(defn builtin-walk
-  [{[x output] :args}]
-  (println "not yet"))
+    (set (mapcat (partial graph-seq graph) initial))))

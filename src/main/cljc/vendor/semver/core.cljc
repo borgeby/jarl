@@ -30,10 +30,7 @@
 
 (defn- compare-split-parts
   [x y]
-  (let [[x-parts y-parts] (map (fn [s]
-                                 (->> (str/split s #"[.]")
-                                      (remove str/blank?)))
-                               [x y])]
+  (let [[x-parts y-parts] (map #(remove str/blank? (str/split % #"[.]")) [x y])]
     (loop [xs x-parts ys y-parts]
       (cond
         (and (empty? xs) (seq? ys)) 1

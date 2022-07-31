@@ -73,7 +73,7 @@
           (~'is (~'not-empty ~'jarl-errors)
             (~'str ~(str "Expected error code:" want-error-code "; message: " want-error ", got: ") ~'result))))))
 
-(defn parse-input-term [note term]
+(defn parse-input-term [_ term] ; note is unused for now - will be needed for graph.reachable_paths
   ; Some hacks to work around the fact that we can't parse non-JSON terms
   (condp = term
     "{\"foo\": {{1}}}" {"foo" #{#{1}}}
