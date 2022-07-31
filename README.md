@@ -320,8 +320,8 @@ TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `semver.compare`  |  ❌  |  ❌   |    ❌    |
-| `semver.is_valid` |  ❌  |  ❌   |    ❌    |
+| `semver.compare`  |  ✅  |  ✅   |    ✅    |
+| `semver.is_valid` |  ✅  |  ✅   |    ✅    |
 
 ### Rego
 

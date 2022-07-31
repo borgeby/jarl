@@ -4,6 +4,7 @@
             [jarl.builtins.comparison  :as comparison]
             [jarl.builtins.graphs      :as graphs]
             [jarl.builtins.numbers     :as numbers]
+            [jarl.builtins.semver      :as semver]
             [jarl.builtins.sets        :as sets]
             [jarl.builtins.conversions :as conversions]
             [jarl.builtins.types       :as types]
@@ -174,6 +175,9 @@
       "graph.reachable"          graphs/builtin-graph-reachable
       ;"graph.reachable_paths"   graphs/builtin-graph-reachable-paths
       ;"walk"                    graphs/builtin-walk
+      ; semver
+      "semver.compare"           semver/builtin-semver-compare
+      "semver.is_valid"          semver/builtin-semver-is-valid
       ; opa
       "opa.runtime"              opa/builtin-opa-runtime}
      :cljs
@@ -254,6 +258,9 @@
       "graph.reachable"          graphs/builtin-graph-reachable
       ;"graph.reachable_paths"   graphs/builtin-graph-reachable-paths
       ;"walk"                    graphs/builtin-walk
+      ; semver
+      "semver.compare"           semver/builtin-semver-compare
+      "semver.is_valid"          semver/builtin-semver-is-valid
       }))
 
 (defn get-builtin [name]
