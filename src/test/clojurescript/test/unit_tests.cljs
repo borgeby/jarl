@@ -1,11 +1,14 @@
 (ns test.unit-tests
-  (:require [cljs.test :refer [run-tests]]
+  (:require [cljs.test :refer [run-tests report successful?]]
+            [cljs.nodejs :as nodejs]
             [test.config]
             [jarl.builtins.aggregates-test]
             [jarl.builtins.array-test]
             [jarl.builtins.comparison-test]
             [jarl.builtins.conversions-test]
+            [jarl.builtins.graphs-test]
             [jarl.builtins.numbers-test]
+            [jarl.builtins.semver-test]
             [jarl.builtins.sets-test]
             [jarl.builtins.types-test]
             [jarl.builtins.encoding-test]
@@ -23,12 +26,23 @@
 ;names matching the regular expression (with re-matches) will be
 ;tested.
 
+(def process (nodejs/require "process"))
+
+; See https://clojurescript.org/tools/testing#detecting-test-completion-success
+(defmethod report [:cljs.test/default :end-run-tests]
+  [m]
+  (when-not (successful? m)
+    (aset process "exitCode" 1)))
+
+; see docs on run-tests for how to handle return value!
 (run-tests 'jarl.builtins.aggregates-test
            'jarl.builtins.array-test
            'jarl.builtins.comparison-test
            'jarl.builtins.conversions-test
+           'jarl.builtins.encoding-test
+           'jarl.builtins.graphs-test
            'jarl.builtins.numbers-test
+           'jarl.builtins.semver-test
            'jarl.builtins.sets-test
            'jarl.builtins.types-test
-           'jarl.builtins.encoding-test
            'jarl.exceptions-test)

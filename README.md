@@ -170,7 +170,7 @@ Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `to_number`       |  ✅  |  ❌   |    ❌    |
+| `to_number`       |  ✅  |  ✅   |    ✅    |
 
 ### Units
 

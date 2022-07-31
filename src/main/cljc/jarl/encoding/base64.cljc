@@ -6,6 +6,10 @@
   #?(:clj (:import (java.nio.charset StandardCharsets)
                    (java.util Base64))))
 
+#?(:cljs
+   (defn- b64url->b64 [s]
+     (-> s (str/replace "-" "+") (str/replace "_" "/"))))
+
 (defn base64? [^String s]
   (some? (re-matches #"[0-9a-zA-Z\+\/]+=?=?" s)))
 
@@ -38,7 +42,7 @@
   (if-not (base64-url? s)
     (throw (errors/builtin-ex "illegal base64 data at input byte %s" (index-of-first-non-match s base64-url?)))
     #?(:clj  (.decode (Base64/getUrlDecoder) s)
-       :cljs (decode-bytes s))))
+       :cljs (decode-bytes (b64url->b64 s)))))
 
 (defn url-decode ^String [^String s]
   #?(:clj  (String. (url-decode-bytes s))
