@@ -8,6 +8,7 @@
             [jarl.builtins.conversions-test]
             [jarl.builtins.graphs-test]
             [jarl.builtins.numbers-test]
+            [jarl.builtins.objects-test]
             [jarl.builtins.semver-test]
             [jarl.builtins.sets-test]
             [jarl.builtins.types-test]
@@ -42,6 +43,7 @@
            'jarl.builtins.encoding-test
            'jarl.builtins.graphs-test
            'jarl.builtins.numbers-test
+           'jarl.builtins.objects-test
            'jarl.builtins.semver-test
            'jarl.builtins.sets-test
            'jarl.builtins.types-test
