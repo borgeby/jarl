@@ -262,17 +262,19 @@ TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt
 
 | Built-in Function                           | JVM | Node | Browser |
 |---------------------------------------------|:---:|:----:|:-------:|
-| `crypto.hmac.md5`                           |  ✅  |  ❌   |    ❌    |
-| `crypto.hmac.sha1`                          |  ✅  |  ❌   |    ❌    |
-| `crypto.hmac.sha256`                        |  ✅  |  ❌   |    ❌    |
-| `crypto.hmac.sha512`                        |  ✅  |  ❌   |    ❌    |
-| `crypto.md5`                                |  ✅  |  ❌   |    ❌    |
-| `crypto.sha1`                               |  ✅  |  ❌   |    ❌    |
-| `crypto.sha256`                             |  ✅  |  ❌   |    ❌    |
+| `crypto.hmac.md5`                           |  ✅  |  ✅   |    ✅    |
+| `crypto.hmac.sha1`                          |  ✅  |  ✅   |    ✅    |
+| `crypto.hmac.sha256`                        |  ✅  |  ✅   |    ✅    |
+| `crypto.hmac.sha512`                        |  ✅  |  ✅   |    ✅    |
+| `crypto.md5`                                |  ✅  |  ✅   |    ✅    |
+| `crypto.sha1`                               |  ✅  |  ✅   |    ✅    |
+| `crypto.sha256`                             |  ✅  |  ✅   |    ✅    |
 | `crypto.x509.parse_and_verify_certificates` |  ❌  |  ❌   |    ❌    |
 | `crypto.x509.parse_certificate_request`     |  ❌  |  ❌   |    ❌    |
 | `crypto.x509.parse_certificates`            |  ❌  |  ❌   |    ❌    |
-| `crypto.x509.parse_rsa_private_key`         |  ❌  |  ❌   |    ❌    |
+| `crypto.x509.parse_rsa_private_key`         |  ✅  |  ❌   |    ❌    |
+
+NOTE: Contrary to the Clojure versions, the ClojureScript HMAC functions won't accept unicode (i.e. non-ascii) input
 
 ### Graphs
 

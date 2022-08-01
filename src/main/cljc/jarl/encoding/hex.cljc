@@ -1,7 +1,7 @@
 (ns jarl.encoding.hex
-  (:require #?(:clj [clojure.string :as str])
-            #?(:cljs [goog.crypt :as crypt]))
-  #?(:clj (:import (java.nio.charset StandardCharsets))))
+  (:require [jarl.builtins.utils :refer [bytes->str str->bytes]]
+            #?(:clj [clojure.string :as str])
+            #?(:cljs [goog.crypt :as crypt])))
 
 (defn hex? [^String s]
   (some? (re-matches #"[0-9a-fA-F]+" s)))
@@ -15,11 +15,10 @@
      :cljs (crypt/byteArrayToHex bytes)))
 
 (defn encode [^String s]
-  #?(:clj  (encode-bytes (.getBytes s StandardCharsets/UTF_8))
-     :cljs (encode-bytes (crypt/stringToUtf8ByteArray s))))
+  (encode-bytes (str->bytes s)))
 
 (defn decode [^String s]
   #?(:clj  (let [from-hex (fn [[x y]] (unchecked-byte (Integer/parseInt (str x y) 16)))
                  bytes ^bytes (into-array Byte/TYPE (map from-hex (partition 2 s)))]
-             (String. bytes StandardCharsets/UTF_8))
-     :cljs (crypt/utf8ByteArrayToString (crypt/hexToByteArray s))))
+             (bytes->str bytes))
+     :cljs (bytes->str (crypt/hexToByteArray s))))

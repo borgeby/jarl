@@ -1,5 +1,6 @@
 (ns jarl.builtins.jwt
   (:require [clojure.string :as str]
+            [jarl.builtins.utils :refer [str->bytes]]
             [jarl.encoding.base64 :as base64]
             [jarl.encoding.json :as json]
             [jarl.encoding.hex :as hex]
@@ -129,7 +130,7 @@
   (let [jws (doto (JsonWebSignature.)
                   (.setDoKeyValidation false)
                   (.setCompactSerialization jwt)
-                  (.setKey (HmacKey. (.getBytes secret "UTF-8"))))]
+                  (.setKey (HmacKey. (str->bytes secret))))]
     (.verifySignature jws)))
 
 (defn- verify-no-jwe [header]

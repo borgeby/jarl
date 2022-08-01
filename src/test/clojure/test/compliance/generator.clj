@@ -14,7 +14,12 @@
    #{}
    :cljs
    #{"aggregates/count with invalid utf-8 chars (0xFFFD)" ; does not seem terribly important, ignoring for now
-     "arithmetic/big_int"}}) ; bigint not supported in ClojureScript
+     "arithmetic/big_int"                                 ; bigint not supported in ClojureScript
+     "cryptohmacmd5/crypto.hmac.md5_unicode"              ; unicode not supported by goog.crypt.Hmac
+     "cryptohmacsha1/crypto.hmac.sha1_unicode"            ; unicode not supported by goog.crypt.Hmac
+     "cryptohmacsha256/crypto.hmac.sha256_unicode"        ; unicode not supported by goog.crypt.Hmac
+     "cryptohmacsha512/crypto.hmac.sha512_unicode"        ; unicode not supported by goog.crypt.Hmac
+     }})
 
 (defn ignored? [target note]
   (contains? (get ignored-tests target) note))
