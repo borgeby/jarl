@@ -1,7 +1,9 @@
 (ns jarl.builtins.utils
   (:require [clojure.string :as str]
             [jarl.exceptions :as errors]
-            [jarl.types :as types]))
+            [jarl.types :as types]
+            #?(:cljs [goog.crypt :as crypt]))
+  #?(:clj (:import (java.nio.charset StandardCharsets))))
 
 (defn possibly-int
   "present e.g. 1.0 as 1"
@@ -23,6 +25,14 @@
      :cljs
      (let [n (js/parseFloat s)]
        (if (= n js/NaN) s n))))
+
+(defn str->bytes ^bytes [^String s]
+  #?(:clj  (.getBytes s StandardCharsets/UTF_8)
+     :cljs (crypt/stringToUtf8ByteArray s)))
+
+(defn bytes->str ^String [^bytes ba]
+  #?(:clj  (String. ba StandardCharsets/UTF_8)
+     :cljs (crypt/utf8ByteArrayToString ba)))
 
 (defn- type-match? [expected-type provided-type]
   (or (= expected-type "any")

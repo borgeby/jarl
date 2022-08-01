@@ -6,6 +6,7 @@
             [jarl.builtins.array-test]
             [jarl.builtins.comparison-test]
             [jarl.builtins.conversions-test]
+            [jarl.builtins.crypto-test]
             [jarl.builtins.graphs-test]
             [jarl.builtins.numbers-test]
             [jarl.builtins.objects-test]
@@ -40,6 +41,7 @@
            'jarl.builtins.array-test
            'jarl.builtins.comparison-test
            'jarl.builtins.conversions-test
+           'jarl.builtins.crypto-test
            'jarl.builtins.encoding-test
            'jarl.builtins.graphs-test
            'jarl.builtins.numbers-test

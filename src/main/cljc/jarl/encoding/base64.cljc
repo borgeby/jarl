@@ -1,10 +1,9 @@
 (ns jarl.encoding.base64
   (:require [clojure.string :as str]
-            #?(:cljs [goog.crypt :as crypt])
             #?(:cljs [goog.crypt.base64 :as base64])
-            [jarl.exceptions :as errors])
-  #?(:clj (:import (java.nio.charset StandardCharsets)
-                   (java.util Base64))))
+            [jarl.exceptions :as errors]
+            [jarl.builtins.utils :refer [bytes->str str->bytes]])
+  #?(:clj (:import (java.util Base64))))
 
 #?(:cljs
    (defn- b64url->b64 [s]
@@ -20,9 +19,12 @@
   (let [first-violation (first (remove predicate (map str s)))]
     (str/index-of s first-violation)))
 
+(defn encode-bytes [b]
+  #?(:clj  (.encodeToString (Base64/getEncoder) b)
+     :cljs (base64/encodeByteArray b)))
+
 (defn encode ^String [^String s]
-  #?(:clj  (.encodeToString (Base64/getEncoder) (.getBytes s StandardCharsets/UTF_8))
-     :cljs (base64/encodeByteArray (crypt/stringToUtf8ByteArray s))))
+  (encode-bytes (str->bytes s)))
 
 (defn decode-bytes ^bytes [^String s]
   (if-not (base64? s)
@@ -31,12 +33,11 @@
        :cljs (base64/decodeStringToByteArray s))))
 
 (defn decode ^String [^String s]
-  #?(:clj  (String. (decode-bytes s))
-     :cljs (crypt/utf8ByteArrayToString (decode-bytes s))))
+  (bytes->str (decode-bytes s)))
 
 (defn url-encode ^String [^String s]
-  #?(:clj  (.encodeToString (Base64/getUrlEncoder) (.getBytes s StandardCharsets/UTF_8))
-     :cljs (base64/encodeByteArray (crypt/stringToUtf8ByteArray s) base64/Alphabet.WEBSAFE)))
+  #?(:clj  (.encodeToString (Base64/getUrlEncoder) (str->bytes s))
+     :cljs (base64/encodeByteArray (str->bytes s) base64/Alphabet.WEBSAFE)))
 
 (defn url-decode-bytes ^bytes [^String s]
   (if-not (base64-url? s)
@@ -45,9 +46,8 @@
        :cljs (decode-bytes (b64url->b64 s)))))
 
 (defn url-decode ^String [^String s]
-  #?(:clj  (String. (url-decode-bytes s))
-     :cljs (crypt/utf8ByteArrayToString (url-decode-bytes s))))
+  (bytes->str (url-decode-bytes s)))
 
 (defn url-encode-no-pad ^String [^String s]
-  #?(:clj  (-> (Base64/getUrlEncoder) (.withoutPadding) (.encodeToString (.getBytes s StandardCharsets/UTF_8)))
-     :cljs (base64/encodeByteArray (crypt/stringToUtf8ByteArray s) base64/Alphabet.WEBSAFE_NO_PADDING)))
+  #?(:clj  (-> (Base64/getUrlEncoder) (.withoutPadding) (.encodeToString (str->bytes s)))
+     :cljs (base64/encodeByteArray (str->bytes s) base64/Alphabet.WEBSAFE_NO_PADDING)))
