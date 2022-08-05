@@ -359,12 +359,20 @@
 										"type": "string"
 									},
 									{
-										"description": "glob pattern delimiters, e.g. `[\".\", \":\"]`, defaults to `[\".\"]` if unset.",
-										"dynamic": {
-											"type": "string"
-										},
+										"description": "glob pattern delimiters, e.g. `[\".\", \":\"]`, defaults to `[\".\"]` if unset. If `delimiters` is `null`, glob match without delimiter.",
 										"name": "delimiters",
-										"type": "array"
+										"of": [
+											{
+												"type": "null"
+											},
+											{
+												"dynamic": {
+													"type": "string"
+												},
+												"type": "array"
+											}
+										],
+										"type": "any"
 									},
 									{
 										"name": "match",
