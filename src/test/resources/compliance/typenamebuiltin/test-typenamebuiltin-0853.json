@@ -412,15 +412,13 @@
 							"decl": {
 								"args": [
 									{
-										"of": [
-											{
-												"type": "any"
-											}
-										],
+										"name": "x",
 										"type": "any"
 									}
 								],
 								"result": {
+									"description": "one of \"null\", \"boolean\", \"number\", \"string\", \"array\", \"object\", \"set\"",
+									"name": "type",
 									"type": "string"
 								},
 								"type": "function"

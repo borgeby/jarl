@@ -2966,11 +2966,8 @@
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": [] }, \"initial\": \"a\" }",
-			"want_result": [
-				{
-					"x": []
-				}
-			],
+			"want_error_code": "eval_type_error",
+			"strict_error": true,
 			"entrypoints": [
 				"reachable"
 			],
@@ -3444,9 +3441,7 @@
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": []
-				}
+				"reachable": {}
 			}
 		},
 		{

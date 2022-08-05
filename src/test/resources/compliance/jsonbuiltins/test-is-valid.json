@@ -15,6 +15,7 @@
 					]
 				}
 			],
+			"strict_error": true,
 			"entrypoints": [
 				"generated"
 			],
@@ -806,8 +807,11 @@
 			"input": {
 				"foo": 1
 			},
-			"want_error_code": "eval_type_error",
-			"want_error": "operand 1 must be string but got number",
+			"want_result": [
+				{
+					"x": false
+				}
+			],
 			"strict_error": true,
 			"entrypoints": [
 				"generated"
@@ -1197,7 +1201,11 @@
 					]
 				}
 			},
-			"want_plan_result": null
+			"want_plan_result": {
+				"generated": {
+					"p": false
+				}
+			}
 		},
 		{
 			"note": "jsonbuiltins/yaml is_valid",
@@ -1214,6 +1222,7 @@
 					]
 				}
 			],
+			"strict_error": true,
 			"entrypoints": [
 				"generated"
 			],
@@ -2005,8 +2014,11 @@
 			"input": {
 				"foo": 1
 			},
-			"want_error_code": "eval_type_error",
-			"want_error": "operand 1 must be string but got number",
+			"want_result": [
+				{
+					"x": false
+				}
+			],
 			"strict_error": true,
 			"entrypoints": [
 				"generated"
@@ -2396,7 +2408,11 @@
 					]
 				}
 			},
-			"want_plan_result": null
+			"want_plan_result": {
+				"generated": {
+					"p": false
+				}
+			}
 		}
 	]
 }

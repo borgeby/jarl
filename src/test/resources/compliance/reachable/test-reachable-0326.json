@@ -8,11 +8,8 @@
 			],
 			"data": {},
 			"input_term": "{\"graph\": 1, \"initial\": [1]}",
-			"want_result": [
-				{
-					"x": []
-				}
-			],
+			"want_error_code": "eval_type_error",
+			"strict_error": true,
 			"entrypoints": [
 				"generated"
 			],
@@ -496,9 +493,7 @@
 				}
 			},
 			"want_plan_result": {
-				"generated": {
-					"p": []
-				}
+				"generated": {}
 			}
 		}
 	]
