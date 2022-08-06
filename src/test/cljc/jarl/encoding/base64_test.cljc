@@ -5,7 +5,8 @@
 
 (deftest base64?-test
   (testing "base64?"
-    (is (= (base64/base64? "abc")    true))
-    (is (= (base64/base64? "fB/a1=") true))
-    (is (= (base64/base64? "fB=/a1") false))
-    (is (= (base64/base64? "abcÖ")   false))))
+    (is (= (base64/base64? "abc")      false))
+    (is (= (base64/base64? "abc=")     true))
+    (is (= (base64/base64? "fB/a14B=") true))
+    (is (= (base64/base64? "fB=/a1")   false))
+    (is (= (base64/base64? "abcÖ")     false))))

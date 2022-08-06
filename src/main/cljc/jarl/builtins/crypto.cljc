@@ -89,7 +89,9 @@
      [{[^String pem] :args}]
      (let [key (pem->rsa-private (-> pem
                                      (str/replace "-----BEGIN PRIVATE KEY-----" "")
+                                     (str/replace "-----BEGIN RSA PRIVATE KEY-----" "")
                                      (str/replace "-----END PRIVATE KEY-----" "")
+                                     (str/replace "-----END RSA PRIVATE KEY-----" "")
                                      (str/replace (System/lineSeparator) "")))
            jwk (JsonWebKey$Factory/newJwk key)]
       (.toJson jwk JsonWebKey$OutputControlLevel/INCLUDE_PRIVATE))))
