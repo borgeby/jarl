@@ -19,7 +19,7 @@
 #_:clj-kondo/ignore
 (defn bigint? [x]
   #?(:clj  (instance? BigInt x)
-     :cljs false)) ; TODO
+     :cljs (= js/BigInt (type x))))
 
 (defn non-int-float? [x]
   (and (number? x)
@@ -32,6 +32,7 @@
     (nil?            value) "null"
     (string?         value) "string"
     (non-int-float?  value) "floating-point number"
+    (bigint?         value) "number"
     (number?         value) "number"
     (boolean?        value) "boolean"
     (vector?         value) "array"
@@ -104,10 +105,18 @@
         -1
         1))))
 
+(defn bigint-compare [a b]
+  #?(:clj  (compare a b)
+     :cljs (cond
+             (< a b) -1
+             (= a b) 0
+             (> a b) 1
+             :else (throw (errors/type-ex "bigint-compare failed comparing '%s' to '%s'" a b)))))
+
 (defn rego-compare [a b]
   (cond
     (= a b) 0
-    (every? bigint? [a b]) (compare a b)
+    (every? bigint? [a b]) (bigint-compare a b)
     (every? number? [a b]) (compare (double a) (double b))
     (every? vector? [a b]) (vector-compare a b)
     (every? map?    [a b]) (map-compare a b)

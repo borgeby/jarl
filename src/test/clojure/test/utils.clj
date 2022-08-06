@@ -1,7 +1,8 @@
 (ns test.utils
   (:require [clojure.string :as str]
             [jarl.builtins.registry]
-            [jarl.exceptions :as errors]))
+            [jarl.exceptions :as errors]
+            [jarl.types :as types]))
 
 (defmacro testing-builtin
   "Given the name of a builtin (as named in OPA, e.g. 'base64.encode'),
@@ -42,14 +43,14 @@
                               (~is (re-find ~expect-pattern provided-msg#)
                                 (str "Expected match for pattern '" ~expect-pattern "' but '" provided-msg# "' does not match"))))
                          ; else - not exception
-                         `(~is (= ((jarl.builtins.registry/get-builtin ~name) {:args ~args}) ~expect)))
+                         `(~is (types/rego-equal? ((jarl.builtins.registry/get-builtin ~name) {:args ~args}) ~expect)))
                        ; else - not vector
                        (if (map? args)
                          ; allow providing the entire request map if needed
-                         `(~is (= ((jarl.builtins.registry/get-builtin ~name) ~args) ~expect)
+                         `(~is (types/rego-equal? ((jarl.builtins.registry/get-builtin ~name) ~args) ~expect)
                             (str "For input: " ~args))
                          ; but since most tests only care for the args, a vector of those is more convenient
-                         `(~is (= ((jarl.builtins.registry/get-builtin ~name) {:args ~args}) ~expect)
+                         `(~is (types/rego-equal? ((jarl.builtins.registry/get-builtin ~name) {:args ~args}) ~expect)
                             (str "For input: " ~args)))))
                    pairs)]
     `(~testing ~func-name ~@stmts)))

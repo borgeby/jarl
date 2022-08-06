@@ -102,6 +102,7 @@ probably work around this, these are generally not used in policy, and as such n
 |-------------------|:---:|:----:|:-------:|
 | `object.get`      |  ✅  |  ✅   |    ✅    |
 | `object.remove`   |  ✅  |  ✅   |    ✅    |
+| `object.subset`   |  ❌  |  ❌   |    ❌    |
 | `object.union`    |  ✅  |  ✅   |    ✅    |
 | `object.union_n`  |  ✅  |  ✅   |    ✅    |
 | `object.filter`   |  ✅  |  ✅   |    ✅    |
@@ -177,7 +178,7 @@ Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re
 | Built-in Function   | JVM | Node | Browser |
 |---------------------|:---:|:----:|:-------:|
 | `units.parse`       |  ❌  |  ❌   |    ❌    |
-| `units.parse_bytes` |  ❌  |  ❌   |    ❌    |
+| `units.parse_bytes` |  ✅  |  ✅   |    ✅    |
 
 ### Types
 

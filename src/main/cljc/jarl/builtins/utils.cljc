@@ -5,6 +5,9 @@
             #?(:cljs [goog.crypt :as crypt]))
   #?(:clj (:import (java.nio.charset StandardCharsets))))
 
+(defn numeric? [s]
+  (some? (re-matches #"[\d]+" s)))
+
 (defn possibly-int
   "present e.g. 1.0 as 1"
   [num]
@@ -18,10 +21,9 @@
   "Converts a numeric string to int, or returns the string if not a number"
   [s]
   #?(:clj
-     (let [numeric? (fn [s] (some? (re-matches #"[\d]+" s)))]
-       (if (numeric? s)
-         (.intValue (bigdec s))
-         s))
+     (if (numeric? s)
+       (.intValue (bigdec s))
+       s)
      :cljs
      (let [n (js/parseFloat s)]
        (if (= n js/NaN) s n))))
