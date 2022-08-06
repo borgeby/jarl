@@ -275,6 +275,7 @@ TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt
 | `crypto.x509.parse_rsa_private_key`         |  ✅  |  ❌   |    ❌    |
 
 NOTE: Contrary to the Clojure versions, the ClojureScript HMAC functions won't accept unicode (i.e. non-ascii) input
+NOTE: `crypto.x509.parse_rsa_private_key` currently only works with PKCS8 formatted private keys, **not** PKCS1
 
 ### Graphs
 

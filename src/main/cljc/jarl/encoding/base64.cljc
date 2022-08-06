@@ -1,5 +1,6 @@
 (ns jarl.encoding.base64
   (:require [clojure.string :as str]
+            #?(:cljs [goog.string :as gstring])
             #?(:cljs [goog.crypt.base64 :as base64])
             [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [bytes->str str->bytes]])
@@ -7,10 +8,15 @@
 
 #?(:cljs
    (defn- b64url->b64 [s]
-     (-> s (str/replace "-" "+") (str/replace "_" "/"))))
+     (let [fixed (-> s (str/replace "-" "+") (str/replace "_" "/"))
+           m (mod (count fixed) 4)
+           req-padding (if (zero? m) 0 (- 4 m))]
+       (cond-> fixed
+               (pos? req-padding) (str (gstring/repeat "=" req-padding))))))
 
 (defn base64? [^String s]
-  (some? (re-matches #"[0-9a-zA-Z\+\/]+=?=?" s)))
+    (and (zero? (mod (count s) 4))
+         (some? (re-matches #"[0-9a-zA-Z\+\/]+=?=?" s))))
 
 (defn base64-url? [^String s]
   (some? (re-matches #"[0-9a-zA-Z-_]+=?=?" s)))

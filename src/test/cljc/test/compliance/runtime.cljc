@@ -47,5 +47,6 @@
 (defn error-filter [want-error-code want-error]
   (fn [error]
     (and (= (errors/rego-type error) want-error-code)
-         (or (str/includes? (ex-message error) want-error)
+         (or (nil? want-error) ; arguably something to fix in the OPA tests, but not all of them assert an error message
+             (str/includes? (ex-message error) want-error)
              (match-one-of (ex-message error) want-error)))))

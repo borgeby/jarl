@@ -472,26 +472,27 @@
         (log/debugf "built-in function <%s> returning '%s'" name result)
         {:result result})
       (catch ExceptionInfo e
-        (let [type (errors/ex-type e)]
-          (if (or (= type :jarl.exceptions/builtin-exception) (= type :jarl.exceptions/type-exception))
-            (condp = name
-              ; Special case - type checking failure here evaluates to false
-              ; we should probably deal with this in a better way later
-              "regex.is_valid" {:result false}
+        (if (or (errors/builtin-ex? e) (errors/type-ex? e))
+          (condp = name
+            ; Special cases - these builtin functions have a more relaxed runtime type check of arguments than the
+            ; function definition suggests. It would be nice to set this attribute as metadata on these builtins, but
+            ; it has proven to be problematic to get the _var_ here rather than the function. Additionally, using
+            ; metadata on vars will not work for implementation written in e.g. Java or Javascript. A proper solution
+            ; will likely involve a `BuiltinFunction` _protocol_ or similar, which may be implemented in either
+            ; Clojure or any of the target host platforms. Until then..
+            "regex.is_valid" {:result false}
+            "yaml.is_valid"  {:result false}
+            "json.is_valid"  {:result false}
 
-              ; See https://github.com/open-policy-agent/opa/issues/4951 and change this code once that's resolved
-              "graph.reachable"       {:result #{}}
-              "graph.reachable_paths" {:result #{}}
-
-              ; default
-              (do
-                (log/tracef "function <%s> threw error: %s" name (ex-message e))
-                (if (true? (get state :strict-builtin-errors))
-                  (throw e)
-                  (do
-                    (log/debugf "function <%s> returned undefined value" name)
-                    {}))))
-            (throw e))))))
+            ; default
+            (do
+              (log/tracef "function <%s> threw error: %s" name (ex-message e))
+              (if (true? (get state :strict-builtin-errors))
+                (throw e)
+                (do
+                  (log/debugf "function <%s> returned undefined value" name)
+                  {}))))
+          (throw e)))))
 
 (defn find-plan [info entry-point]
   (let [plan (some (fn [[name plan]] (when (= name entry-point) plan)) (:plans info))]

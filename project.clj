@@ -4,7 +4,7 @@
   :license {:name "Apache License Version 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.11.1"]
-                 [org.clojure/clojurescript "1.11.57"]
+                 [org.clojure/clojurescript "1.11.60"]
                  [org.clojure/data.json "2.4.0"]
                  [com.taoensso/timbre "5.2.1"]
                  [com.fzakaria/slf4j-timbre "0.3.21"]
@@ -33,7 +33,7 @@
                                      [com.clojure-goes-fast/clj-async-profiler "1.0.0"]
                                      [cider/piggieback "0.5.3"]
                                      [criterium "0.4.6"]
-                                     [zprint "1.2.3"]]
+                                     [zprint "1.2.4"]]
                     :resource-paths ["src/test/resources"]
                     :jvm-opts       ["-Djdk.attach.allowAttachSelf"]
                     :repl-options   {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}

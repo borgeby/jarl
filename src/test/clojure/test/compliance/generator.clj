@@ -11,7 +11,7 @@
 
 (def ignored-tests
   {:clj
-   #{}
+   #{"cryptox509parsersaprivatekey/valid"} ; can only read PKCS8 formatted private keys without bouncy castle, not PKCS1
    :cljs
    #{"aggregates/count with invalid utf-8 chars (0xFFFD)" ; does not seem terribly important, ignoring for now
      "arithmetic/big_int"                                 ; bigint not supported in ClojureScript
