@@ -1,22 +1,23 @@
 (ns jarl.builtins.registry
-  (:require [jarl.builtins.aggregates  :as aggregates]
-            [jarl.builtins.array       :as array]
-            [jarl.builtins.comparison  :as comparison]
-            [jarl.builtins.crypto      :as crypto]
-            [jarl.builtins.graphs      :as graphs]
-            [jarl.builtins.numbers     :as numbers]
-            [jarl.builtins.objects     :as objects]
-            [jarl.builtins.semver      :as semver]
-            [jarl.builtins.sets        :as sets]
-            [jarl.builtins.conversions :as conversions]
-            [jarl.builtins.types       :as types]
-            [jarl.builtins.encoding :as encoding]
-            #?(:clj [jarl.builtins.jwt :as jwt])
+  (:require [jarl.builtins.aggregates      :as aggregates]
+            [jarl.builtins.array           :as array]
+            [jarl.builtins.comparison      :as comparison]
+            [jarl.builtins.crypto          :as crypto]
+            [jarl.builtins.graphs          :as graphs]
+            [jarl.builtins.numbers         :as numbers]
+            [jarl.builtins.objects         :as objects]
+            [jarl.builtins.semver          :as semver]
+            [jarl.builtins.sets            :as sets]
+            [jarl.builtins.conversions     :as conversions]
+            [jarl.builtins.types           :as types]
+            [jarl.builtins.encoding        :as encoding]
+            [jarl.exceptions               :as errors]
+            #?(:clj [jarl.builtins.jwt     :as jwt])
             #?(:clj [jarl.builtins.strings :as strings])
-            #?(:clj [jarl.builtins.regex :as regex])
-            #?(:clj [jarl.builtins.time :as time])
-            #?(:clj [jarl.builtins.bits :as bits])
-            #?(:clj [jarl.builtins.opa :as opa])))
+            #?(:clj [jarl.builtins.regex   :as regex])
+            #?(:clj [jarl.builtins.time    :as time])
+            #?(:clj [jarl.builtins.bits    :as bits])
+            #?(:clj [jarl.builtins.opa     :as opa])))
 
 (def builtins
   #?(:clj
@@ -86,7 +87,7 @@
       "trim_suffix"                       strings/builtin-trim-suffix
       "trim_space"                        strings/builtin-trim-space
       "upper"                             strings/builtin-upper
-      ;"sprintf"                           strings/builtin-sprintf
+      ;"sprintf"                          strings/builtin-sprintf
       ; regex
       "re_match"                          regex/builtin-re-match ; deprecated
       "regex.match"                       regex/builtin-regex-match
@@ -157,7 +158,7 @@
       "time.add_date"                     time/builtin-time-add-date
       "time.clock"                        time/builtin-time-clock
       "time.date"                         time/builtin-time-date
-      ;"time.diff"                         time/builtin-time-diff
+      ;"time.diff"                        time/builtin-time-diff
       "time.now_ns"                       time/builtin-time-now-ns
       "time.weekday"                      time/builtin-time-weekday
       "time.parse_duration_ns"            time/builtin-time-parse-duration-ns
@@ -179,6 +180,9 @@
       ; semver
       "semver.compare"                    semver/builtin-semver-compare
       "semver.is_valid"                   semver/builtin-semver-is-valid
+      ; rego
+      "rego.metadata.chain"               #(throw (errors/builtin-ex "inlined by compiler, should never be invoked"))
+      "rego.metadata.rule"                #(throw (errors/builtin-ex "inlined by compiler, should never be invoked"))
       ; opa
       "opa.runtime"                       opa/builtin-opa-runtime}
      :cljs
@@ -276,6 +280,9 @@
       ; semver
       "semver.compare"                    semver/builtin-semver-compare
       "semver.is_valid"                   semver/builtin-semver-is-valid
+      ; rego
+      "rego.metadata.chain"               #(throw (errors/builtin-ex "inlined by compiler, should never be invoked"))
+      "rego.metadata.rule"                #(throw (errors/builtin-ex "inlined by compiler, should never be invoked"))
       }))
 
 (defn get-builtin [name]
