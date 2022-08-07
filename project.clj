@@ -10,7 +10,8 @@
                  [com.fzakaria/slf4j-timbre "0.3.21"]
                  [com.google.re2j/re2j "1.7"]
                  [clj-commons/clj-yaml "0.7.108"]
-                 [org.bitbucket.b_c/jose4j "0.7.12"]]
+                 [org.bitbucket.b_c/jose4j "0.7.12"]
+                 [org.clojure/tools.cli "1.0.206"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
