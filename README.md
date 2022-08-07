@@ -274,8 +274,8 @@ TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt
 | `crypto.x509.parse_certificates`            |  ❌  |  ❌   |    ❌    |
 | `crypto.x509.parse_rsa_private_key`         |  ✅  |  ❌   |    ❌    |
 
-NOTE: Contrary to the Clojure versions, the ClojureScript HMAC functions won't accept unicode (i.e. non-ascii) input
-NOTE: `crypto.x509.parse_rsa_private_key` currently only works with PKCS8 formatted private keys, **not** PKCS1
+Note: Contrary to the Clojure versions, the ClojureScript HMAC functions won't accept unicode (i.e. non-ascii) input
+Note: `crypto.x509.parse_rsa_private_key` currently only works with PKCS8 formatted private keys, **not** PKCS1
 
 ### Graphs
 
@@ -330,17 +330,20 @@ NOTE: `crypto.x509.parse_rsa_private_key` currently only works with PKCS8 format
 
 | Built-in Function     | JVM | Node | Browser |
 |-----------------------|:---:|:----:|:-------:|
-| `rego.metadata.chain` |  ❌  |  ❌   |    ❌    |
-| `rego.metadata.rule`  |  ❌  |  ❌   |    ❌    |
+| `rego.metadata.chain` |  ✅  |  ✅   |    ✅    |
+| `rego.metadata.rule`  |  ✅  |  ✅   |    ✅    |
 | `rego.parse_module`   |  ❌  |  ❌   |    ❌    |
 
-### Debugging
+Note: The `rego.metadata.*` functions are inlined by the compiler, and never really exists as built-in functions. There
+is thus no need to implement them in IR implementations.
 
-Note: `print` calls are erased from plans, so likely can't be supported without support in OPA, or through some hack.
+### Debugging
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
 | `print`           |  ❌  |  ❌   |    ❌    |
+
+Note: `print` calls are erased from plans, so likely can't be supported without support in OPA, or through some hack.
 
 ### Tracing
 
