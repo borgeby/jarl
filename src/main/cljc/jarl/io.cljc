@@ -9,6 +9,10 @@
   #?(:clj  (.isDirectory (File. path))
      :cljs (-> fs (.statSync path) (.isDirectory))))
 
+(defn file? [^String path]
+  #?(:clj  (.isFile (File. path))
+     :cljs (-> fs (.statSync path) (.isFile))))
+
 #?(:cljs
    (defn path-resolve
      ([p1]

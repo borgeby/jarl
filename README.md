@@ -28,7 +28,7 @@ tar -zxf bundle.tar.gz /plan.json && rm bundle.tar.gz
 ```
 We now have a plan file that we may submit for execution by Jarl!
 ```shell
-lein run plan.json '{"user": {"roles": ["admin"]}}'
+lein run plan.json -i '{"user": {"roles": ["admin"]}}'
 ```
 
 Note that the above constitutes a simple flow for development and testing only. Production artifacts, or a fixed API for
