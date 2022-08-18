@@ -11,6 +11,7 @@
             [jarl.builtins.conversions     :as conversions]
             [jarl.builtins.types           :as types]
             [jarl.builtins.encoding        :as encoding]
+            [jarl.builtins.units           :as units]
             [jarl.exceptions               :as errors]
             #?(:clj [jarl.builtins.jwt     :as jwt])
             #?(:clj [jarl.builtins.strings :as strings])
@@ -118,6 +119,9 @@
       "cast_boolean"                      conversions/builtin-cast-boolean ; deprecated
       "cast_null"                         conversions/builtin-cast-null    ; deprecated
       "cast_object"                       conversions/builtin-cast-object  ; deprecated
+      ; units
+      "units.parse"                       units/builtin-units-parse
+      "units.parse_bytes"                 units/builtin-units-parse-bytes
       ; encoding
       "base64.encode"                     encoding/builtin-base64-encode
       "base64.decode"                     encoding/builtin-base64-decode
@@ -238,6 +242,9 @@
       "cast_boolean"                      conversions/builtin-cast-boolean ; deprecated
       "cast_null"                         conversions/builtin-cast-null    ; deprecated
       "cast_object"                       conversions/builtin-cast-object  ; deprecated
+      ; units
+      "units.parse"                       units/builtin-units-parse
+      "units.parse_bytes"                 units/builtin-units-parse-bytes
       ; types
       "is_number"                         types/builtin-is-number
       "is_string"                         types/builtin-is-string

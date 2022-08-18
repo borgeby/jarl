@@ -14,6 +14,7 @@
             [jarl.builtins.sets-test]
             [jarl.builtins.types-test]
             [jarl.builtins.encoding-test]
+            [jarl.builtins.units-test]
             [jarl.exceptions-test]))
 
 ; For now, include test namespaces manually. Later we might want to switch to run-all-tests:
@@ -49,4 +50,5 @@
            'jarl.builtins.semver-test
            'jarl.builtins.sets-test
            'jarl.builtins.types-test
+           'jarl.builtins.units-test
            'jarl.exceptions-test)
