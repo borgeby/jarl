@@ -68,11 +68,23 @@
   ([s f]
    (-> s (ZonedDateTime/parse f) (.toInstant))))
 
+(def ^:private jvm-major-version
+  (let [jvm-version (System/getProperty "java.vm.version")]
+    (parse-long (subs jvm-version 0 (str/index-of jvm-version ".")))))
+
+(defn- fixup-am-pm
+  "Workaround for weird behavior in Java date time parsing, where AM/PM vs. am/pm is expected depending on JVM version"
+  [s]
+  (if (> jvm-major-version 11)
+    (-> s (str/replace "AM" "am") (str/replace "PM" "pm"))
+    (-> s (str/replace "am" "AM") (str/replace "pm" "PM"))))
+
 (defn parse-formatted-datetime [s f]
   (if (= f "01/02 03:04:05PM '06 -0700")
-    ; special case for what Go docs refer to as "reference time": 01/02 03:04:05PM '06 -0700
-    ; https://pkg.go.dev/time#pkg-constants
-    (parse-iso-zoned-datetime (str/replace s #"'" "") (DateTimeFormatter/ofPattern "MM/dd hh:mm:ssa yy XX"))
+        ; special case for what Go docs refer to as "reference time": 01/02 03:04:05PM '06 -0700
+        ; https://pkg.go.dev/time#pkg-constants
+        (parse-iso-zoned-datetime (str/replace (fixup-am-pm s) #"'" "")
+                                  (DateTimeFormatter/ofPattern "MM/dd hh:mm:ssa yy XX"))
     ; everything else
     (let [pattern (go->java-formatter f)]
       (if (re-find #"[ZXx]" pattern) ; time zone in pattern

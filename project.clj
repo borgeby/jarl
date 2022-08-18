@@ -39,7 +39,8 @@
                     :jvm-opts       ["-Djdk.attach.allowAttachSelf"]
                     :repl-options   {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
                     :plugins        [[lein-cljsbuild "1.1.8"]
-                                     [lein-ancient "1.0.0-RC3"]]
+                                     [lein-ancient "1.0.0-RC3"]
+                                     [lein-cloverage "1.2.4"]]
                     :eastwood {:exclude-linters [:constant-test]
                                :exclude-namespaces [test.profile]}}
              :test {:injections [(require 'test.config)

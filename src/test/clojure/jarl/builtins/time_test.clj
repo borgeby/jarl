@@ -70,8 +70,7 @@
       ["2006-01-02" "2022-01-01"] 1640995200000000000
       ; exceptions
       ["2006-01-02T15:04:05Z07:00" "2262-04-11T23:47:16.854775808-00:00"] [:jarl.exceptions/builtin-exception
-                                                                           "time outside of valid range"]
-      )))
+                                                                           "time outside of valid range"])))
 
 (deftest builtin-time-parse-rfc3339-ns-test
   (testing-builtin "time.parse_rfc3339_ns"
