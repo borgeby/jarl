@@ -1,5 +1,5 @@
 (ns jarl.builtins.graphs-test
-  (:require  [test.utils   :refer [testing-builtin]]
+  (:require  [test.utils            :refer [testing-builtin]]
              #?(:clj  [clojure.test :refer [deftest testing]]
                 :cljs [cljs.test    :refer [deftest testing]])))
 

@@ -49,8 +49,7 @@
       (:help options)
       {:exit-message (usage summary) :ok? true}
       (not-empty arguments)
-      (let [ir (first arguments)
-            plan (second arguments)]
+      (let [[ir plan] arguments]
         (if (jio/file? ir)
           {:ir ir :plan plan :options options}
           {:exit-message (error-msg [(fmt/sprintf "IR \"%s\" is not a file" ir)])}))
@@ -83,9 +82,9 @@
                                  (plan info data input))
                              (abort (error-msg (fmt/sprintf "IR contains more than one plan; please specify entrypoint %s"
                                                             (pr-str (map first plans))))))))]
-            (println (json/write-str result))))))
+            (println (json/write-str-pretty result))))))
     (catch ExceptionInfo e
       (println (ex-message e))
-      #?(:clj ((System/exit 1))))))
+      #?(:clj (System/exit 1)))))
 
 #?(:cljs (set! *main-cli-fn* -main))

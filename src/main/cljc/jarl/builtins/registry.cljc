@@ -13,6 +13,7 @@
             [jarl.builtins.encoding        :as encoding]
             [jarl.builtins.units           :as units]
             [jarl.exceptions               :as errors]
+            #?(:clj [jarl.builtins.http   :as http])
             #?(:clj [jarl.builtins.jwt     :as jwt])
             #?(:clj [jarl.builtins.strings :as strings])
             #?(:clj [jarl.builtins.regex   :as regex])
@@ -181,6 +182,8 @@
       "graph.reachable"                   graphs/builtin-graph-reachable
       ;"graph.reachable_paths"            graphs/builtin-graph-reachable-paths
       ;"walk"                             graphs/builtin-walk
+      ; http
+      "http.send"                         http/builtin-http-send
       ; semver
       "semver.compare"                    semver/builtin-semver-compare
       "semver.is_valid"                   semver/builtin-semver-is-valid
