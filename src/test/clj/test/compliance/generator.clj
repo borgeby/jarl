@@ -204,7 +204,7 @@
 
 (defn generate-for-target [target]
   (let [{:keys [plans tests]} (generate-tests target)
-        target-name (get {:clj "clojure" :cljs "clojurescript"} target)
+        target-name (get {:clj "clj" :cljs "cljs"} target)
         dir (str "src/test/" target-name "/test/compliance/generated/")
         file (io/file dir)]
     (if (or (.exists file) (.mkdirs file))

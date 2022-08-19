@@ -22,10 +22,10 @@
             "perf-jarl"           ["with-profile" "+test" "run" "-m" "test.benchmark" "jarl"]
             "gen-compliance"      ["with-profile" "+test" "run" "-m" "test.compliance.generator"]
             "rebl"                ["trampoline" "run" "-m" "rebel-readline.main"]}
-  :source-paths ["src/main/clojure" "src/main/cljc"]
+  :source-paths ["src/main/clj" "src/main/cljc"]
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
-  :test-paths ["src/test/clojure" "src/test/cljc"]
+  :test-paths ["src/test/clj" "src/test/cljc"]
   :test-selectors {:unit (complement :compliance)
                    :compliance       :compliance
                    :performance      :performance}
@@ -53,21 +53,21 @@
   :cljsbuild
   {:builds
    {:main
-    {:source-paths ^:replace ["src/main/clojurescript" "src/main/cljc"]
-     :test-paths ["src/test/clojurescript"]
+    {:source-paths ^:replace ["src/main/cljs" "src/main/cljc"]
+     :test-paths ["src/test/cljs"]
      :compiler {:target :nodejs
                 :output-to "target/cljs-main.js"
                 :main jarl.core}}
     :test
-    {:source-paths ["src/main/clojurescript" "src/main/cljc" "src/test/clojurescript" "src/test/cljc"]
-     :test-paths ["src/test/clojurescript" "src/test/cljc"]
+    {:source-paths ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]
+     :test-paths ["src/test/cljs" "src/test/cljc"]
      :compiler {:target :nodejs
                 :preloads [test.preloads]
                 :output-to "target/cljs-test.js"
                 :main test.unit-tests}}
     :compliance
-    {:source-paths ^:replace ["src/main/clojurescript" "src/main/cljc" "src/test/clojurescript" "src/test/cljc"]
-     :test-paths ["src/test/clojurescript" "src/test/cljc"]
+    {:source-paths ^:replace ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]
+     :test-paths ["src/test/cljs" "src/test/cljc"]
      :compiler {:target :nodejs
                 :preloads [test.preloads]
                 :output-to "target/cljs-compliance.js"
