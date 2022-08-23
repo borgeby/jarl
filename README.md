@@ -1,6 +1,6 @@
 # Jarl
 
-Jarl is an OPA evaluator for the JVM and Javascript, written in Clojure(Script).
+Jarl is an [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) evaluator for the JVM and Javascript, written in Clojure(Script).
 
 For the acronym inclined, Jarl was originally an abbreviation for the "JVM Alternative for the Rego Language". While JVM
 support is still the number one priority of the project, it isn't the only one. Javascript support, for both the browser
