@@ -1,6 +1,7 @@
 (ns jarl.core
-  (:require [clojure.string :as string]
+  (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
+            [jarl.bundle :as bundle]
             [jarl.logging :as logging]
             [jarl.encoding.json :as json]
             [jarl.io :as jio]
@@ -19,6 +20,7 @@
     :parse-fn #(json/read-str (jio/read-file %))]
    ["-d" "--data string" "set data file path"
     :parse-fn #(json/read-str (jio/read-file %))]
+   ["-f" "--format string" "set output format (default json)"]
    [nil "--strict-builtin-errors" "treat built-in function errors as fatal"]
    ["-h" "--help"]
    ["-v" "--verbose" "Print debug information to stdout"]])
@@ -26,11 +28,11 @@
 (defn usage [options-summary]
   (->> ["Jarl is a tool for evaluating Rego policies compiled into the OPA IR format"
         ""
-        "Usage: jarl <IR file> [<entrypoint>] [options]"
+        "Usage: jarl <plan or bundle file> [<entrypoint>] [options]"
         ""
         "Options:"
         options-summary]
-       (string/join \newline)))
+       (str/join \newline)))
 
 (defn error-msg [errors]
   (->> (flatten ["Failure:"
@@ -38,7 +40,7 @@
                  errors
                  ""
                  "Use -h option for usage"])
-       (string/join \newline)))
+       (str/join \newline)))
 
 (defn parse-args
   [args]
@@ -49,40 +51,48 @@
       (:help options)
       {:exit-message (usage summary) :ok? true}
       (not-empty arguments)
-      (let [[ir plan] arguments]
-        (if (jio/file? ir)
-          {:ir ir :plan plan :options options}
-          {:exit-message (error-msg [(fmt/sprintf "IR \"%s\" is not a file" ir)])}))
+      (let [[path entrypoint] arguments]
+        (if (jio/file? path)
+          {:path path :entrypoint entrypoint :options options}
+          {:exit-message (error-msg [(fmt/sprintf "\"%s\" is not a file" path)])}))
       :else
       {:exit-message (usage summary)})))
 
 (defn abort [msg]
   (throw (ex-info msg {})))
 
+(defn- eval-provided-plan [info entrypoint data input]
+  (if (some? entrypoint)
+    (evaluator/eval-plan info entrypoint data input)
+    (let [plans (:plans info)]
+      (case (count plans)
+        0 (abort (error-msg "plan contains no entrypoints/plans"))
+        1 (let [entrypoint (first (first plans))]
+            (evaluator/eval-plan info entrypoint data input))
+        (let [msg (fmt/sprintf "plan contains more than one entrypoint; please specify which one of %s to use"
+                               (pr-str (map first plans)))]
+          (abort (error-msg msg)))))))
+
 (defn -main [& args]
   (try
-    (let [{:keys [ir plan options exit-message ok?]} (parse-args args)]
+    (let [{:keys [path entrypoint options exit-message ok?]} (parse-args args)]
       (if exit-message
         (if ok?
           (println exit-message)
           (abort exit-message))
-        (let [ir (jio/read-file ir)
+        (let [ir (if (str/ends-with? path ".tar.gz") (bundle/extract-plan path) (jio/read-file path))
               {:keys [data input verbose]} options]
           (if verbose
             (logging/set-log-level :debug)
             (logging/set-log-level :warn))
-          (let [info (parser/parse-json ir)
-                info (assoc info :strict-builtin-errors (contains? options :strict-builtin-errors))
-                result (if-not (nil? plan)
-                         (evaluator/eval-plan info plan data input)
-                         (let [plans (:plans info)]
-                           (case (count plans)
-                             0 (abort (error-msg "IR contains no plans"))
-                             1 (let [plan (first plans)]
-                                 (plan info data input))
-                             (abort (error-msg (fmt/sprintf "IR contains more than one plan; please specify entrypoint %s"
-                                                            (pr-str (map first plans))))))))]
-            (println (json/write-str-pretty result))))))
+          (if (nil? ir)
+            (abort (error-msg "no valid plan file found"))
+            (let [strict (:strict-builtin-errors options)
+                  info (cond-> (parser/parse-json ir) (some? strict) (assoc :strict-builtin-errors strict))
+                  result (eval-provided-plan info entrypoint data input)]
+              (case (:format options)
+                "raw" (println (json/write-str (get-in result [0 "result"])))
+                (println (json/write-str result))))))))
     (catch ExceptionInfo e
       (println (ex-message e))
       #?(:clj (System/exit 1)))))
