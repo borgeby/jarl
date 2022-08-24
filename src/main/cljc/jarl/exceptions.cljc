@@ -24,7 +24,7 @@
 (defmethod rego-type :default              [t] (str "unknown error type: " t))
 
 (defn jarl-exception [type message & args]
-  (ex-info (apply sprintf (str (rego-type type) ": " message) args)
+  (ex-info (apply sprintf message args)
            {::type type}))
 
 (defn builtin-ex [message & args]

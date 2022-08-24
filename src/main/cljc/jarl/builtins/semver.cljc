@@ -19,7 +19,7 @@
 (defn builtin-semver-compare
   [{[a b] :args}]
   (when-not (valid? a)
-    (throw (errors/builtin-ex "semver.compare: operand 1: %s %s is not a valid SemVer" (types/->rego a) (quote-str a))))
+    (throw (errors/builtin-ex "operand 1: %s %s is not a valid SemVer" (types/->rego a) (quote-str a))))
   (when-not (valid? b)
-    (throw (errors/builtin-ex "semver.compare: operand 2: %s %s is not a valid SemVer" (types/->rego b) (quote-str b))))
+    (throw (errors/builtin-ex "operand 2: %s %s is not a valid SemVer" (types/->rego b) (quote-str b))))
   (semver/compare-strings a b))

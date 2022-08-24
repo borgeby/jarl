@@ -67,7 +67,7 @@
 (defn builtin-format-int
   [{[number base] :args}]
   (if-not (contains? #{2 8 10 16} base)
-    (throw (errors/type-ex "format_int: operand 2 must be one of {2, 8, 10, 16}"))
+    (throw (errors/type-ex "operand 2 must be one of {2, 8, 10, 16}"))
     (Integer/toString number base)))
 
 
@@ -108,7 +108,7 @@
 (defn builtin-substring
   [{[s start len] :args}]
   (if (neg-int? start)
-    (throw (errors/builtin-ex "substring: negative offset"))
+    (throw (errors/builtin-ex "negative offset"))
     (let [cpc (count-str s)]
       (if (>= start cpc)
         ""

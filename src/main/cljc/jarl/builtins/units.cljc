@@ -95,34 +95,27 @@
     ("pi" "Pi") (get unit-map "pi")
     ("e" "E")   (get unit-map "siE")
     ("ei" "Ei") (get unit-map "ei")
-    (throw (errors/builtin-ex "units.parse: unit %s not recognized" unit))))
+    (throw (errors/builtin-ex "unit %s not recognized" unit))))
 
 (defn- upb-unit->val [unit]
   (or (get unit-map unit)
-      (throw (errors/builtin-ex "units.parse_bytes: byte unit %s not recognized" unit))))
+      (throw (errors/builtin-ex "byte unit %s not recognized" unit))))
 
-(defn- up-validate-formatted [s]
+(defn- validate-formatted [s]
   (if (str/includes? s " ")
-    (throw (errors/builtin-ex "units.parse error: spaces not allowed in resource strings"))
-    s))
-
-(defn- upb-validate-formatted [s]
-  (if (str/includes? s " ")
-    (throw (errors/builtin-ex "units.parse_bytes error: spaces not allowed in resource strings"))
+    (throw (errors/builtin-ex "spaces not allowed in resource strings"))
     s))
 
 (defn- validate-up [[num _ :as num-unit]]
   (cond
-    (empty? num)
-    (throw (errors/builtin-ex "units.parse error: no amount provided"))
-    (> (count (re-seq #"\." num)) 1)
-    (throw (errors/builtin-ex "units.parse error: could not parse amount to a number"))
+    (empty? num)                     (throw (errors/builtin-ex "no amount provided"))
+    (> (count (re-seq #"\." num)) 1) (throw (errors/builtin-ex "could not parse amount to a number"))
     :else num-unit))
 
 (defn- validate-upb [[num _ :as num-unit]]
   (cond
-    (empty? num)                     (throw (errors/builtin-ex "units.parse_bytes error: no byte amount provided"))
-    (> (count (re-seq #"\." num)) 1) (throw (errors/builtin-ex "units.parse_bytes error: could not parse byte amount to a number"))
+    (empty? num)                     (throw (errors/builtin-ex "no byte amount provided"))
+    (> (count (re-seq #"\." num)) 1) (throw (errors/builtin-ex "could not parse byte amount to a number"))
     :else num-unit))
 
 #?(:cljs
@@ -168,27 +161,27 @@
 
 (defn builtin-units-parse
   [{[x] :args}]
-  (let [formatted  (-> x (str/replace "\"" "") up-validate-formatted)
+  (let [formatted  (-> x (str/replace "\"" "") validate-formatted)
         [num unit] (->> (remove #(= "" %) (str/split formatted #""))
                         (split-with #(or (numeric? %) (= "." %)))
                         (mapv str/join)
-                        (validate-up))
+                        validate-up)
         unit (lower-case-rest unit)]
     (try
       #?(:clj  (* (bigdec num) (up-unit->val unit))
          :cljs (bigint->number (fake-bigdec-multiply num (up-unit->val unit))))
-      #?(:clj  (catch Exception _ (throw (errors/builtin-ex "units.parse error: could not parse amount to a number")))
-         :cljs (catch :default  _ (throw (errors/builtin-ex "units.parse error: could not parse amount to a number")))))))
+      #?(:clj  (catch Exception _ (throw (errors/builtin-ex "could not parse amount to a number")))
+         :cljs (catch :default  _ (throw (errors/builtin-ex "could not parse amount to a number")))))))
 
 (defn builtin-units-parse-bytes
   [{[x] :args}]
-  (let [formatted  (-> x str/lower-case (str/replace "\"" "") upb-validate-formatted)
+  (let [formatted  (-> x str/lower-case (str/replace "\"" "") validate-formatted)
         [num unit] (->> (remove #(= "" %) (str/split formatted #""))
                         (split-with #(or (numeric? %) (= "." %)))
                         (mapv str/join)
-                        (validate-upb))]
+                        validate-upb)]
     (try
       #?(:clj  (bigint (* (bigdec num) (upb-unit->val unit)))
          :cljs (bi-or-round (bigint->number (fake-bigdec-multiply num (upb-unit->val unit)))))
-      #?(:clj  (catch Exception _ (throw (errors/builtin-ex "units.parse_bytes error: could not parse byte amount to a number")))
-         :cljs (catch :default  _ (throw (errors/builtin-ex "units.parse_bytes error: could not parse byte amount to a number")))))))
+      #?(:clj  (catch Exception _ (throw (errors/builtin-ex "could not parse byte amount to a number")))
+         :cljs (catch :default  _ (throw (errors/builtin-ex "could not parse byte amount to a number")))))))

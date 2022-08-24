@@ -1,8 +1,6 @@
 (ns jarl.builtins.regex
-  (:require [jarl.exceptions :as errors]
-            [clojure.string :as str])
-  (:import [com.google.re2j Pattern]
-           (clojure.lang ExceptionInfo)))
+  (:require [jarl.exceptions :as errors])
+  (:import [com.google.re2j Pattern]))
 
 (defn builtin-regex-match
   [{[pattern ^String value] :args}]
@@ -11,14 +9,11 @@
         (.matcher value)
         (.find))
     (catch Exception e
-      (throw (errors/builtin-ex (str "eval_builtin_error: regex.match: " (ex-message e)))))))
+      (throw (errors/builtin-ex (ex-message e))))))
 
 ; Deprecated in OPA - only here for test conformance
 (defn builtin-re-match [{[pattern ^String value] :args}]
-  (try
-    (builtin-regex-match {:args [pattern value]})
-    (catch ExceptionInfo e
-      (throw (errors/builtin-ex (str/replace (ex-message e) #"regex\.match" "re_match"))))))
+  (builtin-regex-match {:args [pattern value]}))
 
 (defn builtin-regex-is-valid
   [{[pattern] :args}]
