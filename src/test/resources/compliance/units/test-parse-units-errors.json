@@ -7,7 +7,7 @@
 				"package test\np {\n    units.parse(\"\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse error: no amount provided",
+			"want_error": "units.parse: no amount provided",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -379,7 +379,7 @@
 				"package test\np {\n    units.parse(\"G\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse error: no amount provided",
+			"want_error": "units.parse: no amount provided",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -751,7 +751,7 @@
 				"package test\np {\n    units.parse(\"foo\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse error: no amount provided",
+			"want_error": "units.parse: no amount provided",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -1123,7 +1123,7 @@
 				"package test\np {\n    units.parse(\"0.0.0\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse error: could not parse amount to a number",
+			"want_error": "units.parse: could not parse amount to a number",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -1495,7 +1495,7 @@
 				"package test\np {\n    units.parse(\".5.2\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse error: could not parse amount to a number",
+			"want_error": "units.parse: could not parse amount to a number",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -1867,7 +1867,7 @@
 				"package test\np {\n    units.parse(\"100 k\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse error: spaces not allowed in resource strings",
+			"want_error": "units.parse: spaces not allowed in resource strings",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -2239,7 +2239,7 @@
 				"package test\np {\n    units.parse(\" 327Mi \")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse error: spaces not allowed in resource strings",
+			"want_error": "units.parse: spaces not allowed in resource strings",
 			"strict_error": true,
 			"entrypoints": [
 				"test"

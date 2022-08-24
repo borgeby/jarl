@@ -7,7 +7,7 @@
 				"package test\np {\n    units.parse_bytes(\"\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse_bytes error: no byte amount provided",
+			"want_error": "units.parse_bytes: no byte amount provided",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -379,7 +379,7 @@
 				"package test\np {\n    units.parse_bytes(\"GB\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse_bytes error: no byte amount provided",
+			"want_error": "units.parse_bytes: no byte amount provided",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -751,7 +751,7 @@
 				"package test\np {\n    units.parse_bytes(\"foo\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse_bytes error: no byte amount provided",
+			"want_error": "units.parse_bytes: no byte amount provided",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -1123,7 +1123,7 @@
 				"package test\np {\n    units.parse_bytes(\"0.0.0\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse_bytes error: could not parse byte amount to a number",
+			"want_error": "units.parse_bytes: could not parse byte amount to a number",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -1495,7 +1495,7 @@
 				"package test\np {\n    units.parse_bytes(\".5.2\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse_bytes error: could not parse byte amount to a number",
+			"want_error": "units.parse_bytes: could not parse byte amount to a number",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -1867,7 +1867,7 @@
 				"package test\np {\n    units.parse_bytes(\"100 kb\")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse_bytes error: spaces not allowed in resource strings",
+			"want_error": "units.parse_bytes: spaces not allowed in resource strings",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
@@ -2239,7 +2239,7 @@
 				"package test\np {\n    units.parse_bytes(\" 327MiB \")\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
-			"want_error": "units.parse_bytes error: spaces not allowed in resource strings",
+			"want_error": "units.parse_bytes: spaces not allowed in resource strings",
 			"strict_error": true,
 			"entrypoints": [
 				"test"
