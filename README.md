@@ -15,13 +15,12 @@ Simple example policy compiled to plan by OPA, and executed by Jarl.
 ```rego
 package policy
 
-import future.keywords
+import future.keywords.if
+import future.keywords.in
 
 default allow := false
 
-allow {
-    "admin" in input.user.roles
-}
+allow if "admin" in input.user.roles
 ```
 ```shell
 opa build --target plan --entrypoint policy/allow policy.rego
@@ -112,13 +111,6 @@ Jarl currently has experimental support for ClojureScript as an alternative to C
 code, we use `.cljc` files and [reader conditionals](https://clojure.org/guides/reader_conditionals) where possible, and
 try to use `.clj` (Clojure) and `.cljs` (ClojureScript) files only when a particular namespace relies extensively on
 features found in the host system (such as functions related to date and time).
-
-Most notable things currently missing for full ClojureScript support:
-
-* Unit tests don't currently work with the `testingbuiltin` macro. As we rely heavily on this macro, fixing this should
-  be high up on the list of priorities.
-* Node is currently assumed as the JS environment. Only a few places rely on Node-specific functionality, and those
-  should be clearly isolated as such. Running Jarl both in Node and in the browser is definitely our goal.
 
 #### Building ClojureScript
 
