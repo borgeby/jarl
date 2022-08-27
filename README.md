@@ -25,14 +25,10 @@ allow if "admin" in input.user.roles
 ```shell
 opa build --target plan --entrypoint policy/allow policy.rego
 ```
-This creates a bundle, containing the `plan.json` file. Since this is the only file we care for here, let's extract it
-from the bundle:
+
+We now have a bunde containing the `plan.json` file that we may submit for execution by Jarl!
 ```shell
-tar -zxf bundle.tar.gz /plan.json && rm bundle.tar.gz
-```
-We now have a plan file that we may submit for execution by Jarl!
-```shell
-lein run plan.json -i '{"user": {"roles": ["admin"]}}'
+lein run bundle.tar.gz --input '{"user": {"roles": ["admin"]}}'
 ```
 
 Note that the above constitutes a simple flow for development and testing only. Production artifacts, or a fixed API for
