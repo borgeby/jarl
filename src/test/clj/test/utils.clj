@@ -35,8 +35,7 @@
                      (if (vector? expect)
                        (if (isa? (first expect) :jarl.exceptions/jarl-exception)
                          (let [ex-type (errors/rego-type (first expect))
-                               ex-type-str (if (= ex-type "") "" (str ex-type ": "))
-                               expect-pattern (re-pattern (str ex-type-str name ": " (second expect)))]
+                               expect-pattern (re-pattern (second expect))]
                            `(let [provided-ex# (jarl.exceptions/try-return #((jarl.builtins.registry/get-builtin ~name) {:args ~args}))
                                   provided-msg# (ex-message provided-ex#)]
                               (~is (= (jarl.exceptions/rego-type provided-ex#) ~ex-type))

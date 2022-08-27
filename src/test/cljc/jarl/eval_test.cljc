@@ -511,4 +511,4 @@
                                                   [{"name" "count"} {"name" "my-func" "decl" {"args" [{"type" "string"}]}}]
                                                   [1983]))]
       (is (= (errors/ex-type ex) ::errors/type-exception))
-      (is (= (ex-message ex) "eval_type_error: my-func: operand 1 must be string but got number")))))
+      (is (= (ex-message ex) "operand 1 must be string but got number")))))

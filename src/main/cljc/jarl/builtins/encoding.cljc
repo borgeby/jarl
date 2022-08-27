@@ -59,23 +59,23 @@
   #?(:clj
      (try
        (json/write-str x)
-       (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.marshal: %s" (ex-message e)))))
+       (catch Exception e (throw (errors/builtin-ex (ex-message e)))))
      :cljs
      (try
        (json/write-str x)
-       (catch js/Error e (throw (errors/builtin-ex "eval_builtin_error: json.marshal: %s" (ex-message e)))))))
+       (catch js/Error e (throw (errors/builtin-ex (ex-message e)))))))
 
 (defn builtin-json-unmarshal
   [{[^String s] :args}]
   #?(:clj
      (try
        (json/read-str s)
-       (catch EOFException _ (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: unexpected EOF")))
-       (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: %s" (ex-message e)))))
+       (catch EOFException _ (throw (errors/builtin-ex "unexpected EOF")))
+       (catch Exception e (throw (errors/builtin-ex (ex-message e)))))
      :cljs
      (try
        (json/read-str s)
-       (catch js/Error e (throw (errors/builtin-ex "eval_builtin_error: json.unmarshal: %s" (ex-message e)))))))
+       (catch js/Error e (throw (errors/builtin-ex (ex-message e)))))))
 
 (defn builtin-json-is-valid
   [{[^String s] :args}]
@@ -102,7 +102,7 @@
   [{[^String s] :args}]
   (if (hex/hex? s)
     (hex/decode s)
-    (throw (errors/builtin-ex (str "hex.decode: " (non-hex-error-msg s))))))
+    (throw (errors/builtin-ex (non-hex-error-msg s)))))
 
 #_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}
 (defn builtin-yaml-marshal
@@ -124,9 +124,8 @@
   [{[s] :args}]
   #?(:clj  (try
              (yaml/read-str s)
-             (catch Exception e (let [msg (.getMessage e)]
-                                  (throw (errors/builtin-ex "eval_builtin_error: yaml.unmarshal: %s"
-                                                            (or (yaml-unmarshal-err-msg msg) msg))))))
+             (catch Exception e (let [msg (ex-message e)]
+                                  (throw (errors/builtin-ex (or (yaml-unmarshal-err-msg msg) msg))))))
      :cljs (throw (ex-info "yaml.unmarshal not implemented" {:type :not-implemented}))))
 
 #_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}

@@ -12,12 +12,12 @@
 
 (defn builtin-sum
   [{[coll] :args}]
-  (typed-seq "sum" coll #{"number"})
+  (typed-seq coll #{"number"})
   (possibly-int (apply + coll)))
 
 (defn builtin-product
   [{[coll] :args}]
-  (typed-seq "product" coll #{"number"})
+  (typed-seq coll #{"number"})
   (possibly-int (apply * coll)))
 
 (defn builtin-max

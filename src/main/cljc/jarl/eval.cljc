@@ -1,5 +1,5 @@
 (ns jarl.eval
-  (:require [clojure.string :as string]
+  (:require [clojure.string :as str]
             [taoensso.timbre :as log]
             [jarl.builtins.utils :refer [check-args]]
             [jarl.formatting :refer [sprintf]]
@@ -98,7 +98,7 @@
 
 (defn eval-CallDynamicStmt [target path args state]
   (let [path (map #(state/get-value state %) path)
-        func-name (string/join "." path)]
+        func-name (str/join "." path)]
     (log/debugf "CallDynamicStmt - calling dynamic func <%s>" func-name)
     (let [func (state/get-func state path)
           args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))]
@@ -459,7 +459,7 @@
                           (first)
                           (get-in ["decl" "args"]))]
       (let [types-def (mapv ->type args-def)]
-        (check-args builtin-name types-def argv))
+        (check-args types-def argv))
       (throw (errors/type-ex "Arguments definition for builtin %s not provided in plan" builtin-name)))))
 
 (defn eval-builtin-func [name builtin-func args state]
@@ -488,7 +488,8 @@
             (do
               (log/tracef "function <%s> threw error: %s" name (ex-message e))
               (if (true? (get state :strict-builtin-errors))
-                (throw e)
+                (let [msg (str/join ": " [(errors/rego-type e) name (ex-message e)])]
+                  (throw (ex-info msg (ex-data e) (ex-cause e))))
                 (do
                   (log/debugf "function <%s> returned undefined value" name)
                   {}))))

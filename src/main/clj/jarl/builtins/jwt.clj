@@ -36,13 +36,12 @@
     s))
 
 (defn- base64-decode-bytes ^bytes [^String s part]
-  (let [strip-ex-type (fn [message] (subs message (+ 2 (str/index-of message ":"))))]
-    (try
-      (base64/url-decode-bytes s)
-      (catch ExceptionInfo e
-        (if (errors/builtin-ex? e)
-          (throw (errors/builtin-ex "JWT %s had invalid encoding: %s" part (strip-ex-type (ex-message e))))
-          (throw e))))))
+  (try
+    (base64/url-decode-bytes s)
+    (catch ExceptionInfo e
+      (if (errors/builtin-ex? e)
+        (throw (errors/builtin-ex "JWT %s had invalid encoding: %s" part (ex-message e)))
+        (throw e)))))
 
 (defn jwk-key-resolver ^VerificationKeyResolver [^String s]
   (reify VerificationKeyResolver
@@ -190,32 +189,32 @@
     (.setFullHeaderAsJsonString (.getHeaders jws) json-header)
     (.getCompactSerialization jws)))
 
-(defn parse-headers [builtin-name headers-raw]
+(defn parse-headers [headers-raw]
   (when (str/blank? headers-raw)
-    (throw (errors/builtin-ex "%s: unexpected end of JSON input" builtin-name)))
+    (throw (errors/builtin-ex "unexpected end of JSON input")))
   (let [headers (try
                   (json/read-str headers-raw)
                   (catch Throwable e
                     (when (or (str/includes? (ex-message e) "JSON error (missing")
                               (str/includes? (ex-message e) "JSON error (unexpected character):"))
-                      (throw (errors/builtin-ex "%s: invalid character" builtin-name)))
+                      (throw (errors/builtin-ex "invalid character")))
                     (throw e)))]
     (when-not (get headers "alg")
-      (throw (errors/builtin-ex "%s: failed to create signer: unsupported signature algorithm" builtin-name)))
+      (throw (errors/builtin-ex "failed to create signer: unsupported signature algorithm")))
     (when-not (contains? supported-algs (get headers "alg"))
-      (throw (errors/builtin-ex "%s: unknown signature algorithm" builtin-name)))
+      (throw (errors/builtin-ex "unknown signature algorithm")))
     headers))
 
 (defn builtin-io-jwt-encode-sign-raw [{[^String headers ^String payload ^String key] :args}]
-  (let [headers-parsed (parse-headers "io.jwt.encode_sign_raw" headers)
+  (let [headers-parsed (parse-headers headers)
         typ (get headers-parsed "typ")
         _ (when (or (and (not= typ "text/plain") (str/blank? payload))
                     (and (= typ "JWT") (= :error (errors/try-or #(json/read-str payload) :error))))
-            (throw (errors/builtin-ex "io.jwt.encode_sign_raw: type is JWT but payload is not JSON")))
+            (throw (errors/builtin-ex "type is JWT but payload is not JSON")))
         jwk (try
               (JsonWebKey$Factory/newJwk key)
               (catch Throwable _
-                (throw (errors/builtin-ex "io.jwt.encode_sign_raw: failed to parse a JWK key"))))
+                (throw (errors/builtin-ex "failed to parse a JWK key"))))
         jws (doto (JsonWebSignature.)
                   (.setKey (signing-key jwk))
                   (.setEncodedPayload (base64/url-encode-no-pad payload)))]
@@ -224,7 +223,7 @@
       (catch JoseException e
         (let [match-unexpected (re-find #"Unexpected character \((.+)\)" (ex-message e))]
           (if (= 2 (count match-unexpected))
-            (throw (errors/builtin-ex "io.jwt.encode_sign_raw: invalid character '%s' looking for beginning of value"
+            (throw (errors/builtin-ex "invalid character '%s' looking for beginning of value"
                                       (last match-unexpected)))
             (throw e)))))
       (.getCompactSerialization jws)))

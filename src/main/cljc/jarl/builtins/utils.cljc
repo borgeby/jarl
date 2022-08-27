@@ -45,7 +45,7 @@
 
 (defn check-args
   "Check types of provided values, and ensure they match the type names provided in the function metadata"
-  [builtin-name types-def argv]
+  [types-def argv]
   (let [operands (vec (range 1 (inc (count types-def))))
         zipped (mapv vector operands types-def argv)]
     (doseq [entry zipped]
@@ -55,17 +55,16 @@
             provided-type (types/->rego value)]
         (when-not (type-match? expected-type provided-type)
           (if (set? expected-type)
-            (throw (errors/type-ex "%s: operand %s must be one of {%s} but got %s" builtin-name pos (str/join ", " expected-type) provided-type))
-            (throw (errors/type-ex "%s: operand %s must be %s but got %s" builtin-name pos expected-type provided-type))))))))
+            (throw (errors/type-ex "operand %s must be one of {%s} but got %s" pos (str/join ", " expected-type) provided-type))
+            (throw (errors/type-ex "operand %s must be %s but got %s" pos expected-type provided-type))))))))
 
 (defn typed-seq
   "Ensure that array/set only contains allowed Rego types"
-  [builtin-name arr-or-set allowed-types]
+  [arr-or-set allowed-types]
   (let [allowed-set (set allowed-types)
         allow (if (contains? allowed-set "number") (conj allowed-set "floating-point number") allowed-set)
         forbidden (fn [x] (not (contains? allow (types/->rego x))))]
     (when-let [violation (first (filter forbidden arr-or-set))]
-      (throw (errors/type-ex "%s: operand must be array or set of %s but got array or set containing %s"
-                             builtin-name
+      (throw (errors/type-ex "operand must be array or set of %s but got array or set containing %s"
                              (str/join "," allowed-types)
                              (types/->rego violation))))))

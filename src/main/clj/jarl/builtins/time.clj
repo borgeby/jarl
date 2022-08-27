@@ -116,11 +116,11 @@
   "Many of the time.* functions take either an ns number, or a vector of [ns, tz] —
    this normalizes the two variants into the latter, using UTC unless provided"
   ^ZonedDateTime
-  [x builtin-name]
+  [x]
   (let [arr (if (vector? x) x [x "UTC"])
         tz (second arr)
         time (errors/try-or-throw #(long (first arr))
-                                  (errors/builtin-ex "%s: timestamp too big" builtin-name))]
+                                  (errors/builtin-ex "timestamp too big"))]
     (.atZone (ns-to-instant time) (ZoneId/of (if (empty? tz) "UTC" tz)))))
 
 (defn builtin-time-add-date
@@ -130,23 +130,23 @@
                                   (.plus months  ChronoUnit/MONTHS)
                                   (.plus days    ChronoUnit/DAYS)
                                   (.toInstant)))]
-    (errors/try-or-throw #(long result) (errors/builtin-ex "time.add_date: time outside of valid range"))))
+    (errors/try-or-throw #(long result) (errors/builtin-ex "time outside of valid range"))))
 
 (defn builtin-time-clock
   [{[x] :args}]
-  (let [ins (ns-with-tz x "time.clock")]
+  (let [ins (ns-with-tz x)]
     [(.getHour ins) (.getMinute ins) (.getSecond ins)]))
 
 (defn builtin-time-date
   [{[x] :args}]
-  (let [ins (ns-with-tz x "time.date")]
+  (let [ins (ns-with-tz x)]
     [(.getYear ins) (.getMonthValue ins) (.getDayOfMonth ins)]))
 
 ; TODO: Commented out in registry - needs to work with both Period and Duration
 (defn builtin-time-diff
   [{[x y] :args}]
-  (let [ns1  (ns-with-tz x "time.diff")
-        ns2  (ns-with-tz y "time.diff")
+  (let [ns1  (ns-with-tz x)
+        ns2  (ns-with-tz y)
         per  ^Period (Period/between (.toLocalDate ns1) (.toLocalDate ns2))]
     [(.getYears  per)
      (.getMonths per)
@@ -161,12 +161,12 @@
 
 (defn builtin-time-weekday
   [{[x] :args}]
-  (-> (ns-with-tz x "time.weekday")
+  (-> (ns-with-tz x)
       (.getDayOfWeek)
       (.getDisplayName TextStyle/FULL Locale/ENGLISH)))
 
 (defn unknown-duration-ex [unit time]
-  (errors/builtin-ex "time.parse_duration_ns: time: unknown unit \"%s\" in duration \"%s\""
+  (errors/builtin-ex "time: unknown unit \"%s\" in duration \"%s\""
                      unit (str time unit)))
 
 (defn to-duration [[_ time unit]]
@@ -177,15 +177,15 @@
   (if-let [time-unit-pairs (re-seq #"(\d+)(\p{L}+)" s)] ; returns a seq of [full match, time, unit]
     (.toNanos ^Duration (reduce d+ (map to-duration time-unit-pairs)))
     (if (errors/throws? #(Long/parseLong s))
-      (throw (errors/builtin-ex "time.parse_duration_ns: time: invalid duration \"%s\"" s))
-      (throw (errors/builtin-ex "time.parse_duration_ns: time: missing unit in duration \"%s\"" s)))))
+      (throw (errors/builtin-ex "time: invalid duration \"%s\"" s))
+      (throw (errors/builtin-ex "time: missing unit in duration \"%s\"" s)))))
 
 (defn builtin-time-parse-ns
   [{[layout value] :args}]
   (let [nanos (instant-to-ns (parse-formatted-datetime value layout))]
-    (errors/try-or-throw #(long nanos) (errors/builtin-ex "time.parse_ns: time outside of valid range"))))
+    (errors/try-or-throw #(long nanos) (errors/builtin-ex "time outside of valid range"))))
 
 (defn builtin-time-parse-rfc3339-ns
   [{[s] :args}]
   (let [nanos (instant-to-ns (parse-iso-zoned-datetime s))]
-    (errors/try-or-throw #(long nanos) (errors/builtin-ex "time.parse_rfc3339_ns: time outside of valid range"))))
+    (errors/try-or-throw #(long nanos) (errors/builtin-ex "time outside of valid range"))))

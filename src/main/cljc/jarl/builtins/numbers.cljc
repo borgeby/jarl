@@ -16,7 +16,7 @@
     (set/difference a b)
     (if (and (number? a) (number? b))
       (possibly-int #?(:clj (-' a b) :cljs (- a b)))
-      (throw (errors/type-ex "minus: operand 2 must be %s but got %s" (types/->rego a) (types/->rego b))))))
+      (throw (errors/type-ex "operand 2 must be %s but got %s" (types/->rego a) (types/->rego b))))))
 
 (defn builtin-mul
   [{[a b] :args}]
@@ -25,7 +25,7 @@
 (defn builtin-div
   [{[a b] :args}]
   (if (zero? b)
-    (throw (errors/builtin-ex "div: divide by zero"))
+    (throw (errors/builtin-ex "divide by zero"))
     (possibly-int (double (/ a b)))))
 
 (defn builtin-rem
@@ -33,11 +33,11 @@
   (when (zero? b)
     (throw (errors/builtin-ex "modulo by zero")))
   (when (or (types/non-int-float? a) (types/non-int-float? b))
-    (throw (errors/builtin-ex "rem: modulo on floating-point number")))
+    (throw (errors/builtin-ex "modulo on floating-point number")))
   (let [res (rem a b)]
     (if (types/non-int-float? res)
       ; OPA returns undefined for rem resulting in floating point numbers
-      (throw (errors/builtin-ex "rem: remainder is not an integer"))
+      (throw (errors/builtin-ex "remainder is not an integer"))
       (possibly-int res))))
 
 (defn builtin-round
@@ -68,7 +68,7 @@
 (defn builtin-numbers-range
   [{[a b] :args}]
   (if-not (and (integer? a) (integer? b))
-    (throw (errors/type-ex "numbers.range: operand %d must be integer number but got floating-point number"
+    (throw (errors/type-ex "operand %d must be integer number but got floating-point number"
                            (if (integer? a) 2 1)))
     (if (> a b)
       (rseq (vec (range b (inc a))))

@@ -101,7 +101,7 @@
       (let [bt-send #(builtin-http-send {:args [{"method" "get" "url" "http://borge.by"}]})
             ex (errors/try-return bt-send)]
         (is (errors/builtin-ex? ex))
-        (is (= (ex-message ex) "eval_builtin_error: http.send: failed!")))))
+        (is (= (ex-message ex) "http.send: failed!")))))
 
   (testing "exception thrown in client, raise_error: false"
     (with-redefs [http-client/request-fn (fn [_] (throw (ex-info "failed!" {:no :context})))]
