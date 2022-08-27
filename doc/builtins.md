@@ -265,7 +265,46 @@ Note: `crypto.x509.parse_rsa_private_key` currently only works with PKCS8 format
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `http.send`       |  ❌  |  ❌   |    ❌    |
+| `http.send`       |  ✅  |  ❌   |    ❌    |
+
+Note: Only basic functionality supported currently, i.e. sending requests using the (likely) most common options:
+
+**Supported options**
+
+* `url` 
+* `method`
+* `body`
+* `raw_body`
+* `headers`
+* `enable_redirect`
+* `force_json_decode`
+* `force_yaml_decode`
+* `raise_error`
+* `timeout`
+* `tls_insecure_skip_verify` 
+
+**Unsupported options**
+
+* `tls_use_system_certs` (always uses system certs)
+* `tls_ca_cert`
+* `tls_ca_cert_file`
+* `tls_ca_cert_env_variable`
+* `tls_client_cert`
+* `tls_client_cert_file`
+* `tls_client_cert_env_variable`
+* `tls_client_key`
+* `tls_client_key_file`
+* `tls_server_name`
+* `cache`
+* `force_cache`
+* `force_cache_duration_seconds`
+* `caching_mode`
+
+The various TLS options do not seem that urgent at this point in time. We'll definitely want to have caching in place
+however, and that is reasonably the next thing to work on here.
+
+Note: Additionally, errors thrown by `http.send` in Jarl are probably going to look different from those thrown in OPA.
+This can be improved over time, but likely never completely.
 
 ### Net
 

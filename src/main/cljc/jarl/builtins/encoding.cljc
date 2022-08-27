@@ -2,10 +2,10 @@
   (:require [jarl.encoding.base64 :as base64]
             [jarl.encoding.json :as json]
             [jarl.encoding.hex :as hex]
+            #?(:clj [jarl.encoding.yaml :as yaml])
             [jarl.exceptions :as errors]
             [jarl.utils :refer [url-decode url-encode]]
-            [clojure.string :as str]
-            #?(:clj [clj-yaml.core :as yaml]))
+            [clojure.string :as str])
   #?(:clj (:import (java.io EOFException))))
 
 (defn builtin-base64-encode
@@ -108,8 +108,7 @@
 (defn builtin-yaml-marshal
   [{[x] :args}]
   #?(:clj (try
-            ; Notable difference from OPA: this YAML marshaller does not re-order the output, so we'll sort it beforehand
-            (yaml/generate-string (cond->> x (map? x) (into (sorted-map))) :dumper-options {:flow-style :block})
+            (yaml/write-str x)
             (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: yaml.marshal: %s" (.getMessage e)))))
      :cljs (throw (ex-info "yaml.marshal not implemented" {:type :not-implemented}))))
 
@@ -124,7 +123,7 @@
 (defn builtin-yaml-unmarshal
   [{[s] :args}]
   #?(:clj  (try
-             (yaml/parse-string s :keywords false)
+             (yaml/read-str s)
              (catch Exception e (let [msg (.getMessage e)]
                                   (throw (errors/builtin-ex "eval_builtin_error: yaml.unmarshal: %s"
                                                             (or (yaml-unmarshal-err-msg msg) msg))))))
@@ -133,5 +132,5 @@
 #_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}
 (defn builtin-yaml-is-valid
   [{[s] :args}]
-  #?(:clj  (not (errors/throws? #(yaml/parse-string s)))
+  #?(:clj  (not (errors/throws? #(yaml/read-str s)))
      :cljs (throw (ex-info "yaml.is_valid not implemented" {:type :not-implemented}))))

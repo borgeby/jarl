@@ -165,13 +165,19 @@
         result
         (let [{:strs [note plan]} test-case
               note (inc-note note (:plans result))
-              test-case (assoc test-case "note" note)]
-          (if (and (ir-supported? plan target) (not (ignored? target note)))
+              test-case (assoc test-case "note" note)
+              ir-supported (ir-supported? plan target)
+              ignored (ignored? target note)]
+          (if (and ir-supported (not ignored))
             (recur (rest test-cases) (-> result
                                          (assoc-in [:plans note] plan)
                                          (assoc :tests (conj (:tests result) (create-test test-case)))))
             (do
-              (println "Ignoring" note)
+              (println "Ignoring" note "reason:"
+                       (cond
+                         (nil? plan)        "no plan"
+                         (not ir-supported) "plan uses unsupported builtins"
+                         ignored            "explicitly listed as ignored"))
               (recur (rest test-cases) result))))))))
 
 (defn fmt-plans [plans]
