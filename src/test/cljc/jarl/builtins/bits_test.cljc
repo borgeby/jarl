@@ -1,6 +1,7 @@
 (ns jarl.builtins.bits-test
-  (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]]))
+  (:require #?(:clj  [clojure.test :refer [deftest]]
+               :cljs [cljs.test    :refer [deftest]])
+                     [test.utils   :refer [testing-builtin]]))
 
 (deftest builtin-bits-or-test
   (testing-builtin "bits.or"

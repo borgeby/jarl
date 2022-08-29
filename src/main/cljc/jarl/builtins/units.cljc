@@ -2,7 +2,8 @@
   (:require [clojure.string :as str]
             [jarl.builtins.utils :refer [numeric?]]
             [jarl.exceptions :as errors]
-            #?(:cljs  [jarl.types :as types])
+            #?(:cljs [jarl.utils :as utils])
+            #?(:cljs [jarl.types :as types])
             #?(:cljs [cljs.math :as math])))
 
 #?(:clj
@@ -119,24 +120,6 @@
     :else num-unit))
 
 #?(:cljs
-   (def bi-max-int (js/BigInt js/Number.MAX_SAFE_INTEGER)))
-
-#?(:cljs
-   (def bi-zero (js/BigInt 0)))
-
-#?(:cljs
-   (defn bigint->number
-     "Since the BigInt JS type isn't well-supported in CLJS, coerce to Number when possible"
-     [x]
-     (if (> x bi-max-int)
-       x
-       (js/Number x))))
-
-#?(:cljs
-   (defn bi-or-round [x]
-     (if (types/bigint? x) x (cljs.math/round x))))
-
-#?(:cljs
   (defn- fake-bigdec-multiply
     "NOTE: only works for this use case, something more extensive would be needed to implement generic bigdec math"
     [x y]
@@ -149,7 +132,7 @@
               po  (int (math/pow 10 num-dec))
               mo  (mod mu (js/BigInt po))
               result (/ mu (js/BigInt po))]
-          (if (or (= result bi-zero) (not= mo bi-zero))
+          (if (or (= result utils/bigint-zero) (not= mo utils/bigint-zero))
             (/ (js/Number mu) po)
             result))
         (* (parse-double x) y)))))
@@ -169,7 +152,7 @@
         unit (lower-case-rest unit)]
     (try
       #?(:clj  (* (bigdec num) (up-unit->val unit))
-         :cljs (bigint->number (fake-bigdec-multiply num (up-unit->val unit))))
+         :cljs (utils/bigint->number (fake-bigdec-multiply num (up-unit->val unit))))
       #?(:clj  (catch Exception _ (throw (errors/builtin-ex "could not parse amount to a number")))
          :cljs (catch :default  _ (throw (errors/builtin-ex "could not parse amount to a number")))))))
 
@@ -182,6 +165,6 @@
                         validate-upb)]
     (try
       #?(:clj  (bigint (* (bigdec num) (upb-unit->val unit)))
-         :cljs (bi-or-round (bigint->number (fake-bigdec-multiply num (upb-unit->val unit)))))
+         :cljs (utils/bigint-or-round (utils/bigint->number (fake-bigdec-multiply num (upb-unit->val unit)))))
       #?(:clj  (catch Exception _ (throw (errors/builtin-ex "could not parse byte amount to a number")))
          :cljs (catch :default  _ (throw (errors/builtin-ex "could not parse byte amount to a number")))))))

@@ -11,14 +11,20 @@
 
 (def ignored-tests
   {:clj
-   #{"cryptox509parsersaprivatekey/valid"} ; can only read PKCS8 formatted private keys without bouncy castle, not PKCS1
+   #{; can only read PKCS8 formatted private keys without bouncy castle, not PKCS1
+     "cryptox509parsersaprivatekey/valid"}
    :cljs
-   #{"aggregates/count with invalid utf-8 chars (0xFFFD)" ; does not seem terribly important, ignoring for now
-     "arithmetic/big_int"                                 ; bigint not supported in ClojureScript
-     "cryptohmacmd5/crypto.hmac.md5_unicode"              ; unicode not supported by goog.crypt.Hmac
-     "cryptohmacsha1/crypto.hmac.sha1_unicode"            ; unicode not supported by goog.crypt.Hmac
-     "cryptohmacsha256/crypto.hmac.sha256_unicode"        ; unicode not supported by goog.crypt.Hmac
-     "cryptohmacsha512/crypto.hmac.sha512_unicode"        ; unicode not supported by goog.crypt.Hmac
+   #{; does not seem terribly important, ignoring for now
+     "aggregates/count with invalid utf-8 chars (0xFFFD)"
+     ; while BigInt isn't supported in ClojureScript right now, we could make this work if we're explicit... not sure
+     ; that want all math operations to use BigInt though
+     "arithmetic/big_int"
+     "bitsshiftleft/shift of max int64 doesn't overflow and is not lossy"
+     ; unicode not supported by goog.crypt.Hmac
+     "cryptohmacmd5/crypto.hmac.md5_unicode"
+     "cryptohmacsha1/crypto.hmac.sha1_unicode"
+     "cryptohmacsha256/crypto.hmac.sha256_unicode"
+     "cryptohmacsha512/crypto.hmac.sha512_unicode"
      }})
 
 (defn ignored? [target note]
@@ -93,7 +99,6 @@
     want-error      "want_error"
     strict-error    "strict_error"
     :as             test-case}]
-  (println "Creating test case:" note)
   (let [input (if (contains? test-case "input_term") (parse-input-term note (test-case "input_term")) (test-case "input"))]
     (if (and (nil? want-error-code) (nil? want-error))
       (test-case-want-result note data input entry-points want-result)
