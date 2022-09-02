@@ -1,5 +1,6 @@
 (ns jarl.exceptions
-  (:require [jarl.formatting :refer [sprintf]]))
+  (:require [clojure.string :as str]
+            [jarl.formatting :refer [sprintf]]))
 
 (derive ::eval-exception                      ::jarl-exception)
 (derive ::undefined-exception                 ::jarl-exception)
@@ -70,6 +71,17 @@
 
 (defn of-type [ex type]
   (isa? (ex-type ex) type))
+
+(defn ->message
+  "Format a message from data and msg, presumably obtained from existing exception. Example:
+  'policy.rego:33: eval_type_error: startswith: operand 2 must be string but got number'"
+  [data msg]
+  (let [->location (fn [{:keys [file row]}] (str file ":" row))]
+    (str/join ": " (cond-> []
+                           (:location data) (conj (->location (:location data)))
+                           (::type data)    (conj (rego-type (::type data)))
+                           (:context data)  (conj (:context data))
+                           :always          (conj msg)))))
 
 (defn exception? [x]
   #?(:clj  (instance? Throwable x)
