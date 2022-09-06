@@ -8,14 +8,14 @@
             [jarl.builtins.objects         :as objects]
             [jarl.builtins.semver          :as semver]
             [jarl.builtins.sets            :as sets]
+            [jarl.builtins.strings         :as strings]
             [jarl.builtins.conversions     :as conversions]
             [jarl.builtins.types           :as types]
             [jarl.builtins.encoding        :as encoding]
             [jarl.builtins.units           :as units]
             [jarl.exceptions               :as errors]
-            #?(:clj [jarl.builtins.http   :as http])
+            #?(:clj [jarl.builtins.http    :as http])
             #?(:clj [jarl.builtins.jwt     :as jwt])
-            #?(:clj [jarl.builtins.strings :as strings])
             #?(:clj [jarl.builtins.regex   :as regex])
             #?(:clj [jarl.builtins.time    :as time])
             #?(:clj [jarl.builtins.bits    :as bits])
@@ -237,6 +237,26 @@
       "object.filter"                     objects/builtin-object-filter
       "object.union"                      objects/builtin-object-union
       "object.union_n"                    objects/builtin-object-union-n
+      ; strings
+      "concat"                            strings/builtin-concat
+      "contains"                          strings/builtin-contains
+      "endswith"                          strings/builtin-endswith
+      "format_int"                        strings/builtin-format-int
+      ;"indexof"                           strings/builtin-indexof
+      ;"indexof_n"                         strings/builtin-indexof-n
+      "lower"                             strings/builtin-lower
+      "replace"                           strings/builtin-replace
+      "strings.reverse"                   strings/builtin-strings-reverse
+      "split"                             strings/builtin-split
+      "startswith"                        strings/builtin-startswith
+      ;"substring"                        strings/builtin-substring
+      "trim"                              strings/builtin-trim
+      "trim_left"                         strings/builtin-trim-left
+      "trim_prefix"                       strings/builtin-trim-prefix
+      "trim_right"                        strings/builtin-trim-right
+      "trim_suffix"                       strings/builtin-trim-suffix
+      "trim_space"                        strings/builtin-trim-space
+      "upper"                             strings/builtin-upper
       ; conversion
       "to_number"                         conversions/builtin-to-number
       "cast_array"                        conversions/builtin-cast-array   ; deprecated

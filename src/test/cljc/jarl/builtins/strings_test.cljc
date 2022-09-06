@@ -1,6 +1,7 @@
 (ns jarl.builtins.strings-test
-  (:require [clojure.test :refer [deftest]]
-            [test.utils :refer [testing-builtin]]))
+  (:require  [test.utils            :refer [testing-builtin]]
+             #?(:clj  [clojure.test :refer [deftest]]
+                :cljs [cljs.test    :refer [deftest]])))
 
 (deftest builtin-concat-test
   (testing-builtin "concat"
@@ -29,19 +30,21 @@
     [10 2] "1010"
     [10 16] "a"))
 
+#?(:clj
 (deftest builtin-indexof-test
   (testing-builtin "indexof"
     ["some text included" "text"] 5
     ["some ünicÖde" "ünicÖde"] 5
     ["negative test" "positive"] -1
-    ["🍧🍨🧁🍰🍮" "🍮"] 4))
+    ["🍧🍨🧁🍰🍮" "🍮"] 4)))
 
+#?(:clj
 (deftest builtin-indexof-n-test
   (testing-builtin "indexof_n"
     ["some text included" "e"] [3 6 16]
     ["some ünicÖde" "Ö"] [9]
     ["negative test" "positive"] []
-    ["🍧🍮🍨🧁🍰🍮" "🍮"] [1 5]))
+    ["🍧🍮🍨🧁🍰🍮" "🍮"] [1 5])))
 
 (deftest builtin-lower-test
   (testing-builtin "lower"
@@ -59,6 +62,7 @@
     ["abba"] "abba"
     ["ÛnicÖde"] "edÖcinÛ"))
 
+#?(:clj
 (deftest builtin-split-test
   (testing-builtin "split"
     ["a,b,c" ","] ["a" "b" "c"]
@@ -71,7 +75,7 @@
     ["a[b[c" "["] ["a" "b" "c"]
     ["a*b*c" "*"] ["a" "b" "c"]
     ; string and delim are the same (quirk)
-    ["abc", "abc"] ["" ""]))
+    ["abc", "abc"] ["" ""])))
 
 (deftest builtin-startswith-test
   (testing-builtin "startswith"
@@ -79,6 +83,7 @@
     ["ünicÖde everywhere" "ünicÖde"] true
     ["negative test" "positive"] false))
 
+#?(:clj
 (deftest builtin-substring-test
   (testing-builtin "substring"
     ["abcde" 1 3] "bcd"
@@ -95,7 +100,7 @@
     ["⭐🚀🙂" 1 -1] "🚀🙂"
     ["𨦇𨦈𥻘" 1 2] "𨦈𥻘"
     ; negative offset
-    ["a" -1 1] [:jarl.exceptions/builtin-exception "negative offset"]))
+    ["a" -1 1] [:jarl.exceptions/builtin-exception "negative offset"])))
 
 (deftest builtin-trim-test
   (testing-builtin "trim"

@@ -43,6 +43,7 @@
   (-> note
       (str/replace #"[/\s]" "-")
       (str/replace #"[\(\)\[\]\{\}\"\.,:]" "")
+      (str/replace "'!¡'" "")
       (symbol)
       (vary-meta assoc :tag :compliance)))
 

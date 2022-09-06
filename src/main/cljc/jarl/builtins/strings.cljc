@@ -1,46 +1,47 @@
 (ns jarl.builtins.strings
   (:require [clojure.string :as str]
             [jarl.exceptions :as errors]
-            [jarl.utils :refer [count-str]])
-  (:import (java.util.regex Pattern)
-           (java.util Locale)
-           (clojure.lang PersistentVector)))
+            #?(:clj [jarl.utils :refer [count-str]])
+            #?(:cljs [goog.string :as gstring])
+            #?(:cljs [cljs.math :as math]))
+  #?(:clj (:import (java.util.regex Pattern)
+                   (java.util Locale))))
 
-(defn- cp-seq
+#?(:clj (defn- cp-seq
   "Return seq of codepoints (ints) from string"
   [^String s]
-  (iterator-seq (.iterator (.codePoints s))))
+  (iterator-seq (.iterator (.codePoints s)))))
 
-(defn- cp-seq->str
+#?(:clj (defn- cp-seq->str
   "Turn sequence of code points (ints) back to string"
   [cps]
-  (str/join (map #(Character/toString ^int %) cps)))
+  (str/join (map #(Character/toString ^int %) cps))))
 
-(defn- cp-substring
+#?(:clj (defn- cp-substring
   "Substring using codepoints"
   [{[^String s start len] :args}]
   (->> (cp-seq s)
        (drop start)
        (take len)
-       (cp-seq->str)))
+       cp-seq->str)))
 
 ; https://stackoverflow.com/a/15224865/11849243
-(defn- subseq-pos
+#?(:clj (defn- subseq-pos
   "Find position of all sub-sequences in seq"
   [sq sub]
   (->>
     (partition (count sub) 1 sq)
     (map-indexed vector)
     (filter #(= (second %) sub))
-    (map first)))
+    (map first))))
 
-(defn- cp-indexof-n
+#?(:clj (defn- cp-indexof-n
   [s search]
-  (subseq-pos (cp-seq s) (cp-seq search)))
+  (subseq-pos (cp-seq s) (cp-seq search))))
 
-(defn- cp-indexof
+#?(:clj (defn- cp-indexof
   [s search]
-  (first (cp-indexof-n s search)))
+  (first (cp-indexof-n s search))))
 
 (defn- trim-left [s cutset]
   (let [s-vec (str/split s #"")
@@ -58,7 +59,7 @@
 
 (defn builtin-contains
   [{[^String s ^String search] :args}]
-  (.contains s search))
+  (str/includes? s search))
 
 (defn builtin-endswith
   [{[s search] :args}]
@@ -68,20 +69,20 @@
   [{[number base] :args}]
   (if-not (contains? #{2 8 10 16} base)
     (throw (errors/type-ex "operand 2 must be one of {2, 8, 10, 16}"))
-    (Integer/toString number base)))
+    #?(:clj  (Integer/toString number base)
+       :cljs (.toString (math/floor number) base))))
 
-
-(defn builtin-indexof
+#?(:clj (defn builtin-indexof
   [{[s search] :args}]
-  (or (cp-indexof s search) -1))
+  (or (cp-indexof s search) -1)))
 
-(defn builtin-indexof-n
+#?(:clj (defn builtin-indexof-n
   [{[s search] :args}]
-  (cp-indexof-n s search))
+  (cp-indexof-n s search)))
 
 (defn builtin-lower
   [{[^String s] :args}]
-  (.toLowerCase s))
+  (str/lower-case s))
 
 (defn builtin-replace
   [{[s old new] :args}]
@@ -97,7 +98,8 @@
     ; Rego quirk? Not sure why this is so, or if there are more cases like this,
     ; but we'll try to mimic this here as well
     ["" ""]
-    (str/split s (re-pattern (Pattern/quote delim)))))
+    #?(:clj  (str/split s (re-pattern (Pattern/quote delim)))
+       :cljs (str/split s (js/RegExp (gstring/regExpEscape delim))))))
 
 (defn builtin-startswith
   [{[s search] :args}]
@@ -105,7 +107,7 @@
 
 ; Note: Rego `substring` uses length as the second argument, while
 ; Clojure `subs` uses the position in the string
-(defn builtin-substring
+#?(:clj (defn builtin-substring
   [{[s start len] :args}]
   (if (neg-int? start)
     (throw (errors/builtin-ex "negative offset"))
@@ -114,7 +116,7 @@
         ""
         (if (neg-int? len)
           (cp-substring {:args [s start cpc]})
-          (cp-substring {:args [s start len]}))))))
+          (cp-substring {:args [s start len]})))))))
 
 (defn builtin-trim
   [{[s cutset] :args}]
@@ -146,19 +148,19 @@
 
 (defn builtin-upper
   [{[^String s] :args}]
-  (.toUpperCase s))
+  (str/upper-case s))
 
-(defn format-value [el]
-  (condp instance? el
-    BigDecimal       (str/lower-case (str/replace (str el) #"\+" ""))
-    PersistentVector (str "[" (str/join ", " (for [x el] (if (string? x) (str "\"" x "\"") x))) "]")
-    el))
+#?(:clj (defn format-value [el]
+  (cond
+    (instance? BigDecimal el) (str/lower-case (str/replace (str el) #"\+" ""))
+    (vector? el)              (str "[" (str/join ", " (for [x el] (if (string? x) (str "\"" x "\"") x))) "]")
+    :else el)))
 
 ; TODO: Not yet in registry. WIP hacked together to first pass the compliance test.
 ; Definitely needs a more robust implementation!
-(defn builtin-sprintf
+#?(:clj (defn builtin-sprintf
   [{[^String s arr] :args}]
   (let [as-java (map format-value arr)]
     (String/format Locale/US
                    (str/replace s #"%v" "%s")
-                   (to-array as-java))))
+                   (to-array as-java)))))
