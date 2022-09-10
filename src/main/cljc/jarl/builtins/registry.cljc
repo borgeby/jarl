@@ -66,6 +66,7 @@
       ; objects
       "object.get"                        objects/builtin-object-get
       "object.remove"                     objects/builtin-object-remove
+      "object.subset"                     objects/builtin-object-subset
       "object.filter"                     objects/builtin-object-filter
       "object.union"                      objects/builtin-object-union
       "object.union_n"                    objects/builtin-object-union-n
@@ -234,6 +235,7 @@
       ; objects
       "object.get"                        objects/builtin-object-get
       "object.remove"                     objects/builtin-object-remove
+      "object.subset"                     objects/builtin-object-subset
       "object.filter"                     objects/builtin-object-filter
       "object.union"                      objects/builtin-object-union
       "object.union_n"                    objects/builtin-object-union-n

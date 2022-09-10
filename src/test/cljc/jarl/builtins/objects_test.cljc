@@ -17,6 +17,17 @@
     [{"a" 1 "b" 2 "c" {"d" 1 "e" 2}} {"c" {"d" 1}}] {"a" 1 "b" 2}
     [{"a" 1 "b" 2 "c" {"d" 1 "e" 2}} {"c" {"d" "ignored"}}] {"a" 1 "b" 2}))
 
+(deftest builtin-object-subset-test
+  (testing-builtin "object.subset"
+    [#{"foo" "bar" "baz"} #{"bar" "baz"}]     true
+    [#{"bar" "baz"} #{"foo" "bar" "baz"}]     false
+    [["foo" "bar" "baz"] #{"bar" "baz"}]      true
+    [["foo" "bar" "baz"] #{"bar" "wat"}]      false
+    [[1 2 3] [2 3]]                           true
+    [[2 3] [1 2 3]]                           false
+    [{"a" 1 "b" 2 "c" {"d" 1}} {"c" {"d" 1}}] true
+    [{"c" {"d" 1}} {"a" 1 "b" 2 "c" {"d" 1}}] false))
+
 (deftest builtin-object-union-test
   (testing-builtin "object.union"
     [{"foo" "bar"} {"foo" "baz"}] {"foo" "baz"}

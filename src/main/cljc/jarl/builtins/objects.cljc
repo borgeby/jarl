@@ -1,6 +1,8 @@
 (ns jarl.builtins.objects
-  (:require [clojure.string :as str]
-            [jarl.builtins.utils :refer [str->int]]))
+  (:require [clojure.set :as set]
+            [clojure.string :as str]
+            [jarl.builtins.utils :refer [str->int]]
+            [jarl.exceptions :as errors]))
 
 (defn builtin-object-get
   [{[object key default] :args}]
@@ -13,6 +15,44 @@
   (if (and (map? ks) (not-empty ks))
     (builtin-object-remove {:args [object (vec (keys ks))]})
     (apply dissoc object ks)))
+
+(defn- subvec? [super sub]
+  (->> (partition (count sub) 1 super)
+       (filter #(= sub %))
+       first
+       seq
+       some?))
+
+(defn- ->key-paths
+  ([x] (into {} (->key-paths x [])))
+  ([x path]
+   (if (map? x)
+     (mapcat #(->key-paths (val %) (conj path (key %))) x)
+     {path x})))
+
+(defn- sub-match? [sub-val sup-val]
+  (cond
+    (and (set? sub-val) (set? sup-val))       (set/subset? sub-val sup-val)
+    (and (vector? sub-val) (vector? sup-val)) (subvec? sup-val sub-val)
+    :else (= sub-val sup-val)))
+
+(defn- submap? [super sub]
+  (let [kp-sub (->key-paths sub)
+        kp-sup (->key-paths super)]
+    (->> kp-sub
+         (map #(sub-match? (second %) (get kp-sup (first %))))
+         (filter false?)
+         first
+         nil?)))
+
+(defn builtin-object-subset
+  [{[super sub :as args] :args}]
+  (cond
+    (every? set? args)               (set/subset? sub super)
+    (every? vector? args)            (subvec? super sub)
+    (every? map? args)               (submap? super sub)
+    (and (vector? super) (set? sub)) (set/subset? sub (set super))
+    :else (throw (errors/type-ex "both arguments object.subset must be of the same type or array and set"))))
 
 (defn builtin-object-union
   [{[o1 o2] :args}]
