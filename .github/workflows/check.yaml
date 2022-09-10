@@ -9,40 +9,90 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Run clj-kondo linter
-      run: lein clj-kondo
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-lint-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-lint-
+    - run: lein clj-kondo
 
   eastwood:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Run eastwood linter
-      run: lein eastwood
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-lint-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-lint-
+    - run: lein eastwood
 
   kibit:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Run kibit linter
-      run: lein kibit
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-lint-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-lint-
+    - run: lein kibit
 
-  test:
+  test-clj:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-test-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-test-
+    - run: lein gen-compliance :clj
+    - run: lein test
 
-    - name: Generate compliance tests
-      run: lein gen-compliance
+  test-cljs-unit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-test-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-test-
+    # Hack allowing compliance_tests.cljs to compile without generated tests
+    - run: |
+        mkdir -p src/test/cljs/compliance/generated
+        echo "(ns test.compliance.generated.tests)" > src/test/cljs/compliance/generated/tests.cljs
+    - run: lein cljsbuild once test
+    - run: node target/cljs-test.js
 
-    # NOTE: If we want to have "lein test" run all of tests tasks, including cljs, we could use:
-    # `:hooks [leiningen.cljsbuild]` inside of project.clj ... but I don't mind being explicit for now
-    # ... and additionally, hooks seem to not take tags like :unit into account (which might be fixable)
-
-    - name: Run clj tests
-      run: lein test
-
-    - name: Run cljs unit tests
-      run: lein cljsbuild test unit
-
-    - name: Run cljs compliance test
-      run: lein cljsbuild test compliance
+  test-cljs-compliance:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-test-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-test-
+    - run: lein gen-compliance :cljs
+    - run: lein cljsbuild once compliance
+    - run: node target/cljs-compliance.js
