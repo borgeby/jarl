@@ -1,6 +1,8 @@
 (ns jarl.utils
   #?(:cljs (:require [clojure.string :as str]
-                     [cljs.nodejs :as nodejs]))
+                     [cljs.nodejs :as nodejs]
+                     [cljs.math]
+                     [jarl.types :as types]))
   #?(:clj (:import (java.nio.charset StandardCharsets)
                    (java.time Instant)
                    (java.net URLDecoder URLEncoder))))
@@ -66,3 +68,21 @@
 (defn count-str [s]
   #?(:clj  (.codePointCount ^String s 0 (.length ^String s))
      :cljs (count (cp-seq s))))
+
+#?(:cljs
+   (def bigint-max-int (js/BigInt js/Number.MAX_SAFE_INTEGER)))
+
+#?(:cljs
+   (def bigint-zero (js/BigInt 0)))
+
+#?(:cljs
+   (defn bigint->number
+     "Since the BigInt JS type isn't well-supported in CLJS, coerce to Number when possible"
+     [x]
+     (if (> x bigint-max-int)
+       x
+       (js/Number x))))
+
+#?(:cljs
+   (defn bigint-or-round [x]
+     (if (types/bigint? x) x (cljs.math/round x))))

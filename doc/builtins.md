@@ -112,7 +112,7 @@ probably work around this, these are generally not used in policy, and as such n
 | `regex.find_n`                     |  ✅  |  ❌   |    ❌    |
 | `regex.find_all_string_submatch_n` |  ❌  |  ❌   |    ❌    |
 
-Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re2j)
+JVM: Rego like regexp engine provided by [re2j](https://github.com/google/re2j)
 
 ### Glob
 
@@ -125,12 +125,12 @@ Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `bits.or`         |  ✅  |  ❌   |    ❌    |
-| `bits.and`        |  ✅  |  ❌   |    ❌    |
-| `bits.negate`     |  ✅  |  ❌   |    ❌    |
-| `bits.xor`        |  ✅  |  ❌   |    ❌    |
-| `bits.lsh`        |  ✅  |  ❌   |    ❌    |
-| `bits.rsh`        |  ✅  |  ❌   |    ❌    |
+| `bits.or`         |  ✅  |  ✅   |    ✅    |
+| `bits.and`        |  ✅  |  ✅   |    ✅    |
+| `bits.negate`     |  ✅  |  ✅   |    ✅    |
+| `bits.xor`        |  ✅  |  ✅   |    ✅    |
+| `bits.lsh`        |  ✅  |  ✅   |    ✅    |
+| `bits.rsh`        |  ✅  |  ✅   |    ✅    |
 
 ### Conversions
 
@@ -142,8 +142,8 @@ Clojure: Rego like regexp engine provided by [re2j](https://github.com/google/re
 
 | Built-in Function   | JVM | Node | Browser |
 |---------------------|:---:|:----:|:-------:|
-| `units.parse`       |  ❌  |  ❌   |    ❌    |
-| `units.parse_bytes` |  ❌  |  ❌   |    ❌    |
+| `units.parse`       |  ✅  |  ✅   |    ✅    |
+| `units.parse_bytes` |  ✅  |  ✅   |    ✅    |
 
 ### Types
 
@@ -360,7 +360,9 @@ Note: `print` calls are erased from plans, so likely can't be supported without 
 
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
-| `opa.runtime`     |  ✅  |  ❌   |    ❌    |
+| `opa.runtime`     |  ✅  |  ✅   |    ✅    |
+
+Note: Jarl does not yet support loading OPA configuration, so only the `env` attribute is currently populated.
 
 ### Deprecated
 

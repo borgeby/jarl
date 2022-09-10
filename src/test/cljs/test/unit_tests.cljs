@@ -4,12 +4,14 @@
             [test.config]
             [jarl.builtins.aggregates-test]
             [jarl.builtins.array-test]
+            [jarl.builtins.bits-test]
             [jarl.builtins.comparison-test]
             [jarl.builtins.conversions-test]
             [jarl.builtins.crypto-test]
             [jarl.builtins.graphs-test]
             [jarl.builtins.numbers-test]
             [jarl.builtins.objects-test]
+            [jarl.builtins.opa-test]
             [jarl.builtins.semver-test]
             [jarl.builtins.sets-test]
             [jarl.builtins.types-test]
@@ -40,6 +42,7 @@
 ; see docs on run-tests for how to handle return value!
 (run-tests 'jarl.builtins.aggregates-test
            'jarl.builtins.array-test
+           'jarl.builtins.bits-test
            'jarl.builtins.comparison-test
            'jarl.builtins.conversions-test
            'jarl.builtins.crypto-test
@@ -47,6 +50,7 @@
            'jarl.builtins.graphs-test
            'jarl.builtins.numbers-test
            'jarl.builtins.objects-test
+           'jarl.builtins.opa-test
            'jarl.builtins.semver-test
            'jarl.builtins.sets-test
            'jarl.builtins.types-test

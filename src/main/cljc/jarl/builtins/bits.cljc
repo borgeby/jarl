@@ -1,6 +1,7 @@
 (ns jarl.builtins.bits
   (:require [jarl.exceptions :as errors]
-            [jarl.types :as types]))
+            [jarl.types :as types]
+            #?(:cljs [jarl.utils :as utils])))
 
 (defn- non-integer? [num]
   (not (zero? (mod num 1))))
@@ -47,9 +48,11 @@
 (defn builtin-bits-lsh
   [{[a b] :args}]
   (ensure-pos-ints a b)
-  (.shiftLeft (biginteger a) b))
+  #?(:clj  (.shiftLeft (biginteger a) b)
+     :cljs (utils/bigint->number (bit-shift-left (js/BigInt a) (js/BigInt b)))))
 
 (defn builtin-bits-rsh
   [{[a b] :args}]
   (ensure-pos-ints a b)
-  (.shiftRight (biginteger a) b))
+  #?(:clj  (.shiftRight (biginteger a) b)
+     :cljs (utils/bigint->number (bit-shift-right (js/BigInt a) (js/BigInt b)))))

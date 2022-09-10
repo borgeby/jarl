@@ -1,11 +1,13 @@
 (ns jarl.builtins.registry
   (:require [jarl.builtins.aggregates      :as aggregates]
             [jarl.builtins.array           :as array]
+            [jarl.builtins.bits            :as bits]
             [jarl.builtins.comparison      :as comparison]
             [jarl.builtins.crypto          :as crypto]
             [jarl.builtins.graphs          :as graphs]
             [jarl.builtins.numbers         :as numbers]
             [jarl.builtins.objects         :as objects]
+            [jarl.builtins.opa             :as opa]
             [jarl.builtins.semver          :as semver]
             [jarl.builtins.sets            :as sets]
             [jarl.builtins.conversions     :as conversions]
@@ -13,13 +15,11 @@
             [jarl.builtins.encoding        :as encoding]
             [jarl.builtins.units           :as units]
             [jarl.exceptions               :as errors]
-            #?(:clj [jarl.builtins.http   :as http])
+            #?(:clj [jarl.builtins.http    :as http])
             #?(:clj [jarl.builtins.jwt     :as jwt])
             #?(:clj [jarl.builtins.strings :as strings])
             #?(:clj [jarl.builtins.regex   :as regex])
-            #?(:clj [jarl.builtins.time    :as time])
-            #?(:clj [jarl.builtins.bits    :as bits])
-            #?(:clj [jarl.builtins.opa     :as opa])))
+            #?(:clj [jarl.builtins.time    :as time])))
 
 (def builtins
   #?(:clj
@@ -257,6 +257,13 @@
       "is_object"                         types/builtin-is-object
       "is_null"                           types/builtin-is-null
       "type_name"                         types/builtin-type-name
+      ; bits
+      "bits.or"                           bits/builtin-bits-or
+      "bits.and"                          bits/builtin-bits-and
+      "bits.negate"                       bits/builtin-bits-negate
+      "bits.xor"                          bits/builtin-bits-xor
+      "bits.lsh"                          bits/builtin-bits-lsh
+      "bits.rsh"                          bits/builtin-bits-rsh
       ; encoding
       "base64.encode"                     encoding/builtin-base64-encode
       "base64.decode"                     encoding/builtin-base64-decode
@@ -293,6 +300,8 @@
       ; rego
       "rego.metadata.chain"               #(throw (errors/builtin-ex "inlined by compiler, should never be invoked"))
       "rego.metadata.rule"                #(throw (errors/builtin-ex "inlined by compiler, should never be invoked"))
+      ; opa
+      "opa.runtime"                       opa/builtin-opa-runtime
       }))
 
 (defn get-builtin [name]
