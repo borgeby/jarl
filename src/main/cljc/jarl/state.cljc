@@ -19,10 +19,8 @@
           (recur (next stack) aggregate))))))
 
 (defn get-local
-  ([state index]
-   (let [stack (get state :with-stack)
-         local (get state :local)
-         value (get local index)]
+  ([{stack :with-stack local :local} index]
+   (let [value (get local index)]
      (upsert-local value stack index)))
   ([state index not-found]
    (let [value (get-local state index)]
@@ -85,9 +83,8 @@
         frame [local-index path value]]
     (assoc state :with-stack (conj stack frame))))
 
-(defn pop-with-stack [state]
-  (let [stack (get state :with-stack [])
-        stack (vec (butlast stack))]
+(defn pop-with-stack [{stack :with-stack :or {stack []} :as state}]
+  (let [stack (vec (butlast stack))]
     (if (empty? stack)
       (dissoc state :with-stack)
       (assoc state :with-stack stack))))

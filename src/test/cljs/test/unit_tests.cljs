@@ -14,6 +14,7 @@
             [jarl.builtins.opa-test]
             [jarl.builtins.semver-test]
             [jarl.builtins.sets-test]
+            [jarl.builtins.strings-test]
             [jarl.builtins.types-test]
             [jarl.builtins.encoding-test]
             [jarl.builtins.units-test]
@@ -53,6 +54,7 @@
            'jarl.builtins.opa-test
            'jarl.builtins.semver-test
            'jarl.builtins.sets-test
+           'jarl.builtins.strings-test
            'jarl.builtins.types-test
            'jarl.builtins.units-test
            'jarl.exceptions-test)

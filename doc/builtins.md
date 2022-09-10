@@ -80,27 +80,27 @@ probably work around this, these are generally not used in policy, and as such n
 
 | Built-in Function   | JVM | Node | Browser |
 |---------------------|:---:|:----:|:-------:|
-| `concat`            |  ✅  |  ❌   |    ❌    |
-| `contains`          |  ✅  |  ❌   |    ❌    |
-| `endswith`          |  ✅  |  ❌   |    ❌    |
-| `format_int`        |  ✅  |  ❌   |    ❌    |
+| `concat`            |  ✅  |  ✅   |    ✅    |
+| `contains`          |  ✅  |  ✅   |    ✅    |
+| `endswith`          |  ✅  |  ✅   |    ✅    |
+| `format_int`        |  ✅  |  ✅   |    ✅    |
 | `indexof`           |  ✅  |  ❌   |    ❌    |
 | `indexof_n`         |  ✅  |  ❌   |    ❌    |
-| `lower`             |  ✅  |  ❌   |    ❌    |
-| `replace`           |  ✅  |  ❌   |    ❌    |
-| `strings.reverse`   |  ✅  |  ❌   |    ❌    |
+| `lower`             |  ✅  |  ✅   |    ✅    |
+| `replace`           |  ✅  |  ✅   |    ✅    |
+| `strings.reverse`   |  ✅  |  ✅   |    ✅    |
 | `strings.replace_n` |  ❌  |  ❌   |    ❌    |
 | `split`             |  ✅  |  ❌   |    ❌    |
 | `sprintf`           |  ❌  |  ❌   |    ❌    |
-| `startswith`        |  ✅  |  ❌   |    ❌    |
+| `startswith`        |  ✅  |  ✅   |    ✅    |
 | `substring`         |  ✅  |  ❌   |    ❌    |
-| `trim`              |  ✅  |  ❌   |    ❌    |
-| `trim_left`         |  ✅  |  ❌   |    ❌    |
-| `trim_prefix`       |  ✅  |  ❌   |    ❌    |
-| `trim_right`        |  ✅  |  ❌   |    ❌    |
-| `trim_suffix`       |  ✅  |  ❌   |    ❌    |
-| `trim_space`        |  ✅  |  ❌   |    ❌    |
-| `upper`             |  ✅  |  ❌   |    ❌    |
+| `trim`              |  ✅  |  ✅   |    ✅    |
+| `trim_left`         |  ✅  |  ✅   |    ✅    |
+| `trim_prefix`       |  ✅  |  ✅   |    ✅    |
+| `trim_right`        |  ✅  |  ✅   |    ✅    |
+| `trim_suffix`       |  ✅  |  ✅   |    ✅    |
+| `trim_space`        |  ✅  |  ✅   |    ✅    |
+| `upper`             |  ✅  |  ✅   |    ✅    |
 
 ### Regex
 
