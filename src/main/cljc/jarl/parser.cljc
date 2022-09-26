@@ -119,8 +119,7 @@
 
 (defn make-NopStmt [stmt-info]
   (log/debugf "making NopStmt stmt: %s" stmt-info)
-  (fn [state]
-    (eval/eval-NopStmt state)))
+  eval/eval-NopStmt)
 
 (defn make-NotEqualStmt [{:strs [a b]}]
   (log/debug "making NotEqualStmt stmt")
@@ -160,8 +159,7 @@
 
 (defn make-ReturnLocalStmt [_]
   (log/debug "making ReturnLocalStmt stmt")
-  (fn [state]
-    (eval/eval-ReturnLocalStmt state)))
+  eval/eval-ReturnLocalStmt)
 
 (defn make-SetAddStmt [{:strs [set value]}]
   (log/debug "making SetAddStmt stmt")
