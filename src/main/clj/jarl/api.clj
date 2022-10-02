@@ -1,13 +1,10 @@
 (ns jarl.api
-  (:require [jarl.parser :as parser]))
-
-;
-; PLAN
-;
+  (:require [jarl.parser :as parser]
+            [jarl.eval :as eval]))
 
 (gen-class
-  :name "se.fylling.jarl.PlanImpl"
-  :implements [se.fylling.jarl.Plan]
+  :name "by.borge.jarl.internal.InternalPlanImpl"
+  :implements [by.borge.jarl.internal.InternalPlan]
   :main false
   :prefix "-plan-"
   :constructors {[Object Object String] []}
@@ -15,62 +12,54 @@
   :init "init"
   )
 
-(defn -plan-init [info plan name]
-  [[info] [info plan name]])
+(defn -plan-init [info plan entry-point]
+  [[info] [info plan entry-point]])
 
-(defn -plan-eval [^se.fylling.jarl.PlanImpl this input]
-  (let [[info plan name] (.state this)]
+(defn -plan-eval [^by.borge.jarl.internal.InternalPlanImpl this input data]
+  (let [[info plan entry-point] (.state this)]
     (if (nil? plan)
-      (throw (Exception. (format "plan '%s' doesn't exist" name)))
-      (plan info input))))
+      (throw (Exception. (format "plan with entry-point '%s' doesn't exist" entry-point)))
+      (plan info input data))))
 
-(defn -plans-toString [^se.fylling.jarl.PlanImpl this]
-  (let [[_ _ name] (.state this)]
-    name))
-
-;
-; JARL
-;
+(defn -plans-toString [^by.borge.jarl.internal.InternalPlanImpl this]
+  (let [[_ _ entry-point] (.state this)]
+    entry-point))
 
 (gen-class
-  :name "se.fylling.jarl.JarlImpl"
-  :implements [se.fylling.jarl.Jarl]
-  :prefix "-jarl-"
+  :name "by.borge.jarl.internal.IrImpl"
+  :implements [by.borge.jarl.internal.IntermediateRepresentation]
+  :prefix "-jarl-ir-"
   :main false
   :state "state"
   :init "init"
   :constructors {[Object] []}
   )
 
-(defn -jarl-init [info]
+(defn -jarl-ir-init [info]
   [[info] info])
 
-(defn plan-by-name [plans name]
-  (loop [plans plans]
-    (when-not (seq plans)
-      (let [[current-name plan] (first plans)]
-        (if (= current-name name)
-          plan
-          (recur (next plans)))))))
+(defn -jarl-ir-withStrictBuiltinErrors [^by.borge.jarl.internal.IrImpl this strict]
+  (let [info (.state this)]
+    (new by.borge.jarl.internal.IrImpl (assoc info :strict-builtin-errors strict))))
 
-(defn -jarl-getPlan [^se.fylling.jarl.JarlImpl this name]
+(defn -jarl-ir-getPlans [^by.borge.jarl.internal.IrImpl this]
   (let [info (.state this)
-        plans (get info :plans)
-        plan (plan-by-name plans name)]
-    (if (nil? plan)
-      (throw (Exception. (format "plan '%s' doesn't exist" name)))
-      (new se.fylling.jarl.PlanImpl info plan name))))
+        plans (:plans info)
+        plans (into (sorted-map) plans)
+        plans (reduce-kv (fn [m name plan] (assoc m name (new by.borge.jarl.internal.InternalPlanImpl info plan name))) {} plans)]
+    plans))
 
-;
-; JARL FACTORY
-;
+(defn -jarl-ir-getPlan [^by.borge.jarl.internal.IrImpl this entry-point]
+  (let [info (.state this)
+        plan (eval/find-plan info entry-point)]
+    (new by.borge.jarl.internal.InternalPlanImpl info plan entry-point)))
 
 (gen-class
-  :name "se.fylling.jarl.JarlFactory"
-  :prefix "-jarl-factory-"
+  :name "by.borge.jarl.internal.Parser"
+  :prefix "-jarl-parser-"
   :main false
-  :methods [^{:static true} [fromIr [String] se.fylling.jarl.Jarl]]
+  :methods [^{:static true} [parse [String] by.borge.jarl.internal.IntermediateRepresentation]]
   )
 
-(defn -jarl-factory-fromIr [ir]
-  (new se.fylling.jarl.JarlImpl (parser/parse-json ir)))
+(defn -jarl-parser-parse [ir]
+  (new by.borge.jarl.internal.IrImpl (parser/parse-json ir)))

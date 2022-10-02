@@ -17,6 +17,7 @@
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
+  :javac-options ["-target" "10" "-source" "10"]
   :aliases {"clj-kondo"           ["with-profile" "+clj-kondo" "clj-kondo" "--debug" "--parallel" "--lint" "src"]
             "eastwood"            ["with-profile" "+eastwood" "eastwood"]
             "kibit"               ["with-profile" "+kibit" "kibit"]
@@ -28,6 +29,11 @@
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
   :test-paths ["src/test/clj" "src/test/cljc"]
+  :junit ["src/test/java"]
+  :junit-formatter :plain
+  :junit-results-dir "test-results"
+  ;:prep-tasks [["compile" "jarl.api"]
+  ;             "javac" "compile"]
   :test-selectors {:unit (complement :compliance)
                    :compliance       :compliance
                    :performance      :performance}
@@ -42,7 +48,8 @@
                     :repl-options   {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
                     :plugins        [[lein-cljsbuild "1.1.8"]
                                      [lein-ancient "1.0.0-RC3"]
-                                     [lein-cloverage "1.2.4"]]
+                                     [lein-cloverage "1.2.4"]
+                                     [lein-junit "1.1.9"]]
                     :eastwood {:exclude-linters [:constant-test]
                                :exclude-namespaces [test.profile]}}
              :test {:injections [(require 'test.config)

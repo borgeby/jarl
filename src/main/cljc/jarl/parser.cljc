@@ -321,4 +321,7 @@
 
 (defn parse-json
   "Parses the incoming string"
-  [str] (parse (json/read-str str)))
+  ([str]
+   (parse (json/read-str str)))
+  ([str builtin-resolver]
+   (parse (json/read-str str) builtin-resolver)))
