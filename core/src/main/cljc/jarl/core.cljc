@@ -1,13 +1,14 @@
 (ns jarl.core
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
-            [jarl.bundle :as bundle]
             [jarl.logging :as logging]
             [jarl.encoding.json :as json]
             [jarl.io :as jio]
             [jarl.parser :as parser]
             [jarl.eval :as evaluator]
             [jarl.formatting :as fmt]
+            #?(:clj [jarl.bundle :as bundle])
+            #?(:clj [clojure.java.io :as io])
             #?(:cljs [cljs.nodejs :as nodejs]))
   #?(:clj (:import (clojure.lang ExceptionInfo)))
   #?(:clj (:gen-class)))
@@ -80,7 +81,11 @@
         (if ok?
           (println exit-message)
           (abort exit-message))
-        (let [ir (if (str/ends-with? path ".tar.gz") (bundle/extract-plan path) (jio/read-file path))
+        (let [ir (if (str/ends-with? path ".tar.gz")
+                   #?(:clj  (with-open [in (io/input-stream path)]
+                              (bundle/extract-plan in))
+                      :cljs (abort "Reading bundles not yet supported in Javascript environments"))
+                   (jio/read-file path))
               {:keys [data input verbose]} options]
           (if verbose
             (logging/set-log-level :debug)
