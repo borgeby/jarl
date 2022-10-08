@@ -24,8 +24,7 @@
      "cryptohmacmd5/crypto.hmac.md5_unicode"
      "cryptohmacsha1/crypto.hmac.sha1_unicode"
      "cryptohmacsha256/crypto.hmac.sha256_unicode"
-     "cryptohmacsha512/crypto.hmac.sha512_unicode"
-     }})
+     "cryptohmacsha512/crypto.hmac.sha512_unicode"}})
 
 (defn ignored? [target note]
   (contains? (get ignored-tests target) note))
@@ -42,7 +41,7 @@
          file-seq
          (filter #(.isFile ^File %))
          (filter #(.matches is-json (.getFileName (.toPath ^File %))))
-         (mapv #(json->test-cases %))
+         (mapv json->test-cases)
          flatten)))
 
 (defn note->test-name [note]
