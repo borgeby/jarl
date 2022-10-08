@@ -18,7 +18,7 @@
     (::type (ex-data ex))))
 
 (defmulti  rego-type  ex-type)
-(defmethod rego-type ::builtin-exception   [_] "`")
+(defmethod rego-type ::builtin-exception   [_] "eval_builtin_error")
 (defmethod rego-type ::conflict-exception  [_] "eval_conflict_error")
 (defmethod rego-type ::type-exception      [_] "eval_type_error")
 (defmethod rego-type ::undefined-exception [_] "")
