@@ -42,15 +42,15 @@
   (fn [state]
     (eval/eval-BreakStmt index state)))
 
-(defn make-CallDynamicStmt [{:strs [result path args]}]
+(defn make-CallDynamicStmt [{:strs [result path args file row col]}]
   (log/debug "making CallDynamicStmt stmt")
   (fn [state]
-    (eval/eval-CallDynamicStmt result path args state)))
+    (eval/eval-CallDynamicStmt result path args file row col state)))
 
-(defn make-CallStmt [{:strs [result func args]}]
+(defn make-CallStmt [{:strs [result func args file row col]}]
   (log/debug "making CallStmt stmt")
   (fn [state]
-    (eval/eval-CallStmt result func args state)))
+    (eval/eval-CallStmt result func args file row col state)))
 
 (defn make-DotStmt [{:strs [target source key]}]
   (log/debug "making DotStmt stmt")
@@ -243,17 +243,15 @@
 
 (defn- stringify-coll-keys [val]
   (cond
-    (or (list? val) (set? val) (vector? val)) (vec (map stringify-coll-keys val))
-    (map? val) (loop [pairs (seq val)
-                      map {}]
-                 (if (empty? pairs)
-                   map
-                   (let [[key val] (first pairs)
-                         key (if (string? key)
-                               key
-                               (json/write-str key))
-                         val (stringify-coll-keys val)]
-                     (recur (next pairs) (assoc map key val)))))
+    (or (list? val) (set? val) (vector? val))
+    (vec (map stringify-coll-keys val))
+    (map? val)
+    (reduce (fn [pairs [key val]]
+              (let [key (if (string? key) key (json/write-str key))
+                    val (stringify-coll-keys val)]
+                (assoc pairs key val)))
+            {}
+            (seq val))
     :else val))
 
 (defn- align-result-set [result-set]
@@ -301,12 +299,10 @@
 
 (defn make-builtin-funcs [builtin-funcs-info builtin-resolver]
   (log/debug "making built-in funcs")
-  (loop [func-infos builtin-funcs-info
-         func-map {}]
-    (if (empty? func-infos)
-      func-map
-      (let [[name func] (make-builtin-func (first func-infos) builtin-resolver)]
-        (recur (next func-infos) (assoc func-map name func))))))
+  (let [assoc-builtin-func (fn [func-map func-info]
+                             (let [[name func] (make-builtin-func func-info builtin-resolver)]
+                               (assoc func-map name func)))]
+    (reduce assoc-builtin-func {} builtin-funcs-info)))
 
 (defn parse
   "Parses the incoming Intermediate Representation map"

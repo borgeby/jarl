@@ -72,10 +72,10 @@
   (log/debugf "BreakStmt - index: %s", index)
   (break state index))
 
-(defn- call-func [func target func-name args state]
+(defn- call-func [func target func-name args location state]
   (if (nil? func)
     (throw (ex-info (sprintf "unknown function '%s'" func-name) {:type :eval-exception}))
-    (let [func-state (dissoc state :local :plans)
+    (let [func-state (assoc (dissoc state :local :plans) :location location)
           result (func args func-state)]
       (if (contains? result :result)
         (do
@@ -96,22 +96,24 @@
           (recur (inc i) (assoc args i (state/get-value state key)) (next keys))
           (recur (inc i) args (next keys)))))))
 
-(defn eval-CallDynamicStmt [target path args state]
+(defn eval-CallDynamicStmt [target path args file row col state]
   (let [path (map #(state/get-value state %) path)
         func-name (str/join "." path)]
     (log/debugf "CallDynamicStmt - calling dynamic func <%s>" func-name)
     (let [func (state/get-func state path)
-          args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))]
+          args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))
+          location {:file (get-in state [:static "files" file "value"]) :row row :col col}]
       (if (nil? func)
         (break state)                                       ; dynamic func miss
-        (call-func func target func-name args state)))))
+        (call-func func target func-name args location state)))))
 
-(defn eval-CallStmt [target func-name args state]
+(defn eval-CallStmt [target func-name args file row col state]
   (log/debugf "CallStmt - calling func <%s> with args: %s; target <%d>" func-name args target)
   (let [func (state/get-func state func-name)
-        args (create-func-args state args)]                 ; OPA IR docs claims args to be 'positional' (local), but they are of 'operand' type.
+        args (create-func-args state args) ; OPA IR docs claims args to be 'positional' (local), but they are of 'operand' type.
+        location {:file (get-in state [:static "files" file "value"]) :row row :col col}]
     (log/tracef "CallStmt - realized args: %s" args)
-    (call-func func target func-name args state)))
+    (call-func func target func-name args location state)))
 
 (defn eval-DotStmt
   "Gets value with key described by `key-info` from source described by `source-info` and stores it in local var at `target-index`"
@@ -488,8 +490,11 @@
             (do
               (log/tracef "function <%s> threw error: %s" name (ex-message e))
               (if (true? (get state :strict-builtin-errors))
-                (let [msg (str/join ": " [(errors/rego-type e) name (ex-message e)])]
-                  (throw (ex-info msg (ex-data e) (ex-cause e))))
+                (let [data (-> (ex-data e)
+                               (assoc :location (:location state))
+                               (assoc :context name))
+                      msg (errors/->message data (ex-message e))]
+                  (throw (ex-info msg data (ex-cause e))))
                 (do
                   (log/debugf "function <%s> returned undefined value" name)
                   {}))))
