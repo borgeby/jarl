@@ -175,6 +175,7 @@
 (defn builtin-time-parse-duration-ns
   [{[s] :args}]
   (if-let [time-unit-pairs (re-seq #"(\d+)(\p{L}+)" s)] ; returns a seq of [full match, time, unit]
+    #_:clj-kondo/ignore
     (.toNanos ^Duration (reduce d+ (map to-duration time-unit-pairs)))
     (if (errors/throws? #(Long/parseLong s))
       (throw (errors/builtin-ex "time: invalid duration \"%s\"" s))

@@ -1,5 +1,9 @@
 {:linters
- {:single-key-in
-  {:level :warning}
-  :namespace-name-mismatch
-  {:level :warning}}}
+ {:single-key-in            {:level :warning}
+  :namespace-name-mismatch  {:level :warning}
+  :aliased-namespace-symbol {:level :warning}
+  :reduce-without-init      {:level :warning}
+  :keyword-binding          {:level :warning}
+  :redundant-fn-wrapper     {:level :warning}
+  :unused-value             {:level :warning}
+  :used-underscored-binding {:level :warning}}}

@@ -28,7 +28,7 @@
 (defn f-seq [dir]
   #?(:clj  (file-seq dir)
      :cljs (tree-seq
-             (fn [f] (dir? f))
+             dir?
              (fn [d] (seq (read-dir d)))
              dir)))
 
