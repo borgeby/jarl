@@ -21,6 +21,7 @@ jobs:
         version: ${{ inputs.opa_version }}
 
     - name: Update OPA CSV
+      working-directory: ./core
       run: lein perf-opa
 
     - name: Create Pull Request

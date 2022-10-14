@@ -18,6 +18,7 @@ jobs:
         key: cljdeps-lint-${{ hashFiles('project.clj') }}
         restore-keys: cljdeps-lint-
     - run: lein clj-kondo
+      working-directory: ./core
 
   eastwood:
     runs-on: ubuntu-latest
@@ -32,6 +33,7 @@ jobs:
         key: cljdeps-lint-${{ hashFiles('project.clj') }}
         restore-keys: cljdeps-lint-
     - run: lein eastwood
+      working-directory: ./core
 
   kibit:
     runs-on: ubuntu-latest
@@ -46,6 +48,7 @@ jobs:
         key: cljdeps-lint-${{ hashFiles('project.clj') }}
         restore-keys: cljdeps-lint-
     - run: lein kibit
+      working-directory: ./core
 
   test-clj:
     runs-on: ubuntu-latest
@@ -60,7 +63,9 @@ jobs:
         key: cljdeps-test-${{ hashFiles('project.clj') }}
         restore-keys: cljdeps-test-
     - run: lein gen-compliance :clj
+      working-directory: ./core
     - run: lein test
+      working-directory: ./core
 
   test-cljs-unit:
     runs-on: ubuntu-latest
@@ -78,8 +83,11 @@ jobs:
     - run: |
         mkdir -p src/test/cljs/compliance/generated
         echo "(ns test.compliance.generated.tests)" > src/test/cljs/compliance/generated/tests.cljs
+      working-directory: ./core
     - run: lein cljsbuild once test
+      working-directory: ./core
     - run: node target/cljs-test.js
+      working-directory: ./core
 
   test-cljs-compliance:
     runs-on: ubuntu-latest
@@ -94,5 +102,8 @@ jobs:
         key: cljdeps-test-${{ hashFiles('project.clj') }}
         restore-keys: cljdeps-test-
     - run: lein gen-compliance :cljs
+      working-directory: ./core
     - run: lein cljsbuild once compliance
+      working-directory: ./core
     - run: node target/cljs-compliance.js
+      working-directory: ./core
