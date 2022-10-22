@@ -9,11 +9,11 @@
                  [com.taoensso/timbre "5.2.1"]
                  [com.fzakaria/slf4j-timbre "0.3.21"]
                  [com.google.re2j/re2j "1.7"]
-                 [clj-commons/clj-yaml "0.7.108"]
-                 [org.bitbucket.b_c/jose4j "0.7.12"]
+                 [clj-commons/clj-yaml "1.0.26"]
+                 [org.bitbucket.b_c/jose4j "0.9.1"]
                  [org.apache.commons/commons-compress "1.21"]
-                 [org.clojure/tools.cli "1.0.206"]
-                 [org.clj-commons/clj-http-lite "0.4.392"]]
+                 [org.clojure/tools.cli "1.0.214"]
+                 [org.clj-commons/clj-http-lite "1.0.13"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
