@@ -62,9 +62,7 @@
    [:labels   {:optional true} [:map-of :keyword :string]]])
 
 (def decode-transformer
-  (mt/transformer
-    mt/default-value-transformer
-    mt/string-transformer))
+  (mt/transformer mt/default-value-transformer mt/string-transformer))
 
 (defn- vec->map
   "Converts a vector of items with ':name' attributes to a map keyed by :name"

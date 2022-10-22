@@ -5,6 +5,7 @@
             :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.11.60"]
+                 [org.clojure/core.async "1.5.648"]
                  [org.clojure/data.json "2.4.0"]
                  [com.taoensso/timbre "5.2.1"]
                  [com.fzakaria/slf4j-timbre "0.3.21"]

@@ -84,12 +84,10 @@
         (let [ir (if (str/ends-with? path ".tar.gz")
                    #?(:clj  (with-open [in (io/input-stream path)]
                               (bundle/extract-plan in))
-                      :cljs (abort "Reading bundles not yet supported in Javascript environments"))
+                      :cljs (abort "reading bundles not yet supported in Javascript environments"))
                    (jio/read-file path))
               {:keys [data input verbose]} options]
-          (if verbose
-            (logging/set-log-level :debug)
-            (logging/set-log-level :warn))
+          (logging/set-log-level (if verbose :debug :warn))
           (if (nil? ir)
             (abort (error-msg "no valid plan file found"))
             (let [strict (:strict-builtin-errors options)
