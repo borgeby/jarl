@@ -18,5 +18,6 @@ public class JarlTests {
         Map<String, ?> data = Map.of();
         var resultSet = plan.eval(input, data);
         assertEquals(new ResultSet(new Result("bar")), resultSet);
+        assertEquals("bar", resultSet.getFirst().getValue());
     }
 }

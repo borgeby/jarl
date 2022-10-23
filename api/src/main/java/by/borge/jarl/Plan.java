@@ -12,6 +12,6 @@ public class Plan {
     }
 
     public ResultSet eval(Object input, Map<String, ?> data) {
-        return ResultSet.from(plan.eval(input, data));
+        return ResultSet.fromResultsList(plan.eval(input, data));
     }
 }
