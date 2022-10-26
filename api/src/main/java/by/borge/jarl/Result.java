@@ -3,6 +3,9 @@ package by.borge.jarl;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * The result of evaluating a {@link Plan}.
+ */
 public class Result {
     private final Object value;
 
@@ -14,6 +17,11 @@ public class Result {
         return new Result(map.get("result"));
     }
 
+    /**
+     * Gets the value of this {@link Result}.
+     *
+     * @return this Result's value
+     */
     public Object getValue() {
         return value;
     }
@@ -36,5 +44,15 @@ public class Result {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    /**
+     * Returns <code>true<</code> if this result has the boolean value <code>true</code>;
+     * returns <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if this result has the boolean value <code>true</code>
+     */
+    public boolean allowed() {
+        return value instanceof Boolean && (Boolean) value;
     }
 }
