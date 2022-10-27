@@ -1,8 +1,9 @@
 (ns jarl.utils
-  #?(:cljs (:require [clojure.string :as str]
-                     [cljs.nodejs :as nodejs]
-                     [cljs.math]
-                     [jarl.types :as types]))
+  (:require [clojure.walk :as walk]
+            #?(:cljs [clojure.string :as str])
+            #?(:cljs [cljs.nodejs :as nodejs])
+            #?(:cljs [cljs.math])
+            #?(:cljs  [jarl.types :as types]))
   #?(:clj (:import (java.nio.charset StandardCharsets)
                    (java.time Instant)
                    (java.net URLDecoder URLEncoder))))
@@ -45,10 +46,6 @@
   #?(:clj  (instant-to-ns (Instant/now))
      :cljs (process.hrtime.bigint))) ;TODO add something that'll work in browser contexts too
 
-(defn env []
-  #?(:clj (System/getenv)
-     :cljs {})) ; TODO - Add Node implementation
-
 ; Some tricks / hacks for unicode handling in Javascript / ClojureScript:
 ; https://dev.to/coolgoose/quick-and-easy-way-of-counting-utf-8-characters-in-javascript-23ce
 ; https://gist.github.com/galdolber/1568e767fe69f9439874cc20c755b80e
@@ -86,3 +83,9 @@
 #?(:cljs
    (defn bigint-or-round [x]
      (if (types/bigint? x) x (cljs.math/round x))))
+
+(defn transform-map-vals
+  "Recursively transform all values in map using function t"
+  [t coll]
+  (letfn [(transform [[k v]] [k (t v)])]
+    (walk/postwalk (fn [x] (if (map? x) (with-meta (into {} (map transform x)) (meta x)) x)) coll)))

@@ -18,6 +18,10 @@
             [jarl.builtins.types-test]
             [jarl.builtins.encoding-test]
             [jarl.builtins.units-test]
+            [jarl.config.reader-test]
+            [jarl.config.schema-test]
+            [jarl.encoding.base64-test]
+            [jarl.encoding.json-test]
             [jarl.exceptions-test]))
 
 ; For now, include test namespaces manually. Later we might want to switch to run-all-tests:
@@ -57,4 +61,8 @@
            'jarl.builtins.strings-test
            'jarl.builtins.types-test
            'jarl.builtins.units-test
+           'jarl.config.reader-test
+           'jarl.config.schema-test
+           'jarl.encoding.base64-test
+           'jarl.encoding.json-test
            'jarl.exceptions-test)

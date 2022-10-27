@@ -13,7 +13,9 @@
                  [org.bitbucket.b_c/jose4j "0.9.1"]
                  [org.apache.commons/commons-compress "1.21"]
                  [org.clojure/tools.cli "1.0.214"]
-                 [org.clj-commons/clj-http-lite "1.0.13"]]
+                 [org.clj-commons/clj-http-lite "1.0.13"]
+                 [metosin/malli "0.8.9"]
+                 [camel-snake-kebab "0.4.3"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
