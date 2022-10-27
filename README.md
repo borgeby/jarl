@@ -36,7 +36,9 @@ integrations, will be here at a later point in time.
 
 ### Java
 
-### Evaluating an entrypint in a plan file
+Jarl provides a simple API for evaluating policies.
+
+#### Evaluating a Plan
 
 ```java
 var file = new File("path/to/my/plan.json");
