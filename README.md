@@ -34,6 +34,24 @@ lein run bundle.tar.gz --input '{"user": {"roles": ["admin"]}}'
 Note that the above constitutes a simple flow for development and testing only. Production artifacts, or a fixed API for
 integrations, will be here at a later point in time.
 
+### Java
+
+### Evaluating an entrypint in a plan file
+
+```java
+var file = new File("path/to/my/plan.json");
+var input = Map.of("user", "alice");
+Map<String, ?> data = Map.of();
+var allowed = Jarl.builder(file)
+        .build()
+        .getPlan("my_policy/allow")
+        .eval(input, data)
+        .allowed();
+if (allowed) {
+  ...
+}
+```
+
 ## Built-in Functions
 
 While still in an early stage of development, Jarl already supports [most of the built-in functions](doc/builtins.md) 
