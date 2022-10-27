@@ -216,15 +216,15 @@ TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt
 
 | Built-in Function        | JVM | Node | Browser |
 |--------------------------|:---:|:----:|:-------:|
-| `time.add_date`          |  ✅  |  ❌   |    ❌    |
-| `time.clock`             |  ✅  |  ❌   |    ❌    |
-| `time.date`              |  ✅  |  ❌   |    ❌    |
+| `time.add_date`          |  ✅  |  ✅   |    ✅    |
+| `time.clock`             |  ✅  |  ✅   |    ✅    |
+| `time.date`              |  ✅  |  ✅   |    ✅    |
 | `time.diff`              |  ❌  |  ❌   |    ❌    |
-| `time.now_ns`            |  ✅  |  ❌   |    ❌    |
-| `time.parse_duration_ns` |  ✅  |  ❌   |    ❌    |
-| `time.parse_ns`          |  ✅  |  ❌   |    ❌    |
-| `time.parse_rfc3339_ns`  |  ✅  |  ❌   |    ❌    |
-| `time.weekday`           |  ✅  |  ❌   |    ❌    |
+| `time.now_ns`            |  ✅  |  ✅   |    ✅    |
+| `time.parse_duration_ns` |  ✅  |  ✅   |    ✅    |
+| `time.parse_ns`          |  ✅  |  ✅   |    ✅    |
+| `time.parse_rfc3339_ns`  |  ✅  |  ✅   |    ✅    |
+| `time.weekday`           |  ✅  |  ✅   |    ✅    |
 
 ### Cryptography
 

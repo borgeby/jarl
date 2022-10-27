@@ -84,6 +84,8 @@ jobs:
         mkdir -p src/test/cljs/compliance/generated
         echo "(ns test.compliance.generated.tests)" > src/test/cljs/compliance/generated/tests.cljs
       working-directory: ./core
+    - run: npm install
+      working-directory: ./core
     - run: lein cljs-build-test
       working-directory: ./core
     - run: node target/cljs-test.js
@@ -102,6 +104,8 @@ jobs:
         key: cljdeps-test-${{ hashFiles('project.clj') }}
         restore-keys: cljdeps-test-
     - run: lein gen-compliance :cljs
+      working-directory: ./core
+    - run: npm install
       working-directory: ./core
     - run: lein cljs-build-compliance
       working-directory: ./core

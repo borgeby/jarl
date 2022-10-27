@@ -16,7 +16,9 @@
                  [org.clojure/tools.cli "1.0.214"]
                  [metosin/malli "0.8.9"]
                  [camel-snake-kebab "0.4.3"]
-                 [com.taoensso/timbre "5.2.1"]]
+                 [com.taoensso/timbre "5.2.1"]
+                 [camel-snake-kebab "0.4.3"]
+                 [tick "0.5.0"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core
   :aot [jarl.core jarl.parser jarl.api]
