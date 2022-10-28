@@ -107,3 +107,14 @@ jobs:
       working-directory: ./core
     - run: node target/cljs-compliance.js
       working-directory: ./core
+
+  test-java:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    - run: ./gradlew test
+      working-directory: ./api
