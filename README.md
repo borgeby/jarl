@@ -67,7 +67,7 @@ implement custom built-in functions for any platform, or even replace existing i
 
 * `lein test` to run all Clojure tests
 * `lein test :unit` to run the Clojure unit tests
-* `lein cljsbuild test unit` to run the ClojureScript unit tests
+* `lein cljs-build-test` to build the ClojureScript unit tests, and `node target/cljs-test.js` to run them
 
 #### Compliance Tests
 
@@ -95,7 +95,7 @@ or you have added new builtin functions for either target. Once generated, the t
 following commands:
 
 * `lein test :compliance` to run the OPA compliance test suite for Clojure
-* `lein cljsbuild test compliance` to run the OPA compliance test suite for ClojureScript
+* `lein cljs-build-compliance` to build the OPA compliance test suite for ClojureScript, and `node target/cljs-compliance.js` to run it
 
 #### Benchmarking
 
@@ -129,13 +129,14 @@ features found in the host system (such as functions related to date and time).
 
 #### Building ClojureScript
 
-To build all targets (`main`, `test`, `compliance`):
+To build a target (`main`, `test`, `compliance`) using lein:
 ```shell
-lein cljsbuild once
+lein cljs-build-<target>
 ```
-The above command may optionally be followed by the name of one of the targets to build only that. Additionally, if
-you're hacking on ClojureScript for a while, you may prefer `lein cljsbuild auto` to have it automatically build your
-code on changes. This is _much_ faster than building once.
+Or, using the `shadow-cljs` command direcly:
+```shell
+shadow-cljs compile main
+```
 
 #### Running ClojureScript
 
@@ -154,16 +155,8 @@ node target/cljs-compliance.js
 
 #### REPL
 
-https://github.com/nrepl/piggieback
-
-```shell
-$ lein repl
-user=> (require 'cljs.repl.node)
-nil
-user=> (cider.piggieback/cljs-repl (cljs.repl.node/repl-env))
-To quit, type: :cljs/quit
-nil
-```
+See the shadow-cljs [docum(entation](https://shadow-cljs.github.io/docs/UsersGuide.html) for how to launch a REPL,
+and how to connect to it from your editor of choice.
 
 ## Logging
 
@@ -175,4 +168,3 @@ log anything unless something unexpected happens.
 When running the Clojure tests (`lein test :unit`, `lein test :compliance`), you may change the level provided in the
 `project.clj` file under the `:test` profile. For ClojureScript, you'll currently need to modify the level in the
 `test.config` namespace before building, as this file is sourced into the cljs tests.
-

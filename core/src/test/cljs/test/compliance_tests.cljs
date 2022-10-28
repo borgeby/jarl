@@ -12,4 +12,5 @@
   (when-not (successful? m)
     (aset process "exitCode" 1)))
 
-(run-tests 'test.compliance.generated.tests)
+(defn run []
+  (run-tests 'test.compliance.generated.tests))

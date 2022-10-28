@@ -11,11 +11,8 @@ pom.xml.asc
 /classes/
 /target/
 /checkouts/
-.lein-deps-sum
-.lein-repl-history
-.lein-plugins/
-.lein-failures
-.nrepl-port
+.lein-*
+.nrepl-*
 .cpcache/
 
 .eastwood
@@ -24,8 +21,19 @@ pom.xml.asc
 .clj-kondo/babashka/
 .clj-kondo/rewrite-clj/
 
-.cljs_node_repl/
-
 .rebel_readline_history
 
-### Leiningen ###
+### ClojureScript ###
+node_modules/
+public/js
+
+.cljs_node_repl/
+
+/src/gen
+
+*.iml
+*.log
+.shadow-cljs
+.idea
+
+.DS_Store
