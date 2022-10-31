@@ -73,8 +73,11 @@ probably work around this, these are generally not used in policy, and as such n
 | `object.union_n`  |  ✅  |  ✅   |    ✅    |
 | `object.filter`   |  ✅  |  ✅   |    ✅    |
 | `json.filter`     |  ❌  |  ❌   |    ❌    |
-| `json.patch`      |  ❌  |  ❌   |    ❌    |
+| `json.patch`      |  ✅  |  ✅   |    ✅    |
 | `json.remove`     |  ❌  |  ❌   |    ❌    |
+
+Note: While [not documented](https://github.com/open-policy-agent/opa/issues/5328), the OPA implementation of
+`json.patch` supports modifying sets, which is of course a type outside JSON. This is currently not supported by Jarl.
 
 ### Strings
 
@@ -211,8 +214,6 @@ For JavaScript support, https://github.com/panva/jose looks like the best candid
 | `io.jwt.verify_rs512`  |  ✅  |  ❌   |    ❌    |
 
 ### Time
-
-TODO: Use https://github.com/henryw374/cljc.java-time or https://github.com/juxt/tick (high-level version)
 
 | Built-in Function        | JVM | Node | Browser |
 |--------------------------|:---:|:----:|:-------:|

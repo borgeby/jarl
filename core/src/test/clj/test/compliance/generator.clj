@@ -12,7 +12,10 @@
 (def ignored-tests
   {:clj
    #{; can only read PKCS8 formatted private keys without bouncy castle, not PKCS1
-     "cryptox509parsersaprivatekey/valid"}
+     "cryptox509parsersaprivatekey/valid"
+     ; OPA allows patching sets using this built-in, which would require a custom implementation on our side.
+     ; This does not seem terribly important at the moment.
+     "jsonpatch/set"}
    :cljs
    #{; does not seem terribly important, ignoring for now
      "aggregates/count with invalid utf-8 chars (0xFFFD)"
@@ -34,7 +37,10 @@
      "time/parse_rfc3339_nanos_too_large"
      "time/clock too big"
      "time/date too big"
-     "time/weekday too big"}})
+     "time/weekday too big"
+     ; OPA allows patching sets using this built-in, which would require a custom implementation on our side.
+     ; This does not seem terribly important at the moment.
+     "jsonpatch/set"}})
 
 (defn ignored? [target note]
   (contains? (get ignored-tests target) note))

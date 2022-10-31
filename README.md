@@ -158,6 +158,14 @@ node target/cljs-compliance.js
 See the shadow-cljs [docum(entation](https://shadow-cljs.github.io/docs/UsersGuide.html) for how to launch a REPL,
 and how to connect to it from your editor of choice.
 
+For IntelliJ IDEA and Cursive, the flow would be:
+
+1. Start a watch: `shadow-cljs watch main`
+2. Run the application: `node target/cljs-main.js`
+3. IntelliJ Run Configuration: Remote REPL, Connection Type -> nREPL, User port from nREPL file — Use standard port 
+   file.
+4. Inside of REPL: `(shadow/repl :main)`
+
 ## Logging
 
 Jarl uses [timbre](https://github.com/ptaoussanis/timbre) for logging, with
