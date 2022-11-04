@@ -1,0 +1,17 @@
+{:lein {:profile "+cljs"}
+ :builds
+ {:main
+  {:target :node-script
+   :main jarl.core/-main
+   :output-to "target/cljs-main.js"
+   :devtools {:repl-init-ns jarl.core}}
+  :test
+  {:target :node-script
+   :main test.unit-tests/run
+   :output-to "target/cljs-test.js"
+   :devtools {:preloads [test.preloads]}}
+  :compliance
+  {:target :node-script
+   :main test.compliance-tests/run
+   :output-to "target/cljs-compliance.js"
+   :devtools {:preloads [test.preloads]}}}}

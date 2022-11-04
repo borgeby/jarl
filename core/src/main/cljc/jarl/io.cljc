@@ -2,8 +2,8 @@
   #?(:cljs (:require [cljs.nodejs :as nodejs]))
   #?(:clj (:import (java.io File))))
 
-#?(:cljs (def fs      (nodejs/require "fs")))
-#?(:cljs (def path    (nodejs/require "path")))
+#?(:cljs (def ^js fs   (nodejs/require "fs")))
+#?(:cljs (def ^js path (nodejs/require "path")))
 
 (defn dir? [^String path]
   #?(:clj  (.isDirectory (File. path))

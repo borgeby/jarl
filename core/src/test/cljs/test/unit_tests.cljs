@@ -44,25 +44,26 @@
   (when-not (successful? m)
     (aset process "exitCode" 1)))
 
-; see docs on run-tests for how to handle return value!
-(run-tests 'jarl.builtins.aggregates-test
-           'jarl.builtins.array-test
-           'jarl.builtins.bits-test
-           'jarl.builtins.comparison-test
-           'jarl.builtins.conversions-test
-           'jarl.builtins.crypto-test
-           'jarl.builtins.encoding-test
-           'jarl.builtins.graphs-test
-           'jarl.builtins.numbers-test
-           'jarl.builtins.objects-test
-           'jarl.builtins.opa-test
-           'jarl.builtins.semver-test
-           'jarl.builtins.sets-test
-           'jarl.builtins.strings-test
-           'jarl.builtins.types-test
-           'jarl.builtins.units-test
-           'jarl.config.reader-test
-           'jarl.config.schema-test
-           'jarl.encoding.base64-test
-           'jarl.encoding.json-test
-           'jarl.exceptions-test)
+(defn run []
+  ; see docs on run-tests for how to handle return value!
+  (run-tests 'jarl.builtins.aggregates-test
+             'jarl.builtins.array-test
+             'jarl.builtins.bits-test
+             'jarl.builtins.comparison-test
+             'jarl.builtins.conversions-test
+             'jarl.builtins.crypto-test
+             'jarl.builtins.encoding-test
+             'jarl.builtins.graphs-test
+             'jarl.builtins.numbers-test
+             'jarl.builtins.objects-test
+             'jarl.builtins.opa-test
+             'jarl.builtins.semver-test
+             'jarl.builtins.sets-test
+             'jarl.builtins.strings-test
+             'jarl.builtins.types-test
+             'jarl.builtins.units-test
+             'jarl.config.reader-test
+             'jarl.config.schema-test
+             'jarl.encoding.base64-test
+             'jarl.encoding.json-test
+             'jarl.exceptions-test))
