@@ -9,14 +9,14 @@
                  [com.fzakaria/slf4j-timbre "0.3.21"]
                  [com.google.re2j/re2j "1.7"]
                  [clj-commons/clj-yaml "1.0.26"]
-                 [org.bitbucket.b_c/jose4j "0.9.1"]
-                 [org.apache.commons/commons-compress "1.21"]
+                 [org.bitbucket.b_c/jose4j "0.9.2"]
+                 [org.apache.commons/commons-compress "1.22"]
                  [org.clj-commons/clj-http-lite "1.0.13"]
                  ; cljc
                  [org.clojure/tools.cli "1.0.214"]
-                 [metosin/malli "0.8.9"]
+                 [metosin/malli "0.9.2" :exclusions [org.clojure/tools.reader]]
                  [camel-snake-kebab "0.4.3"]
-                 [com.taoensso/timbre "5.2.1"]
+                 [com.taoensso/timbre "6.0.1"]
                  [camel-snake-kebab "0.4.3"]
                  [tick "0.5.0"]]
   :repl-options {:init-ns jarl.core}
@@ -41,7 +41,7 @@
                    :compliance       :compliance
                    :performance      :performance}
   :profiles {:dev  {:dependencies   [[com.bhauman/rebel-readline "0.1.4"]
-                                     [com.clojure-goes-fast/clj-async-profiler "1.0.0"]
+                                     [com.clojure-goes-fast/clj-async-profiler "1.0.2"]
                                      [criterium "0.4.6"]
                                      [zprint "1.2.4"]]
                     :resource-paths ["src/test/resources"]
