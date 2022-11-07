@@ -24,7 +24,17 @@
      "cryptohmacmd5/crypto.hmac.md5_unicode"
      "cryptohmacsha1/crypto.hmac.sha1_unicode"
      "cryptohmacsha256/crypto.hmac.sha256_unicode"
-     "cryptohmacsha512/crypto.hmac.sha512_unicode"}})
+     "cryptohmacsha512/crypto.hmac.sha512_unicode"
+     ; cljs / javascript implementation not limited in this regard — arguably a feature and not a bug
+     "time/parse_nanos_too_small"
+     "time/parse_nanos_too_large"
+     "time/add_date too small result"
+     "time/add_date too large result"
+     "time/parse_rfc3339_nanos_too_small"
+     "time/parse_rfc3339_nanos_too_large"
+     "time/clock too big"
+     "time/date too big"
+     "time/weekday too big"}})
 
 (defn ignored? [target note]
   (contains? (get ignored-tests target) note))

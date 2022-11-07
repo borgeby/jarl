@@ -3,6 +3,7 @@
             [jarl.builtins.array           :as array]
             [jarl.builtins.bits            :as bits]
             [jarl.builtins.comparison      :as comparison]
+            [jarl.builtins.conversions     :as conversions]
             [jarl.builtins.crypto          :as crypto]
             [jarl.builtins.graphs          :as graphs]
             [jarl.builtins.numbers         :as numbers]
@@ -11,15 +12,14 @@
             [jarl.builtins.semver          :as semver]
             [jarl.builtins.sets            :as sets]
             [jarl.builtins.strings         :as strings]
-            [jarl.builtins.conversions     :as conversions]
+            [jarl.builtins.time            :as time]
             [jarl.builtins.types           :as types]
             [jarl.builtins.encoding        :as encoding]
             [jarl.builtins.units           :as units]
             [jarl.exceptions               :as errors]
             #?(:clj [jarl.builtins.http    :as http])
             #?(:clj [jarl.builtins.jwt     :as jwt])
-            #?(:clj [jarl.builtins.regex   :as regex])
-            #?(:clj [jarl.builtins.time    :as time])))
+            #?(:clj [jarl.builtins.regex   :as regex])))
 
 (def builtins
   #?(:clj
@@ -304,6 +304,16 @@
       ;"yaml.marshal"                     encoding/builtin-yaml-marshal
       ;"yaml.unmarshal"                   encoding/builtin-yaml-unmarshal
       ;"yaml.is_valid"                    encoding/builtin-yaml-is-valid
+      ; time
+      "time.add_date"                     time/builtin-time-add-date
+      "time.clock"                        time/builtin-time-clock
+      "time.date"                         time/builtin-time-date
+      ;"time.diff"                        time/builtin-time-diff
+      "time.now_ns"                       time/builtin-time-now-ns
+      "time.weekday"                      time/builtin-time-weekday
+      "time.parse_duration_ns"            time/builtin-time-parse-duration-ns
+      "time.parse_ns"                     time/builtin-time-parse-ns
+      "time.parse_rfc3339_ns"             time/builtin-time-parse-rfc3339-ns
       ; crypto
       "crypto.hmac.md5"                   crypto/builtin-crypto-hmac-md5
       "crypto.hmac.sha1"                  crypto/builtin-crypto-hmac-sha1

@@ -15,6 +15,7 @@
             [jarl.builtins.semver-test]
             [jarl.builtins.sets-test]
             [jarl.builtins.strings-test]
+            [jarl.builtins.time-test]
             [jarl.builtins.types-test]
             [jarl.builtins.encoding-test]
             [jarl.builtins.units-test]
@@ -60,6 +61,7 @@
              'jarl.builtins.semver-test
              'jarl.builtins.sets-test
              'jarl.builtins.strings-test
+             'jarl.builtins.time-test
              'jarl.builtins.types-test
              'jarl.builtins.units-test
              'jarl.config.reader-test

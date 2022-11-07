@@ -1,11 +1,11 @@
 (ns jarl.utils
   (:require [clojure.walk :as walk]
+            [cljc.java-time.instant :as i]
+            [tick.core :as t]
             #?(:cljs [clojure.string :as str])
-            #?(:cljs [cljs.nodejs :as nodejs])
             #?(:cljs [cljs.math])
-            #?(:cljs  [jarl.types :as types]))
+            #?(:cljs [jarl.types :as types]))
   #?(:clj (:import (java.nio.charset StandardCharsets)
-                   (java.time Instant)
                    (java.net URLDecoder URLEncoder))))
 
 (defn url-decode [^String s]
@@ -32,19 +32,17 @@
       (update m k indiscriminate-assoc-in ks v)
       (assoc m k v))))
 
-#?(:clj (defn instant-to-ns [^Instant instant]
-          (+' (*' (.getEpochSecond instant) 1000000000) (.getNano instant))))
+(defn instant->ns [instant]
+  #?(:clj  (+' (*' (i/get-epoch-second instant) 1000000000) (t/nanosecond instant))
+     :cljs (+  (*  (i/get-epoch-second instant) 1000000000) (t/nanosecond instant))))
 
-#?(:clj (defn ns-to-instant ^Instant [ns]
-          (Instant/ofEpochSecond 0 ns)))
-
-#?(:cljs (def process (nodejs/require "process")))
+(defn ns->instant [ns]
+  (i/of-epoch-second 0 ns))
 
 (defn time-now-ns
   "Current time nanos — not as precise as its OPA/Go equivalent function, but not in any way that matters"
   []
-  #?(:clj  (instant-to-ns (Instant/now))
-     :cljs (process.hrtime.bigint))) ;TODO add something that'll work in browser contexts too
+  (instant->ns (t/now)))
 
 ; Some tricks / hacks for unicode handling in Javascript / ClojureScript:
 ; https://dev.to/coolgoose/quick-and-easy-way-of-counting-utf-8-characters-in-javascript-23ce
