@@ -19,10 +19,12 @@ import future.keywords.in
 
 default allow := false
 
+# METADATA
+# entrypoint: true
 allow if "admin" in input.user.roles
 ```
 ```shell
-opa build --target plan --entrypoint policy/allow policy.rego
+opa build --target plan policy.rego
 ```
 
 We now have a bunde containing the `plan.json` file that we may submit for execution by Jarl!

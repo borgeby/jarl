@@ -15,7 +15,6 @@
                  ; cljc
                  [org.clojure/tools.cli "1.0.214"]
                  [metosin/malli "0.9.2" :exclusions [org.clojure/tools.reader]]
-                 [camel-snake-kebab "0.4.3"]
                  [com.taoensso/timbre "6.0.1"]
                  [camel-snake-kebab "0.4.3"]
                  [tick "0.5.0"]]
