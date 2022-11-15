@@ -40,23 +40,23 @@
   :test-selectors {:unit (complement :compliance)
                    :compliance       :compliance
                    :performance      :performance}
-  :profiles {:dev  {:dependencies   [[com.bhauman/rebel-readline "0.1.4"]
-                                     [com.clojure-goes-fast/clj-async-profiler "1.0.2"]
-                                     [criterium "0.4.6"]
-                                     [zprint "1.2.4"]]
-                    :resource-paths ["src/test/resources"]
-                    :jvm-opts       ["-Djdk.attach.allowAttachSelf"]
-                    :plugins        [[lein-ancient "1.0.0-RC3"]
-                                     [lein-cloverage "1.2.4"]]
-                    :eastwood {:exclude-linters [:constant-test]
-                               :exclude-namespaces [test.profile]}}
-             :test {:injections [(require 'test.config)
-                                 (taoensso.timbre/set-level! :warn)]}
+  :profiles {:dev       {:dependencies   [[com.bhauman/rebel-readline "0.1.4"]
+                                          [com.clojure-goes-fast/clj-async-profiler "1.0.2"]
+                                          [criterium "0.4.6"]
+                                          [zprint "1.2.4"]]
+                         :resource-paths ["src/test/resources"]
+                         :jvm-opts       ["-Djdk.attach.allowAttachSelf"]
+                         :plugins        [[lein-ancient "1.0.0-RC3"]
+                                          [lein-cloverage "1.2.4"]]
+                         :eastwood       {:exclude-linters    [:constant-test]
+                                          :exclude-namespaces [test.profile]}}
+             :test      {:injections [(require 'test.config)
+                                      (taoensso.timbre/set-level! :warn)]}
              :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "0.2.1"]]}
-             :eastwood {:plugins [[jonase/eastwood "1.2.3"]]}
+             :eastwood  {:plugins [[jonase/eastwood "1.2.3"]]}
              ; note that kibit currently seems to not support .cljc files well:
              ; https://github.com/jonase/kibit/issues/246
-             :kibit {:plugins [[lein-kibit "0.1.8"]]}
-             :cljs {:dependencies [[org.clojure/clojurescript "1.11.60"]
-                                   [thheller/shadow-cljs "2.20.7"]]
-                    :source-paths ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]}})
+             :kibit     {:plugins [[lein-kibit "0.1.8"]]}
+             :cljs      {:dependencies [[org.clojure/clojurescript "1.11.60"]
+                                        [thheller/shadow-cljs "2.20.10"]]
+                         :source-paths ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]}})
