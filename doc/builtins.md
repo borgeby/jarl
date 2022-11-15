@@ -74,7 +74,7 @@ probably work around this, these are generally not used in policy, and as such n
 | `object.filter`   |  ✅  |  ✅   |    ✅    |
 | `json.filter`     |  ❌  |  ❌   |    ❌    |
 | `json.patch`      |  ✅  |  ✅   |    ✅    |
-| `json.remove`     |  ❌  |  ❌   |    ❌    |
+| `json.remove`     |  ✅  |  ✅   |    ✅    |
 
 Note: While [not documented](https://github.com/open-policy-agent/opa/issues/5328), the OPA implementation of
 `json.patch` supports modifying sets, which is of course a type outside JSON. This is currently not supported by Jarl.
