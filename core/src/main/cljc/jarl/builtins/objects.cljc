@@ -1,6 +1,7 @@
 (ns jarl.builtins.objects
   (:require [clojure.set :as set]
             [clojure.string :as str]
+            [clj-json-pointer.core :as jp]
             [jarl.builtins.utils :refer [str->int]]
             [jarl.exceptions :as errors]))
 
@@ -67,6 +68,17 @@
   (if (and (map? ks) (not-empty ks))
     (builtin-object-filter {:args [object (vec (keys ks))]})
     (select-keys object ks)))
+
+(defn- patch-path-prepend-slash [patch]
+  (if (string? (get patch "path"))
+    (update patch "path" (fn [s] (if-not (str/starts-with? s "/") (str "/" s) s)))
+    patch))
+
+(defn builtin-json-patch
+  [{[object patches] :args}]
+  ; OPA accepts paths without leading /, which is a spec violation, but oh well
+  (let [patches (mapv patch-path-prepend-slash patches)]
+    (jp/patch object patches)))
 
 ; Modified version of:
 ; https://stackoverflow.com/questions/38893968/how-to-select-keys-in-nested-maps-in-clojure

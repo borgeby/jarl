@@ -17,7 +17,7 @@
                  [metosin/malli "0.9.2" :exclusions [org.clojure/tools.reader]]
                  [camel-snake-kebab "0.4.3"]
                  [com.taoensso/timbre "6.0.1"]
-                 [camel-snake-kebab "0.4.3"]
+                 [by.borge/clj-json-pointer "1.0.0"]
                  [tick "0.5.0"]]
   :repl-options {:init-ns jarl.core}
   :main jarl.core

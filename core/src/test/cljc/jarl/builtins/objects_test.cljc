@@ -45,6 +45,15 @@
     [{"a" 1 "b" 2 "c" 3} {"b" 2}] {"b" 2}
     [{"a" 1 "b" 2 "c" 3} {}] {}))
 
+#?(:clj
+   (deftest builtin-json-patch-test
+     (testing-builtin "json.patch"
+       [{"a" 1} [{"op" "add" "path" "/b" "value" 2}]] {"a" 1 "b" 2}
+       [{"a" 1 "b" 2} [{"op" "remove" "path" "/b"}]] {"a" 1}
+       [{"a" 1 "b" 2} [{"op" "replace" "path" "/b" "value" 1}]] {"a" 1 "b" 1}
+       ; Paths without leading / — not compliant with spec but works in OPA
+       [{"a" 1} [{"op" "add" "path" "b" "value" 2}]] {"a" 1 "b" 2})))
+
 ;(deftest builtin-json-filter-test
 ;  (testing-builtin "json.filter"
 ;    [{"a" 1 "b" 2 "c" {"foo" "bar" "x" 10}} ["b" "c/foo"]] {"b" 2 "c" {"foo" "bar"}}
