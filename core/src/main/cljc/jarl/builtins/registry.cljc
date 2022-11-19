@@ -71,6 +71,7 @@
       "object.union"                      objects/builtin-object-union
       "object.union_n"                    objects/builtin-object-union-n
       "json.patch"                        objects/builtin-json-patch
+      "json.remove"                       objects/builtin-json-remove
       ; strings
       "concat"                            strings/builtin-concat
       "contains"                          strings/builtin-contains
@@ -241,6 +242,7 @@
       "object.union"                      objects/builtin-object-union
       "object.union_n"                    objects/builtin-object-union-n
       "json.patch"                        objects/builtin-json-patch
+      "json.remove"                       objects/builtin-json-remove
       ; strings
       "concat"                            strings/builtin-concat
       "contains"                          strings/builtin-contains

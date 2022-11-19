@@ -103,7 +103,9 @@
 (defn parse-input-term [_ term] ; note is unused for now - will be needed for graph.reachable_paths
   ; Some hacks to work around the fact that we can't parse non-JSON terms
   (condp = term
-    "{\"foo\": {{1}}}" {"foo" #{#{1}}}
+    "{\"foo\": {{1}}}"                         {"foo" #{#{1}}}
+    "{\"x\": {1, 2, 3, \"a\"}}"                {"x" #{1 2 3 "a"}}
+    "{\"x\": {\"a\", {\"x\": 1}, {\"y\": 2}}}" {"x" #{"a" {"x" 1} {"y" 2}}}
     (json/read-str term)))
 
 (defn create-test
@@ -115,7 +117,9 @@
     want-error      "want_error"
     strict-error    "strict_error"
     :as             test-case}]
-  (let [input (if (contains? test-case "input_term") (parse-input-term note (test-case "input_term")) (test-case "input"))]
+  (let [input (if (contains? test-case "input_term")
+                (parse-input-term note (test-case "input_term"))
+                (test-case "input"))]
     (if (and (nil? want-error-code) (nil? want-error))
       (test-case-want-result note data input entry-points want-result)
       (test-case-want-error note data input entry-points want-error-code want-error strict-error))))
@@ -182,6 +186,7 @@
   (loop [test-cases (read-test-cases)
          result {:plans {} :tests []}]
     (let [test-case (first test-cases)]
+      (println "foobaring test-case " (get test-case "note"))
       (if (nil? test-case)
         result
         (let [{:strs [note plan]} test-case

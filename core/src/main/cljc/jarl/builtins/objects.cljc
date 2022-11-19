@@ -3,7 +3,8 @@
             [clojure.string :as str]
             [clj-json-pointer.core :as jp]
             [jarl.builtins.utils :refer [str->int]]
-            [jarl.exceptions :as errors]))
+            [jarl.exceptions :as errors]
+            [jarl.types :as types]))
 
 (defn builtin-object-get
   [{[object key default] :args}]
@@ -79,6 +80,35 @@
   ; OPA accepts paths without leading /, which is a spec violation, but oh well
   (let [patches (mapv patch-path-prepend-slash patches)]
     (jp/patch object patches)))
+
+(defn- vec-remove [obj i]
+  (into (subvec obj 0 i) (subvec obj (inc i))))
+
+(defn- validate-path [path]
+  (if (or (string? path) (vector? path) (set? path))
+    path
+    (throw (errors/type-ex (str "json.remove: operand 2 must be one of {set, array} "
+                                "containing string paths or array of path segments but got " (types/->rego path))))))
+
+(defn- ->dissoced [obj parts]
+  (if (empty? parts)
+    obj
+    (if (= 1 (count parts))
+      (if (vector? obj)
+        (vec-remove obj (parse-long (first parts)))
+        (dissoc obj (first parts)))
+      (let [k (cond-> (first parts) (vector? obj) parse-long)
+            v (get obj k ::not-found)]
+        (if (= ::not-found v)
+          obj
+          (assoc obj k (->dissoced v (rest parts))))))))
+
+(defn builtin-json-remove
+  [{[object paths] :args}]
+  (let [vectors (mapv #(let [path (validate-path %)]
+                         (cond-> path
+                                 (string? path) (str/split #"/"))) paths)]
+    (reduce ->dissoced object vectors)))
 
 ; Modified version of:
 ; https://stackoverflow.com/questions/38893968/how-to-select-keys-in-nested-maps-in-clojure
