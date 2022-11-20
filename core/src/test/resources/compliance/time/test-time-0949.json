@@ -176,7 +176,7 @@
 									]
 								}
 							],
-							"name": "g0.data.generated.p",
+							"name": "g0.data.generated.p[t]",
 							"params": [
 								0,
 								1
@@ -207,6 +207,15 @@
 										},
 										{
 											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 3
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
 												"blocks": [
 													{
 														"stmts": [
@@ -224,28 +233,11 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.generated.p[t]",
 																	"result": 3,
 																	"row": 0
 																},
 																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 1
-																	},
-																	"object": 2,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 3
-																	}
-																},
-																"type": "ObjectInsertStmt"
 															}
 														]
 													}
@@ -255,6 +247,23 @@
 												"row": 0
 											},
 											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 1
+												},
+												"object": 2,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 3
+												}
+											},
+											"type": "ObjectInsertStmt"
 										},
 										{
 											"stmt": {
@@ -431,7 +440,7 @@
 				}
 			},
 			"want_plan_result": {
-				"generated": {
+				"data_generated": {
 					"p": {
 						"1677-09-21T00:12:43.145224192-00:00": -9223372036854775808,
 						"1970-01-01T00:00:00-00:00": 0,

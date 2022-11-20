@@ -323,7 +323,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"a": 1
 				}
 			}
@@ -677,7 +677,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"b": 2
 				}
 			}
@@ -1100,7 +1100,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"c": 4
 				}
 			}
@@ -1330,7 +1330,7 @@
 									]
 								}
 							],
-							"name": "g0.data.test.d",
+							"name": "g0.data.test.d[msg]",
 							"params": [
 								0,
 								1
@@ -1361,6 +1361,15 @@
 										},
 										{
 											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 3
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
 												"blocks": [
 													{
 														"stmts": [
@@ -1378,28 +1387,11 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.test.d",
+																	"func": "g0.data.test.d[msg]",
 																	"result": 3,
 																	"row": 0
 																},
 																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 1
-																	},
-																	"object": 2,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 3
-																	}
-																},
-																"type": "ObjectInsertStmt"
 															}
 														]
 													}
@@ -1409,6 +1401,23 @@
 												"row": 0
 											},
 											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 1
+												},
+												"object": 2,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 3
+												}
+											},
+											"type": "ObjectInsertStmt"
 										},
 										{
 											"stmt": {
@@ -1575,7 +1584,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"d": {
 						"1": 5,
 						"2": 5,
@@ -2054,83 +2063,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.e",
-												"result": 8,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 8
-												},
-												"target": 9
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 10
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 10,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 9
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 10
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/e"
 						}
 					]
 				},
@@ -2157,7 +2089,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"e": 6
 				}
 			}

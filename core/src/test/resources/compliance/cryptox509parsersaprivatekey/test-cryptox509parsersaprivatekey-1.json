@@ -530,83 +530,6 @@
 								}
 							],
 							"name": "testing"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.testing.p",
-												"result": 9,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 9
-												},
-												"target": 10
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 11
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 11,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 10
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 11
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "testing/p"
 						}
 					]
 				},
@@ -664,7 +587,7 @@
 				}
 			},
 			"want_plan_result": {
-				"testing": {
+				"data_testing": {
 					"p": {
 						"d": "DIxnTzKCpTR286rhrck-n80Kjl6XyHqYWxfx6Dk8IfLj-xBFIEMsikRd9p6L6KoMDVX8TbAOWSxpR5iSGifLi66LVDdxIWNgx3q1Embol9X8NyKw7zxTU0d-wE6VJ0_F0WGGEdxRJMkdUxlvmIFeR2Wd3QeewJxWC4LKEvDr8o8XKID41hHPrx-XHN7tp2bJWnkLqL8dsw-rw-syKUFS84W3G5oZ4kECJq-7NR70jvR1HCl7jbi0y-KxIDyHtdubwF4388kcNX_YmshRGBDnrfJDlKj9CDwCDFdGSmBYz3MCHuvfU8E7zq-r8Hhls439O1Z1xlWwBxUHg-S2pzwk2Q",
 						"dp": "48qcVo7c7Ga3aNEVZ3Stbg90HrZq760pvqshDz13V-0MrWnfUFxxh_mi0KHy-uYRlMNllFkQ5p8LTP0dUlt6Y8dReU6r20MWX6BBtX9eP7o8ENm4nL4zqnAtq609gKgWuMNrmkiSQJl6Dx7bdY5zsSkNPvfUa5cQRBTxSjXRdts",

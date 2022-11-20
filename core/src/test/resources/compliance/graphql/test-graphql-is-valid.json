@@ -691,83 +691,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.p",
-												"result": 10,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 10
-												},
-												"target": 11
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 12
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 12,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 11
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 12
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/p"
 						}
 					]
 				},
@@ -778,11 +701,43 @@
 								"args": [
 									{
 										"name": "query",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									},
 									{
 										"name": "schema",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									}
 								],
 								"result": {
@@ -826,7 +781,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true,
 					"query": "\n  {\n    entity {\n      ... on User {\n      id\n      }\n    }\n  }\n",
 					"schema": "\n  extend type User {\n      id: ID!\n  }\n  extend type Product {\n      upc: String!\n  }\n  union _Entity = Product | User\n  extend type Query {\n    entity: _Entity\n  }\n"
@@ -1534,83 +1489,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.p",
-												"result": 10,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 10
-												},
-												"target": 11
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 12
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 12,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 11
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 12
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/p"
 						}
 					]
 				},
@@ -1621,11 +1499,43 @@
 								"args": [
 									{
 										"name": "query",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									},
 									{
 										"name": "schema",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									}
 								],
 								"result": {
@@ -1669,7 +1579,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": false,
 					"query": "\n  query SomeOperation {\n    # Note: Not providing mandatory parameter: (myEnum: Locale!)\n    myAction {\n      id\n    }\n  }\n",
 					"schema": "\n  extend type Query {\n      myAction(myEnum: Locale!): SomeResult!\n  }\n  type SomeResult {\n      id: String\n  }\n  enum Locale {\n      EN\n      LT\n      DE\n  }\n"
@@ -2367,83 +2277,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.p",
-												"result": 10,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 10
-												},
-												"target": 11
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 12
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 12,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 11
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 12
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/p"
 						}
 					]
 				},
@@ -2454,11 +2287,43 @@
 								"args": [
 									{
 										"name": "query",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									},
 									{
 										"name": "schema",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									}
 								],
 								"result": {
@@ -2502,7 +2367,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true,
 					"query": "\n  # Note: there is default enum value in variables\n  query SomeOperation ($locale: Locale! = DE) {\n    myAction(myEnum: $locale) {\n      id\n    }\n  }\n",
 					"schema": "\n  extend type Query {\n      myAction(myEnum: Locale!): SomeResult!\n  }\n  type SomeResult {\n      id: String\n  }\n  enum Locale {\n      EN\n      LT\n      DE\n  }\n"
@@ -3200,83 +3065,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.p",
-												"result": 10,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 10
-												},
-												"target": 11
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 12
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 12,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 11
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 12
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/p"
 						}
 					]
 				},
@@ -3287,11 +3075,43 @@
 								"args": [
 									{
 										"name": "query",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									},
 									{
 										"name": "schema",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									}
 								],
 								"result": {
@@ -3335,7 +3155,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true,
 					"query": "",
 					"schema": "\n  type DeprecatedType {\n    deprecatedField: String @deprecated\n    newField(deprecatedArg: Int): Boolean\n  }\n  enum DeprecatedEnum {\n    ALPHA @deprecated\n  }\n"
@@ -4033,83 +3853,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.p",
-												"result": 10,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 10
-												},
-												"target": 11
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 12
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 12,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 11
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 12
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/p"
 						}
 					]
 				},
@@ -4120,11 +3863,43 @@
 								"args": [
 									{
 										"name": "query",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									},
 									{
 										"name": "schema",
-										"type": "string"
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
 									}
 								],
 								"result": {
@@ -4168,10 +3943,998 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true,
 					"query": "\n  query Foo($flag: Boolean!) {\n    ...Bar\n  }\n  fragment Bar on Query {\n    bar @include(if: $flag)\n  }\n",
 					"schema": "\n  type Query {\n    bar: String!\n  }\n"
+				}
+			}
+		},
+		{
+			"note": "graphql_is_valid/success - AST objects - Employee example",
+			"query": "data.test.p = x",
+			"modules": [
+				"package test\nschema_ast := graphql.parse_schema(`\n  type Employee {\n    id: String!\n    salary: Int!\n  }\n\n  schema {\n    query: Query\n  }\n\n  type Query {\n    employeeByID(id: String): Employee\n  }\n`)\nquery_ast := graphql.parse_query(`\n  query { employeeByID(id: \"alice\") { salary }}\n`)\np {\n    graphql.is_valid(query_ast, schema_ast)\n}\n"
+			],
+			"want_result": [
+				{
+					"x": true
+				}
+			],
+			"entrypoints": [
+				"test"
+			],
+			"plan": {
+				"funcs": {
+					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 16,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"a": {
+													"type": "bool",
+													"value": true
+												},
+												"b": {
+													"type": "bool",
+													"value": false
+												},
+												"col": 14,
+												"file": 0,
+												"row": 16
+											},
+											"type": "NotEqualStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "string_index",
+														"value": 2
+													}
+												],
+												"col": 14,
+												"file": 0,
+												"func": "graphql.parse_query",
+												"result": 4,
+												"row": 16
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 14,
+												"file": 0,
+												"row": 16,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 16,
+												"source": {
+													"type": "local",
+													"value": 5
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 16,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 16,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 16,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.test.query_ast",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"test",
+								"query_ast"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 2,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"a": {
+													"type": "bool",
+													"value": true
+												},
+												"b": {
+													"type": "bool",
+													"value": false
+												},
+												"col": 15,
+												"file": 0,
+												"row": 2
+											},
+											"type": "NotEqualStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "string_index",
+														"value": 3
+													}
+												],
+												"col": 15,
+												"file": 0,
+												"func": "graphql.parse_schema",
+												"result": 4,
+												"row": 2
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 15,
+												"file": 0,
+												"row": 2,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 2,
+												"source": {
+													"type": "local",
+													"value": 5
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 2,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 2,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 2,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.test.schema_ast",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"test",
+								"schema_ast"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 19,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 22,
+												"file": 0,
+												"func": "g0.data.test.query_ast",
+												"result": 4,
+												"row": 20
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 22,
+												"file": 0,
+												"row": 20,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 33,
+												"file": 0,
+												"func": "g0.data.test.schema_ast",
+												"result": 6,
+												"row": 20
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 33,
+												"file": 0,
+												"row": 20,
+												"source": {
+													"type": "local",
+													"value": 6
+												},
+												"target": 7
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 5
+													},
+													{
+														"type": "local",
+														"value": 7
+													}
+												],
+												"col": 5,
+												"file": 0,
+												"func": "graphql.is_valid",
+												"result": 8,
+												"row": 20
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"a": {
+													"type": "local",
+													"value": 8
+												},
+												"b": {
+													"type": "bool",
+													"value": false
+												},
+												"col": 5,
+												"file": 0,
+												"row": 20
+											},
+											"type": "NotEqualStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 19,
+												"source": {
+													"type": "bool",
+													"value": true
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 19,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 19,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 19,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.test.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"test",
+								"p"
+							],
+							"return": 2
+						}
+					]
+				},
+				"plans": {
+					"plans": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 2
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.test.p",
+																	"result": 3,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 1
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 3
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.test.query_ast",
+																	"result": 4,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 4
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 4
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.test.schema_ast",
+																	"result": 5,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 5
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 5
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"blocks": [
+																		{
+																			"stmts": [
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"key": {
+																							"type": "string_index",
+																							"value": 6
+																						},
+																						"row": 0,
+																						"source": {
+																							"type": "local",
+																							"value": 1
+																						},
+																						"target": 7
+																					},
+																					"type": "DotStmt"
+																				},
+																				{
+																					"stmt": {
+																						"a": 7,
+																						"b": 2,
+																						"col": 0,
+																						"file": 0,
+																						"row": 0,
+																						"target": 6
+																					},
+																					"type": "ObjectMergeStmt"
+																				},
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"index": 1,
+																						"row": 0
+																					},
+																					"type": "BreakStmt"
+																				}
+																			]
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"row": 0
+																},
+																"type": "BlockStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"row": 0,
+																	"source": {
+																		"type": "local",
+																		"value": 2
+																	},
+																	"target": 6
+																},
+																"type": "AssignVarStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"source": {
+													"type": "local",
+													"value": 6
+												},
+												"target": 8
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 9
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 0
+												},
+												"object": 9,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 8
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"value": 9
+											},
+											"type": "ResultSetAddStmt"
+										}
+									]
+								}
+							],
+							"name": "test"
+						}
+					]
+				},
+				"static": {
+					"builtin_funcs": [
+						{
+							"decl": {
+								"args": [
+									{
+										"name": "query",
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
+									},
+									{
+										"name": "schema",
+										"of": [
+											{
+												"type": "string"
+											},
+											{
+												"dynamic": {
+													"key": {
+														"type": "any"
+													},
+													"value": {
+														"type": "any"
+													}
+												},
+												"type": "object"
+											}
+										],
+										"type": "any"
+									}
+								],
+								"result": {
+									"description": "`true` if the query is valid under the given schema. `false` otherwise.",
+									"name": "output",
+									"type": "boolean"
+								},
+								"type": "function"
+							},
+							"name": "graphql.is_valid"
+						},
+						{
+							"decl": {
+								"args": [
+									{
+										"name": "query",
+										"type": "string"
+									}
+								],
+								"result": {
+									"description": "AST object for the GraphQL query.",
+									"dynamic": {
+										"key": {
+											"type": "any"
+										},
+										"value": {
+											"type": "any"
+										}
+									},
+									"name": "output",
+									"type": "object"
+								},
+								"type": "function"
+							},
+							"name": "graphql.parse_query"
+						},
+						{
+							"decl": {
+								"args": [
+									{
+										"name": "schema",
+										"type": "string"
+									}
+								],
+								"result": {
+									"description": "AST object for the GraphQL schema.",
+									"dynamic": {
+										"key": {
+											"type": "any"
+										},
+										"value": {
+											"type": "any"
+										}
+									},
+									"name": "output",
+									"type": "object"
+								},
+								"type": "function"
+							},
+							"name": "graphql.parse_schema"
+						}
+					],
+					"files": [
+						{
+							"value": "mod_0"
+						}
+					],
+					"strings": [
+						{
+							"value": "result"
+						},
+						{
+							"value": "p"
+						},
+						{
+							"value": "\n  query { employeeByID(id: \"alice\") { salary }}\n"
+						},
+						{
+							"value": "\n  type Employee {\n    id: String!\n    salary: Int!\n  }\n\n  schema {\n    query: Query\n  }\n\n  type Query {\n    employeeByID(id: String): Employee\n  }\n"
+						},
+						{
+							"value": "query_ast"
+						},
+						{
+							"value": "schema_ast"
+						},
+						{
+							"value": "test"
+						}
+					]
+				}
+			},
+			"want_plan_result": {
+				"data_test": {
+					"p": true,
+					"query_ast": {
+						"Operations": [
+							{
+								"Name": "",
+								"Operation": "query",
+								"SelectionSet": [
+									{
+										"Alias": "employeeByID",
+										"Arguments": [
+											{
+												"Name": "id",
+												"Value": {
+													"Kind": 3,
+													"Raw": "alice"
+												}
+											}
+										],
+										"Name": "employeeByID",
+										"SelectionSet": [
+											{
+												"Alias": "salary",
+												"Name": "salary"
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					"schema_ast": {
+						"Definitions": [
+							{
+								"BuiltIn": false,
+								"Description": "",
+								"Fields": [
+									{
+										"Description": "",
+										"Name": "id",
+										"Type": {
+											"NamedType": "String",
+											"NonNull": true
+										}
+									},
+									{
+										"Description": "",
+										"Name": "salary",
+										"Type": {
+											"NamedType": "Int",
+											"NonNull": true
+										}
+									}
+								],
+								"Kind": "OBJECT",
+								"Name": "Employee"
+							},
+							{
+								"BuiltIn": false,
+								"Description": "",
+								"Fields": [
+									{
+										"Arguments": [
+											{
+												"Description": "",
+												"Name": "id",
+												"Type": {
+													"NamedType": "String",
+													"NonNull": false
+												}
+											}
+										],
+										"Description": "",
+										"Name": "employeeByID",
+										"Type": {
+											"NamedType": "Employee",
+											"NonNull": false
+										}
+									}
+								],
+								"Kind": "OBJECT",
+								"Name": "Query"
+							}
+						],
+						"Schema": [
+							{
+								"Description": "",
+								"OperationTypes": [
+									{
+										"Operation": "query",
+										"Type": "Query"
+									}
+								]
+							}
+						]
+					}
 				}
 			}
 		}

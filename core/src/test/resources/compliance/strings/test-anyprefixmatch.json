@@ -490,7 +490,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true
 				}
 			}
@@ -981,7 +981,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -1474,7 +1474,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true
 				}
 			}
@@ -1969,7 +1969,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true
 				}
 			}
@@ -2464,7 +2464,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true
 				}
 			}
@@ -2955,7 +2955,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -3443,7 +3443,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -3928,7 +3928,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -4414,7 +4414,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -4896,7 +4896,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -5386,7 +5386,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true
 				}
 			}
@@ -5874,7 +5874,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -6363,7 +6363,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true
 				}
 			}
@@ -6850,7 +6850,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -7613,83 +7613,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.p",
-												"result": 10,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 10
-												},
-												"target": 11
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 12
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 12,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 11
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 12
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/p"
 						}
 					]
 				},
@@ -7784,7 +7707,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"p": true,
 					"prefixes_set": [
 						"a/",
@@ -8554,83 +8477,6 @@
 								}
 							],
 							"name": "test"
-						},
-						{
-							"blocks": [
-								{
-									"stmts": [
-										{
-											"stmt": {
-												"args": [
-													{
-														"type": "local",
-														"value": 0
-													},
-													{
-														"type": "local",
-														"value": 1
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"func": "g0.data.test.p",
-												"result": 10,
-												"row": 0
-											},
-											"type": "CallStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"source": {
-													"type": "local",
-													"value": 10
-												},
-												"target": 11
-											},
-											"type": "AssignVarStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"target": 12
-											},
-											"type": "MakeObjectStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 0
-												},
-												"object": 12,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 11
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 0,
-												"file": 0,
-												"row": 0,
-												"value": 12
-											},
-											"type": "ResultSetAddStmt"
-										}
-									]
-								}
-							],
-							"name": "test/p"
 						}
 					]
 				},
@@ -8725,7 +8571,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {
+				"data_test": {
 					"prefixes_set": [
 						"d/",
 						"f/"
@@ -9224,7 +9070,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -9709,7 +9555,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -10198,7 +10044,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
@@ -10684,7 +10530,7 @@
 				}
 			},
 			"want_plan_result": {
-				"test": {}
+				"data_test": {}
 			}
 		},
 		{
