@@ -186,7 +186,6 @@
   (loop [test-cases (read-test-cases)
          result {:plans {} :tests []}]
     (let [test-case (first test-cases)]
-      (println "foobaring test-case " (get test-case "note"))
       (if (nil? test-case)
         result
         (let [{:strs [note plan]} test-case
