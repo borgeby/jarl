@@ -16,7 +16,7 @@
                  [org.clojure/tools.cli "1.0.214"]
                  [metosin/malli "0.9.2" :exclusions [org.clojure/tools.reader]]
                  [camel-snake-kebab "0.4.3"]
-                 [com.taoensso/timbre "6.0.1"]
+                 [com.taoensso/timbre "6.0.2"]
                  [by.borge/clj-json-pointer "1.0.0"]
                  [tick "0.5.0"]]
   :repl-options {:init-ns jarl.core}
@@ -29,7 +29,6 @@
             "perf-opa"              ["with-profile" "+test" "run" "-m" "test.benchmark" "opa"]
             "perf-jarl"             ["with-profile" "+test" "run" "-m" "test.benchmark" "jarl"]
             "gen-compliance"        ["with-profile" "+test" "run" "-m" "test.compliance.generator"]
-            "rebl"                  ["trampoline" "run" "-m" "rebel-readline.main"]
             "cljs-build-main"       ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" "main"]
             "cljs-build-test"       ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" "test"]
             "cljs-build-compliance" ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" "compliance"]}
@@ -40,10 +39,10 @@
   :test-selectors {:unit (complement :compliance)
                    :compliance       :compliance
                    :performance      :performance}
-  :profiles {:dev       {:dependencies   [[com.bhauman/rebel-readline "0.1.4"]
-                                          [com.clojure-goes-fast/clj-async-profiler "1.0.2"]
+  :profiles {:dev       {:dependencies   [[com.clojure-goes-fast/clj-async-profiler "1.0.3"]
                                           [criterium "0.4.6"]
-                                          [zprint "1.2.4"]]
+                                          [zprint "1.2.4"]
+                                          [nrepl "1.0.0"]]
                          :resource-paths ["src/test/resources"]
                          :jvm-opts       ["-Djdk.attach.allowAttachSelf"]
                          :plugins        [[lein-ancient "1.0.0-RC3"]
@@ -57,6 +56,8 @@
              ; note that kibit currently seems to not support .cljc files well:
              ; https://github.com/jonase/kibit/issues/246
              :kibit     {:plugins [[lein-kibit "0.1.8"]]}
-             :cljs      {:dependencies [[org.clojure/clojurescript "1.11.60"]
-                                        [thheller/shadow-cljs "2.20.10"]]
+             :cljs      {:dependencies [[org.clojure/clojurescript "1.11.60"
+                                         ; more recent version provided by shadow-cljs
+                                         :exclusions [com.google.javascript/closure-compiler-unshaded]]
+                                        [thheller/shadow-cljs "2.20.12"]]
                          :source-paths ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]}})
