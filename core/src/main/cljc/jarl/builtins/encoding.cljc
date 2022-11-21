@@ -2,7 +2,7 @@
   (:require [jarl.encoding.base64 :as base64]
             [jarl.encoding.json :as json]
             [jarl.encoding.hex :as hex]
-            #?(:clj [jarl.encoding.yaml :as yaml])
+            [jarl.encoding.yaml :as yaml]
             [jarl.exceptions :as errors]
             [jarl.utils :refer [url-decode url-encode]]
             [clojure.string :as str])
@@ -104,32 +104,35 @@
     (hex/decode s)
     (throw (errors/builtin-ex (non-hex-error-msg s)))))
 
-#_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}
 (defn builtin-yaml-marshal
   [{[x] :args}]
-  #?(:clj (try
-            (yaml/write-str x)
-            (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: yaml.marshal: %s" (.getMessage e)))))
-     :cljs (throw (ex-info "yaml.marshal not implemented" {:type :not-implemented}))))
+  (try
+    (yaml/write-str x)
+    #?(:clj  (catch Exception e (throw (errors/builtin-ex "eval_builtin_error: yaml.marshal: %s" (ex-message e))))
+       :cljs (catch js/Error  e (throw (errors/builtin-ex "eval_builtin_error: yaml.marshal: %s" (ex-message e)))))))
 
 ; Mimic the error message from OPA
-#_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-private-var])}
 (defn- yaml-unmarshal-err-msg [^String s]
-  (when (str/includes? s "expected ',' or ']'")
-    (when-let [line (re-find #"line [\d]+" s)]
-      (str "yaml: " line  ": did not find expected ',' or ']'"))))
+  #?(:clj
+     (when (str/includes? s "expected ',' or ']'")
+       (when-let [line (re-find #"line [\d]+" s)]
+         (str "yaml: " line  ": did not find expected ',' or ']'")))
+     :cljs
+     (when (str/includes? s "unexpected end of the stream within a flow collection")
+       (when-let [line (second (re-find #"collection \(\d+:(\d)+\)" s))]
+         (str "yaml: line " line  ": did not find expected ',' or ']'")))))
 
-#_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}
 (defn builtin-yaml-unmarshal
   [{[s] :args}]
-  #?(:clj  (try
-             (yaml/read-str s)
-             (catch Exception e (let [msg (ex-message e)]
-                                  (throw (errors/builtin-ex (or (yaml-unmarshal-err-msg msg) msg))))))
-     :cljs (throw (ex-info "yaml.unmarshal not implemented" {:type :not-implemented}))))
+  (try
+    (yaml/read-str s)
+    #?(:clj
+       (catch Exception e (let [msg (ex-message e)]
+                            (throw (errors/builtin-ex (or (yaml-unmarshal-err-msg msg) msg)))))
+       :cljs
+       (catch js/Error e (let [msg (ex-message e)]
+                           (throw (errors/builtin-ex (or (yaml-unmarshal-err-msg msg) msg))))))))
 
-#_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}
 (defn builtin-yaml-is-valid
   [{[s] :args}]
-  #?(:clj  (not (errors/throws? #(yaml/read-str s)))
-     :cljs (throw (ex-info "yaml.is_valid not implemented" {:type :not-implemented}))))
+  (not (errors/throws? #(yaml/read-str s))))
