@@ -305,9 +305,9 @@
       "json.is_valid"                     encoding/builtin-json-is-valid
       "hex.encode"                        encoding/builtin-hex-encode
       "hex.decode"                        encoding/builtin-hex-decode
-      ;"yaml.marshal"                     encoding/builtin-yaml-marshal
-      ;"yaml.unmarshal"                   encoding/builtin-yaml-unmarshal
-      ;"yaml.is_valid"                    encoding/builtin-yaml-is-valid
+      "yaml.marshal"                      encoding/builtin-yaml-marshal
+      "yaml.unmarshal"                    encoding/builtin-yaml-unmarshal
+      "yaml.is_valid"                     encoding/builtin-yaml-is-valid
       ; time
       "time.add_date"                     time/builtin-time-add-date
       "time.clock"                        time/builtin-time-clock

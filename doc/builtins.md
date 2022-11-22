@@ -179,9 +179,9 @@ JVM: Rego like regexp engine provided by [re2j](https://github.com/google/re2j)
 | `json.marshal`            |  ✅  |  ✅   |    ✅    |
 | `json.unmarshal`          |  ✅  |  ✅   |    ✅    |
 | `json.is_valid`           |  ✅  |  ✅   |    ✅    |
-| `yaml.marshal`            |  ✅  |  ❌   |    ❌    |
-| `yaml.unmarshal`          |  ✅  |  ❌   |    ❌    |
-| `yaml.is_valid`           |  ✅  |  ❌   |    ❌    |
+| `yaml.marshal`            |  ✅  |  ✅   |    ✅    |
+| `yaml.unmarshal`          |  ✅  |  ✅   |    ✅    |
+| `yaml.is_valid`           |  ✅  |  ✅   |    ✅    |
 | `hex.encode`              |  ✅  |  ✅   |    ✅    |
 | `hex.decode`              |  ✅  |  ✅   |    ✅    |
 
@@ -214,6 +214,9 @@ For JavaScript support, https://github.com/panva/jose looks like the best candid
 | `io.jwt.verify_rs512`  |  ✅  |  ❌   |    ❌    |
 
 ### Time
+
+See [this](https://github.com/ThreeTen/threeten-extra/blob/master/src/main/java/org/threeten/extra/PeriodDuration.java)
+for inspiration for a `time.diff` implementation.
 
 | Built-in Function        | JVM | Node | Browser |
 |--------------------------|:---:|:----:|:-------:|
@@ -274,7 +277,7 @@ Note: Only basic functionality supported currently, i.e. sending requests using 
 
 **Supported options**
 
-* `url` 
+* `url`
 * `method`
 * `body`
 * `raw_body`
@@ -284,7 +287,7 @@ Note: Only basic functionality supported currently, i.e. sending requests using 
 * `force_yaml_decode`
 * `raise_error`
 * `timeout`
-* `tls_insecure_skip_verify` 
+* `tls_insecure_skip_verify`
 
 **Unsupported options**
 
