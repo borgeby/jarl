@@ -124,7 +124,7 @@ JVM: Rego like regexp engine provided by [re2j](https://github.com/google/re2j)
 | Built-in Function | JVM | Node | Browser |
 |-------------------|:---:|:----:|:-------:|
 | `glob.match`      |  ❌  |  ❌   |    ❌    |
-| `glob.quote_meta` |  ❌  |  ❌   |    ❌    |
+| `glob.quote_meta` |  ✅  |  ✅   |    ✅    |
 
 ### Bitwise
 
