@@ -1,5 +1,7 @@
 # Jarl
 
+![build](https://github.com/borgeby/jarl/actions/workflows/check.yaml/badge.svg)
+
 Jarl is an [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) evaluator for the JVM and Javascript, written in Clojure(Script). Jarl allows you to evaluate policy directly in your JVM language or Javascript environment of choice. See [this blog](https://blog.openpolicyagent.org/i-have-a-plan-exploring-the-opa-intermediate-representation-ir-format-7319cd94b37d) for an introduction to the intermediate representation (IR) format of OPA that Jarl uses for evaluation, and why you may want to consider that as an option.
 
 While originally an abbreviation for the "JVM Alternative for the Rego Language", Javascript support — for both the browser
@@ -164,7 +166,7 @@ For IntelliJ IDEA and Cursive, the flow would be:
 
 1. Start a watch: `shadow-cljs watch main`
 2. Run the application: `node target/cljs-main.js`
-3. IntelliJ Run Configuration: Remote REPL, Connection Type -> nREPL, User port from nREPL file — Use standard port 
+3. IntelliJ Run Configuration: Remote REPL, Connection Type -> nREPL, User port from nREPL file — Use standard port
    file.
 4. Inside of REPL: `(shadow/repl :main)`
 
