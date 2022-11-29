@@ -1,6 +1,7 @@
 # Jarl
 
 ![build](https://github.com/borgeby/jarl/actions/workflows/check.yaml/badge.svg)
+[![codecov](https://codecov.io/gh/borgeby/jarl/branch/main/graph/badge.svg?token=PHGLRDWE39)](https://codecov.io/gh/borgeby/jarl)
 
 Jarl is an [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) evaluator for the JVM and Javascript, written in Clojure(Script). Jarl allows you to evaluate policy directly in your JVM language or Javascript environment of choice. See [this blog](https://blog.openpolicyagent.org/i-have-a-plan-exploring-the-opa-intermediate-representation-ir-format-7319cd94b37d) for an introduction to the intermediate representation (IR) format of OPA that Jarl uses for evaluation, and why you may want to consider that as an option.
 

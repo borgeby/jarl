@@ -15,7 +15,7 @@ jobs:
           ~/.m2/repository
           ~/.gitlibs
           ~/.deps.clj
-        key: cljdeps-lint-${{ hashFiles('project.clj') }}
+        key: cljdeps-lint-${{ hashFiles('**/project.clj') }}
         restore-keys: cljdeps-lint-
     - run: lein clj-kondo
       working-directory: ./core
@@ -30,7 +30,7 @@ jobs:
           ~/.m2/repository
           ~/.gitlibs
           ~/.deps.clj
-        key: cljdeps-lint-${{ hashFiles('project.clj') }}
+        key: cljdeps-lint-${{ hashFiles('**/project.clj') }}
         restore-keys: cljdeps-lint-
     - run: lein eastwood
       working-directory: ./core
@@ -45,7 +45,7 @@ jobs:
           ~/.m2/repository
           ~/.gitlibs
           ~/.deps.clj
-        key: cljdeps-lint-${{ hashFiles('project.clj') }}
+        key: cljdeps-lint-${{ hashFiles('**/project.clj') }}
         restore-keys: cljdeps-lint-
     - run: lein kibit
       working-directory: ./core
@@ -60,7 +60,7 @@ jobs:
           ~/.m2/repository
           ~/.gitlibs
           ~/.deps.clj
-        key: cljdeps-test-${{ hashFiles('project.clj') }}
+        key: cljdeps-test-${{ hashFiles('**/project.clj') }}
         restore-keys: cljdeps-test-
     - run: lein gen-compliance :clj
       working-directory: ./core
@@ -77,7 +77,7 @@ jobs:
           ~/.m2/repository
           ~/.gitlibs
           ~/.deps.clj
-        key: cljdeps-test-${{ hashFiles('project.clj') }}
+        key: cljdeps-test-${{ hashFiles('**/project.clj') }}
         restore-keys: cljdeps-test-
     # Hack allowing compliance_tests.cljs to compile without generated tests
     - run: |
@@ -101,7 +101,7 @@ jobs:
           ~/.m2/repository
           ~/.gitlibs
           ~/.deps.clj
-        key: cljdeps-test-${{ hashFiles('project.clj') }}
+        key: cljdeps-test-${{ hashFiles('**/project.clj') }}
         restore-keys: cljdeps-test-
     - run: lein gen-compliance :cljs
       working-directory: ./core
@@ -122,3 +122,19 @@ jobs:
         java-version: '11'
     - run: ./gradlew test
       working-directory: ./api
+
+  cloverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    - run: lein gen-compliance :clj
+      working-directory: ./core
+    - run: lein cloverage --codecov
+      working-directory: ./core
+    - uses: codecov/codecov-action@v3
+      with:
+        file: core/target/coverage/codecov.json
