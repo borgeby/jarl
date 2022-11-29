@@ -1,7 +1,9 @@
 (ns jarl.utils
   (:require [clojure.walk :as walk]
-            [cljc.java-time.instant :as i]
-            [tick.core :as t]
+            #?(:clj  [cljc.java-time.instant :as i]
+               :cljs [cljc.java-time.instant :as i])
+            #?(:clj  [tick.core :as t]
+               :cljs [tick.core :as t])
             #?(:cljs [clojure.string :as str])
             #?(:cljs [cljs.math])
             #?(:cljs [jarl.types :as types]))
@@ -37,12 +39,14 @@
      :cljs (+  (*  (i/get-epoch-second instant) 1000000000) (t/nanosecond instant))))
 
 (defn ns->instant [ns]
-  (i/of-epoch-second 0 ns))
+  #?(:cljr    (println "not implemented ns->instant")
+     :default (i/of-epoch-second 0 ns)))
 
 (defn time-now-ns
   "Current time nanos — not as precise as its OPA/Go equivalent function, but not in any way that matters"
   []
-  (instant->ns (t/now)))
+  #?(:cljr    (println "not implemented time-now-ns")
+     :default (instant->ns (t/now))))
 
 ; Some tricks / hacks for unicode handling in Javascript / ClojureScript:
 ; https://dev.to/coolgoose/quick-and-easy-way-of-counting-utf-8-characters-in-javascript-23ce

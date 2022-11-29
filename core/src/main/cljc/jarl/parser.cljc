@@ -1,9 +1,9 @@
 (ns jarl.parser
-  (:require [taoensso.timbre :as log]
-            [jarl.builtins.registry :as builtins]
+  (:require [jarl.builtins.registry :as builtins]
             [jarl.encoding.json :as json]
             [jarl.eval :as eval]
             [jarl.formatting :refer [sprintf]]
+            [jarl.logging :as log]
             [jarl.state :as state]))
 
 (declare make-block)

@@ -46,7 +46,8 @@
                          :resource-paths ["src/test/resources"]
                          :jvm-opts       ["-Djdk.attach.allowAttachSelf"]
                          :plugins        [[lein-ancient "1.0.0-RC3"]
-                                          [lein-cloverage "1.2.4"]]
+                                          [lein-cloverage "1.2.4"]
+                                          [lein-clr "0.2.2"]]
                          :eastwood       {:exclude-linters    [:constant-test]
                                           :exclude-namespaces [test.profile]}}
              :test      {:injections [(require 'test.config)
@@ -60,4 +61,8 @@
                                          ; more recent version provided by shadow-cljs
                                          :exclusions [com.google.javascript/closure-compiler-unshaded]]
                                         [thheller/shadow-cljs "2.20.14"]]
-                         :source-paths ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]}})
+                         :source-paths ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]}
+             :clr       {:main jarl.core-clr
+                         :dependencies [[org.clojure.clr/data.json "2.4.0"]]
+                         :source-paths ["src/main/cljr" "src/main/cljc" "src/test/cljr" "src/test/cljc"]}}
+  :clr {:main-cmd ["/Users/anderseknert/.dotnet/tools/Clojure.Main"]})

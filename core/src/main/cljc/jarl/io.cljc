@@ -35,5 +35,5 @@
 (defn read-file
   "Read file at path as string"
   [path]
-  #?(:clj  (slurp path)
-     :cljs (.readFileSync fs (path-resolve path))))
+  #?(:default (slurp path)
+     :cljs    (.readFileSync fs (path-resolve path))))

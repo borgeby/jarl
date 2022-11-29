@@ -1,19 +1,12 @@
-(ns jarl.core
+(ns jarl.core-clr
   (:require [clojure.string :as str]
-            [clojure.tools.cli :as cli]
-            [jarl.bundle :as bundle]
             [jarl.logging :as logging]
             [jarl.encoding.json :as json]
             [jarl.io :as jio]
             [jarl.parser :as parser]
             [jarl.eval :as evaluator]
-            [jarl.formatting :as fmt]
-            #?(:cljs [cljs.nodejs :as nodejs]))
-  #?(:clj (:import (clojure.lang ExceptionInfo)))
-  #?(:clj (:gen-class)))
-
-#?(:cljs (enable-console-print!))
-#?(:cljs (nodejs/enable-util-print!))
+            [jarl.formatting :as fmt])
+  (:import (clojure.lang ExceptionInfo)))
 
 (def cli-options
   [["-i" "--input string" "set input file path"
@@ -42,9 +35,12 @@
                  "Use -h option for usage"])
        (str/join \newline)))
 
+; in lieu of (cli/parse-opts args cli-options), fake/static for now
+(def args {:arguments []})
+
 (defn parse-args
   [args]
-  (let [{:keys [options arguments errors summary]} (cli/parse-opts args cli-options)]
+  (let [{:keys [options arguments errors summary]} args]
     (cond
       errors
       {:exit-message (error-msg errors)}
@@ -61,7 +57,7 @@
 (defn abort [msg]
   (throw (ex-info msg {})))
 
-(defn- eval-plan [info entrypoint input data]
+(defn- eval-provided-plan [info entrypoint data input]
   (if (some? entrypoint)
     (evaluator/eval-plan info entrypoint data input)
     (let [plans (:plans info)]
@@ -80,19 +76,17 @@
         (if ok?
           (println exit-message)
           (abort exit-message))
-        (let [ir (if (str/ends-with? path ".tar.gz") (bundle/extract-plan path) (jio/read-file path))
+        (let [ir (jio/read-file path)
               {:keys [data input verbose]} options]
           (logging/set-log-level (if verbose :debug :warn))
           (if (nil? ir)
             (abort (error-msg "no valid plan file found"))
             (let [strict (:strict-builtin-errors options)
                   info (cond-> (parser/parse-json ir) (some? strict) (assoc :strict-builtin-errors strict))
-                  result (eval-plan info entrypoint data input)]
+                  result (eval-provided-plan info entrypoint data input)]
               (case (:format options)
                 "raw" (println (json/write-str (get-in result [0 "result"])))
                 (println (json/write-str result))))))))
     (catch ExceptionInfo e
       (println (ex-message e))
-      #?(:clj (System/exit 1)))))
-
-#?(:cljs (set! *main-cli-fn* -main))
+      (System.Environment.Exit 1))))

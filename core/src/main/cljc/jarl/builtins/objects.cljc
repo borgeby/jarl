@@ -109,20 +109,3 @@
                          (cond-> path
                                  (string? path) (str/split #"/"))) paths)]
     (reduce ->dissoced object vectors)))
-
-; Modified version of:
-; https://stackoverflow.com/questions/38893968/how-to-select-keys-in-nested-maps-in-clojure
-(defn select-keys* [m paths]
-  (let [parts (mapv #(str/split % #"/") paths)
-        converted (mapv #(mapv str->int %) parts)]
-    (into {} (filter #(-> % val (not= :not-found))
-            (into {} (map (fn [p]
-                            (let [v (get-in m p :not-found)]
-                              ; TODO: assoc-in does not work for arrays/numeric values
-                              (assoc-in {} p v))))
-                  converted)))))
-
-; TODO: Does not currently build nested objects
-(defn builtin-json-filter
-  [{[object paths] :args}]
-  (select-keys* object paths))

@@ -5,7 +5,7 @@
 (ns vendor.semver.core
   (:require [clojure.string :as str]))
 
-(defrecord Version
+(defrecord Semver
   [major minor patch pre-release metadata])
 
 (def ^{:private true} semver
@@ -22,7 +22,7 @@
           major-version (parse-long major)
           minor-version (parse-long minor)
           patch-version (parse-long patch)]
-      (Version. major-version minor-version patch-version pre-release metadata))))
+      (Semver. major-version minor-version patch-version pre-release metadata))))
 
 (defn- compare-part
   [x y]

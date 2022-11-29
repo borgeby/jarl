@@ -1,6 +1,6 @@
 (ns jarl.builtins.numbers
-  (:require #?(:clj  [clojure.math :as math]
-               :cljs [cljs.math    :as math])
+  (:require #?(:cljs    [cljs.math    :as math]
+               :default [clojure.math :as math])
             [jarl.exceptions :as errors]
             [jarl.builtins.utils :refer [possibly-int]]
             [jarl.types :as types]
@@ -42,24 +42,16 @@
 
 (defn builtin-round
   [{[x] :args}]
-  (cond
-    (int? x) x
-    (double? x) (math/round ^Double x)
-    (float? x) (math/round ^Float x)))
+  (math/round (double x)))
 
 (defn builtin-ceil
   [{[x] :args}]
-  (cond
-    (int? x) x
-    (double? x) (math/round (math/ceil ^Double x))
-    (float? x) (math/round (math/ceil ^Float x))))
+  #?(:cljr    (math/round (math/ceiling (double x))) ; this is a CLR bug
+     :default (math/round (math/ceil x))))
 
 (defn builtin-floor
   [{[x] :args}]
-  (cond
-    (int? x) x
-    (double? x) (math/round (math/floor ^Double x))
-    (float? x) (math/round (math/floor ^Float x))))
+  (math/round (math/floor (double x))))
 
 (defn builtin-abs
   [{[x] :args}]
