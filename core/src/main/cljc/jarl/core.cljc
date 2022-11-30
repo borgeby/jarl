@@ -61,7 +61,7 @@
 (defn abort [msg]
   (throw (ex-info msg {})))
 
-(defn- eval-provided-plan [info entrypoint data input]
+(defn- eval-plan [info entrypoint input data]
   (if (some? entrypoint)
     (evaluator/eval-plan info entrypoint data input)
     (let [plans (:plans info)]
@@ -89,7 +89,7 @@
             (abort (error-msg "no valid plan file found"))
             (let [strict (:strict-builtin-errors options)
                   info (cond-> (parser/parse-json ir) (some? strict) (assoc :strict-builtin-errors strict))
-                  result (eval-provided-plan info entrypoint data input)]
+                  result (eval-plan info entrypoint data input)]
               (case (:format options)
                 "raw" (println (json/write-str (get-in result [0 "result"])))
                 (println (json/write-str result))))))))
