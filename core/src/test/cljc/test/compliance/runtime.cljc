@@ -23,18 +23,14 @@
     (reduce eval-entry-point {} entry-points)))
 
 (defn eval-entry-points-for-errors [info entry-points data input]
-  (loop [entry-points entry-points
-         errors []]
-    (if (empty? entry-points)
-      errors
-      (let [entry-point (first entry-points)
-            plan (get-plan (get info :plans) entry-point)
-            errors (try
-                     (plan info data input)                 ; We don't care about the result set
-                     errors
-                     (catch ExceptionInfo e                 ; Blow up on non-jarl exceptions
-                       (conj errors e)))]
-        (recur (next entry-points) errors)))))
+  (let [try-error (fn [errors entry-point]
+                     (let [plan (get-plan (get info :plans) entry-point)]
+                       (try
+                         (plan info data input)                 ; We don't care about the result set
+                         errors
+                         (catch ExceptionInfo e                 ; Blow up on non-jarl exceptions
+                           (conj errors e)))))]
+    (reduce try-error [] entry-points)))
 
 (defn- match-one-of [provided-msg expected-msg]
   (when (and (str/includes? provided-msg "one of") (str/includes? expected-msg "one of"))
