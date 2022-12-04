@@ -1,6 +1,7 @@
 (ns jarl.state
   (:require [taoensso.timbre :as log]
             [jarl.runtime.environment :as environment]
+            [jarl.time :as time]
             [jarl.utils :as utils]))
 
 (defn- upsert-local [value stack index]
@@ -87,7 +88,7 @@
 (defn init-state [info input data]
   (cond-> info
           ; if builtin-context has been provided already, use that
-          (not (contains? info :builtin-context)) (assoc :builtin-context {:time-now-ns (utils/time-now-ns)
+          (not (contains? info :builtin-context)) (assoc :builtin-context {:time-now-ns (time/now-ns)
                                                                            :env         environment/*env*})
           true (assoc :local (cond-> {}
                                      (some? input) (assoc 0 input)

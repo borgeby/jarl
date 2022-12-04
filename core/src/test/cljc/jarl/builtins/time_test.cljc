@@ -1,21 +1,20 @@
 (ns jarl.builtins.time-test
   (:require [clojure.test :refer [deftest]]
             [tick.core :as t]
-            [jarl.utils :refer [instant->ns ns->instant]]
-            [test.utils :refer [testing-builtin]]
-            [jarl.builtins.time :refer [parse-iso-datetime parse-iso-zoned-datetime]]))
+            [jarl.time :as time]
+            [test.utils :refer [testing-builtin]]))
 
 (deftest builtin-time-add-date-test
   (testing-builtin "time.add_date"
     [0 1 1 1] 34300800000000000))
 
 (deftest builtin-time-clock-test
-  (let [ns (instant->ns (parse-iso-datetime "2022-01-01T01:02:03"))]
+  (let [ns (time/instant->ns (time/parse-iso-datetime "2022-01-01T01:02:03"))]
     (testing-builtin "time.clock"
       [ns] [1 2 3])))
 
 (deftest builtin-time-date-test
-  (let [ns (instant->ns (parse-iso-datetime "2022-03-04T01:02:03"))]
+  (let [ns (time/instant->ns (time/parse-iso-datetime "2022-03-04T01:02:03"))]
     (testing-builtin "time.date"
       [ns] [2022 3 4])))
 
@@ -30,7 +29,7 @@
     {:args [] :builtin-context {:time-now-ns 1655283296943749000}} 1655283296943749000))
 
 (deftest builtin-time-weekday-test
-  (let [ns (instant->ns (parse-iso-datetime "2022-01-01T00:00:00"))]
+  (let [ns (time/instant->ns (time/parse-iso-datetime "2022-01-01T00:00:00"))]
     (testing-builtin "time.weekday"
       [1655283296943749000]      "Wednesday"
       [1656284296943749000]      "Sunday"
@@ -52,8 +51,8 @@
     ["33ks"]                    [:jarl.exceptions/builtin-exception "time: unknown unit \"ks\" in duration \"33ks\""]))
 
 (deftest builtin-time-parse-ns-test
-  (let [ref-time (instant->ns (parse-iso-zoned-datetime "2022-01-01T12:12:12.00-00:00")) ; 1641039132000000000
-        ref-time-tz-offset (instant->ns (-> (ns->instant ref-time) (t/>> (t/of-hours 8))))]
+  (let [ref-time (time/instant->ns (time/parse-iso-zoned-datetime "2022-01-01T12:12:12.00-00:00")) ; 1641039132000000000
+        ref-time-tz-offset (time/instant->ns (-> (time/ns->instant ref-time) (t/>> (t/of-hours 8))))]
     (testing-builtin "time.parse_ns"
       ["Mon Jan 02 15:04:05 2006" "Sat Jan 01 12:12:12 2022"]             ref-time
       ; ANSIC
