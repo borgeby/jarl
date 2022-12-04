@@ -283,6 +283,8 @@ Note: Only basic functionality supported currently, i.e. sending requests using 
 * `raw_body`
 * `headers`
 * `enable_redirect`
+* `force_cache`
+* `force_cache_duration_seconds`
 * `force_json_decode`
 * `force_yaml_decode`
 * `raise_error`
@@ -302,8 +304,6 @@ Note: Only basic functionality supported currently, i.e. sending requests using 
 * `tls_client_key_file`
 * `tls_server_name`
 * `cache`
-* `force_cache`
-* `force_cache_duration_seconds`
 * `caching_mode`
 
 The various TLS options do not seem that urgent at this point in time. We'll definitely want to have caching in place

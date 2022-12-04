@@ -78,7 +78,21 @@
               "headers"     {}
               "raw_body"    "{\"foo\":\"bar\"}"
               "status"      "200 OK"
-              "status_code" 200})))))
+              "status_code" 200}))))
+
+  (testing "force cache"
+    (let [counter (atom 0)
+          req {"method" "get" "url" "http://borge.by" "force_cache" true "force_cache_duration_seconds" 30}]
+      (with-redefs [http-client/send-request
+                    (fn [_]
+                      (swap! counter inc)
+                      {:status 200 :headers {"content-type" "application/json"} :body "{\"foo\":\"bar\"}"})]
+        (let [res {"body" {"foo" "bar"} "headers" {"content-type" "application/json"}
+                   "raw_body" "{\"foo\":\"bar\"}" "status" "200 OK" "status_code" 200}]
+          (is (= (builtin-http-send {:args [req]}) res))
+          (is (= (builtin-http-send {:args [req]}) res))
+          (is (= (builtin-http-send {:args [req]}) res))
+          (is (= @counter 1)))))))
 
 (deftest http-send-error-handling-test
   (testing "unknown host error"
