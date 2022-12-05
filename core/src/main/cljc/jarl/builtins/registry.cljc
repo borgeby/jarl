@@ -5,6 +5,7 @@
             [jarl.builtins.comparison      :as comparison]
             [jarl.builtins.conversions     :as conversions]
             [jarl.builtins.crypto          :as crypto]
+            [jarl.builtins.glob            :as glob]
             [jarl.builtins.graphs          :as graphs]
             [jarl.builtins.numbers         :as numbers]
             [jarl.builtins.objects         :as objects]
@@ -99,6 +100,9 @@
       "regex.is_valid"                    regex/builtin-regex-is-valid
       "regex.split"                       regex/builtin-regex-split
       "regex.find_n"                      regex/builtin-regex-find-n
+      ; glob
+      ;"glob.match"                       glob/builtin-glob-match
+      "glob.quote_meta"                   glob/builtin-glob-quote-meta
       ; types
       "is_number"                         types/builtin-is-number
       "is_string"                         types/builtin-is-string
@@ -248,8 +252,8 @@
       "contains"                          strings/builtin-contains
       "endswith"                          strings/builtin-endswith
       "format_int"                        strings/builtin-format-int
-      ;"indexof"                           strings/builtin-indexof
-      ;"indexof_n"                         strings/builtin-indexof-n
+      ;"indexof"                          strings/builtin-indexof
+      ;"indexof_n"                        strings/builtin-indexof-n
       "lower"                             strings/builtin-lower
       "replace"                           strings/builtin-replace
       "strings.reverse"                   strings/builtin-strings-reverse
@@ -263,6 +267,9 @@
       "trim_suffix"                       strings/builtin-trim-suffix
       "trim_space"                        strings/builtin-trim-space
       "upper"                             strings/builtin-upper
+      ; glob
+      ;"glob.match"                       glob/builtin-glob-match
+      "glob.quote_meta"                   glob/builtin-glob-quote-meta
       ; conversion
       "to_number"                         conversions/builtin-to-number
       "cast_array"                        conversions/builtin-cast-array   ; deprecated
