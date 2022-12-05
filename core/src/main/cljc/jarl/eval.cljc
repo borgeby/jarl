@@ -86,22 +86,16 @@
           (break state))))))
 
 (defn- create-func-args [state keys]
-  (loop [i 0
-         args {}
-         keys keys]
-    (if (empty? keys)
-      args
-      (let [key (first keys)]
-        (if (state/contains-value? state key)
-          (recur (inc i) (assoc args i (state/get-value state key)) (next keys))
-          (recur (inc i) args (next keys)))))))
+  (reduce-kv (fn [args i key] (cond-> args (state/contains-value? state key) (assoc i (state/get-value state key))))
+             {}
+             keys))
 
 (defn eval-CallDynamicStmt [target path args file row col state]
   (let [path (map #(state/get-value state %) path)
         func-name (str/join "." path)]
     (log/debugf "CallDynamicStmt - calling dynamic func <%s>" func-name)
     (let [func (state/get-func state path)
-          args (create-func-args state (map (fn [val] {"type" "local" "value" val}) args))
+          args (create-func-args state (mapv (fn [val] {"type" "local" "value" val}) args))
           location {:file (get-in state [:static "files" file "value"]) :row row :col col}]
       (if (nil? func)
         (break state)                                       ; dynamic func miss
@@ -371,15 +365,16 @@
 
 (defn eval-stmts [stmts state]
   (log/debug "executing statements")
-  (loop [stmts stmts
-         state state]
-    (let [stmts-count (count stmts)]
-      (if (or (zero? stmts-count) (contains? state :break-index))
-        (do
-          (when (pos? stmts-count)
-            (log/tracef "skipping %d statement(s)" stmts-count))
-          state)
-        (recur (next stmts) ((first stmts) state))))))
+  (reduce-kv (fn [state* i stmt]
+               (if (contains? state* :break-index)
+                 (do
+                   (let [stmts-count (- (count stmts) i)]
+                     (when (pos? stmts-count)
+                       (log/tracef "skipping %d statement(s)" stmts-count)))
+                   (reduced state*))
+                 (stmt state*)))
+             state
+             stmts))
 
 (defn eval-block [stmts state]
   (log/debug "block - executing")
@@ -398,26 +393,21 @@
 
 (defn eval-blocks [blocks state]
   (log/debug "blocks - executing")
-  (loop [blocks blocks
-         state state]
-    (if (or (contains? state :break-index) (empty? blocks))
-      (do
-        (let [block-count (count blocks)]
-          (when (pos? block-count)
-            (log/tracef "skipping %d block(s)" block-count)))
-        state)
-      (recur (next blocks) ((first blocks) state)))))
+  (reduce-kv (fn [state* i block]
+               (if (contains? state* :break-index)
+                 (do
+                   (let [block-count (- (count blocks) i)]
+                     (when (pos? block-count)
+                       (log/tracef "skipping %d block(s)" block-count)))
+                   (reduced state*))
+                 (block state*)))
+             state
+             blocks))
 
 (defn- map-args-by-params [params args]
-  (loop [i 0
-         params params
-         mapped-args {}]
-    (if (empty? params)
-      mapped-args
-      (let [param (first params)]
-        (if (contains? args i)
-          (recur (inc i) (next params) (assoc mapped-args param (get args i)))
-          (recur (inc i) (next params) mapped-args))))))
+  (reduce-kv (fn [mapped i param] (cond-> mapped (contains? args i) (assoc param (get args i))))
+             {}
+             params))
 
 (defn eval-func [name params return-index blocks args state]
   (log/debugf "func - executing <%s>" name)

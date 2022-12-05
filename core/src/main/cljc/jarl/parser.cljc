@@ -221,8 +221,7 @@
 
 (defn make-stmts [stmts-info]
   (log/debug "making stmts")
-  (let [stmts (doall (for [stmt-info stmts-info]
-                       (make-stmt stmt-info)))]
+  (let [stmts (mapv make-stmt stmts-info)]
     (fn [state]
       (eval/eval-stmts stmts state))))
 
@@ -234,8 +233,7 @@
 
 (defn make-blocks [blocks-info]
   (log/debug "making blocks")
-  (let [blocks (doall (for [block-info blocks-info]
-                        (make-block block-info)))]
+  (let [blocks (mapv make-block blocks-info)]
     (fn [state]
       (eval/eval-blocks blocks state))))
 
@@ -271,8 +269,7 @@
 
 (defn make-plans [{:strs [plans]}]
   (log/debug "making plans")
-  (into-array (doall (for [plan-info plans]
-                       (make-plan plan-info)))))
+  (mapv make-plan plans))
 
 (defn make-func [{:strs [name path params] return-index "return" blocks-info "blocks"}]
   (let [blocks (make-blocks blocks-info)]
