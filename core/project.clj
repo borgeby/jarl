@@ -1,6 +1,6 @@
 (defproject jarl "0.1.0-SNAPSHOT"
   :description "Jarl, The JVM Alternative for the Rego Language"
-  :url "https://github.com/johanfylling/jarl"
+  :url "https://github.com/borgeby/jarl"
   :license {:name "Apache License Version 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [; clj
@@ -16,7 +16,7 @@
                  [org.clojure/tools.cli "1.0.214"]
                  [metosin/malli "0.9.2" :exclusions [org.clojure/tools.reader]]
                  [camel-snake-kebab "0.4.3"]
-                 [com.taoensso/timbre "6.0.2"]
+                 [com.taoensso/timbre "6.0.4"]
                  [by.borge/clj-json-pointer "1.0.0"]
                  [tick "0.5.0"]]
   :repl-options {:init-ns jarl.core}
@@ -59,5 +59,5 @@
              :cljs      {:dependencies [[org.clojure/clojurescript "1.11.60"
                                          ; more recent version provided by shadow-cljs
                                          :exclusions [com.google.javascript/closure-compiler-unshaded]]
-                                        [thheller/shadow-cljs "2.20.12"]]
+                                        [thheller/shadow-cljs "2.20.14"]]
                          :source-paths ["src/main/cljs" "src/main/cljc" "src/test/cljs" "src/test/cljc"]}})
