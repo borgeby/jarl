@@ -4,20 +4,14 @@
             [jarl.utils :as utils]))
 
 (defn- upsert-local [value stack index]
-  (if (or (nil? stack) (empty? stack))
-    value
-    (loop [stack stack                                      ; we process the stack bottom->top
-           aggregate value]
-      (if (empty? stack)
-        aggregate
-        (let [[stack-index stack-path stack-value] (first stack)
-              aggregate (if (= stack-index index)
-                          (do (log/tracef "with-stack hit for <%d>" index)
-                              (if (empty? stack-path)
-                                stack-value
-                                (utils/indiscriminate-assoc-in aggregate stack-path stack-value)))
-                          aggregate)]
-          (recur (next stack) aggregate))))))
+  (let [upsert (fn [aggregate [stack-index stack-path stack-value]]   ; we process the stack bottom->top
+                 (if (= stack-index index)
+                   (do (log/tracef "with-stack hit for <%d>" index)
+                       (if (empty? stack-path)
+                         stack-value
+                         (utils/indiscriminate-assoc-in aggregate stack-path stack-value)))
+                   aggregate))]
+    (reduce upsert value stack)))
 
 (defn get-local
   ([{stack :with-stack local :local} index]
