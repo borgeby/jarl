@@ -1,6 +1,5 @@
 package by.borge.jarl;
 
-import clojure.lang.PersistentHashMap;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -30,7 +29,7 @@ public class JarlTests {
         var file = new File("../core/src/test/resources/rego/simple/plan.json");
         var jarl = Jarl.builder(file).build();
         var plan = jarl.getPlan("simple/p");
-        var input = (Map) PersistentHashMap.create(Map.of("x", 1337));
+        var input = Map.of("x", 1337);
         Map<String, ?> data = Map.of();
         var resultSet = plan.eval(data, input);
         assertEquals(new ResultSet(new Result(true)), resultSet);
