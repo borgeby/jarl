@@ -15,11 +15,11 @@
 (defn -plan-init [info plan entry-point]
   [[info] [info plan entry-point]])
 
-(defn -plan-eval [^by.borge.jarl.internal.InternalPlanImpl this input data]
+(defn -plan-eval [^by.borge.jarl.internal.InternalPlanImpl this data input]
   (let [[info plan entry-point] (.state this)]
     (if (nil? plan)
       (throw (Exception. (format "plan with entry-point '%s' doesn't exist" entry-point)))
-      (plan info input data))))
+      (plan info data input))))
 
 (defn -plans-toString [^by.borge.jarl.internal.InternalPlanImpl this]
   (let [[_ _ entry-point] (.state this)]
