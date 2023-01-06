@@ -1,6 +1,7 @@
 (ns jarl.api
   (:require [jarl.parser :as parser]
-            [jarl.eval :as eval]))
+            [jarl.eval :as eval])
+  (:import (java.util Map List Set)))
 
 (gen-class
   :name "by.borge.jarl.internal.InternalPlanImpl"
@@ -15,11 +16,18 @@
 (defn -plan-init [info plan entry-point]
   [[info] [info plan entry-point]])
 
+(defn- sanitize [data]
+  (cond
+    (instance? Map data) (reduce-kv (fn [d k v] (assoc d k (sanitize v))) {} data)
+    (instance? List data) (reduce (fn [d v] (conj d (sanitize v))) [] data)
+    (instance? Set data) (reduce (fn [d v] (conj d (sanitize v))) #{} data)
+    :else data))
+
 (defn -plan-eval [^by.borge.jarl.internal.InternalPlanImpl this input data]
   (let [[info plan entry-point] (.state this)]
     (if (nil? plan)
       (throw (Exception. (format "plan with entry-point '%s' doesn't exist" entry-point)))
-      (plan info input data))))
+      (plan info (sanitize input) (sanitize data)))))
 
 (defn -plans-toString [^by.borge.jarl.internal.InternalPlanImpl this]
   (let [[_ _ entry-point] (.state this)]

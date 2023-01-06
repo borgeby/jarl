@@ -494,8 +494,8 @@
   (let [plan (some (fn [[name plan]] (when (= name entry-point) plan)) (:plans info))]
     plan))
 
-(defn eval-plan [info entry-point data input]
+(defn eval-plan [info entry-point input data]
   (let [plan (find-plan info entry-point)]
     (when (nil? plan)
       (throw (errors/undefined-ex "no plan for entrypoint: %s" entry-point)))
-    (plan info data input)))
+    (plan info input data)))

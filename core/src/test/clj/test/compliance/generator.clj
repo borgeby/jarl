@@ -80,7 +80,7 @@
                ~'info (~'parser/parse ~'plan ~'compliance-builtin-resolver)
                ~'data ~data
                ~'input ~input
-               ~'result (~'eval-entry-points-for-results ~'info ~entry-points ~'data ~'input)]
+               ~'result (~'eval-entry-points-for-results ~'info ~entry-points ~'input ~'data)]
          (~'is (~'= ~'result ~want-result))))))
 
 (defn test-case-want-error [note data input entry-points want-error-code want-error strict-error]
@@ -93,7 +93,7 @@
                                 (~'true? ~'strict-error) (~'assoc :strict-builtin-errors true))
                ~'data ~data
                ~'input ~input
-               ~'result (~'eval-entry-points-for-errors ~'info ~entry-points ~'data ~'input)
+               ~'result (~'eval-entry-points-for-errors ~'info ~entry-points ~'input ~'data)
                ~'jarl-errors (~'filter (~'error-filter ~want-error-code ~want-error) ~'result)]
           ; There might be other errors generated than what is expected by the test case definition, but the test case
           ; doesn't know we're executing multiple entry-points, so we can't count unexpected JarlExceptions as violations

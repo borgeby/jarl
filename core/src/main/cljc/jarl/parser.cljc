@@ -258,7 +258,7 @@
   (log/tracef "plan: %s" plan-info)
   (let [blocks (make-blocks blocks-info)]
     ; return a [name fn] pair
-    [name (fn [info data input]
+    [name (fn [info input data]
             (let [state (state/init-state info input data)]
               (log/debugf "Plan - executing '%s'" name)
               (let [state (blocks state)
