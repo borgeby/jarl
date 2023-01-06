@@ -15,18 +15,18 @@
 (defn- get-plan [plans name]
   (get (first (filter #(= name (get % 0)) plans)) 1))
 
-(defn eval-entry-points-for-results [info entry-points data input]
+(defn eval-entry-points-for-results [info entry-points input data]
   (let [eval-entry-point (fn [acc entry-point]
                            (let [plan (-> info :plans (get-plan entry-point))
-                                 entry-point-result (get (first (plan info data input)) "result")]
+                                 entry-point-result (get (first (plan info input data)) "result")]
                              (assoc acc entry-point entry-point-result)))]
     (reduce eval-entry-point {} entry-points)))
 
-(defn eval-entry-points-for-errors [info entry-points data input]
+(defn eval-entry-points-for-errors [info entry-points input data]
   (let [try-error (fn [errors entry-point]
                      (let [plan (get-plan (get info :plans) entry-point)]
                        (try
-                         (plan info data input)                 ; We don't care about the result set
+                         (plan info input data)                 ; We don't care about the result set
                          errors
                          (catch ExceptionInfo e                 ; Blow up on non-jarl exceptions
                            (conj errors e)))))]

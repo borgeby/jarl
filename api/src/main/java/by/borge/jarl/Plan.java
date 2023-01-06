@@ -17,11 +17,11 @@ public class Plan {
     /**
      * Evaluate this plan given <code>input</code> and <code>data</code>.
      *
-     * @param data the data document
      * @param input the input value
+     * @param data the data document
      * @return a {@link ResultSet} representing the evaluation result of this Plan
      */
-    public ResultSet eval(Map<String, ?> data, Object input) {
-        return ResultSet.fromResultsList(plan.eval(data, input));
+    public ResultSet eval(Object input, Map<String, ?> data) {
+        return ResultSet.fromResultsList(plan.eval(input, data));
     }
 }

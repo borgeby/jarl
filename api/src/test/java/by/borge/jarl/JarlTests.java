@@ -48,7 +48,7 @@ public class JarlTests {
         var jarl = Jarl.builder(file).build();
         var plan = jarl.getPlan("test/echo");
         Map<String, ?> data = dataAttributes != null ? Map.of("attributes", dataAttributes) : null;
-        var resultSet = plan.eval(data, input);
+        var resultSet = plan.eval(input, data);
 
         assertEquals(1, resultSet.getResults().size());
         var value = resultSet.getFirst().getValueAsMap();

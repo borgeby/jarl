@@ -63,12 +63,12 @@
 
 (defn- eval-plan [info entrypoint input data]
   (if (some? entrypoint)
-    (evaluator/eval-plan info entrypoint data input)
+    (evaluator/eval-plan info entrypoint input data)
     (let [plans (:plans info)]
       (case (count plans)
         0 (abort (error-msg "plan contains no entrypoints/plans"))
         1 (let [entrypoint (first (first plans))]
-            (evaluator/eval-plan info entrypoint data input))
+            (evaluator/eval-plan info entrypoint input data))
         (let [msg (fmt/sprintf "plan contains more than one entrypoint; please specify which one of %s to use"
                                (pr-str (map first plans)))]
           (abort (error-msg msg)))))))
@@ -89,7 +89,7 @@
             (abort (error-msg "no valid plan file found"))
             (let [strict (:strict-builtin-errors options)
                   info (cond-> (parser/parse-json ir) (some? strict) (assoc :strict-builtin-errors strict))
-                  result (eval-plan info entrypoint data input)]
+                  result (eval-plan info entrypoint input data)]
               (case (:format options)
                 "raw" (println (json/write-str (get-in result [0 "result"])))
                 (println (json/write-str result))))))))

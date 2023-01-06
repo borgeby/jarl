@@ -12,7 +12,7 @@
           plans (get info :plans)]
       (let [[name plan] (get plans 0)]
         (is (= name "simple/p"))
-        (let [result-set (plan info {} {"x" 42})]
+        (let [result-set (plan info {"x" 42} {})]
           (is (= result-set '({"result" true})))))
       (let [[name plan] (get plans 1)]
         (is (= name "simple/q"))
@@ -26,7 +26,7 @@
       (is (= (count plans) 1))
       (let [[name plan] (get plans 0)]
         (is (= name "dta"))
-        (let [result-set (plan info {"foo" "bar"} {})]
+        (let [result-set (plan info {} {"foo" "bar"})]
           (is (= result-set '({"result" {"p" true}}))))))))
 
 (deftest set-composition-test
@@ -86,7 +86,7 @@
     (let [info (parse-json (slurp (io/resource "rego/aggregates/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "agg"))
-      (let [result-set (plan info {"a" [1 2 3 4]} {})]
+      (let [result-set (plan info {} {"a" [1 2 3 4]})]
         (is (= result-set '({"result" {"p" [4]
                                        "q" [1 2 3 4]
                                        "r" true}})))))))
@@ -96,5 +96,5 @@
     (let [info (parse-json (slurp (io/resource "rego/with/plan.json")))
           [name plan] (first (get info :plans))]
       (is (= name "w"))
-      (let [result-set (plan info {"a" "bar"} {})]
+      (let [result-set (plan info {} {"a" "bar"})]
         (is (= result-set '({"result" {"p" true}})))))))

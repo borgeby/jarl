@@ -23,11 +23,11 @@
     (instance? Set data) (reduce (fn [d v] (conj d (sanitize v))) #{} data)
     :else data))
 
-(defn -plan-eval [^by.borge.jarl.internal.InternalPlanImpl this data input]
+(defn -plan-eval [^by.borge.jarl.internal.InternalPlanImpl this input data]
   (let [[info plan entry-point] (.state this)]
     (if (nil? plan)
       (throw (Exception. (format "plan with entry-point '%s' doesn't exist" entry-point)))
-      (plan info (sanitize data) (sanitize input)))))
+      (plan info (sanitize input) (sanitize data)))))
 
 (defn -plans-toString [^by.borge.jarl.internal.InternalPlanImpl this]
   (let [[_ _ entry-point] (.state this)]
