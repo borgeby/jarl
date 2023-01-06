@@ -24,19 +24,19 @@ public class JarlTests {
                 Arguments.of(true, false),
                 Arguments.of(false, true),
                 Arguments.of(List.of(), List.of()),
-//                Arguments.of(
-//                        List.of(1, "two", 3.0),
-//                        List.of(4, "five", 6.0)),
+                Arguments.of(
+                        List.of(1, "two", 3.0),
+                        List.of(4, "five", 6.0)),
                 Arguments.of(
                         Map.of(
                                 "foo", "bar",
                                 "one", 1,
-//                                "list", List.of(1, 2, 3),
+                                "list", List.of(1, 2, 3),
                                 "map", Map.of("a", "b")),
                         Map.of(
                                 "bar", "foo",
                                 "two", 2,
-//                                "list", List.of(4, 5, 6),
+                                "list", List.of(4, 5, 6),
                                 "map", Map.of("c", "d")))
         );
     }

@@ -19,7 +19,7 @@
 (defn- sanitize [data]
   (cond
     (instance? Map data) (reduce-kv (fn [d k v] (assoc d k (sanitize v))) {} data)
-    (instance? List data) (reduce (fn [d v] (conj d (sanitize v))) '() data)
+    (instance? List data) (reduce (fn [d v] (conj d (sanitize v))) [] data)
     (instance? Set data) (reduce (fn [d v] (conj d (sanitize v))) #{} data)
     :else data))
 
