@@ -3,13 +3,24 @@
             [clojure.set :as set]
             [clojure.string :as str]
             [clojure.walk :as walk]
+            [tick.core :as t]
             [jarl.builtins.utils :as utils]
             [jarl.exceptions :as errors]
             [jarl.encoding.json :as json]
             [jarl.encoding.yaml :as yaml]
-            [jarl.http-client :as http-client]))
+            [jarl.http-client :as http-client]
+            [jarl.time :as time]))
 
 (def ^:private default-req-timeout 5000)
+
+(def inter-query-cache (atom {}))
+
+(defn- force-cache? [req]
+  (and (:force-cache req)
+       (pos-int? (:force-cache-duration-seconds req))))
+
+(defn cache? [req]
+  (or (force-cache? req) (:cache req)))
 
 (defn status-code->status-text [code]
   (case code
@@ -146,23 +157,29 @@
 (defn create-request [request]
   (let [req  (partial get request)
         has? (partial contains? request)]
-    (cond-> {:method               (keyword (str/lower-case (req "method")))
-             :url                  (verify-url (req "url"))
-             :follow-redirects     false
-             :force-json-decode    false
-             :force-yaml-decode    false
-             :insecure?            false
-             :raise-error          true
-             :conn-timeout         default-req-timeout}
-            (has? "enable_redirect")          (assoc :follow-redirects (req "enable_redirect"))
-            (has? "body")                     (assoc :body (to-json (req "body")))
-            (has? "raw_body")                 (assoc :body (req "raw_body"))
-            (has? "headers")                  (assoc :headers (req "headers"))
-            (has? "timeout")                  (assoc :conn-timeout (parse-timeout (req "timeout"))) ; millis here, not OPA nanos
-            (has? "force_json_decode")        (assoc :force-json-decode (req "force_json_decode"))
-            (has? "force_yaml_decode")        (assoc :force-yaml-decode (req "force_yaml_decode"))
-            (has? "raise_error")              (assoc :raise-error (req "raise_error"))
-            (has? "tls_insecure_skip_verify") (assoc :insecure? (req "tls_insecure_skip_verify")))))
+    (cond-> {:method                          (keyword (str/lower-case (req "method")))
+             :url                             (verify-url (req "url"))
+             :force-cache                     false
+             :force-cache-duration-seconds    0
+             :follow-redirects                false
+             :force-json-decode               false
+             :force-yaml-decode               false
+             :insecure?                       false
+             :raise-error                     true
+             :conn-timeout                    default-req-timeout}
+
+            (has? "enable_redirect")              (assoc :follow-redirects (req "enable_redirect"))
+            (has? "body")                         (assoc :body (to-json (req "body")))
+            (has? "raw_body")                     (assoc :body (req "raw_body"))
+            (has? "headers")                      (assoc :headers (req "headers"))
+            (has? "timeout")                      (assoc :conn-timeout (parse-timeout (req "timeout"))) ; millis here, not OPA nanos
+            (has? "cache")                        (assoc :cache (req "cache"))
+            (has? "force_cache")                  (assoc :force-cache (req "force_cache"))
+            (has? "force_cache_duration_seconds") (assoc :force-cache-duration-seconds (req "force_cache_duration_seconds"))
+            (has? "force_json_decode")            (assoc :force-json-decode (req "force_json_decode"))
+            (has? "force_yaml_decode")            (assoc :force-yaml-decode (req "force_yaml_decode"))
+            (has? "raise_error")                  (assoc :raise-error (req "raise_error"))
+            (has? "tls_insecure_skip_verify")     (assoc :insecure? (req "tls_insecure_skip_verify")))))
 
 (defn content-type [response]
   (when-let [ct (get-in response [:headers "content-type"])]
@@ -191,9 +208,54 @@
                   "raw_body"    (:body response)}]
         resp))))
 
+(defn- date [res]
+  (when-let [date (get-in res [:headers "date"])]
+    (time/http-date->instant date)))
+
+(defn- max-age [res]
+  (when-let [cc (get-in res [:headers "cache-control"])]
+    (first (->> (str/split (str/lower-case cc) #",")
+                (remove str/blank?)
+                (map str/trim)
+                (map #(str/split % #"="))
+                (filter #(= "max-age" (first %)))
+                (map second)
+                (map parse-long)))))
+
+(defn- exp-from-headers [res]
+  (if-let [max-age (max-age res)]
+    (some-> (date res) (t/>> (t/new-duration max-age :seconds)))
+    (-> res (get-in [:headers "expires"]) time/http-date->instant)))
+
+(defn- expires-at [{now :time-now-ns} req res]
+  (if (force-cache? req)
+    (t/>> (time/ns->instant now)
+          (t/new-duration (:force-cache-duration-seconds req) :seconds))
+    (or (exp-from-headers res)
+        (time/ns->instant now))))
+
+(defn- maybe-cache [bctx res req]
+  (let [res (cond-> res (:headers res) (update :headers update-keys str/lower-case))]
+    (when (cache? req)
+      (:response (swap! inter-query-cache assoc (hash req) {:response res :exp (expires-at bctx req res)})))
+    res))
+
+; side effect - may remove stale item from cache
+(defn- check-cache [{now :time-now-ns} key]
+  (when (contains? @inter-query-cache key)
+    (let [item (get @inter-query-cache key)
+          exp  (:exp item)]
+      (if (t/>= (time/ns->instant now) exp)
+        (do ; cache item is stale — remove and return nil to fetch anew
+          (swap! inter-query-cache dissoc key)
+          nil)
+        (:response item)))))
+
 (defn builtin-http-send
-  [{[request] :args}]
+  [{[request] :args bctx :builtin-context}]
   (validate-request request)
   (let [req (create-request request)
-        res (http-client/send-request req)]
+        key (hash req)
+        res (or (check-cache bctx key)
+                (maybe-cache bctx (http-client/send-request req) req))]
     (create-response req res)))

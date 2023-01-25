@@ -1,7 +1,7 @@
 (ns jarl.builtins.jwt-test
   (:require [clojure.test :refer [deftest testing is]]
             [jarl.builtins.jwt :as jwt]
-            [jarl.utils :refer [time-now-ns]])
+            [jarl.time :refer [now-ns]])
   (:import (java.util.concurrent TimeUnit)))
 
 ; some basic sanity tests here only - mainly tested by the compliance suite
@@ -31,7 +31,7 @@
 
 (deftest verify-time-test
   (testing "nbf and exp"
-    (let [now (time-now-ns)
+    (let [now (now-ns)
           nbf (dec (nanos->seconds now))
           exp (inc (nanos->seconds now))]
       (is (= (jwt/verify-time {"exp" exp "nbf" nbf} {"time" now}) true)))))

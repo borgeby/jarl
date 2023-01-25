@@ -273,8 +273,6 @@ Note: `crypto.x509.parse_rsa_private_key` currently only works with PKCS8 format
 |-------------------|:---:|:----:|:-------:|
 | `http.send`       |  ✅  |  ❌   |    ❌    |
 
-Note: Only basic functionality supported currently, i.e. sending requests using the (likely) most common options:
-
 **Supported options**
 
 * `url`
@@ -283,11 +281,15 @@ Note: Only basic functionality supported currently, i.e. sending requests using 
 * `raw_body`
 * `headers`
 * `enable_redirect`
+* `force_cache`
+* `force_cache_duration_seconds`
 * `force_json_decode`
 * `force_yaml_decode`
 * `raise_error`
 * `timeout`
 * `tls_insecure_skip_verify`
+* `cache`
+* `caching_mode` (currently always `deserialized`)
 
 **Unsupported options**
 
@@ -301,10 +303,6 @@ Note: Only basic functionality supported currently, i.e. sending requests using 
 * `tls_client_key`
 * `tls_client_key_file`
 * `tls_server_name`
-* `cache`
-* `force_cache`
-* `force_cache_duration_seconds`
-* `caching_mode`
 
 The various TLS options do not seem that urgent at this point in time. We'll definitely want to have caching in place
 however, and that is reasonably the next thing to work on here.
