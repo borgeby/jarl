@@ -7,7 +7,11 @@
 				"package generated\n\np = x {\n  is_boolean(null, x)\n}\n"
 			],
 			"data": {},
-			"want_result": [],
+			"want_result": [
+				{
+					"x": false
+				}
+			],
 			"entrypoints": [
 				"generated"
 			],
@@ -372,7 +376,9 @@
 				}
 			},
 			"want_plan_result": {
-				"generated": {}
+				"generated": {
+					"p": false
+				}
 			}
 		}
 	]
