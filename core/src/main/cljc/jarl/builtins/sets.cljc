@@ -20,3 +20,8 @@
 (defn builtin-union
   [{[s] :args}]
   (apply set/union s))
+
+; deprecated
+(defn builtin-set-diff
+  [{[a b] :args}]
+  (set/difference a b))
