@@ -22,8 +22,8 @@
 				}
 			],
 			"entrypoints": [
-				"test",
-				"generated"
+				"generated",
+				"test"
 			],
 			"plan": {
 				"funcs": {
@@ -35,7 +35,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -52,16 +52,16 @@
 													"value": false
 												},
 												"col": 5,
-												"file": 0,
+												"file": 1,
 												"row": 3
 											},
 											"type": "NotEqualStmt"
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 9,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 4
 											},
@@ -70,7 +70,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -87,7 +87,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -96,7 +96,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -113,7 +113,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -142,7 +142,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 2,
 												"row": 3,
 												"target": 3
 											},
@@ -159,16 +159,16 @@
 													"value": false
 												},
 												"col": 5,
-												"file": 1,
+												"file": 2,
 												"row": 3
 											},
 											"type": "NotEqualStmt"
 										},
 										{
 											"stmt": {
-												"Index": 5,
+												"Index": 11,
 												"col": 1,
-												"file": 1,
+												"file": 2,
 												"row": 3,
 												"target": 4
 											},
@@ -177,7 +177,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 2,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -194,7 +194,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 2,
 												"row": 3,
 												"source": 3
 											},
@@ -203,7 +203,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 2,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -220,7 +220,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 2,
 												"row": 3,
 												"source": 2
 											},
@@ -248,7 +248,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 3,
 												"target": 3
 											},
@@ -265,7 +265,7 @@
 													"value": false
 												},
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 4
 											},
 											"type": "NotEqualStmt"
@@ -273,7 +273,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 5,
 												"target": 4
 											},
@@ -282,7 +282,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 5,
 												"target": 5
 											},
@@ -306,7 +306,7 @@
 																		}
 																	],
 																	"col": 3,
-																	"file": 2,
+																	"file": 0,
 																	"func": "g0.data.test.a.d",
 																	"result": 6,
 																	"row": 5
@@ -316,10 +316,10 @@
 															{
 																"stmt": {
 																	"col": 3,
-																	"file": 2,
+																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 2
+																		"value": 8
 																	},
 																	"object": 5,
 																	"row": 5,
@@ -334,7 +334,7 @@
 													}
 												],
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 5
 											},
 											"type": "BlockStmt"
@@ -342,10 +342,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"key": {
 													"type": "string_index",
-													"value": 1
+													"value": 4
 												},
 												"object": 4,
 												"row": 5,
@@ -374,7 +374,7 @@
 																		}
 																	],
 																	"col": 3,
-																	"file": 2,
+																	"file": 0,
 																	"func": "g0.data.test.e",
 																	"result": 7,
 																	"row": 5
@@ -384,10 +384,10 @@
 															{
 																"stmt": {
 																	"col": 3,
-																	"file": 2,
+																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 4
+																		"value": 10
 																	},
 																	"object": 4,
 																	"row": 5,
@@ -402,7 +402,7 @@
 													}
 												],
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 5
 											},
 											"type": "BlockStmt"
@@ -420,10 +420,10 @@
 																				{
 																					"stmt": {
 																						"col": 3,
-																						"file": 2,
+																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 6
+																							"value": 3
 																						},
 																						"row": 5,
 																						"source": {
@@ -439,7 +439,7 @@
 																						"a": 9,
 																						"b": 4,
 																						"col": 3,
-																						"file": 2,
+																						"file": 0,
 																						"row": 5,
 																						"target": 8
 																					},
@@ -448,7 +448,7 @@
 																				{
 																					"stmt": {
 																						"col": 3,
-																						"file": 2,
+																						"file": 0,
 																						"index": 1,
 																						"row": 5
 																					},
@@ -458,7 +458,7 @@
 																		}
 																	],
 																	"col": 3,
-																	"file": 2,
+																	"file": 0,
 																	"row": 5
 																},
 																"type": "BlockStmt"
@@ -466,7 +466,7 @@
 															{
 																"stmt": {
 																	"col": 3,
-																	"file": 2,
+																	"file": 0,
 																	"row": 5,
 																	"source": {
 																		"type": "local",
@@ -480,7 +480,7 @@
 													}
 												],
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 5
 											},
 											"type": "BlockStmt"
@@ -488,7 +488,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 5,
 												"source": {
 													"type": "local",
@@ -501,7 +501,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -518,7 +518,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 3,
 												"source": 3
 											},
@@ -527,7 +527,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -544,7 +544,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 3,
 												"source": 2
 											},
@@ -572,7 +572,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 8,
 												"target": 3
 											},
@@ -580,9 +580,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 10,
+												"Index": 6,
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 9,
 												"target": 4
 											},
@@ -591,7 +591,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 9,
 												"source": {
 													"type": "local",
@@ -618,7 +618,7 @@
 																	}
 																],
 																"col": 3,
-																"file": 2,
+																"file": 0,
 																"func": "g0.data.generated.r",
 																"result": 6,
 																"row": 9
@@ -628,7 +628,7 @@
 														{
 															"stmt": {
 																"col": 3,
-																"file": 2,
+																"file": 0,
 																"row": 9,
 																"source": {
 																	"type": "local",
@@ -645,7 +645,7 @@
 																		{
 																			"stmt": {
 																				"col": 1,
-																				"file": 2,
+																				"file": 0,
 																				"row": 8,
 																				"source": {
 																					"type": "local",
@@ -658,7 +658,7 @@
 																	]
 																},
 																"col": 3,
-																"file": 2,
+																"file": 0,
 																"local": 1,
 																"path": null,
 																"row": 9,
@@ -672,12 +672,12 @@
 													]
 												},
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"local": 1,
 												"path": [
-													6,
-													1,
-													11
+													3,
+													4,
+													7
 												],
 												"row": 9,
 												"value": {
@@ -694,7 +694,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 8,
 												"source": 3
 											},
@@ -703,7 +703,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 8,
 												"source": {
 													"type": "local",
@@ -720,7 +720,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 8,
 												"source": 2
 											},
@@ -748,7 +748,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 12,
 												"target": 3
 											},
@@ -756,9 +756,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 8,
+												"Index": 2,
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 13,
 												"target": 4
 											},
@@ -767,7 +767,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"row": 13,
 												"source": {
 													"type": "local",
@@ -794,7 +794,7 @@
 																	}
 																],
 																"col": 3,
-																"file": 2,
+																"file": 0,
 																"func": "g0.data.generated.q",
 																"result": 6,
 																"row": 13
@@ -804,7 +804,7 @@
 														{
 															"stmt": {
 																"col": 3,
-																"file": 2,
+																"file": 0,
 																"row": 13,
 																"source": {
 																	"type": "local",
@@ -821,7 +821,7 @@
 																		{
 																			"stmt": {
 																				"col": 1,
-																				"file": 2,
+																				"file": 0,
 																				"row": 12,
 																				"source": {
 																					"type": "local",
@@ -834,7 +834,7 @@
 																	]
 																},
 																"col": 3,
-																"file": 2,
+																"file": 0,
 																"local": 1,
 																"path": null,
 																"row": 13,
@@ -848,12 +848,12 @@
 													]
 												},
 												"col": 3,
-												"file": 2,
+												"file": 0,
 												"local": 1,
 												"path": [
-													6,
-													1,
-													9
+													3,
+													4,
+													5
 												],
 												"row": 13,
 												"value": {
@@ -870,7 +870,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 12,
 												"source": 3
 											},
@@ -879,7 +879,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 12,
 												"source": {
 													"type": "local",
@@ -896,7 +896,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 2,
+												"file": 0,
 												"row": 12,
 												"source": 2
 											},
@@ -936,12 +936,54 @@
 										},
 										{
 											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.generated.p",
+																	"result": 3,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 1
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 3
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
 												"col": 0,
 												"file": 0,
-												"row": 0,
-												"target": 3
+												"row": 0
 											},
-											"type": "MakeObjectStmt"
+											"type": "BlockStmt"
 										},
 										{
 											"stmt": {
@@ -962,7 +1004,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.test.a.d",
+																	"func": "g0.data.generated.q",
 																	"result": 4,
 																	"row": 0
 																},
@@ -974,9 +1016,9 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 2
+																		"value": 12
 																	},
-																	"object": 3,
+																	"object": 2,
 																	"row": 0,
 																	"value": {
 																		"type": "local",
@@ -996,23 +1038,6 @@
 										},
 										{
 											"stmt": {
-												"col": 0,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 1
-												},
-												"object": 2,
-												"row": 0,
-												"value": {
-													"type": "local",
-													"value": 3
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
 												"blocks": [
 													{
 														"stmts": [
@@ -1030,7 +1055,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.test.e",
+																	"func": "g0.data.generated.r",
 																	"result": 5,
 																	"row": 0
 																},
@@ -1042,7 +1067,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 4
+																		"value": 13
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -1078,7 +1103,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 6
+																							"value": 14
 																						},
 																						"row": 0,
 																						"source": {
@@ -1191,7 +1216,7 @@
 									]
 								}
 							],
-							"name": "test"
+							"name": "generated"
 						},
 						{
 							"blocks": [
@@ -1203,6 +1228,15 @@
 												"file": 0,
 												"row": 0,
 												"target": 10
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 11
 											},
 											"type": "MakeObjectStmt"
 										},
@@ -1225,58 +1259,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
-																	"result": 11,
-																	"row": 0
-																},
-																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 7
-																	},
-																	"object": 10,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 11
-																	}
-																},
-																"type": "ObjectInsertStmt"
-															}
-														]
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"row": 0
-											},
-											"type": "BlockStmt"
-										},
-										{
-											"stmt": {
-												"blocks": [
-													{
-														"stmts": [
-															{
-																"stmt": {
-																	"args": [
-																		{
-																			"type": "local",
-																			"value": 0
-																		},
-																		{
-																			"type": "local",
-																			"value": 1
-																		}
-																	],
-																	"col": 0,
-																	"file": 0,
-																	"func": "g0.data.generated.q",
+																	"func": "g0.data.test.a.d",
 																	"result": 12,
 																	"row": 0
 																},
@@ -1288,9 +1271,9 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 12
+																		"value": 8
 																	},
-																	"object": 10,
+																	"object": 11,
 																	"row": 0,
 																	"value": {
 																		"type": "local",
@@ -1307,6 +1290,23 @@
 												"row": 0
 											},
 											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 4
+												},
+												"object": 10,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 11
+												}
+											},
+											"type": "ObjectInsertStmt"
 										},
 										{
 											"stmt": {
@@ -1327,7 +1327,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.r",
+																	"func": "g0.data.test.e",
 																	"result": 13,
 																	"row": 0
 																},
@@ -1339,7 +1339,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 13
+																		"value": 10
 																	},
 																	"object": 10,
 																	"row": 0,
@@ -1375,7 +1375,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 14
+																							"value": 3
 																						},
 																						"row": 0,
 																						"source": {
@@ -1488,20 +1488,20 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "test"
 						}
 					]
 				},
 				"static": {
 					"files": [
 						{
+							"value": "mod_0"
+						},
+						{
 							"value": "mod_1"
 						},
 						{
 							"value": "mod_2"
-						},
-						{
-							"value": "mod_0"
 						}
 					],
 					"strings": [
@@ -1509,7 +1509,25 @@
 							"value": "result"
 						},
 						{
+							"value": "p"
+						},
+						{
+							"value": "1"
+						},
+						{
+							"value": "test"
+						},
+						{
 							"value": "a"
+						},
+						{
+							"value": "b"
+						},
+						{
+							"value": "2"
+						},
+						{
+							"value": "c"
 						},
 						{
 							"value": "d"
@@ -1522,24 +1540,6 @@
 						},
 						{
 							"value": "4"
-						},
-						{
-							"value": "test"
-						},
-						{
-							"value": "p"
-						},
-						{
-							"value": "1"
-						},
-						{
-							"value": "b"
-						},
-						{
-							"value": "2"
-						},
-						{
-							"value": "c"
 						},
 						{
 							"value": "q"
