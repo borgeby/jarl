@@ -8,7 +8,7 @@
 
 (defn builtin-array-reverse
   [{[arr] :args}]
-  (reverse arr))
+  (vec (reverse arr)))
 
 (defn builtin-array-slice
   [{[arr start stop] :args}]
