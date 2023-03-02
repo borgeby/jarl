@@ -20,8 +20,8 @@
 			],
 			"sort_bindings": true,
 			"entrypoints": [
-				"ex",
-				"generated"
+				"generated",
+				"ex"
 			],
 			"plan": {
 				"funcs": {
@@ -33,7 +33,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 2
 											},
@@ -46,7 +46,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -55,10 +55,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 7
 												},
 												"row": 4,
 												"source": {
@@ -72,10 +72,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 8
 												},
 												"row": 4,
 												"source": {
@@ -93,7 +93,7 @@
 														{
 															"stmt": {
 																"col": 3,
-																"file": 0,
+																"file": 1,
 																"row": 4,
 																"source": {
 																	"type": "local",
@@ -116,7 +116,7 @@
 																								{
 																									"stmt": {
 																										"col": 3,
-																										"file": 0,
+																										"file": 1,
 																										"index": 1,
 																										"row": 4
 																									},
@@ -126,7 +126,7 @@
 																						}
 																					],
 																					"col": 3,
-																					"file": 0,
+																					"file": 1,
 																					"row": 4
 																				},
 																				"type": "BlockStmt"
@@ -134,7 +134,7 @@
 																			{
 																				"stmt": {
 																					"col": 3,
-																					"file": 0,
+																					"file": 1,
 																					"index": 1,
 																					"row": 4
 																				},
@@ -144,16 +144,16 @@
 																	}
 																],
 																"col": 3,
-																"file": 0,
+																"file": 1,
 																"row": 4
 															},
 															"type": "BlockStmt"
 														},
 														{
 															"stmt": {
-																"Index": 4,
+																"Index": 3,
 																"col": 3,
-																"file": 0,
+																"file": 1,
 																"row": 4,
 																"target": 11
 															},
@@ -170,7 +170,7 @@
 																	"value": 11
 																},
 																"col": 3,
-																"file": 0,
+																"file": 1,
 																"row": 4
 															},
 															"type": "EqualStmt"
@@ -178,7 +178,7 @@
 														{
 															"stmt": {
 																"col": 1,
-																"file": 0,
+																"file": 1,
 																"row": 3,
 																"set": 2,
 																"value": {
@@ -191,7 +191,7 @@
 													]
 												},
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": 6,
 												"row": 4,
 												"source": 5,
@@ -206,7 +206,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -234,7 +234,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 0,
 												"row": 3,
 												"target": 2
 											},
@@ -247,7 +247,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 0,
 												"row": 3,
 												"target": 3
 											},
@@ -256,7 +256,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"row": 4,
 												"target": 4
 											},
@@ -264,9 +264,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 4,
+												"Index": 3,
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"row": 4,
 												"target": 5
 											},
@@ -275,10 +275,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"key": {
 													"type": "string_index",
-													"value": 7
+													"value": 2
 												},
 												"object": 4,
 												"row": 4,
@@ -291,9 +291,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 9,
+												"Index": 5,
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"row": 4,
 												"target": 6
 											},
@@ -302,10 +302,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"key": {
 													"type": "string_index",
-													"value": 8
+													"value": 4
 												},
 												"object": 4,
 												"row": 4,
@@ -318,9 +318,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 4,
+												"Index": 3,
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"row": 4,
 												"target": 7
 											},
@@ -329,10 +329,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"key": {
 													"type": "string_index",
-													"value": 10
+													"value": 6
 												},
 												"object": 4,
 												"row": 4,
@@ -346,7 +346,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -373,7 +373,7 @@
 																	}
 																],
 																"col": 3,
-																"file": 1,
+																"file": 0,
 																"func": "g0.data.ex.virtual",
 																"result": 9,
 																"row": 4
@@ -383,7 +383,7 @@
 														{
 															"stmt": {
 																"col": 3,
-																"file": 1,
+																"file": 0,
 																"row": 4,
 																"source": {
 																	"type": "local",
@@ -400,7 +400,7 @@
 																		{
 																			"stmt": {
 																				"col": 1,
-																				"file": 1,
+																				"file": 0,
 																				"row": 3,
 																				"set": 2,
 																				"value": {
@@ -413,7 +413,7 @@
 																	]
 																},
 																"col": 3,
-																"file": 1,
+																"file": 0,
 																"local": 1,
 																"path": null,
 																"row": 4,
@@ -427,11 +427,11 @@
 													]
 												},
 												"col": 3,
-												"file": 1,
+												"file": 0,
 												"local": 1,
 												"path": [
-													2,
-													3
+													7,
+													8
 												],
 												"row": 4,
 												"value": {
@@ -448,7 +448,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 1,
+												"file": 0,
 												"row": 3,
 												"source": 2
 											},
@@ -505,7 +505,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.ex.virtual",
+																	"func": "g0.data.generated.p",
 																	"result": 3,
 																	"row": 0
 																},
@@ -553,7 +553,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 5
+																							"value": 9
 																						},
 																						"row": 0,
 																						"source": {
@@ -666,7 +666,7 @@
 									]
 								}
 							],
-							"name": "ex"
+							"name": "generated"
 						},
 						{
 							"blocks": [
@@ -700,7 +700,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.ex.virtual",
 																	"result": 9,
 																	"row": 0
 																},
@@ -712,7 +712,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 6
+																		"value": 10
 																	},
 																	"object": 8,
 																	"row": 0,
@@ -861,17 +861,17 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "ex"
 						}
 					]
 				},
 				"static": {
 					"files": [
 						{
-							"value": "mod_1"
+							"value": "test-0.rego"
 						},
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
 						}
 					],
 					"strings": [
@@ -879,25 +879,13 @@
 							"value": "result"
 						},
 						{
-							"value": "virtual"
-						},
-						{
-							"value": "a"
-						},
-						{
-							"value": "b"
-						},
-						{
-							"value": "1"
-						},
-						{
-							"value": "ex"
-						},
-						{
 							"value": "p"
 						},
 						{
 							"value": "c"
+						},
+						{
+							"value": "1"
 						},
 						{
 							"value": "d"
@@ -909,7 +897,19 @@
 							"value": "e"
 						},
 						{
+							"value": "a"
+						},
+						{
+							"value": "b"
+						},
+						{
 							"value": "generated"
+						},
+						{
+							"value": "virtual"
+						},
+						{
+							"value": "ex"
 						}
 					]
 				}
