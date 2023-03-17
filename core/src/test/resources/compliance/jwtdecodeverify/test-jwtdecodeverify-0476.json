@@ -4,7 +4,8 @@
 			"note": "jwtdecodeverify/multiple-keys-one-valid",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np = [x, y, z] {\n  io.jwt.decode_verify(\"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.ZcLZbBKpPFFz8YGD2jEbXzwHT7DWtqRVk1PTV-cAWUV8jr6f2a--Fw9SFR3vSbrtFif06AQ3aWY7PMM2AuxDjiUVGjItmHRz0sJBEijcE2QVkDN7MNK3Kk1fsM_hbEXzNCzChZpEkTZnLy9ijkJJFD0j6lBat4lO5Zc_LC2lXUftV_hU2aW9mQ7pLSgJjItzRymivnN0g-WUDq5IPK_M8b3yPy_N9iByj8B2FO0sC3TuOrXWbrYrX4ve4bAaSqOFOXiL5Z5BJfmmtT--xKdWDGJxnei8lbv7in7t223fVsUpsH-zmybp529Fya37BsaIlcgLrl38ghvoqy2sHu2wAA\", {\n    \"cert\": `{\n  \"keys\": [\n    {\n      \"kty\": \"EC\",\n      \"use\": \"sig\",\n      \"crv\": \"P-256\",\n      \"kid\": \"k1\",\n      \"x\": \"9Qq5S5VqMQoH-FOI4atcH6V3bua03C-5ZMZMG1rszwA\",\n      \"y\": \"LLbFxWkGBEBrTm1GMYZJy1OXCH1KLweJMCgIEPIsibU\",\n      \"alg\": \"ES256\"\n    },\n    {\n      \"kty\": \"RSA\",\n      \"e\": \"AQAB\",\n      \"use\": \"enc\",\n      \"kid\": \"k2\",\n      \"alg\": \"RS256\",\n      \"n\": \"sGu-fYVE2nq2dPxJlqAMI0Z8G3FD0XcWDnD8mkfO1ddKRGuUQZmfj4gWeZGyIk3cnuoy7KJCEqa3daXc08QHuFZyfn0rH33t8_AFsvb0q0i7R2FK-Gdqs_E0-sGpYMsRJdZWfCioLkYjIHEuVnRbi3DEsWqe484rEGbKF60jNRgGC4b-8pz-E538ZkssWxcqHrYIj5bjGEU36onjS3M_yrTuNvzv_8wRioK4fbcwmGne9bDxu8LcoSReWpPn0CnUkWnfqroRcMJnC87ZuJagDW1ZWCmU3psdsVanmFFh0DP6z0fsA4h8G2n9-qp-LEKFaWwo3IWlOsIzU3MHdcEiGw\"\n    }\n  ]\n}`,\n    \"time\": 1574723450396363500,\n  }, [x, y, z])\n}\n"
+				"package generated\n\np = [x, y, z] {\n  io.jwt.decode_verify(\"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.ZcLZbBKpPFFz8YGD2jEbXzwHT7DWtqRVk1PTV-cAWUV8jr6f2a--Fw9SFR3vSbrtFif06AQ3aWY7PMM2AuxDjiUVGjItmHRz0sJBEijcE2QVkDN7MNK3Kk1fsM_hbEXzNCzChZpEkTZnLy9ijkJJFD0j6lBat4lO5Zc_LC2lXUftV_hU2aW9mQ7pLSgJjItzRymivnN0g-WUDq5IPK_M8b3yPy_N9iByj8B2FO0sC3TuOrXWbrYrX4ve4bAaSqOFOXiL5Z5BJfmmtT--xKdWDGJxnei8lbv7in7t223fVsUpsH-zmybp529Fya37BsaIlcgLrl38ghvoqy2sHu2wAA\", {\n    \"cert\": `{\n  \"keys\": [\n    {\n      \"kty\": \"EC\",\n      \"use\": \"sig\",\n      \"crv\": \"P-256\",\n      \"kid\": \"k1\",\n      \"x\": \"9Qq5S5VqMQoH-FOI4atcH6V3bua03C-5ZMZMG1rszwA\",\n      \"y\": \"LLbFxWkGBEBrTm1GMYZJy1OXCH1KLweJMCgIEPIsibU\",\n      \"alg\": \"ES256\"\n    },\n    {\n      \"kty\": \"RSA\",\n      \"e\": \"AQAB\",\n      \"use\": \"enc\",\n      \"kid\": \"k2\",\n      \"alg\": \"RS256\",\n      \"n\": \"sGu-fYVE2nq2dPxJlqAMI0Z8G3FD0XcWDnD8mkfO1ddKRGuUQZmfj4gWeZGyIk3cnuoy7KJCEqa3daXc08QHuFZyfn0rH33t8_AFsvb0q0i7R2FK-Gdqs_E0-sGpYMsRJdZWfCioLkYjIHEuVnRbi3DEsWqe484rEGbKF60jNRgGC4b-8pz-E538ZkssWxcqHrYIj5bjGEU36onjS3M_yrTuNvzv_8wRioK4fbcwmGne9bDxu8LcoSReWpPn0CnUkWnfqroRcMJnC87ZuJagDW1ZWCmU3psdsVanmFFh0DP6z0fsA4h8G2n9-qp-LEKFaWwo3IWlOsIzU3MHdcEiGw\"\n    }\n  ]\n}`,\n    \"time\": 1574723450396363500,\n  }, [x, y, z])\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.generated.p = x\n}\n"
 			],
 			"want_result": [
 				{
@@ -24,7 +25,7 @@
 				}
 			],
 			"entrypoints": [
-				"generated"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -36,7 +37,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -45,7 +46,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 4
 											},
@@ -54,25 +55,25 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"object": 4,
 												"row": 4,
 												"value": {
 													"type": "string_index",
-													"value": 4
+													"value": 3
 												}
 											},
 											"type": "ObjectInsertStmt"
 										},
 										{
 											"stmt": {
-												"Index": 6,
+												"Index": 5,
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 5
 											},
@@ -81,10 +82,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 5
+													"value": 4
 												},
 												"object": 4,
 												"row": 4,
@@ -100,7 +101,7 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													},
 													{
 														"type": "local",
@@ -108,7 +109,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "io.jwt.decode_verify",
 												"result": 6,
 												"row": 4
@@ -118,7 +119,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -130,7 +131,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -143,7 +144,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 7,
 												"value": 3
@@ -161,7 +162,7 @@
 													"value": 7
 												},
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4
 											},
 											"type": "EqualStmt"
@@ -169,7 +170,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 9,
 												"value": 0
@@ -179,7 +180,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 9,
 												"value": 0
@@ -189,7 +190,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "local",
 													"value": 9
@@ -206,7 +207,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -219,7 +220,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 9,
 												"value": 1
@@ -229,7 +230,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "local",
 													"value": 9
@@ -246,7 +247,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -259,7 +260,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 9,
 												"value": 2
@@ -269,7 +270,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "local",
 													"value": 9
@@ -286,7 +287,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -300,7 +301,7 @@
 											"stmt": {
 												"capacity": 3,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 14
 											},
@@ -310,7 +311,7 @@
 											"stmt": {
 												"array": 14,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"value": {
 													"type": "local",
@@ -323,7 +324,7 @@
 											"stmt": {
 												"array": 14,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"value": {
 													"type": "local",
@@ -336,7 +337,7 @@
 											"stmt": {
 												"array": 14,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"value": {
 													"type": "local",
@@ -348,7 +349,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -365,7 +366,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -374,7 +375,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -391,7 +392,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -409,6 +410,132 @@
 								"g0",
 								"generated",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.generated.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 6
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -448,7 +575,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -460,7 +587,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -609,7 +736,7 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "query"
 						}
 					]
 				},
@@ -676,15 +803,15 @@
 					],
 					"files": [
 						{
+							"value": "test-1.rego"
+						},
+						{
 							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.ZcLZbBKpPFFz8YGD2jEbXzwHT7DWtqRVk1PTV-cAWUV8jr6f2a--Fw9SFR3vSbrtFif06AQ3aWY7PMM2AuxDjiUVGjItmHRz0sJBEijcE2QVkDN7MNK3Kk1fsM_hbEXzNCzChZpEkTZnLy9ijkJJFD0j6lBat4lO5Zc_LC2lXUftV_hU2aW9mQ7pLSgJjItzRymivnN0g-WUDq5IPK_M8b3yPy_N9iByj8B2FO0sC3TuOrXWbrYrX4ve4bAaSqOFOXiL5Z5BJfmmtT--xKdWDGJxnei8lbv7in7t223fVsUpsH-zmybp529Fya37BsaIlcgLrl38ghvoqy2sHu2wAA"
@@ -702,24 +829,31 @@
 							"value": "1574723450396363500"
 						},
 						{
-							"value": "generated"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"generated": {
-					"p": [
-						true,
+				"query": {
+					"result": [
 						{
-							"alg": "RS256",
-							"typ": "JWT"
-						},
-						{
-							"admin": true,
-							"iat": 1516239022,
-							"name": "John Doe",
-							"sub": "1234567890"
+							"x": [
+								true,
+								{
+									"alg": "RS256",
+									"typ": "JWT"
+								},
+								{
+									"admin": true,
+									"iat": 1516239022,
+									"name": "John Doe",
+									"sub": "1234567890"
+								}
+							]
 						}
 					]
 				}

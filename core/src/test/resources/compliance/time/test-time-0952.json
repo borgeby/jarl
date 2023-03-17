@@ -4,7 +4,8 @@
 			"note": "time/date with LA tz",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np = [__local0__, __local1__, __local2__] {\n  __local3__ = 1517814000 * 1000\n  __local4__ = __local3__ * 1000\n  __local5__ = __local4__ * 1000\n  time.date([__local5__, \"America/Los_Angeles\"], __local6__)\n  [__local0__, __local1__, __local2__] = __local6__\n}\n"
+				"package generated\n\np = [__local0__, __local1__, __local2__] {\n  __local3__ = 1517814000 * 1000\n  __local4__ = __local3__ * 1000\n  __local5__ = __local4__ * 1000\n  time.date([__local5__, \"America/Los_Angeles\"], __local6__)\n  [__local0__, __local1__, __local2__] = __local6__\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.generated.p = x\n}\n"
 			],
 			"data": {},
 			"want_result": [
@@ -17,7 +18,7 @@
 				}
 			],
 			"entrypoints": [
-				"generated"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -29,7 +30,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -37,9 +38,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 2,
+												"Index": 1,
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 4
 											},
@@ -47,9 +48,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 5
 											},
@@ -68,7 +69,7 @@
 													}
 												],
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 6,
 												"row": 4
@@ -78,7 +79,7 @@
 										{
 											"stmt": {
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -91,7 +92,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -103,9 +104,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"target": 9
 											},
@@ -124,7 +125,7 @@
 													}
 												],
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 10,
 												"row": 5
@@ -134,7 +135,7 @@
 										{
 											"stmt": {
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"source": {
 													"type": "local",
@@ -147,7 +148,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"source": {
 													"type": "local",
@@ -159,9 +160,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"target": 13
 											},
@@ -180,7 +181,7 @@
 													}
 												],
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 14,
 												"row": 6
@@ -190,7 +191,7 @@
 										{
 											"stmt": {
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -203,7 +204,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -217,7 +218,7 @@
 											"stmt": {
 												"capacity": 2,
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"target": 17
 											},
@@ -227,7 +228,7 @@
 											"stmt": {
 												"array": 17,
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"value": {
 													"type": "local",
@@ -240,11 +241,11 @@
 											"stmt": {
 												"array": 17,
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"value": {
 													"type": "string_index",
-													"value": 4
+													"value": 3
 												}
 											},
 											"type": "ArrayAppendStmt"
@@ -258,7 +259,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "time.date",
 												"result": 18,
 												"row": 7
@@ -268,7 +269,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"source": {
 													"type": "local",
@@ -281,7 +282,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"source": {
 													"type": "local",
@@ -293,7 +294,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"source": {
 													"type": "local",
@@ -306,7 +307,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"target": 20,
 												"value": 3
@@ -324,7 +325,7 @@
 													"value": 20
 												},
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8
 											},
 											"type": "EqualStmt"
@@ -332,7 +333,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"target": 22,
 												"value": 0
@@ -342,7 +343,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"target": 22,
 												"value": 0
@@ -352,7 +353,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "local",
 													"value": 22
@@ -369,7 +370,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"source": {
 													"type": "local",
@@ -382,7 +383,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"target": 22,
 												"value": 1
@@ -392,7 +393,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "local",
 													"value": 22
@@ -409,7 +410,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"source": {
 													"type": "local",
@@ -422,7 +423,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"target": 22,
 												"value": 2
@@ -432,7 +433,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "local",
 													"value": 22
@@ -449,7 +450,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 8,
 												"source": {
 													"type": "local",
@@ -463,7 +464,7 @@
 											"stmt": {
 												"capacity": 3,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 27
 											},
@@ -473,7 +474,7 @@
 											"stmt": {
 												"array": 27,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"value": {
 													"type": "local",
@@ -486,7 +487,7 @@
 											"stmt": {
 												"array": 27,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"value": {
 													"type": "local",
@@ -499,7 +500,7 @@
 											"stmt": {
 												"array": 27,
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"value": {
 													"type": "local",
@@ -511,7 +512,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -528,7 +529,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -537,7 +538,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -554,7 +555,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -572,6 +573,132 @@
 								"g0",
 								"generated",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.generated.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 4
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -611,7 +738,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -623,7 +750,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -772,7 +899,7 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "query"
 						}
 					]
 				},
@@ -847,15 +974,15 @@
 					],
 					"files": [
 						{
+							"value": "test-1.rego"
+						},
+						{
 							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "1517814000"
@@ -867,17 +994,24 @@
 							"value": "America/Los_Angeles"
 						},
 						{
-							"value": "generated"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"generated": {
-					"p": [
-						2018,
-						2,
-						4
+				"query": {
+					"result": [
+						{
+							"x": [
+								2018,
+								2,
+								4
+							]
+						}
 					]
 				}
 			}

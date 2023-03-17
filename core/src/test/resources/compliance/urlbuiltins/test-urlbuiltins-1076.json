@@ -4,7 +4,8 @@
 			"note": "urlbuiltins/decode_object multiple",
 			"query": "data.decode_object.p = x",
 			"modules": [
-				"package decode_object\n\np = x {\n  x = urlquery.decode_object(\"a=value_a1\u0026b=value_b\u0026a=value_a2\")\n}\n"
+				"package decode_object\n\np = x {\n  x = urlquery.decode_object(\"a=value_a1\u0026b=value_b\u0026a=value_a2\")\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.decode_object.p = x\n}\n"
 			],
 			"want_result": [
 				{
@@ -20,7 +21,7 @@
 				}
 			],
 			"entrypoints": [
-				"decode_object"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -32,7 +33,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -43,11 +44,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 7,
-												"file": 0,
+												"file": 1,
 												"func": "urlquery.decode_object",
 												"result": 4,
 												"row": 4
@@ -57,7 +58,7 @@
 										{
 											"stmt": {
 												"col": 7,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -70,7 +71,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -83,7 +84,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -100,7 +101,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -109,7 +110,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -126,7 +127,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -144,6 +145,132 @@
 								"g0",
 								"decode_object",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.decode_object.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -183,7 +310,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.decode_object.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -195,7 +322,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -344,7 +471,7 @@
 									]
 								}
 							],
-							"name": "decode_object"
+							"name": "query"
 						}
 					]
 				},
@@ -382,6 +509,9 @@
 					],
 					"files": [
 						{
+							"value": "test-1.rego"
+						},
+						{
 							"value": "test-0.rego"
 						}
 					],
@@ -390,28 +520,32 @@
 							"value": "result"
 						},
 						{
-							"value": "p"
-						},
-						{
 							"value": "a=value_a1\u0026b=value_b\u0026a=value_a2"
 						},
 						{
-							"value": "decode_object"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"decode_object": {
-					"p": {
-						"a": [
-							"value_a1",
-							"value_a2"
-						],
-						"b": [
-							"value_b"
-						]
-					}
+				"query": {
+					"result": [
+						{
+							"x": {
+								"a": [
+									"value_a1",
+									"value_a2"
+								],
+								"b": [
+									"value_b"
+								]
+							}
+						}
+					]
 				}
 			}
 		},
@@ -419,7 +553,8 @@
 			"note": "urlbuiltins/decode_object empty parameter",
 			"query": "data.decode_object.p = x",
 			"modules": [
-				"package decode_object\n\np = x {\n  x = urlquery.decode_object(\"a=value_a1\u0026b\")\n}\n"
+				"package decode_object\n\np = x {\n  x = urlquery.decode_object(\"a=value_a1\u0026b\")\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.decode_object.p = x\n}\n"
 			],
 			"want_result": [
 				{
@@ -434,7 +569,7 @@
 				}
 			],
 			"entrypoints": [
-				"decode_object"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -446,7 +581,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -457,11 +592,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 7,
-												"file": 0,
+												"file": 1,
 												"func": "urlquery.decode_object",
 												"result": 4,
 												"row": 4
@@ -471,7 +606,7 @@
 										{
 											"stmt": {
 												"col": 7,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -484,7 +619,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -497,7 +632,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -514,7 +649,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -523,7 +658,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -540,7 +675,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -558,6 +693,132 @@
 								"g0",
 								"decode_object",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.decode_object.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -597,7 +858,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.decode_object.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -609,7 +870,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -758,7 +1019,7 @@
 									]
 								}
 							],
-							"name": "decode_object"
+							"name": "query"
 						}
 					]
 				},
@@ -796,6 +1057,9 @@
 					],
 					"files": [
 						{
+							"value": "test-1.rego"
+						},
+						{
 							"value": "test-0.rego"
 						}
 					],
@@ -804,27 +1068,31 @@
 							"value": "result"
 						},
 						{
-							"value": "p"
-						},
-						{
 							"value": "a=value_a1\u0026b"
 						},
 						{
-							"value": "decode_object"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"decode_object": {
-					"p": {
-						"a": [
-							"value_a1"
-						],
-						"b": [
-							""
-						]
-					}
+				"query": {
+					"result": [
+						{
+							"x": {
+								"a": [
+									"value_a1"
+								],
+								"b": [
+									""
+								]
+							}
+						}
+					]
 				}
 			}
 		},
@@ -832,7 +1100,8 @@
 			"note": "urlbuiltins/decode_object empty string",
 			"query": "data.decode_object.p = x",
 			"modules": [
-				"package decode_object\n\np = x {\n  x = urlquery.decode_object(\"\")\n}\n"
+				"package decode_object\n\np = x {\n  x = urlquery.decode_object(\"\")\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.decode_object.p = x\n}\n"
 			],
 			"want_result": [
 				{
@@ -840,7 +1109,7 @@
 				}
 			],
 			"entrypoints": [
-				"decode_object"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -852,7 +1121,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -863,11 +1132,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 7,
-												"file": 0,
+												"file": 1,
 												"func": "urlquery.decode_object",
 												"result": 4,
 												"row": 4
@@ -877,7 +1146,7 @@
 										{
 											"stmt": {
 												"col": 7,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -890,7 +1159,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -903,7 +1172,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -920,7 +1189,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -929,7 +1198,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -946,7 +1215,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -964,6 +1233,132 @@
 								"g0",
 								"decode_object",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.decode_object.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -1003,7 +1398,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.decode_object.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -1015,7 +1410,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -1164,7 +1559,7 @@
 									]
 								}
 							],
-							"name": "decode_object"
+							"name": "query"
 						}
 					]
 				},
@@ -1202,6 +1597,9 @@
 					],
 					"files": [
 						{
+							"value": "test-1.rego"
+						},
+						{
 							"value": "test-0.rego"
 						}
 					],
@@ -1210,20 +1608,24 @@
 							"value": "result"
 						},
 						{
-							"value": "p"
-						},
-						{
 							"value": ""
 						},
 						{
-							"value": "decode_object"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"decode_object": {
-					"p": {}
+				"query": {
+					"result": [
+						{
+							"x": {}
+						}
+					]
 				}
 			}
 		}

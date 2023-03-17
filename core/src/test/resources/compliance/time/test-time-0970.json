@@ -4,7 +4,8 @@
 			"note": "time/diff",
 			"query": "data.test.a = minute_second; data.test.b = different_tz; data.test.c = leap_year; data.test.d = not_leap_year; data.test.e = leap_year_one_day\n",
 			"modules": [
-				"package test\n\nlayout := \"2006-01-02\"\n\na = minute_second {\n   minute_second := time.diff(time.now_ns()+61*1000*1000*1000, time.now_ns())\n}\n\nb = different_tz {\n  different_tz := time.diff([time.now_ns()+60*1000*1000*1000, \"UTC\"], [time.now_ns(), \"Asia/Shanghai\"])\n}\n\nc = leap_year {\n  leap_year := time.diff(time.parse_ns(layout, \"2020-02-02\"), time.parse_ns(layout, \"2020-03-01\"))\n}\n\nd = not_leap_year {\n  not_leap_year := time.diff(time.parse_ns(layout, \"2021-02-02\"), time.parse_ns(layout, \"2021-03-01\"))\n}\n\ne = leap_year_one_day {\n  leap_year_one_day := time.diff(time.parse_ns(layout, \"2004-02-29\"), time.parse_ns(layout, \"2005-03-01\"))\n}\n"
+				"package test\n\nlayout := \"2006-01-02\"\n\na = minute_second {\n   minute_second := time.diff(time.now_ns()+61*1000*1000*1000, time.now_ns())\n}\n\nb = different_tz {\n  different_tz := time.diff([time.now_ns()+60*1000*1000*1000, \"UTC\"], [time.now_ns(), \"Asia/Shanghai\"])\n}\n\nc = leap_year {\n  leap_year := time.diff(time.parse_ns(layout, \"2020-02-02\"), time.parse_ns(layout, \"2020-03-01\"))\n}\n\nd = not_leap_year {\n  not_leap_year := time.diff(time.parse_ns(layout, \"2021-02-02\"), time.parse_ns(layout, \"2021-03-01\"))\n}\n\ne = leap_year_one_day {\n  leap_year_one_day := time.diff(time.parse_ns(layout, \"2004-02-29\"), time.parse_ns(layout, \"2005-03-01\"))\n}\n",
+				"package query\n\nresult[{\"different_tz\": different_tz, \"leap_year\": leap_year, \"leap_year_one_day\": leap_year_one_day, \"minute_second\": minute_second, \"not_leap_year\": not_leap_year}] {\n\tdata.test.a = minute_second; data.test.b = different_tz; data.test.c = leap_year; data.test.d = not_leap_year; data.test.e = leap_year_one_day\n\n}\n"
 			],
 			"want_result": [
 				{
@@ -51,7 +52,7 @@
 				}
 			],
 			"entrypoints": [
-				"test"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -63,7 +64,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"target": 3
 											},
@@ -73,7 +74,7 @@
 											"stmt": {
 												"args": null,
 												"col": 31,
-												"file": 0,
+												"file": 1,
 												"func": "time.now_ns",
 												"result": 4,
 												"row": 6
@@ -83,7 +84,7 @@
 										{
 											"stmt": {
 												"col": 31,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -95,9 +96,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 2,
+												"Index": 1,
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"target": 6
 											},
@@ -105,9 +106,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"target": 7
 											},
@@ -126,7 +127,7 @@
 													}
 												],
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 8,
 												"row": 6
@@ -136,7 +137,7 @@
 										{
 											"stmt": {
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -148,9 +149,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"target": 10
 											},
@@ -169,7 +170,7 @@
 													}
 												],
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 11,
 												"row": 6
@@ -179,7 +180,7 @@
 										{
 											"stmt": {
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -191,9 +192,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"target": 13
 											},
@@ -212,7 +213,7 @@
 													}
 												],
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 14,
 												"row": 6
@@ -222,7 +223,7 @@
 										{
 											"stmt": {
 												"col": 45,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -245,7 +246,7 @@
 													}
 												],
 												"col": 31,
-												"file": 0,
+												"file": 1,
 												"func": "plus",
 												"result": 16,
 												"row": 6
@@ -255,7 +256,7 @@
 										{
 											"stmt": {
 												"col": 31,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -269,7 +270,7 @@
 											"stmt": {
 												"args": null,
 												"col": 64,
-												"file": 0,
+												"file": 1,
 												"func": "time.now_ns",
 												"result": 18,
 												"row": 6
@@ -279,7 +280,7 @@
 										{
 											"stmt": {
 												"col": 64,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -302,7 +303,7 @@
 													}
 												],
 												"col": 21,
-												"file": 0,
+												"file": 1,
 												"func": "time.diff",
 												"result": 20,
 												"row": 6
@@ -312,7 +313,7 @@
 										{
 											"stmt": {
 												"col": 21,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -325,7 +326,7 @@
 										{
 											"stmt": {
 												"col": 4,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -338,7 +339,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"source": {
 													"type": "local",
@@ -355,7 +356,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"source": 3
 											},
@@ -364,7 +365,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"source": {
 													"type": "local",
@@ -381,7 +382,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 5,
 												"source": 2
 											},
@@ -409,7 +410,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"target": 3
 											},
@@ -419,7 +420,7 @@
 											"stmt": {
 												"args": null,
 												"col": 30,
-												"file": 0,
+												"file": 1,
 												"func": "time.now_ns",
 												"result": 4,
 												"row": 10
@@ -429,7 +430,7 @@
 										{
 											"stmt": {
 												"col": 30,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -441,9 +442,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 5,
+												"Index": 3,
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"target": 6
 											},
@@ -451,9 +452,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"target": 7
 											},
@@ -472,7 +473,7 @@
 													}
 												],
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 8,
 												"row": 10
@@ -482,7 +483,7 @@
 										{
 											"stmt": {
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -494,9 +495,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"target": 10
 											},
@@ -515,7 +516,7 @@
 													}
 												],
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 11,
 												"row": 10
@@ -525,7 +526,7 @@
 										{
 											"stmt": {
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -537,9 +538,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 3,
+												"Index": 2,
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"target": 13
 											},
@@ -558,7 +559,7 @@
 													}
 												],
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"func": "mul",
 												"result": 14,
 												"row": 10
@@ -568,7 +569,7 @@
 										{
 											"stmt": {
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -591,7 +592,7 @@
 													}
 												],
 												"col": 30,
-												"file": 0,
+												"file": 1,
 												"func": "plus",
 												"result": 16,
 												"row": 10
@@ -601,7 +602,7 @@
 										{
 											"stmt": {
 												"col": 30,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -615,7 +616,7 @@
 											"stmt": {
 												"args": null,
 												"col": 72,
-												"file": 0,
+												"file": 1,
 												"func": "time.now_ns",
 												"result": 18,
 												"row": 10
@@ -625,7 +626,7 @@
 										{
 											"stmt": {
 												"col": 72,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -639,7 +640,7 @@
 											"stmt": {
 												"capacity": 2,
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"target": 20
 											},
@@ -649,7 +650,7 @@
 											"stmt": {
 												"array": 20,
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"value": {
 													"type": "local",
@@ -662,11 +663,11 @@
 											"stmt": {
 												"array": 20,
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"value": {
 													"type": "string_index",
-													"value": 6
+													"value": 4
 												}
 											},
 											"type": "ArrayAppendStmt"
@@ -675,7 +676,7 @@
 											"stmt": {
 												"capacity": 2,
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"target": 21
 											},
@@ -685,7 +686,7 @@
 											"stmt": {
 												"array": 21,
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"value": {
 													"type": "local",
@@ -698,11 +699,11 @@
 											"stmt": {
 												"array": 21,
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"value": {
 													"type": "string_index",
-													"value": 7
+													"value": 5
 												}
 											},
 											"type": "ArrayAppendStmt"
@@ -720,7 +721,7 @@
 													}
 												],
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"func": "time.diff",
 												"result": 22,
 												"row": 10
@@ -730,7 +731,7 @@
 										{
 											"stmt": {
 												"col": 19,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -743,7 +744,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -756,7 +757,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"source": {
 													"type": "local",
@@ -773,7 +774,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"source": 3
 											},
@@ -782,7 +783,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"source": {
 													"type": "local",
@@ -799,7 +800,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"source": 2
 											},
@@ -827,7 +828,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -844,7 +845,7 @@
 													"value": false
 												},
 												"col": 11,
-												"file": 0,
+												"file": 1,
 												"row": 3
 											},
 											"type": "NotEqualStmt"
@@ -852,11 +853,11 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "string_index",
-													"value": 9
+													"value": 6
 												},
 												"target": 3
 											},
@@ -869,7 +870,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -878,7 +879,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -895,7 +896,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -923,7 +924,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 13,
 												"target": 3
 											},
@@ -942,7 +943,7 @@
 													}
 												],
 												"col": 40,
-												"file": 0,
+												"file": 1,
 												"func": "g0.data.test.layout",
 												"result": 4,
 												"row": 14
@@ -952,7 +953,7 @@
 										{
 											"stmt": {
 												"col": 40,
-												"file": 0,
+												"file": 1,
 												"row": 14,
 												"source": {
 													"type": "local",
@@ -971,11 +972,11 @@
 													},
 													{
 														"type": "string_index",
-														"value": 10
+														"value": 7
 													}
 												],
 												"col": 26,
-												"file": 0,
+												"file": 1,
 												"func": "time.parse_ns",
 												"result": 6,
 												"row": 14
@@ -985,7 +986,7 @@
 										{
 											"stmt": {
 												"col": 26,
-												"file": 0,
+												"file": 1,
 												"row": 14,
 												"source": {
 													"type": "local",
@@ -1008,7 +1009,7 @@
 													}
 												],
 												"col": 77,
-												"file": 0,
+												"file": 1,
 												"func": "g0.data.test.layout",
 												"result": 8,
 												"row": 14
@@ -1018,7 +1019,7 @@
 										{
 											"stmt": {
 												"col": 77,
-												"file": 0,
+												"file": 1,
 												"row": 14,
 												"source": {
 													"type": "local",
@@ -1037,11 +1038,11 @@
 													},
 													{
 														"type": "string_index",
-														"value": 11
+														"value": 8
 													}
 												],
 												"col": 63,
-												"file": 0,
+												"file": 1,
 												"func": "time.parse_ns",
 												"result": 10,
 												"row": 14
@@ -1051,7 +1052,7 @@
 										{
 											"stmt": {
 												"col": 63,
-												"file": 0,
+												"file": 1,
 												"row": 14,
 												"source": {
 													"type": "local",
@@ -1074,7 +1075,7 @@
 													}
 												],
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"func": "time.diff",
 												"result": 12,
 												"row": 14
@@ -1084,7 +1085,7 @@
 										{
 											"stmt": {
 												"col": 16,
-												"file": 0,
+												"file": 1,
 												"row": 14,
 												"source": {
 													"type": "local",
@@ -1097,7 +1098,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 14,
 												"source": {
 													"type": "local",
@@ -1110,7 +1111,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 13,
 												"source": {
 													"type": "local",
@@ -1127,7 +1128,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 13,
 												"source": 3
 											},
@@ -1136,7 +1137,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 13,
 												"source": {
 													"type": "local",
@@ -1153,7 +1154,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 13,
 												"source": 2
 											},
@@ -1181,7 +1182,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 17,
 												"target": 3
 											},
@@ -1200,7 +1201,7 @@
 													}
 												],
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"func": "g0.data.test.layout",
 												"result": 4,
 												"row": 18
@@ -1210,7 +1211,7 @@
 										{
 											"stmt": {
 												"col": 44,
-												"file": 0,
+												"file": 1,
 												"row": 18,
 												"source": {
 													"type": "local",
@@ -1229,11 +1230,11 @@
 													},
 													{
 														"type": "string_index",
-														"value": 13
+														"value": 9
 													}
 												],
 												"col": 30,
-												"file": 0,
+												"file": 1,
 												"func": "time.parse_ns",
 												"result": 6,
 												"row": 18
@@ -1243,7 +1244,7 @@
 										{
 											"stmt": {
 												"col": 30,
-												"file": 0,
+												"file": 1,
 												"row": 18,
 												"source": {
 													"type": "local",
@@ -1266,7 +1267,7 @@
 													}
 												],
 												"col": 81,
-												"file": 0,
+												"file": 1,
 												"func": "g0.data.test.layout",
 												"result": 8,
 												"row": 18
@@ -1276,7 +1277,7 @@
 										{
 											"stmt": {
 												"col": 81,
-												"file": 0,
+												"file": 1,
 												"row": 18,
 												"source": {
 													"type": "local",
@@ -1295,11 +1296,11 @@
 													},
 													{
 														"type": "string_index",
-														"value": 14
+														"value": 10
 													}
 												],
 												"col": 67,
-												"file": 0,
+												"file": 1,
 												"func": "time.parse_ns",
 												"result": 10,
 												"row": 18
@@ -1309,7 +1310,7 @@
 										{
 											"stmt": {
 												"col": 67,
-												"file": 0,
+												"file": 1,
 												"row": 18,
 												"source": {
 													"type": "local",
@@ -1332,7 +1333,7 @@
 													}
 												],
 												"col": 20,
-												"file": 0,
+												"file": 1,
 												"func": "time.diff",
 												"result": 12,
 												"row": 18
@@ -1342,7 +1343,7 @@
 										{
 											"stmt": {
 												"col": 20,
-												"file": 0,
+												"file": 1,
 												"row": 18,
 												"source": {
 													"type": "local",
@@ -1355,7 +1356,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 18,
 												"source": {
 													"type": "local",
@@ -1368,7 +1369,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 17,
 												"source": {
 													"type": "local",
@@ -1385,7 +1386,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 17,
 												"source": 3
 											},
@@ -1394,7 +1395,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 17,
 												"source": {
 													"type": "local",
@@ -1411,7 +1412,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 17,
 												"source": 2
 											},
@@ -1439,7 +1440,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 21,
 												"target": 3
 											},
@@ -1458,7 +1459,7 @@
 													}
 												],
 												"col": 48,
-												"file": 0,
+												"file": 1,
 												"func": "g0.data.test.layout",
 												"result": 4,
 												"row": 22
@@ -1468,7 +1469,7 @@
 										{
 											"stmt": {
 												"col": 48,
-												"file": 0,
+												"file": 1,
 												"row": 22,
 												"source": {
 													"type": "local",
@@ -1487,11 +1488,11 @@
 													},
 													{
 														"type": "string_index",
-														"value": 16
+														"value": 11
 													}
 												],
 												"col": 34,
-												"file": 0,
+												"file": 1,
 												"func": "time.parse_ns",
 												"result": 6,
 												"row": 22
@@ -1501,7 +1502,7 @@
 										{
 											"stmt": {
 												"col": 34,
-												"file": 0,
+												"file": 1,
 												"row": 22,
 												"source": {
 													"type": "local",
@@ -1524,7 +1525,7 @@
 													}
 												],
 												"col": 85,
-												"file": 0,
+												"file": 1,
 												"func": "g0.data.test.layout",
 												"result": 8,
 												"row": 22
@@ -1534,7 +1535,7 @@
 										{
 											"stmt": {
 												"col": 85,
-												"file": 0,
+												"file": 1,
 												"row": 22,
 												"source": {
 													"type": "local",
@@ -1553,11 +1554,11 @@
 													},
 													{
 														"type": "string_index",
-														"value": 17
+														"value": 12
 													}
 												],
 												"col": 71,
-												"file": 0,
+												"file": 1,
 												"func": "time.parse_ns",
 												"result": 10,
 												"row": 22
@@ -1567,7 +1568,7 @@
 										{
 											"stmt": {
 												"col": 71,
-												"file": 0,
+												"file": 1,
 												"row": 22,
 												"source": {
 													"type": "local",
@@ -1590,7 +1591,7 @@
 													}
 												],
 												"col": 24,
-												"file": 0,
+												"file": 1,
 												"func": "time.diff",
 												"result": 12,
 												"row": 22
@@ -1600,7 +1601,7 @@
 										{
 											"stmt": {
 												"col": 24,
-												"file": 0,
+												"file": 1,
 												"row": 22,
 												"source": {
 													"type": "local",
@@ -1613,7 +1614,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 22,
 												"source": {
 													"type": "local",
@@ -1626,7 +1627,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 21,
 												"source": {
 													"type": "local",
@@ -1643,7 +1644,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 21,
 												"source": 3
 											},
@@ -1652,7 +1653,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 21,
 												"source": {
 													"type": "local",
@@ -1669,7 +1670,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 21,
 												"source": 2
 											},
@@ -1687,6 +1688,332 @@
 								"g0",
 								"test",
 								"e"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.test.a",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 31,
+												"file": 0,
+												"func": "g0.data.test.b",
+												"result": 6,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 31,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 6
+												},
+												"target": 7
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 59,
+												"file": 0,
+												"func": "g0.data.test.c",
+												"result": 8,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 59,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 8
+												},
+												"target": 9
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 84,
+												"file": 0,
+												"func": "g0.data.test.d",
+												"result": 10,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 84,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 10
+												},
+												"target": 11
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 113,
+												"file": 0,
+												"func": "g0.data.test.e",
+												"result": 12,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 113,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 12
+												},
+												"target": 13
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 14
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 13
+												},
+												"object": 14,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 7
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 14
+												},
+												"object": 14,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 9
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 15
+												},
+												"object": 14,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 13
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 16
+												},
+												"object": 14,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 17
+												},
+												"object": 14,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 11
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 14
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -1726,7 +2053,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.test.a",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -1738,268 +2065,13 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
 																	"value": {
 																		"type": "local",
 																		"value": 3
-																	}
-																},
-																"type": "ObjectInsertStmt"
-															}
-														]
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"row": 0
-											},
-											"type": "BlockStmt"
-										},
-										{
-											"stmt": {
-												"blocks": [
-													{
-														"stmts": [
-															{
-																"stmt": {
-																	"args": [
-																		{
-																			"type": "local",
-																			"value": 0
-																		},
-																		{
-																			"type": "local",
-																			"value": 1
-																		}
-																	],
-																	"col": 0,
-																	"file": 0,
-																	"func": "g0.data.test.b",
-																	"result": 4,
-																	"row": 0
-																},
-																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 4
-																	},
-																	"object": 2,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 4
-																	}
-																},
-																"type": "ObjectInsertStmt"
-															}
-														]
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"row": 0
-											},
-											"type": "BlockStmt"
-										},
-										{
-											"stmt": {
-												"blocks": [
-													{
-														"stmts": [
-															{
-																"stmt": {
-																	"args": [
-																		{
-																			"type": "local",
-																			"value": 0
-																		},
-																		{
-																			"type": "local",
-																			"value": 1
-																		}
-																	],
-																	"col": 0,
-																	"file": 0,
-																	"func": "g0.data.test.c",
-																	"result": 5,
-																	"row": 0
-																},
-																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 8
-																	},
-																	"object": 2,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 5
-																	}
-																},
-																"type": "ObjectInsertStmt"
-															}
-														]
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"row": 0
-											},
-											"type": "BlockStmt"
-										},
-										{
-											"stmt": {
-												"blocks": [
-													{
-														"stmts": [
-															{
-																"stmt": {
-																	"args": [
-																		{
-																			"type": "local",
-																			"value": 0
-																		},
-																		{
-																			"type": "local",
-																			"value": 1
-																		}
-																	],
-																	"col": 0,
-																	"file": 0,
-																	"func": "g0.data.test.d",
-																	"result": 6,
-																	"row": 0
-																},
-																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 12
-																	},
-																	"object": 2,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 6
-																	}
-																},
-																"type": "ObjectInsertStmt"
-															}
-														]
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"row": 0
-											},
-											"type": "BlockStmt"
-										},
-										{
-											"stmt": {
-												"blocks": [
-													{
-														"stmts": [
-															{
-																"stmt": {
-																	"args": [
-																		{
-																			"type": "local",
-																			"value": 0
-																		},
-																		{
-																			"type": "local",
-																			"value": 1
-																		}
-																	],
-																	"col": 0,
-																	"file": 0,
-																	"func": "g0.data.test.e",
-																	"result": 7,
-																	"row": 0
-																},
-																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 15
-																	},
-																	"object": 2,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 7
-																	}
-																},
-																"type": "ObjectInsertStmt"
-															}
-														]
-													}
-												],
-												"col": 0,
-												"file": 0,
-												"row": 0
-											},
-											"type": "BlockStmt"
-										},
-										{
-											"stmt": {
-												"blocks": [
-													{
-														"stmts": [
-															{
-																"stmt": {
-																	"args": [
-																		{
-																			"type": "local",
-																			"value": 0
-																		},
-																		{
-																			"type": "local",
-																			"value": 1
-																		}
-																	],
-																	"col": 0,
-																	"file": 0,
-																	"func": "g0.data.test.layout",
-																	"result": 8,
-																	"row": 0
-																},
-																"type": "CallStmt"
-															},
-															{
-																"stmt": {
-																	"col": 0,
-																	"file": 0,
-																	"key": {
-																		"type": "string_index",
-																		"value": 18
-																	},
-																	"object": 2,
-																	"row": 0,
-																	"value": {
-																		"type": "local",
-																		"value": 8
 																	}
 																},
 																"type": "ObjectInsertStmt"
@@ -2029,25 +2101,25 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 19
+																							"value": 18
 																						},
 																						"row": 0,
 																						"source": {
 																							"type": "local",
 																							"value": 1
 																						},
-																						"target": 10
+																						"target": 5
 																					},
 																					"type": "DotStmt"
 																				},
 																				{
 																					"stmt": {
-																						"a": 10,
+																						"a": 5,
 																						"b": 2,
 																						"col": 0,
 																						"file": 0,
 																						"row": 0,
-																						"target": 9
+																						"target": 4
 																					},
 																					"type": "ObjectMergeStmt"
 																				},
@@ -2078,7 +2150,7 @@
 																		"type": "local",
 																		"value": 2
 																	},
-																	"target": 9
+																	"target": 4
 																},
 																"type": "AssignVarStmt"
 															}
@@ -2098,9 +2170,9 @@
 												"row": 0,
 												"source": {
 													"type": "local",
-													"value": 9
+													"value": 4
 												},
-												"target": 11
+												"target": 6
 											},
 											"type": "AssignVarStmt"
 										},
@@ -2109,7 +2181,7 @@
 												"col": 0,
 												"file": 0,
 												"row": 0,
-												"target": 12
+												"target": 7
 											},
 											"type": "MakeObjectStmt"
 										},
@@ -2121,11 +2193,11 @@
 													"type": "string_index",
 													"value": 0
 												},
-												"object": 12,
+												"object": 7,
 												"row": 0,
 												"value": {
 													"type": "local",
-													"value": 11
+													"value": 6
 												}
 											},
 											"type": "ObjectInsertStmt"
@@ -2135,14 +2207,14 @@
 												"col": 0,
 												"file": 0,
 												"row": 0,
-												"value": 12
+												"value": 7
 											},
 											"type": "ResultSetAddStmt"
 										}
 									]
 								}
 							],
-							"name": "test"
+							"name": "query"
 						}
 					]
 				},
@@ -2300,6 +2372,9 @@
 					],
 					"files": [
 						{
+							"value": "test-1.rego"
+						},
+						{
 							"value": "test-0.rego"
 						}
 					],
@@ -2308,16 +2383,10 @@
 							"value": "result"
 						},
 						{
-							"value": "a"
-						},
-						{
 							"value": "61"
 						},
 						{
 							"value": "1000"
-						},
-						{
-							"value": "b"
 						},
 						{
 							"value": "60"
@@ -2329,9 +2398,6 @@
 							"value": "Asia/Shanghai"
 						},
 						{
-							"value": "c"
-						},
-						{
 							"value": "2006-01-02"
 						},
 						{
@@ -2341,16 +2407,10 @@
 							"value": "2020-03-01"
 						},
 						{
-							"value": "d"
-						},
-						{
 							"value": "2021-02-02"
 						},
 						{
 							"value": "2021-03-01"
-						},
-						{
-							"value": "e"
 						},
 						{
 							"value": "2004-02-29"
@@ -2359,57 +2419,72 @@
 							"value": "2005-03-01"
 						},
 						{
-							"value": "layout"
+							"value": "different_tz"
 						},
 						{
-							"value": "test"
+							"value": "leap_year"
+						},
+						{
+							"value": "leap_year_one_day"
+						},
+						{
+							"value": "minute_second"
+						},
+						{
+							"value": "not_leap_year"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"test": {
-					"a": [
-						0,
-						0,
-						0,
-						0,
-						1,
-						1
-					],
-					"b": [
-						0,
-						0,
-						0,
-						0,
-						1,
-						0
-					],
-					"c": [
-						0,
-						0,
-						28,
-						0,
-						0,
-						0
-					],
-					"d": [
-						0,
-						0,
-						27,
-						0,
-						0,
-						0
-					],
-					"e": [
-						1,
-						0,
-						1,
-						0,
-						0,
-						0
-					],
-					"layout": "2006-01-02"
+				"query": {
+					"result": [
+						{
+							"different_tz": [
+								0,
+								0,
+								0,
+								0,
+								1,
+								0
+							],
+							"leap_year": [
+								0,
+								0,
+								28,
+								0,
+								0,
+								0
+							],
+							"leap_year_one_day": [
+								1,
+								0,
+								1,
+								0,
+								0,
+								0
+							],
+							"minute_second": [
+								0,
+								0,
+								0,
+								0,
+								1,
+								1
+							],
+							"not_leap_year": [
+								0,
+								0,
+								27,
+								0,
+								0,
+								0
+							]
+						}
+					]
 				}
 			}
 		}

@@ -4,17 +4,131 @@
 			"note": "netcidrintersects/cidr subnet overlap malformed cidr a",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np = x {\n  net.cidr_intersects(\"not-a-cidr\", \"192.168.1.0/24\", x)\n}\n"
+				"package generated\n\np = x {\n  net.cidr_intersects(\"not-a-cidr\", \"192.168.1.0/24\", x)\n}\n",
+				"package query\n\nresult {\n\tdata.generated.p = x\n}\n"
 			],
 			"want_error_code": "eval_builtin_error",
 			"want_error": "",
 			"strict_error": true,
 			"entrypoints": [
-				"generated"
+				"query"
 			],
 			"plan": {
 				"funcs": {
 					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "string_index",
+														"value": 1
+													},
+													{
+														"type": "string_index",
+														"value": 2
+													}
+												],
+												"col": 3,
+												"file": 1,
+												"func": "net.cidr_intersects",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 5
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.generated.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"generated",
+								"p"
+							],
+							"return": 2
+						},
 						{
 							"blocks": [
 								{
@@ -32,17 +146,17 @@
 											"stmt": {
 												"args": [
 													{
-														"type": "string_index",
-														"value": 2
+														"type": "local",
+														"value": 0
 													},
 													{
-														"type": "string_index",
-														"value": 3
+														"type": "local",
+														"value": 1
 													}
 												],
-												"col": 3,
+												"col": 2,
 												"file": 0,
-												"func": "net.cidr_intersects",
+												"func": "g0.data.generated.p",
 												"result": 4,
 												"row": 4
 											},
@@ -50,7 +164,7 @@
 										},
 										{
 											"stmt": {
-												"col": 3,
+												"col": 2,
 												"file": 0,
 												"row": 4,
 												"source": {
@@ -67,8 +181,8 @@
 												"file": 0,
 												"row": 3,
 												"source": {
-													"type": "local",
-													"value": 5
+													"type": "bool",
+													"value": true
 												},
 												"target": 3
 											},
@@ -116,15 +230,15 @@
 									]
 								}
 							],
-							"name": "g0.data.generated.p",
+							"name": "g0.data.query.result",
 							"params": [
 								0,
 								1
 							],
 							"path": [
 								"g0",
-								"generated",
-								"p"
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -164,7 +278,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -176,7 +290,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -212,7 +326,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 4
+																							"value": 3
 																						},
 																						"row": 0,
 																						"source": {
@@ -325,7 +439,7 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "query"
 						}
 					]
 				},
@@ -354,6 +468,9 @@
 					],
 					"files": [
 						{
+							"value": "test-1.rego"
+						},
+						{
 							"value": "test-0.rego"
 						}
 					],
@@ -362,16 +479,13 @@
 							"value": "result"
 						},
 						{
-							"value": "p"
-						},
-						{
 							"value": "not-a-cidr"
 						},
 						{
 							"value": "192.168.1.0/24"
 						},
 						{
-							"value": "generated"
+							"value": "query"
 						}
 					]
 				}
