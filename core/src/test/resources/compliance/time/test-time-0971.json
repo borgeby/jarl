@@ -5,7 +5,7 @@
 			"query": "data.test.a = no_timezone; data.test.b = with_timezone; data.test.c = with_layout\n",
 			"modules": [
 				"package test\n\ntime_ns := 1670006453141828752\n\na := time.format(time_ns)\n\nb := time.format([time_ns, \"Asia/Kolkata\"])\n\nc := time.format([time_ns,\"Asia/Kolkata\",\"Mon Jan 02 15:04:05 -0700 2006\"])\n",
-				"package query\n\nresult[{\"no_timezone\": no_timezone, \"with_layout\": with_layout, \"with_timezone\": with_timezone}] {\n\tdata.test.a = no_timezone; data.test.b = with_timezone; data.test.c = with_layout\n\n}\n"
+				"package query\n\nresult[{\"with_layout\": with_layout, \"with_timezone\": with_timezone, \"no_timezone\": no_timezone}] {\n\tdata.test.a = no_timezone; data.test.b = with_timezone; data.test.c = with_layout\n\n}\n"
 			],
 			"want_result": [
 				{
