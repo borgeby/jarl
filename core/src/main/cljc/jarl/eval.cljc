@@ -280,7 +280,7 @@
 
 (defn eval-ObjectMergeStmt [to-key from-key target-key state]
   (log/debugf "ObjectMergeStmt - merging %d and %d into %d" to-key from-key target-key)
-  (state/set-local state target-key (merge (state/get-local state to-key) (state/get-local state from-key))))
+  (state/set-local state target-key (utils/deep-merge (state/get-local state to-key) (state/get-local state from-key))))
 
 (defn eval-ResetLocalStmt [target state]
   (log/debugf "ResetLocalStmt - resetting %d" target)
