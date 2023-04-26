@@ -31,8 +31,28 @@ opa build --target plan policy.rego
 ```
 
 We now have a bunde containing the `plan.json` file that we may submit for execution by Jarl!
+
+Before we do, we'll need to create an input to use for evaluation.
+
+**input.json**
+```json
+{
+    "user": {
+        "roles": [
+            "admin"
+        ]
+    }
+}
+```
+
+**Evaluate**
 ```shell
-lein run bundle.tar.gz --input '{"user": {"roles": ["admin"]}}'
+lein run bundle.tar.gz --input input.json
+```
+
+**Output**
+```json
+[{"result":true}]
 ```
 
 Note that the above constitutes a simple flow for development and testing only. Production artifacts, or a fixed API for
