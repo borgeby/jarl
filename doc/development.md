@@ -70,9 +70,11 @@ Note that the JVM process needs to be started with `-Djdk.attach.allowAttachSelf
 
 ## Linters
 
+In the `core` directory:
+
 * `lein kibit` to run [kibit](https://github.com/jonase/kibit)
 * `lein eastwood` ro run [eastwood](https://github.com/jonase/eastwood)
-* `lein clj-kondo --lint src test` to run [clj-kondo](https://github.com/clj-kondo/clj-kondo)
+* `lein clj-kondo --lint src` to run [clj-kondo](https://github.com/clj-kondo/clj-kondo)
 
 ## ClojureScript
 
