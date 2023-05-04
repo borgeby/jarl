@@ -1,5 +1,6 @@
 package by.borge.jarl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -51,6 +52,28 @@ public class Result {
                 entry -> entry.getKey().toString(),
                 Map.Entry::getValue
         ));
+    }
+
+    /**
+     * Gets the value of this {@link Result} as a {@link List}.
+     *
+     * @param type the expected type of the returned list's elements
+     * @return this Result's value as a List
+     * @throws ClassCastException if the value isn't <code>null</code> or a {@link List}
+     */
+    public <T> List<T> getValueAsList(Class<T> type) {
+        List<?> list = getValue(List.class);
+        return list.stream().map(type::cast).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the value of this {@link Result} as a boolean.
+     *
+     * @return this Result's value as a boolean
+     * @throws ClassCastException if the value isn't <code>null</code> or a {@link Boolean}
+     */
+    public boolean getValueAsBoolean() {
+        return getValue(Boolean.class);
     }
 
     @Override
