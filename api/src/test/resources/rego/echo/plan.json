@@ -14,7 +14,7 @@
         "value": "i"
       },
       {
-        "value": "test"
+        "value": "echo"
       }
     ],
     "files": [
@@ -26,7 +26,7 @@
   "plans": {
     "plans": [
       {
-        "name": "test",
+        "name": "echo",
         "blocks": [
           {
             "stmts": [
@@ -48,7 +48,7 @@
                         {
                           "type": "CallStmt",
                           "stmt": {
-                            "func": "g0.data.test.d",
+                            "func": "g0.data.echo.d",
                             "args": [
                               {
                                 "type": "local",
@@ -99,7 +99,7 @@
                         {
                           "type": "CallStmt",
                           "stmt": {
-                            "func": "g0.data.test.i",
+                            "func": "g0.data.echo.i",
                             "args": [
                               {
                                 "type": "local",
@@ -272,14 +272,14 @@
         ]
       },
       {
-        "name": "test/d",
+        "name": "echo/d",
         "blocks": [
           {
             "stmts": [
               {
                 "type": "CallStmt",
                 "stmt": {
-                  "func": "g0.data.test.d",
+                  "func": "g0.data.echo.d",
                   "args": [
                     {
                       "type": "local",
@@ -349,14 +349,14 @@
         ]
       },
       {
-        "name": "test/i",
+        "name": "echo/i",
         "blocks": [
           {
             "stmts": [
               {
                 "type": "CallStmt",
                 "stmt": {
-                  "func": "g0.data.test.i",
+                  "func": "g0.data.echo.i",
                   "args": [
                     {
                       "type": "local",
@@ -430,7 +430,7 @@
   "funcs": {
     "funcs": [
       {
-        "name": "g0.data.test.d",
+        "name": "g0.data.echo.d",
         "params": [
           0,
           1
@@ -597,12 +597,12 @@
         ],
         "path": [
           "g0",
-          "test",
+          "echo",
           "d"
         ]
       },
       {
-        "name": "g0.data.test.i",
+        "name": "g0.data.echo.i",
         "params": [
           0,
           1
@@ -715,7 +715,7 @@
         ],
         "path": [
           "g0",
-          "test",
+          "echo",
           "i"
         ]
       }

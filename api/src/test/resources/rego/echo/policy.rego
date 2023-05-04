@@ -1,6 +1,6 @@
 # METADATA
 # entrypoint: true
-package test
+package echo
 
 # METADATA
 # entrypoint: true
