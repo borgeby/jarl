@@ -1,5 +1,6 @@
 package by.borge.jarl;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JarlTests {
     private static Stream<Arguments> testInputAndData() {
@@ -76,5 +79,20 @@ public class JarlTests {
 
         var value = resultSet.getFirst().getValueAsList(type);
         assertEquals(input, value);
+    }
+
+    @Test
+    void testResultAsBoolean() throws IOException {
+        var file = new File(getClass().getResource("/rego/echo/plan.json").getFile());
+        var jarl = Jarl.builder(file).build();
+        var plan = jarl.getPlan("echo/i");
+
+        var resultSet = plan.eval(true, null);
+        var value = resultSet.getFirst().getValueAsBoolean();
+        assertTrue(value);
+
+        resultSet = plan.eval(false, null);
+        value = resultSet.getFirst().getValueAsBoolean();
+        assertFalse(value);
     }
 }
