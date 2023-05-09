@@ -16,6 +16,14 @@
   [{[^String s] :args}]
   (base64/decode s))
 
+(defn builtin-base64-is-valid
+  [{[^String s] :args}]
+  (try
+    (base64/decode s)
+    true
+    #?(:clj  (catch Exception _ false)
+       :cljs (catch :default  _ false))))
+
 (defn builtin-base64-url-encode
   [{[^String s] :args}]
   (base64/url-encode s))
