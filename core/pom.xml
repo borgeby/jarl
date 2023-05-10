@@ -16,11 +16,14 @@
   </licenses>
   <scm/>
   <build>
-    <sourceDirectory>src/main/cljc</sourceDirectory>
+    <sourceDirectory>src/main/clj</sourceDirectory>
     <testSourceDirectory>src/test/clj</testSourceDirectory>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/cljc</directory>
       </resource>
     </resources>
     <testResources>
@@ -29,6 +32,9 @@
       </testResource>
       <testResource>
         <directory>src/main/resources</directory>
+      </testResource>
+      <testResource>
+        <directory>src/main/cljc</directory>
       </testResource>
     </testResources>
     <directory>target</directory>
@@ -47,7 +53,7 @@
             </goals>
             <configuration>
               <sources>
-                <source>src/main/clj</source>
+                <source>src/main/cljc</source>
                 <source>src/main/java</source>
               </sources>
             </configuration>
