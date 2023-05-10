@@ -32,7 +32,7 @@
             "cljs-build-main"       ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" "main"]
             "cljs-build-test"       ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" "test"]
             "cljs-build-compliance" ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" "compliance"]}
-  :source-paths ["src/main/clj" "src/main/cljc"]
+  :source-paths ["src/main/cljc" "src/main/clj"]
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
   :test-paths ["src/test/clj" "src/test/cljc"]
