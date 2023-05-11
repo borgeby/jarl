@@ -169,13 +169,18 @@
           (println "Unsupported built-ins:" unsupported)
           false)))))
 
+(defn sanitize-note
+  "We can't handle notes starting with a number, for some reason"
+  [note]
+  (str/replace note #"^#?\s*(\d)" "nr$1"))
+
 (defn inc-note
   "Take note and return a new one with a dash and an incremented number appended if already exists in plans, else note..
    i.e. if 'my-test' exists in plans, return 'my-test-2', if 'my-test-2' exists, return 'my-test-3', and so on"
   [note plans]
   (if (some? (get plans note))
-    (let [with-num (re-find #".*-(\d)" note)
-          new-note (cond (vector? with-num) (str/replace note #"-(\d)" (str "-" (inc (parse-long (second with-num)))))
+    (let [with-num (re-find #".*-(\d)$" note)
+          new-note (cond (vector? with-num) (str/replace note #"-(\d)$" (str "-" (inc (parse-long (second with-num)))))
                          :else (str note "-2"))]
       (inc-note new-note plans))
     note))
@@ -189,6 +194,7 @@
       (if (nil? test-case)
         result
         (let [{:strs [note plan]} test-case
+              note (sanitize-note note)
               note (inc-note note (:plans result))
               test-case (assoc test-case "note" note)
               ir-supported (ir-supported? plan target)
