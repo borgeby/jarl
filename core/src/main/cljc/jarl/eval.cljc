@@ -437,21 +437,12 @@
           ; default
           (throw e))))))
 
-(defn- ->type [{:strs [type of]}]
-  (if (nil? of)
-    type
-    (if (vector? of)
-      (let [types (set (map #(get % "type") of))]
-        (if (= types #{"any"}) "any" types)) ; special case for type_name built-in, which is declared as "any of any"
-      (get of "type"))))
-
 (defn type-check-args [builtin-name plan-builtins argv]
   (when-not (zero? (count argv)) ; no check for zero-arity functions
     (if-let [args-def (-> (filterv #(= builtin-name (get % "name")) plan-builtins)
                           (first)
                           (get-in ["decl" "args"]))]
-      (let [types-def (mapv ->type args-def)]
-        (check-args types-def argv))
+      (check-args args-def argv)
       (throw (errors/type-ex "Arguments definition for builtin %s not provided in plan" builtin-name)))))
 
 (defn eval-builtin-func [name builtin-func args location state]

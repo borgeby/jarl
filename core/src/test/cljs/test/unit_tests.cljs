@@ -23,7 +23,8 @@
             [jarl.config.schema-test]
             [jarl.encoding.base64-test]
             [jarl.encoding.json-test]
-            [jarl.exceptions-test]))
+            [jarl.exceptions-test]
+            [jarl.builtins.utils-test]))
 
 ; For now, include test namespaces manually. Later we might want to switch to run-all-tests:
 
@@ -68,4 +69,5 @@
              'jarl.config.schema-test
              'jarl.encoding.base64-test
              'jarl.encoding.json-test
-             'jarl.exceptions-test))
+             'jarl.exceptions-test
+             'jarl.builtins.utils-test))
