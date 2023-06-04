@@ -437,12 +437,12 @@
           ; default
           (throw e))))))
 
-(defn type-check-args [builtin-name plan-builtins argv]
+(defn type-check-args [builtin-name plan-builtins argv type-check]
   (when-not (zero? (count argv)) ; no check for zero-arity functions
     (if-let [args-def (-> (filterv #(= builtin-name (get % "name")) plan-builtins)
                           (first)
                           (get-in ["decl" "args"]))]
-      (check-args args-def argv)
+      (type-check args-def argv)
       (throw (errors/type-ex "Arguments definition for builtin %s not provided in plan" builtin-name)))))
 
 (defn eval-builtin-func [name builtin-func args location state]
@@ -450,7 +450,9 @@
     (try
       (let [argv (utils/indexed-map->vector args)
             plan-builtins (get-in state [:static "builtin_funcs"])
-            _ (type-check-args name plan-builtins argv)
+            type-check (if (map? builtin-func) (:type-checker builtin-func) check-args)
+            builtin-func (if (map? builtin-func) (:func builtin-func) builtin-func)
+            _ (type-check-args name plan-builtins argv type-check)
             result (builtin-func {:args argv :builtin-context (:builtin-context state)})]
         (log/debugf "built-in function <%s> returning '%s'" name result)
         {:result result})

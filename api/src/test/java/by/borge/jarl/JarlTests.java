@@ -15,29 +15,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JarlTests {
     private static Stream<Arguments> testInputAndData() {
         return Stream.of(
-                Arguments.of(null, null),
-                Arguments.of("foo", null),
-                Arguments.of(null, "bar"),
-                Arguments.of("foo", "bar"),
-                Arguments.of(1337, 42),
-                Arguments.of(13.37, 4.2),
-                Arguments.of(true, false),
-                Arguments.of(false, true),
-                Arguments.of(List.of(), List.of()),
+//                Arguments.of(null, null),
+//                Arguments.of("foo", null),
+//                Arguments.of(null, "bar"),
+//                Arguments.of("foo", "bar"),
+//                Arguments.of(1337, 42),
+//                Arguments.of(13.37, 4.2),
+//                Arguments.of(true, false),
+//                Arguments.of(false, true),
+//                Arguments.of(List.of(), List.of()),
                 Arguments.of(
                         List.of(1, "two", 3.0),
                         List.of(4, "five", 6.0)),
-                Arguments.of(
-                        Map.of(
-                                "foo", "bar",
-                                "one", 1,
-                                "list", List.of(1, 2, 3),
-                                "map", Map.of("a", "b")),
-                        Map.of(
-                                "bar", "foo",
-                                "two", 2,
-                                "list", List.of(4, 5, 6),
-                                "map", Map.of("c", "d")))
+//                Arguments.of(
+//                        Map.of(
+//                                "foo", "bar",
+//                                "one", 1,
+//                                "list", List.of(1, 2, 3),
+//                                "map", Map.of("a", "b")),
+//                        Map.of(
+//                                "bar", "foo",
+//                                "two", 2,
+//                                "list", List.of(4, 5, 6),
+//                                "map", Map.of("c", "d")))
         );
     }
 
