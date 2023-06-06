@@ -1,6 +1,5 @@
 (ns jarl.builtins.types
-  (:require [jarl.exceptions :as errors]
-            [jarl.types :as types]))
+  (:require [jarl.types :as types]))
 
 (defn builtin-is-number
   [{[x] :args}]

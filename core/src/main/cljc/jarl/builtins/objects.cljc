@@ -104,7 +104,7 @@
           (assoc obj k (->dissoced v (rest parts))))))))
 
 (defn builtin-json-remove-type-checker
-  [args-def argv]
+  [_ argv]
   (let [operand-1 (nth argv 0)
         operand-2 (nth argv 1)]
     (when-not (map? operand-1)
