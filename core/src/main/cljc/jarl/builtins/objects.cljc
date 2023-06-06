@@ -112,7 +112,7 @@
     (when-not (or (vector? operand-2) (set? operand-2))
       (throw (errors/type-ex "operand 2 must be one of {set, array} but got %s" (types/->rego operand-2))))
     (let [illegal (reduce (fn [l v] (if-not (or (string? v) (vector? v)) (conj l v) l)) [] operand-2)]
-      (when-not (empty? illegal)
+      (when (seq illegal)
         (throw (errors/type-ex "operand 2 must be one of {set, array} containing string paths or array of path segments but got %s" (types/->rego (first illegal))))))))
 
 (defn builtin-json-remove
