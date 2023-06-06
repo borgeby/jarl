@@ -43,7 +43,7 @@
         provided-type (types/->rego provided-value)]
     (cond
       (= "any" type) (or (nil? of) (empty? of) (not (nil? (some #(type-match? % provided-value) of))))
-      (= "array" type provided-type) (every? #(type-match? dynamic %) provided-value)
+      (= "array" type provided-type) (or (nil? dynamic) (every? #(type-match? dynamic %) provided-value))
       (= "set" type provided-type) (every? #(type-match? of %) provided-value)
       :else (or
               (= type provided-type)
