@@ -8,8 +8,8 @@
   (testing "exception type to rego"
     (is (= (rego-type (builtin-ex "foo")) "eval_builtin_error"))
     (is (= (rego-type (conflict-ex "foo")) "eval_conflict_error"))
-    (is (= (rego-type (assignment-conflict-ex "foo")) "eval_conflict_error"))
-    (is (= (rego-type (multiple-outputs-conflict-ex (builtin-ex "foo") "bar")) "eval_conflict_error"))
+    (is (= (rego-type (assignment-conflict-ex nil "foo")) "eval_conflict_error"))
+    (is (= (rego-type (multiple-outputs-conflict-ex (builtin-ex "foo") nil "bar")) "eval_conflict_error"))
     (is (= (rego-type (type-ex "foo")) "eval_type_error"))
     (is (= (rego-type (undefined-ex "foo")) ""))))
 

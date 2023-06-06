@@ -29,12 +29,12 @@
 (defn ex-nested-data
   ([ex key]
    (ex-nested-data ex key nil))
-  ([ex key default]
-   (let [val   (key (ex-data ex))
+  ([ex k default]
+   (let [val   (k (ex-data ex))
          cause (ex-cause ex)]
      (cond
        (some? val) val
-       (some? cause) (ex-nested-data cause key default)
+       (some? cause) (ex-nested-data cause k default)
        :else default))))
 
 (defn ex-nested-type

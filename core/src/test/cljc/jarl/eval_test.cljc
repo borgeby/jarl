@@ -116,7 +116,7 @@
           target 2
           state {}
           state (set-local state 3 value)
-          result-state (eval-AssignVarOnceStmt source-index target state)
+          result-state (eval-AssignVarOnceStmt source-index target nil state)
           result (get-local result-state target)]
       (is (= result value))))
   (testing "assign already existing local value (==)"
@@ -126,7 +126,7 @@
           state {:local {}}
           state (set-local state target value)
           state (set-local state 3 value)
-          result-state (eval-AssignVarOnceStmt source-index target state)
+          result-state (eval-AssignVarOnceStmt source-index target nil state)
           result (get-local result-state target)]
       (is (= result value))))
   (testing "assign already existing local value (!=)"
@@ -137,13 +137,13 @@
           state {:local {}}
           state (set-local state target existing-value)
           state (set-local state 3 value)
-          ex (errors/try-return #(eval-AssignVarOnceStmt source-index target state))]
+          ex (errors/try-return #(eval-AssignVarOnceStmt source-index target nil state))]
       (is (str/includes? (ex-message ex) "<{\"type\" \"local\", \"value\" 3}> already assigned"))))
   (testing "assign non-existent value"
     (let [source-index (make-local-value-key 3)
           target 2
           state {:local {}}
-          result-state (eval-AssignVarOnceStmt source-index target state)]
+          result-state (eval-AssignVarOnceStmt source-index target nil state)]
       (is (= result-state state)))))
 
 (deftest eval-DotStmt-test
