@@ -20,6 +20,7 @@
             [jarl.exceptions               :as errors]
             #?(:clj [jarl.builtins.http    :as http])
             #?(:clj [jarl.builtins.jwt     :as jwt])
+            #?(:clj [jarl.builtins.net     :as net])
             #?(:clj [jarl.builtins.regex   :as regex])))
 
 (def builtins
@@ -64,6 +65,7 @@
       "or"                                sets/builtin-or
       "intersection"                      sets/builtin-intersection
       "union"                             sets/builtin-union
+      "set_diff"                          sets/builtin-set-diff ; deprecated
       ; objects
       "object.get"                        objects/builtin-object-get
       "object.remove"                     objects/builtin-object-remove
@@ -134,6 +136,7 @@
       "base64.encode"                     encoding/builtin-base64-encode
       "base64.decode"                     encoding/builtin-base64-decode
       "base64url.encode"                  encoding/builtin-base64-url-encode
+      "base64.is_valid"                   encoding/builtin-base64-is-valid
       "base64url.encode_no_pad"           encoding/builtin-base64-url-encode-no-pad
       "base64url.decode"                  encoding/builtin-base64-url-decode
       "urlquery.encode"                   encoding/builtin-url-query-encode
@@ -191,6 +194,8 @@
       ;"walk"                             graphs/builtin-walk
       ; http
       "http.send"                         http/builtin-http-send
+      ; net
+      "net.lookup_ip_addr"                net/builtin-net-lookup-ip-addr
       ; semver
       "semver.compare"                    semver/builtin-semver-compare
       "semver.is_valid"                   semver/builtin-semver-is-valid
@@ -238,6 +243,7 @@
       "or"                                sets/builtin-or
       "intersection"                      sets/builtin-intersection
       "union"                             sets/builtin-union
+      "set_diff"                          sets/builtin-set-diff ; deprecated
       ; objects
       "object.get"                        objects/builtin-object-get
       "object.remove"                     objects/builtin-object-remove
@@ -300,6 +306,7 @@
       ; encoding
       "base64.encode"                     encoding/builtin-base64-encode
       "base64.decode"                     encoding/builtin-base64-decode
+      "base64.is_valid"                   encoding/builtin-base64-is-valid
       "base64url.encode"                  encoding/builtin-base64-url-encode
       "base64url.encode_no_pad"           encoding/builtin-base64-url-encode-no-pad
       "base64url.decode"                  encoding/builtin-base64-url-decode

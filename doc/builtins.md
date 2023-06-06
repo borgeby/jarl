@@ -81,29 +81,34 @@ Note: While [not documented](https://github.com/open-policy-agent/opa/issues/532
 
 ### Strings
 
-| Built-in Function   | JVM | Node | Browser |
-|---------------------|:---:|:----:|:-------:|
-| `concat`            |  ✅  |  ✅   |    ✅    |
-| `contains`          |  ✅  |  ✅   |    ✅    |
-| `endswith`          |  ✅  |  ✅   |    ✅    |
-| `format_int`        |  ✅  |  ✅   |    ✅    |
-| `indexof`           |  ✅  |  ❌   |    ❌    |
-| `indexof_n`         |  ✅  |  ❌   |    ❌    |
-| `lower`             |  ✅  |  ✅   |    ✅    |
-| `replace`           |  ✅  |  ✅   |    ✅    |
-| `strings.reverse`   |  ✅  |  ✅   |    ✅    |
-| `strings.replace_n` |  ❌  |  ❌   |    ❌    |
-| `split`             |  ✅  |  ❌   |    ❌    |
-| `sprintf`           |  ❌  |  ❌   |    ❌    |
-| `startswith`        |  ✅  |  ✅   |    ✅    |
-| `substring`         |  ✅  |  ❌   |    ❌    |
-| `trim`              |  ✅  |  ✅   |    ✅    |
-| `trim_left`         |  ✅  |  ✅   |    ✅    |
-| `trim_prefix`       |  ✅  |  ✅   |    ✅    |
-| `trim_right`        |  ✅  |  ✅   |    ✅    |
-| `trim_suffix`       |  ✅  |  ✅   |    ✅    |
-| `trim_space`        |  ✅  |  ✅   |    ✅    |
-| `upper`             |  ✅  |  ✅   |    ✅    |
+| Built-in Function          | JVM | Node | Browser |
+|----------------------------|:---:|:----:|:-------:|
+| `concat`                   |  ✅  |  ✅   |    ✅    |
+| `contains`                 |  ✅  |  ✅   |    ✅    |
+| `endswith`                 |  ✅  |  ✅   |    ✅    |
+| `format_int`               |  ✅  |  ✅   |    ✅    |
+| `indexof`                  |  ✅  |  ❌   |    ❌    |
+| `indexof_n`                |  ✅  |  ❌   |    ❌    |
+| `lower`                    |  ✅  |  ✅   |    ✅    |
+| `replace`                  |  ✅  |  ✅   |    ✅    |
+| `strings.reverse`          |  ✅  |  ✅   |    ✅    |
+| `strings.replace_n`        |  ❌  |  ❌   |    ❌    |
+| `split`                    |  ✅  |  ❌   |    ❌    |
+| `sprintf`                  |  ❌  |  ❌   |    ❌    |
+| `startswith`               |  ✅  |  ✅   |    ✅    |
+| `substring`                |  ✅  |  ❌   |    ❌    |
+| `trim`                     |  ✅  |  ✅   |    ✅    |
+| `trim_left`                |  ✅  |  ✅   |    ✅    |
+| `trim_prefix`              |  ✅  |  ✅   |    ✅    |
+| `trim_right`               |  ✅  |  ✅   |    ✅    |
+| `trim_suffix`              |  ✅  |  ✅   |    ✅    |
+| `trim_space`               |  ✅  |  ✅   |    ✅    |
+| `upper`                    |  ✅  |  ✅   |    ✅    |
+| `strings.any_prefix_match` |  ❌  |  ❌   |    ❌    |
+| `strings.any_suffix_match` |  ❌  |  ❌   |    ❌    |
+
+
+
 
 ### Regex
 
@@ -169,6 +174,7 @@ JVM: Rego like regexp engine provided by [re2j](https://github.com/google/re2j)
 |---------------------------|:---:|:----:|:-------:|
 | `base64.encode`           |  ✅  |  ✅   |    ✅    |
 | `base64.decode`           |  ✅  |  ✅   |    ✅    |
+| `base64.is_valid`         |  ✅  |  ✅   |    ✅    |
 | `base64url.encode`        |  ✅  |  ✅   |    ✅    |
 | `base64url.encode_no_pad` |  ✅  |  ✅   |    ✅    |
 | `base64url.decode`        |  ✅  |  ✅   |    ✅    |
@@ -320,7 +326,7 @@ This can be improved over time, but likely never completely.
 | `net.cidr_intersects`       |  ❌  |  ❌   |    ❌    |
 | `net.cidr_merge`            |  ❌  |  ❌   |    ❌    |
 | `net.cidr_overlap`          |  ❌  |  ❌   |    ❌    |
-| `net.lookup_ip_addr`        |  ❌  |  ❌   |    ❌    |
+| `net.lookup_ip_addr`        |  ✅  |  ❌   |    ❌    |
 
 ### UUID
 
@@ -379,3 +385,4 @@ Note: Jarl does not yet support loading OPA configuration, so only the `env` att
 | `cast_boolean`    |  ✅  |  ✅   |    ✅    |
 | `cast_null`       |  ✅  |  ✅   |    ✅    |
 | `cast_object`     |  ✅  |  ✅   |    ✅    |
+| `set_diff`        |  ✅  |  ✅   |    ✅    |

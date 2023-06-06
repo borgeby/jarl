@@ -34,7 +34,7 @@
             "cljs-build-compliance" ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" "compliance"]}
   :source-paths ["src/main/clj" "src/main/cljc"]
   :java-source-paths ["src/main/java"]
-  :resource-paths ["src/main/resources"]
+  :resource-paths ["src/main/resources" "src/main/cljc"]
   :test-paths ["src/test/clj" "src/test/cljc"]
   :test-selectors {:unit (complement :compliance)
                    :compliance       :compliance

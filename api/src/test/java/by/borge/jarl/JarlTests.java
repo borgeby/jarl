@@ -1,5 +1,6 @@
 package by.borge.jarl;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JarlTests {
     private static Stream<Arguments> testInputAndData() {
@@ -46,13 +49,50 @@ public class JarlTests {
     void testInputAndData(Object input, Object dataAttributes) throws IOException {
         var file = new File(getClass().getResource("/rego/echo/plan.json").getFile());
         var jarl = Jarl.builder(file).build();
-        var plan = jarl.getPlan("test/echo");
+        var plan = jarl.getPlan("echo");
         Map<String, ?> data = dataAttributes != null ? Map.of("attributes", dataAttributes) : null;
         var resultSet = plan.eval(input, data);
 
         assertEquals(1, resultSet.getResults().size());
         var value = resultSet.getFirst().getValueAsMap();
-        assertEquals(input, value.get("input"));
-        assertEquals(dataAttributes, value.get("data.attributes"));
+        assertEquals(input, value.get("i"));
+        assertEquals(dataAttributes, value.get("d"));
+    }
+
+    private static Stream<Arguments> testResultAsList() {
+        return Stream.of(
+                Arguments.of(List.of(0, 1, 2, 3), Integer.class),
+                Arguments.of(List.of(0.0, 1.1, 2.2, 3.3), Double.class),
+                Arguments.of(List.of(0.0, 1.1, 2.2, 3.3), Number.class),
+                Arguments.of(List.of("foo", "bar", "baz"), String.class),
+                Arguments.of(List.of(true, false), Boolean.class)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void testResultAsList(Object input, Class<?> type) throws IOException {
+        var file = new File(getClass().getResource("/rego/echo/plan.json").getFile());
+        var jarl = Jarl.builder(file).build();
+        var plan = jarl.getPlan("echo/i");
+        var resultSet = plan.eval(input, null);
+
+        var value = resultSet.getFirst().getValueAsList(type);
+        assertEquals(input, value);
+    }
+
+    @Test
+    void testResultAsBoolean() throws IOException {
+        var file = new File(getClass().getResource("/rego/echo/plan.json").getFile());
+        var jarl = Jarl.builder(file).build();
+        var plan = jarl.getPlan("echo/i");
+
+        var resultSet = plan.eval(true, null);
+        var value = resultSet.getFirst().getValueAsBoolean();
+        assertTrue(value);
+
+        resultSet = plan.eval(false, null);
+        value = resultSet.getFirst().getValueAsBoolean();
+        assertFalse(value);
     }
 }
