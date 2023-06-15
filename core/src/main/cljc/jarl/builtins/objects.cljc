@@ -34,7 +34,7 @@
 
 (defn- sub-match? [sub-val sup-val]
   (cond
-    (and (set? sub-val) (set? sup-val))       (set/subset? sub-val sup-val)
+    (and (set? sub-val) (set? sup-val)) (set/subset? sub-val sup-val)
     (and (vector? sub-val) (vector? sup-val)) (subvec? sup-val sub-val)
     :else (= sub-val sup-val)))
 
@@ -50,9 +50,9 @@
 (defn builtin-object-subset
   [{[super sub :as args] :args}]
   (cond
-    (every? set? args)               (set/subset? sub super)
-    (every? vector? args)            (subvec? super sub)
-    (every? map? args)               (submap? super sub)
+    (every? set? args) (set/subset? sub super)
+    (every? vector? args) (subvec? super sub)
+    (every? map? args) (submap? super sub)
     (and (vector? super) (set? sub)) (set/subset? sub (set super))
     :else (throw (errors/type-ex "both arguments object.subset must be of the same type or array and set"))))
 
@@ -103,6 +103,18 @@
           obj
           (assoc obj k (->dissoced v (rest parts))))))))
 
+(defn builtin-json-remove-type-checker
+  [_ argv]
+  (let [operand-1 (nth argv 0)
+        operand-2 (nth argv 1)]
+    (when-not (map? operand-1)
+      (throw (errors/type-ex "operand 1 must be object but got %s" (types/->rego operand-1))))
+    (when-not (or (vector? operand-2) (set? operand-2))
+      (throw (errors/type-ex "operand 2 must be one of {set, array} but got %s" (types/->rego operand-2))))
+    (let [illegal (reduce (fn [l v] (if-not (or (string? v) (vector? v)) (conj l v) l)) [] operand-2)]
+      (when (seq illegal)
+        (throw (errors/type-ex "operand 2 must be one of {set, array} containing string paths or array of path segments but got %s" (types/->rego (first illegal))))))))
+
 (defn builtin-json-remove
   [{[object paths] :args}]
   (let [vectors (mapv #(let [path (validate-path %)]
@@ -113,14 +125,14 @@
 ; Modified version of:
 ; https://stackoverflow.com/questions/38893968/how-to-select-keys-in-nested-maps-in-clojure
 (defn select-keys* [m paths]
-  (let [parts (mapv #(str/split % #"/") paths)
+  (let [parts     (mapv #(str/split % #"/") paths)
         converted (mapv #(mapv str->int %) parts)]
     (into {} (filter #(-> % val (not= :not-found))
-            (into {} (map (fn [p]
-                            (let [v (get-in m p :not-found)]
-                              ; TODO: assoc-in does not work for arrays/numeric values
-                              (assoc-in {} p v))))
-                  converted)))))
+                     (into {} (map (fn [p]
+                                     (let [v (get-in m p :not-found)]
+                                       ; TODO: assoc-in does not work for arrays/numeric values
+                                       (assoc-in {} p v))))
+                           converted)))))
 
 ; TODO: Does not currently build nested objects
 (defn builtin-json-filter

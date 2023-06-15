@@ -1,0 +1,2005 @@
+{
+	"cases": [
+		{
+			"note": "reachable_paths/cycle_1022_1",
+			"query": "data.reachable.p = x",
+			"modules": [
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
+			],
+			"data": {},
+			"input_term": "{ \"graph\": { \"one\": [\"two\",\"five\"], \"two\": [\"four\"], \"three\": [\"\"], \"four\": [\"three\"], \"five\": [\"seven\",\"six\"], \"six\": [\"nine\"], \"seven\": [\"eight\"], \"eight\": [\"\"], \"nine\": [\"\"], }, \"initial\": {\"one\"} }",
+			"want_result": [
+				{
+					"x": [
+						[
+							"one",
+							"five",
+							"seven",
+							"eight"
+						],
+						[
+							"one",
+							"five",
+							"six",
+							"nine"
+						],
+						[
+							"one",
+							"two",
+							"four",
+							"three"
+						]
+					]
+				}
+			],
+			"entrypoints": [
+				"query"
+			],
+			"plan": {
+				"funcs": {
+					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"col": 25,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 1
+												},
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 0
+												},
+												"target": 4
+											},
+											"type": "DotStmt"
+										},
+										{
+											"stmt": {
+												"col": 25,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 38,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 0
+												},
+												"target": 6
+											},
+											"type": "DotStmt"
+										},
+										{
+											"stmt": {
+												"col": 38,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 6
+												},
+												"target": 7
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 5
+													},
+													{
+														"type": "local",
+														"value": 7
+													}
+												],
+												"col": 3,
+												"file": 1,
+												"func": "graph.reachable_paths",
+												"result": 8,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 8
+												},
+												"target": 9
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 9
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.reachable.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"reachable",
+								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
+							],
+							"return": 2
+						}
+					]
+				},
+				"plans": {
+					"plans": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 2
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.query.result",
+																	"result": 3,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 0
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 3
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"blocks": [
+																		{
+																			"stmts": [
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"key": {
+																							"type": "string_index",
+																							"value": 4
+																						},
+																						"row": 0,
+																						"source": {
+																							"type": "local",
+																							"value": 1
+																						},
+																						"target": 5
+																					},
+																					"type": "DotStmt"
+																				},
+																				{
+																					"stmt": {
+																						"a": 5,
+																						"b": 2,
+																						"col": 0,
+																						"file": 0,
+																						"row": 0,
+																						"target": 4
+																					},
+																					"type": "ObjectMergeStmt"
+																				},
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"index": 1,
+																						"row": 0
+																					},
+																					"type": "BreakStmt"
+																				}
+																			]
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"row": 0
+																},
+																"type": "BlockStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"row": 0,
+																	"source": {
+																		"type": "local",
+																		"value": 2
+																	},
+																	"target": 4
+																},
+																"type": "AssignVarStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 6
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 7
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 0
+												},
+												"object": 7,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"value": 7
+											},
+											"type": "ResultSetAddStmt"
+										}
+									]
+								}
+							],
+							"name": "query"
+						}
+					]
+				},
+				"static": {
+					"builtin_funcs": [
+						{
+							"decl": {
+								"args": [
+									{
+										"description": "object containing a set or array of root vertices",
+										"dynamic": {
+											"key": {
+												"type": "any"
+											},
+											"value": {
+												"of": [
+													{
+														"dynamic": {
+															"type": "any"
+														},
+														"type": "array"
+													},
+													{
+														"of": {
+															"type": "any"
+														},
+														"type": "set"
+													}
+												],
+												"type": "any"
+											}
+										},
+										"name": "graph",
+										"type": "object"
+									},
+									{
+										"description": "initial paths",
+										"name": "initial",
+										"of": [
+											{
+												"dynamic": {
+													"type": "any"
+												},
+												"type": "array"
+											},
+											{
+												"of": {
+													"type": "any"
+												},
+												"type": "set"
+											}
+										],
+										"type": "any"
+									}
+								],
+								"result": {
+									"description": "paths reachable from the `initial` vertices in the directed `graph`",
+									"name": "output",
+									"of": {
+										"dynamic": {
+											"type": "any"
+										},
+										"type": "array"
+									},
+									"type": "set"
+								},
+								"type": "function"
+							},
+							"name": "graph.reachable_paths"
+						}
+					],
+					"files": [
+						{
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
+						}
+					],
+					"strings": [
+						{
+							"value": "result"
+						},
+						{
+							"value": "graph"
+						},
+						{
+							"value": "initial"
+						},
+						{
+							"value": "x"
+						},
+						{
+							"value": "query"
+						}
+					]
+				}
+			},
+			"want_plan_result": {
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"one",
+									"five",
+									"seven",
+									"eight"
+								],
+								[
+									"one",
+									"five",
+									"six",
+									"nine"
+								],
+								[
+									"one",
+									"two",
+									"four",
+									"three"
+								]
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"note": "reachable_paths/cycle_1022_2",
+			"query": "data.reachable.p = x",
+			"modules": [
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
+			],
+			"data": {},
+			"input_term": "{ \"graph\": { \"one\": {\"two\",\"five\"}, \"two\": {\"four\"}, \"three\": {\"\"}, \"four\": {\"three\"}, \"five\": {\"seven\",\"six\"}, \"six\": {\"nine\"}, \"seven\": {\"eight\"}, \"eight\": {\"\"}, \"nine\": {\"\"}, }, \"initial\": {\"one\"} }",
+			"want_result": [
+				{
+					"x": [
+						[
+							"one",
+							"five",
+							"seven",
+							"eight"
+						],
+						[
+							"one",
+							"five",
+							"six",
+							"nine"
+						],
+						[
+							"one",
+							"two",
+							"four",
+							"three"
+						]
+					]
+				}
+			],
+			"entrypoints": [
+				"query"
+			],
+			"plan": {
+				"funcs": {
+					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"col": 25,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 1
+												},
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 0
+												},
+												"target": 4
+											},
+											"type": "DotStmt"
+										},
+										{
+											"stmt": {
+												"col": 25,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 38,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 0
+												},
+												"target": 6
+											},
+											"type": "DotStmt"
+										},
+										{
+											"stmt": {
+												"col": 38,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 6
+												},
+												"target": 7
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 5
+													},
+													{
+														"type": "local",
+														"value": 7
+													}
+												],
+												"col": 3,
+												"file": 1,
+												"func": "graph.reachable_paths",
+												"result": 8,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 8
+												},
+												"target": 9
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 9
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.reachable.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"reachable",
+								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
+							],
+							"return": 2
+						}
+					]
+				},
+				"plans": {
+					"plans": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 2
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.query.result",
+																	"result": 3,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 0
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 3
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"blocks": [
+																		{
+																			"stmts": [
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"key": {
+																							"type": "string_index",
+																							"value": 4
+																						},
+																						"row": 0,
+																						"source": {
+																							"type": "local",
+																							"value": 1
+																						},
+																						"target": 5
+																					},
+																					"type": "DotStmt"
+																				},
+																				{
+																					"stmt": {
+																						"a": 5,
+																						"b": 2,
+																						"col": 0,
+																						"file": 0,
+																						"row": 0,
+																						"target": 4
+																					},
+																					"type": "ObjectMergeStmt"
+																				},
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"index": 1,
+																						"row": 0
+																					},
+																					"type": "BreakStmt"
+																				}
+																			]
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"row": 0
+																},
+																"type": "BlockStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"row": 0,
+																	"source": {
+																		"type": "local",
+																		"value": 2
+																	},
+																	"target": 4
+																},
+																"type": "AssignVarStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 6
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 7
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 0
+												},
+												"object": 7,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"value": 7
+											},
+											"type": "ResultSetAddStmt"
+										}
+									]
+								}
+							],
+							"name": "query"
+						}
+					]
+				},
+				"static": {
+					"builtin_funcs": [
+						{
+							"decl": {
+								"args": [
+									{
+										"description": "object containing a set or array of root vertices",
+										"dynamic": {
+											"key": {
+												"type": "any"
+											},
+											"value": {
+												"of": [
+													{
+														"dynamic": {
+															"type": "any"
+														},
+														"type": "array"
+													},
+													{
+														"of": {
+															"type": "any"
+														},
+														"type": "set"
+													}
+												],
+												"type": "any"
+											}
+										},
+										"name": "graph",
+										"type": "object"
+									},
+									{
+										"description": "initial paths",
+										"name": "initial",
+										"of": [
+											{
+												"dynamic": {
+													"type": "any"
+												},
+												"type": "array"
+											},
+											{
+												"of": {
+													"type": "any"
+												},
+												"type": "set"
+											}
+										],
+										"type": "any"
+									}
+								],
+								"result": {
+									"description": "paths reachable from the `initial` vertices in the directed `graph`",
+									"name": "output",
+									"of": {
+										"dynamic": {
+											"type": "any"
+										},
+										"type": "array"
+									},
+									"type": "set"
+								},
+								"type": "function"
+							},
+							"name": "graph.reachable_paths"
+						}
+					],
+					"files": [
+						{
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
+						}
+					],
+					"strings": [
+						{
+							"value": "result"
+						},
+						{
+							"value": "graph"
+						},
+						{
+							"value": "initial"
+						},
+						{
+							"value": "x"
+						},
+						{
+							"value": "query"
+						}
+					]
+				}
+			},
+			"want_plan_result": {
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"one",
+									"five",
+									"seven",
+									"eight"
+								],
+								[
+									"one",
+									"five",
+									"six",
+									"nine"
+								],
+								[
+									"one",
+									"two",
+									"four",
+									"three"
+								]
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"note": "reachable_paths/cycle_1022_3",
+			"query": "data.reachable.p = x",
+			"modules": [
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
+			],
+			"data": {},
+			"input_term": "{ \"graph\": { \"one\": [\"two\",\"five\"], \"two\": [\"four\"], \"three\": [\"\"], \"four\": [\"three\"], \"five\": [\"seven\",\"six\"], \"six\": [\"nine\",\"seven\"], \"seven\": [\"eight\"], \"eight\": [\"three\"], \"nine\": [\"\"], }, \"initial\": {\"one\"} }",
+			"want_result": [
+				{
+					"x": [
+						[
+							"one",
+							"five",
+							"seven",
+							"eight",
+							"three"
+						],
+						[
+							"one",
+							"five",
+							"six"
+						],
+						[
+							"one",
+							"five",
+							"six",
+							"nine"
+						],
+						[
+							"one",
+							"two",
+							"four",
+							"three"
+						]
+					]
+				}
+			],
+			"entrypoints": [
+				"query"
+			],
+			"plan": {
+				"funcs": {
+					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"col": 25,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 1
+												},
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 0
+												},
+												"target": 4
+											},
+											"type": "DotStmt"
+										},
+										{
+											"stmt": {
+												"col": 25,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 38,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 0
+												},
+												"target": 6
+											},
+											"type": "DotStmt"
+										},
+										{
+											"stmt": {
+												"col": 38,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 6
+												},
+												"target": 7
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 5
+													},
+													{
+														"type": "local",
+														"value": 7
+													}
+												],
+												"col": 3,
+												"file": 1,
+												"func": "graph.reachable_paths",
+												"result": 8,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 8
+												},
+												"target": 9
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 9
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.reachable.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"reachable",
+								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
+							],
+							"return": 2
+						}
+					]
+				},
+				"plans": {
+					"plans": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 2
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"args": [
+																		{
+																			"type": "local",
+																			"value": 0
+																		},
+																		{
+																			"type": "local",
+																			"value": 1
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"func": "g0.data.query.result",
+																	"result": 3,
+																	"row": 0
+																},
+																"type": "CallStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"key": {
+																		"type": "string_index",
+																		"value": 0
+																	},
+																	"object": 2,
+																	"row": 0,
+																	"value": {
+																		"type": "local",
+																		"value": 3
+																	}
+																},
+																"type": "ObjectInsertStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"blocks": [
+													{
+														"stmts": [
+															{
+																"stmt": {
+																	"blocks": [
+																		{
+																			"stmts": [
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"key": {
+																							"type": "string_index",
+																							"value": 4
+																						},
+																						"row": 0,
+																						"source": {
+																							"type": "local",
+																							"value": 1
+																						},
+																						"target": 5
+																					},
+																					"type": "DotStmt"
+																				},
+																				{
+																					"stmt": {
+																						"a": 5,
+																						"b": 2,
+																						"col": 0,
+																						"file": 0,
+																						"row": 0,
+																						"target": 4
+																					},
+																					"type": "ObjectMergeStmt"
+																				},
+																				{
+																					"stmt": {
+																						"col": 0,
+																						"file": 0,
+																						"index": 1,
+																						"row": 0
+																					},
+																					"type": "BreakStmt"
+																				}
+																			]
+																		}
+																	],
+																	"col": 0,
+																	"file": 0,
+																	"row": 0
+																},
+																"type": "BlockStmt"
+															},
+															{
+																"stmt": {
+																	"col": 0,
+																	"file": 0,
+																	"row": 0,
+																	"source": {
+																		"type": "local",
+																		"value": 2
+																	},
+																	"target": 4
+																},
+																"type": "AssignVarStmt"
+															}
+														]
+													}
+												],
+												"col": 0,
+												"file": 0,
+												"row": 0
+											},
+											"type": "BlockStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 6
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"target": 7
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 0
+												},
+												"object": 7,
+												"row": 0,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 0,
+												"file": 0,
+												"row": 0,
+												"value": 7
+											},
+											"type": "ResultSetAddStmt"
+										}
+									]
+								}
+							],
+							"name": "query"
+						}
+					]
+				},
+				"static": {
+					"builtin_funcs": [
+						{
+							"decl": {
+								"args": [
+									{
+										"description": "object containing a set or array of root vertices",
+										"dynamic": {
+											"key": {
+												"type": "any"
+											},
+											"value": {
+												"of": [
+													{
+														"dynamic": {
+															"type": "any"
+														},
+														"type": "array"
+													},
+													{
+														"of": {
+															"type": "any"
+														},
+														"type": "set"
+													}
+												],
+												"type": "any"
+											}
+										},
+										"name": "graph",
+										"type": "object"
+									},
+									{
+										"description": "initial paths",
+										"name": "initial",
+										"of": [
+											{
+												"dynamic": {
+													"type": "any"
+												},
+												"type": "array"
+											},
+											{
+												"of": {
+													"type": "any"
+												},
+												"type": "set"
+											}
+										],
+										"type": "any"
+									}
+								],
+								"result": {
+									"description": "paths reachable from the `initial` vertices in the directed `graph`",
+									"name": "output",
+									"of": {
+										"dynamic": {
+											"type": "any"
+										},
+										"type": "array"
+									},
+									"type": "set"
+								},
+								"type": "function"
+							},
+							"name": "graph.reachable_paths"
+						}
+					],
+					"files": [
+						{
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
+						}
+					],
+					"strings": [
+						{
+							"value": "result"
+						},
+						{
+							"value": "graph"
+						},
+						{
+							"value": "initial"
+						},
+						{
+							"value": "x"
+						},
+						{
+							"value": "query"
+						}
+					]
+				}
+			},
+			"want_plan_result": {
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"one",
+									"five",
+									"seven",
+									"eight",
+									"three"
+								],
+								[
+									"one",
+									"five",
+									"six"
+								],
+								[
+									"one",
+									"five",
+									"six",
+									"nine"
+								],
+								[
+									"one",
+									"two",
+									"four",
+									"three"
+								]
+							]
+						}
+					]
+				}
+			}
+		}
+	]
+}

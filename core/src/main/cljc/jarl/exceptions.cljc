@@ -24,29 +24,74 @@
 (defmethod rego-type ::undefined-exception [_] "")
 (defmethod rego-type :default              [t] (str "unknown error type: " t))
 
-(defn jarl-exception [type message & args]
-  (ex-info (apply sprintf message args)
-           {::type type}))
+(declare ->message)
+
+(defn ex-nested-data
+  ([ex key]
+   (ex-nested-data ex key nil))
+  ([ex k default]
+   (let [val   (k (ex-data ex))
+         cause (ex-cause ex)]
+     (cond
+       (some? val) val
+       (some? cause) (ex-nested-data cause k default)
+       :else default))))
+
+(defn ex-nested-type
+  ([ex default]
+   (ex-nested-data ex ::type default))
+  ([ex]
+   (ex-nested-data ex ::type)))
+(defn ex-nested-location
+  ([ex default]
+   (ex-nested-data ex :location default))
+  ([ex]
+   (ex-nested-data ex :location)))
+
+(defn ex-nested-context
+  ([ex default]
+   (ex-nested-data ex :context default))
+  ([ex]
+   (ex-nested-data ex :context)))
+
+(defn ex-nested-msg
+  ([ex default]
+   (ex-nested-data ex :msg default))
+  ([ex]
+   (ex-nested-data ex :msg)))
+
+(defn jarl-exception [type location context message & args]
+  (let [msg  (apply sprintf message args)
+        data (cond-> {::type type
+                      :msg   msg}
+                     (some? location) (assoc :location location)
+                     (some? context) (assoc :context context))]
+    (ex-info (->message data msg) data)))
 
 (defn builtin-ex [message & args]
-  (apply jarl-exception ::builtin-exception message args))
+  (ex-info (apply sprintf message args) {::type ::builtin-exception}))
+
+(defn detailed-builtin-ex [cause location context]
+  (let [type (ex-nested-type cause ::builtin-exception)
+        msg  (ex-nested-msg cause (ex-message cause))
+        loc  (ex-nested-location cause location)]
+    (jarl-exception type loc context msg)))
 
 (defn conflict-ex [message & args]
-  (apply jarl-exception ::conflict-exception message args))
+  (apply jarl-exception ::conflict-exception nil nil message args))
 
-(defn assignment-conflict-ex [message & args]
-  (apply jarl-exception ::assignment-conflict-exception message args))
+(defn assignment-conflict-ex [location message & args]
+  (apply jarl-exception ::assignment-conflict-exception location nil message args))
 
-(defn multiple-outputs-conflict-ex [cause message & args]
-  (ex-info (apply sprintf message args)
-           {::type ::multiple-outputs-conflict-exception}
-           cause))
+(defn multiple-outputs-conflict-ex [cause location message & args]
+  (let [loc  (ex-nested-location cause location)]
+    (jarl-exception ::multiple-outputs-conflict-exception loc nil message args)))
 
 (defn type-ex [message & args]
-  (apply jarl-exception ::type-exception message args))
+  (apply jarl-exception ::type-exception nil nil message args))
 
 (defn undefined-ex [message & args]
-  (apply jarl-exception ::undefined-exception message args))
+  (apply jarl-exception ::undefined-exception nil nil message args))
 
 (defn jarl-exception? [ex]
   (isa? (ex-type ex) ::jarl-exception))

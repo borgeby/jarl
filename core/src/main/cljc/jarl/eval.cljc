@@ -45,7 +45,7 @@
       (log/debugf "AssignVarStmt - assigning '%s' from <%s> to <%s>" val source-index target)
       (state/set-local state target val))))
 
-(defn eval-AssignVarOnceStmt [source-index target state]
+(defn eval-AssignVarOnceStmt [source-index target location state]
   (log/tracef "AssignVarOnceStmt - Assigning var <%s> to <%d>, unless already present and not equal", source-index, target)
   (if-not (state/contains-value? state source-index)
     (do
@@ -58,7 +58,7 @@
             state                                           ; do nothing, existing value == new value
             (do
               (log/debugf "AssignVarOnceStmt - <%s> already assigned" source-index)
-              (throw (errors/assignment-conflict-ex "<%s> already assigned" source-index)))))
+              (throw (errors/assignment-conflict-ex location "<%s> already assigned" source-index)))))
         (do
           (log/debugf "AssignVarOnceStmt - assigning '%s' from <%s> to <%s>" value source-index target)
           (state/set-local state target value)))))
@@ -280,7 +280,7 @@
 
 (defn eval-ObjectMergeStmt [to-key from-key target-key state]
   (log/debugf "ObjectMergeStmt - merging %d and %d into %d" to-key from-key target-key)
-  (state/set-local state target-key (merge (state/get-local state to-key) (state/get-local state from-key))))
+  (state/set-local state target-key (utils/deep-merge (state/get-local state to-key) (state/get-local state from-key))))
 
 (defn eval-ResetLocalStmt [target state]
   (log/debugf "ResetLocalStmt - resetting %d" target)
@@ -409,7 +409,7 @@
              {}
              params))
 
-(defn eval-func [name params return-index blocks args state]
+(defn eval-func [name params return-index blocks args location state]
   (log/debugf "func - executing <%s>" name)
   (let [local (map-args-by-params params args)
         state (assoc state :local local)]
@@ -432,34 +432,31 @@
           (do
             (log/tracef "nested call threw AssignmentConflictException: %s" (ex-message e))
             (if (> (count params) 2) ; 'input' and 'data' documents are always present as args 0 and 1, respectively; additional args means this is a function call, otherwise a rule.
-              (throw (errors/multiple-outputs-conflict-ex e "functions must not produce multiple outputs for same inputs"))
-              (throw (errors/multiple-outputs-conflict-ex e "complete rules must not produce multiple outputs"))))
+              (throw (errors/multiple-outputs-conflict-ex e location "functions must not produce multiple outputs for same inputs"))
+              (throw (errors/multiple-outputs-conflict-ex e location "complete rules must not produce multiple outputs"))))
           ; default
           (throw e))))))
 
-(defn- ->type [{:strs [type of]}]
-  (if (nil? of)
-    type
-    (if (vector? of)
-      (let [types (set (map #(get % "type") of))]
-        (if (= types #{"any"}) "any" types)) ; special case for type_name built-in, which is declared as "any of any"
-      (get of "type"))))
+(defn type-check-args
+  ([builtin-name plan-builtins argv]
+   (type-check-args builtin-name plan-builtins argv nil))
+  ([builtin-name plan-builtins argv type-check]
+   (let [type-check (if (nil? type-check) check-args type-check)]
+     (when-not (zero? (count argv))                         ; no check for zero-arity functions
+       (if-let [args-def (-> (filterv #(= builtin-name (get % "name")) plan-builtins)
+                             (first)
+                             (get-in ["decl" "args"]))]
+         (type-check args-def argv)
+         (throw (errors/type-ex "Arguments definition for builtin %s not provided in plan" builtin-name)))))))
 
-(defn type-check-args [builtin-name plan-builtins argv]
-  (when-not (zero? (count argv)) ; no check for zero-arity functions
-    (if-let [args-def (-> (filterv #(= builtin-name (get % "name")) plan-builtins)
-                          (first)
-                          (get-in ["decl" "args"]))]
-      (let [types-def (mapv ->type args-def)]
-        (check-args types-def argv))
-      (throw (errors/type-ex "Arguments definition for builtin %s not provided in plan" builtin-name)))))
-
-(defn eval-builtin-func [name builtin-func args state]
+(defn eval-builtin-func [name builtin-func args location state]
   (log/debugf "executing built-in func <%s> with args: %s" name, args)
     (try
       (let [argv (utils/indexed-map->vector args)
             plan-builtins (get-in state [:static "builtin_funcs"])
-            _ (type-check-args name plan-builtins argv)
+            type-check (if (map? builtin-func) (:type-checker builtin-func) check-args)
+            builtin-func (if (map? builtin-func) (:func builtin-func) builtin-func)
+            _ (type-check-args name plan-builtins argv type-check)
             result (builtin-func {:args argv :builtin-context (:builtin-context state)})]
         (log/debugf "built-in function <%s> returning '%s'" name result)
         {:result result})
@@ -480,11 +477,7 @@
             (do
               (log/tracef "function <%s> threw error: %s" name (ex-message e))
               (if (true? (get state :strict-builtin-errors))
-                (let [data (-> (ex-data e)
-                               (assoc :location (:location state))
-                               (assoc :context name))
-                      msg (errors/->message data (ex-message e))]
-                  (throw (ex-info msg data (ex-cause e))))
+                (throw (errors/detailed-builtin-ex e location name))
                 (do
                   (log/debugf "function <%s> returned undefined value" name)
                   {}))))

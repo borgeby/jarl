@@ -4,7 +4,8 @@
 			"note": "jwtverifyrsa/success-ps512-key",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np = x {\n  io.jwt.verify_ps512(\"eyJhbGciOiJQUzUxMiJ9.eyJTY29wZXMiOlsiZm9vIiwiYmFyIl0sIm5iZiI6MTQ1MTYwNjQwMH0.VRlkPtiUq5MmBNgyuBqxv2_aX40STrWrBB2sSmGbxI78jVG_3hVoh7Mk-wUmFL389qpf05xNdn-gpMe-MSDUux7U7EuFspFZdYTUBo9wRvEBe4e1rHUCG00lVdYCG7eEgbAxM3cUhrHRwExBte30qBrFFUY9FgG-kJdYhgyh7VquMGuKgiS8CP_H0Gp1mIvTw6eEnSFAoKiryw9edUZ78pHELNn4y18YZvEndeNZh7f19LCtrB0G2bJUHGM4vPcwo2D-UAhEFBpSlnnqXDLSWOhUgLNLu0kZACXhT808KT6fdF6eFihdThmWN7_HUz2znjrjs71CqqDJgLhkGs8UvQ\", \"-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7clVh9hRPHFPC0XAKx+E\\n8A4QThXJiRdvC670Tm3Gw2LGnuqxMG8tGkYEsY0xDIMhgY66AUpdtsDkgPd5MMeK\\nbqX1xKm8MsJ/RYcigW/zl0EoJT5sK6Zs0LTyRswR53C/jz40YT36opsH+2SDygAI\\nCM/TuqaRoRP8eAreOOI7YVCAWbhuXFF4YIjwUHSENyvPEIYFcHLn02ZDR4+Ikg34\\nZVRQx1Y143dgf8hjg48r9E8goVdGATRozL+2BS1piBVBcyvuqjUsbuHMz7UZMn8G\\nldhlvzwU+X/H3OnyoEGepOgSyuvqYtIj4eU1Is8h7arbnlg26yfsH3SYpUEvA/hB\\nqwIDAQAB\\n-----END PUBLIC KEY-----\", x)\n}\n"
+				"package generated\n\np = x {\n  io.jwt.verify_ps512(\"eyJhbGciOiJQUzUxMiJ9.eyJTY29wZXMiOlsiZm9vIiwiYmFyIl0sIm5iZiI6MTQ1MTYwNjQwMH0.VRlkPtiUq5MmBNgyuBqxv2_aX40STrWrBB2sSmGbxI78jVG_3hVoh7Mk-wUmFL389qpf05xNdn-gpMe-MSDUux7U7EuFspFZdYTUBo9wRvEBe4e1rHUCG00lVdYCG7eEgbAxM3cUhrHRwExBte30qBrFFUY9FgG-kJdYhgyh7VquMGuKgiS8CP_H0Gp1mIvTw6eEnSFAoKiryw9edUZ78pHELNn4y18YZvEndeNZh7f19LCtrB0G2bJUHGM4vPcwo2D-UAhEFBpSlnnqXDLSWOhUgLNLu0kZACXhT808KT6fdF6eFihdThmWN7_HUz2znjrjs71CqqDJgLhkGs8UvQ\", \"-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7clVh9hRPHFPC0XAKx+E\\n8A4QThXJiRdvC670Tm3Gw2LGnuqxMG8tGkYEsY0xDIMhgY66AUpdtsDkgPd5MMeK\\nbqX1xKm8MsJ/RYcigW/zl0EoJT5sK6Zs0LTyRswR53C/jz40YT36opsH+2SDygAI\\nCM/TuqaRoRP8eAreOOI7YVCAWbhuXFF4YIjwUHSENyvPEIYFcHLn02ZDR4+Ikg34\\nZVRQx1Y143dgf8hjg48r9E8goVdGATRozL+2BS1piBVBcyvuqjUsbuHMz7UZMn8G\\nldhlvzwU+X/H3OnyoEGepOgSyuvqYtIj4eU1Is8h7arbnlg26yfsH3SYpUEvA/hB\\nqwIDAQAB\\n-----END PUBLIC KEY-----\", x)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.generated.p = x\n}\n"
 			],
 			"data": {},
 			"want_result": [
@@ -13,7 +14,7 @@
 				}
 			],
 			"entrypoints": [
-				"generated"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -25,7 +26,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -36,15 +37,15 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													},
 													{
 														"type": "string_index",
-														"value": 3
+														"value": 2
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "io.jwt.verify_ps512",
 												"result": 4,
 												"row": 4
@@ -54,7 +55,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -67,7 +68,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -84,7 +85,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -93,7 +94,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -110,7 +111,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -128,6 +129,132 @@
 								"g0",
 								"generated",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.generated.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -167,7 +294,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -179,7 +306,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -328,7 +455,7 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "query"
 						}
 					]
 				},
@@ -360,15 +487,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "eyJhbGciOiJQUzUxMiJ9.eyJTY29wZXMiOlsiZm9vIiwiYmFyIl0sIm5iZiI6MTQ1MTYwNjQwMH0.VRlkPtiUq5MmBNgyuBqxv2_aX40STrWrBB2sSmGbxI78jVG_3hVoh7Mk-wUmFL389qpf05xNdn-gpMe-MSDUux7U7EuFspFZdYTUBo9wRvEBe4e1rHUCG00lVdYCG7eEgbAxM3cUhrHRwExBte30qBrFFUY9FgG-kJdYhgyh7VquMGuKgiS8CP_H0Gp1mIvTw6eEnSFAoKiryw9edUZ78pHELNn4y18YZvEndeNZh7f19LCtrB0G2bJUHGM4vPcwo2D-UAhEFBpSlnnqXDLSWOhUgLNLu0kZACXhT808KT6fdF6eFihdThmWN7_HUz2znjrjs71CqqDJgLhkGs8UvQ"
@@ -377,14 +504,21 @@
 							"value": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7clVh9hRPHFPC0XAKx+E\n8A4QThXJiRdvC670Tm3Gw2LGnuqxMG8tGkYEsY0xDIMhgY66AUpdtsDkgPd5MMeK\nbqX1xKm8MsJ/RYcigW/zl0EoJT5sK6Zs0LTyRswR53C/jz40YT36opsH+2SDygAI\nCM/TuqaRoRP8eAreOOI7YVCAWbhuXFF4YIjwUHSENyvPEIYFcHLn02ZDR4+Ikg34\nZVRQx1Y143dgf8hjg48r9E8goVdGATRozL+2BS1piBVBcyvuqjUsbuHMz7UZMn8G\nldhlvzwU+X/H3OnyoEGepOgSyuvqYtIj4eU1Is8h7arbnlg26yfsH3SYpUEvA/hB\nqwIDAQAB\n-----END PUBLIC KEY-----"
 						},
 						{
-							"value": "generated"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"generated": {
-					"p": true
+				"query": {
+					"result": [
+						{
+							"x": true
+						}
+					]
 				}
 			}
 		}

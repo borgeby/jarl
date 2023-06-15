@@ -4,18 +4,136 @@
 			"note": "jwtencodesignheadererrors/No JSON Error",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np = x {\n  io.jwt.encode_sign_raw(\"e\", \"{\\\"iss\\\":\\\"joe\\\",\\r\\n \\\"exp\\\":1300819380,\\r\\n \\\"http://example.com/is_root\\\":true}\", \"{\\n\\\"kty\\\":\\\"oct\\\",\\n\\\"k\\\":\\\"AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow\\\"\\n}\", x)\n}\n"
+				"package generated\n\np = x {\n  io.jwt.encode_sign_raw(\"e\", \"{\\\"iss\\\":\\\"joe\\\",\\r\\n \\\"exp\\\":1300819380,\\r\\n \\\"http://example.com/is_root\\\":true}\", \"{\\n\\\"kty\\\":\\\"oct\\\",\\n\\\"k\\\":\\\"AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow\\\"\\n}\", x)\n}\n",
+				"package query\n\nresult {\n\tdata.generated.p = x\n}\n"
 			],
 			"data": {},
 			"want_error_code": "eval_builtin_error",
 			"want_error": "invalid character",
 			"strict_error": true,
 			"entrypoints": [
-				"generated"
+				"query"
 			],
 			"plan": {
 				"funcs": {
 					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "string_index",
+														"value": 1
+													},
+													{
+														"type": "string_index",
+														"value": 2
+													},
+													{
+														"type": "string_index",
+														"value": 3
+													}
+												],
+												"col": 3,
+												"file": 1,
+												"func": "io.jwt.encode_sign_raw",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 5
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.generated.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"generated",
+								"p"
+							],
+							"return": 2
+						},
 						{
 							"blocks": [
 								{
@@ -33,21 +151,17 @@
 											"stmt": {
 												"args": [
 													{
-														"type": "string_index",
-														"value": 2
+														"type": "local",
+														"value": 0
 													},
 													{
-														"type": "string_index",
-														"value": 3
-													},
-													{
-														"type": "string_index",
-														"value": 4
+														"type": "local",
+														"value": 1
 													}
 												],
-												"col": 3,
+												"col": 2,
 												"file": 0,
-												"func": "io.jwt.encode_sign_raw",
+												"func": "g0.data.generated.p",
 												"result": 4,
 												"row": 4
 											},
@@ -55,7 +169,7 @@
 										},
 										{
 											"stmt": {
-												"col": 3,
+												"col": 2,
 												"file": 0,
 												"row": 4,
 												"source": {
@@ -72,8 +186,8 @@
 												"file": 0,
 												"row": 3,
 												"source": {
-													"type": "local",
-													"value": 5
+													"type": "bool",
+													"value": true
 												},
 												"target": 3
 											},
@@ -121,15 +235,15 @@
 									]
 								}
 							],
-							"name": "g0.data.generated.p",
+							"name": "g0.data.query.result",
 							"params": [
 								0,
 								1
 							],
 							"path": [
 								"g0",
-								"generated",
-								"p"
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -169,7 +283,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -181,7 +295,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -217,7 +331,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 5
+																							"value": 4
 																						},
 																						"row": 0,
 																						"source": {
@@ -330,7 +444,7 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "query"
 						}
 					]
 				},
@@ -367,15 +481,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "e"
@@ -387,7 +501,7 @@
 							"value": "{\n\"kty\":\"oct\",\n\"k\":\"AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow\"\n}"
 						},
 						{
-							"value": "generated"
+							"value": "query"
 						}
 					]
 				}

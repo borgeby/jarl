@@ -2,19 +2,19 @@
   (:require [clojure.string :as str]
             [jarl.builtins.utils :refer [str->bytes]]
             [jarl.encoding.base64 :as base64]
-            [jarl.encoding.json :as json]
             [jarl.encoding.hex :as hex]
+            [jarl.encoding.json :as json]
             [jarl.exceptions :as errors])
-  (:import (org.jose4j.jwk JsonWebKeySet JsonWebKey$Factory JsonWebKey RsaJsonWebKey EllipticCurveJsonWebKey)
-           (org.jose4j.keys.resolvers JwksVerificationKeyResolver VerificationKeyResolver X509VerificationKeyResolver)
-           (org.jose4j.keys X509Util HmacKey)
-           (java.util List Collections Map)
-           (org.jose4j.jws JsonWebSignature)
+  (:import (clojure.lang ExceptionInfo)
            (java.security KeyFactory)
+           (java.security.interfaces ECPublicKey RSAPublicKey)
            (java.security.spec X509EncodedKeySpec)
-           (java.security.interfaces RSAPublicKey ECPublicKey)
-           (clojure.lang ExceptionInfo)
-           (org.jose4j.lang UnresolvableKeyException JoseException)))
+           (java.util Collections List Map)
+           (org.jose4j.jwk EllipticCurveJsonWebKey JsonWebKey JsonWebKey$Factory JsonWebKeySet OctetSequenceJsonWebKey RsaJsonWebKey)
+           (org.jose4j.jws JsonWebSignature)
+           (org.jose4j.keys HmacKey X509Util)
+           (org.jose4j.keys.resolvers JwksVerificationKeyResolver VerificationKeyResolver X509VerificationKeyResolver)
+           (org.jose4j.lang JoseException UnresolvableKeyException)))
 
 (def supported-algs #{"HS256" "HS384" "HS512" "ES256" "ES384" "ES512" "RS256" "RS384" "RS512" "PS256" "PS384" "PS512"})
 
@@ -185,7 +185,9 @@
                 (throw (errors/builtin-ex "failed to parse a JWK key"))))
         jws (doto (JsonWebSignature.)
                   (.setKey (signing-key jwk))
-                  (.setEncodedPayload encoded-payload))]
+                  (.setEncodedPayload encoded-payload)
+                  ; OPA does not have a min HMAC key length requirement, so neither will we
+                  (.setDoKeyValidation (not (instance? OctetSequenceJsonWebKey jwk))))]
     (.setFullHeaderAsJsonString (.getHeaders jws) json-header)
     (.getCompactSerialization jws)))
 
@@ -281,12 +283,18 @@
         ; aud may also be a vector
         (some #{required-aud} aud)))))
 
+(defn- verify-time-type [value name]
+  (cond
+    (= value :not-found) nil
+    (number? value)      value
+    :else                (throw (errors/builtin-ex (str name " value must be a number")))))
+
 ;  The time in nanoseconds to verify the token at. If this is present then the exp and nbf claims are compared against
 ;  this value. If it is absent then they are compared against the current time.
 (defn verify-time [payload constraints]
   (let [time (double (/ (get constraints "time") 1000000000))
-        nbf  (some-> (get payload "nbf") (double))
-        exp  (some-> (get payload "exp") (double))]
+        nbf  (-> (get payload "nbf" :not-found) (verify-time-type "nbf") (some-> double))
+        exp  (-> (get payload "exp" :not-found) (verify-time-type "exp") (some-> double))]
     (and (or (nil? nbf) (<= nbf time))
          (or (nil? exp) (>  exp time)))))
 

@@ -5,7 +5,8 @@
 			"query": "data = x",
 			"modules": [
 				"package a.b\n\n# this module is empty\n",
-				"package x\n\np = __local0__ { # p should be defined (an empty object)\n  true\n  __local0__ = data.a.b\n}\n"
+				"package x\n\np = __local0__ { # p should be defined (an empty object)\n  true\n  __local0__ = data.a.b\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata = x\n}\n"
 			],
 			"data": {},
 			"want_result": [
@@ -21,8 +22,7 @@
 				}
 			],
 			"entrypoints": [
-				"a/b",
-				"x"
+				"query"
 			],
 			"plan": null,
 			"want_plan_result": null

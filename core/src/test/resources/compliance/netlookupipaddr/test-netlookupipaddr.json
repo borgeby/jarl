@@ -4,7 +4,8 @@
 			"note": "net.lookup_ip_addr/simple ip4 returns that ip4",
 			"query": "data.test.p = x",
 			"modules": [
-				"package test\n\np = x {\n  x := net.lookup_ip_addr(\"10.0.0.0\")\n}\n"
+				"package test\n\np = x {\n  x := net.lookup_ip_addr(\"10.0.0.0\")\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.test.p = x\n}\n"
 			],
 			"want_result": [
 				{
@@ -14,7 +15,7 @@
 				}
 			],
 			"entrypoints": [
-				"test"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -26,7 +27,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -37,11 +38,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 8,
-												"file": 0,
+												"file": 1,
 												"func": "net.lookup_ip_addr",
 												"result": 4,
 												"row": 4
@@ -51,7 +52,7 @@
 										{
 											"stmt": {
 												"col": 8,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -64,7 +65,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -77,7 +78,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -94,7 +95,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -103,7 +104,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -120,7 +121,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -138,6 +139,132 @@
 								"g0",
 								"test",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.test.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -177,7 +304,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.test.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -189,7 +316,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -338,7 +465,7 @@
 									]
 								}
 							],
-							"name": "test"
+							"name": "query"
 						}
 					]
 				},
@@ -368,7 +495,10 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
@@ -376,21 +506,25 @@
 							"value": "result"
 						},
 						{
-							"value": "p"
-						},
-						{
 							"value": "10.0.0.0"
 						},
 						{
-							"value": "test"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"test": {
-					"p": [
-						"10.0.0.0"
+				"query": {
+					"result": [
+						{
+							"x": [
+								"10.0.0.0"
+							]
+						}
 					]
 				}
 			}
@@ -399,7 +533,8 @@
 			"note": "net.lookup_ip_addr/simple ip6 returns that ip6",
 			"query": "data.test.p = x",
 			"modules": [
-				"package test\n\np = x {\n  x := net.lookup_ip_addr(\"::\")\n}\n"
+				"package test\n\np = x {\n  x := net.lookup_ip_addr(\"::\")\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.test.p = x\n}\n"
 			],
 			"want_result": [
 				{
@@ -409,7 +544,7 @@
 				}
 			],
 			"entrypoints": [
-				"test"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -421,7 +556,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -432,11 +567,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 8,
-												"file": 0,
+												"file": 1,
 												"func": "net.lookup_ip_addr",
 												"result": 4,
 												"row": 4
@@ -446,7 +581,7 @@
 										{
 											"stmt": {
 												"col": 8,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -459,7 +594,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -472,7 +607,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -489,7 +624,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -498,7 +633,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -515,7 +650,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -533,6 +668,132 @@
 								"g0",
 								"test",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.test.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -572,7 +833,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.test.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -584,7 +845,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -733,7 +994,7 @@
 									]
 								}
 							],
-							"name": "test"
+							"name": "query"
 						}
 					]
 				},
@@ -763,7 +1024,10 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
@@ -771,21 +1035,25 @@
 							"value": "result"
 						},
 						{
-							"value": "p"
-						},
-						{
 							"value": "::"
 						},
 						{
-							"value": "test"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"test": {
-					"p": [
-						"::"
+				"query": {
+					"result": [
+						{
+							"x": [
+								"::"
+							]
+						}
 					]
 				}
 			}
@@ -794,7 +1062,8 @@
 			"note": "net.lookup_ip_addr/localhost",
 			"query": "data.test.p = x",
 			"modules": [
-				"package test\n# one of these should be the case on any system\np {\n  net.lookup_ip_addr(\"localhost\") == {\"127.0.0.1\"}\n}\np {\n  net.lookup_ip_addr(\"localhost\") == {\"127.0.0.1\", \"::1\"}\n}\np {\n  net.lookup_ip_addr(\"localhost\") == {\"::1\"}\n}\n"
+				"package test\n# one of these should be the case on any system\np {\n  net.lookup_ip_addr(\"localhost\") == {\"127.0.0.1\"}\n}\np {\n  net.lookup_ip_addr(\"localhost\") == {\"127.0.0.1\", \"::1\"}\n}\np {\n  net.lookup_ip_addr(\"localhost\") == {\"::1\"}\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.test.p = x\n}\n"
 			],
 			"want_result": [
 				{
@@ -802,7 +1071,7 @@
 				}
 			],
 			"entrypoints": [
-				"test"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -814,7 +1083,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -825,11 +1094,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "net.lookup_ip_addr",
 												"result": 4,
 												"row": 4
@@ -839,7 +1108,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -852,7 +1121,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 6
 											},
@@ -861,12 +1130,12 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"set": 6,
 												"value": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												}
 											},
 											"type": "SetAddStmt"
@@ -882,7 +1151,7 @@
 													"value": 6
 												},
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4
 											},
 											"type": "EqualStmt"
@@ -890,7 +1159,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "bool",
@@ -907,7 +1176,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -916,7 +1185,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -933,7 +1202,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"target": 3
 											},
@@ -944,11 +1213,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "net.lookup_ip_addr",
 												"result": 4,
 												"row": 7
@@ -958,7 +1227,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"source": {
 													"type": "local",
@@ -971,7 +1240,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"target": 6
 											},
@@ -980,12 +1249,12 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"set": 6,
 												"value": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												}
 											},
 											"type": "SetAddStmt"
@@ -993,12 +1262,12 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7,
 												"set": 6,
 												"value": {
 													"type": "string_index",
-													"value": 4
+													"value": 3
 												}
 											},
 											"type": "SetAddStmt"
@@ -1014,7 +1283,7 @@
 													"value": 6
 												},
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 7
 											},
 											"type": "EqualStmt"
@@ -1022,7 +1291,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "bool",
@@ -1039,7 +1308,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": 3
 											},
@@ -1048,7 +1317,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 6,
 												"source": {
 													"type": "local",
@@ -1065,7 +1334,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"target": 3
 											},
@@ -1076,11 +1345,11 @@
 												"args": [
 													{
 														"type": "string_index",
-														"value": 2
+														"value": 1
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "net.lookup_ip_addr",
 												"result": 4,
 												"row": 10
@@ -1090,7 +1359,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"source": {
 													"type": "local",
@@ -1103,7 +1372,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"target": 6
 											},
@@ -1112,12 +1381,12 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 10,
 												"set": 6,
 												"value": {
 													"type": "string_index",
-													"value": 4
+													"value": 3
 												}
 											},
 											"type": "SetAddStmt"
@@ -1133,7 +1402,7 @@
 													"value": 6
 												},
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 10
 											},
 											"type": "EqualStmt"
@@ -1141,7 +1410,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"source": {
 													"type": "bool",
@@ -1158,7 +1427,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"source": 3
 											},
@@ -1167,7 +1436,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 9,
 												"source": {
 													"type": "local",
@@ -1184,7 +1453,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -1202,6 +1471,132 @@
 								"g0",
 								"test",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.test.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 4
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -1241,7 +1636,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.test.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -1253,7 +1648,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -1402,7 +1797,7 @@
 									]
 								}
 							],
-							"name": "test"
+							"name": "query"
 						}
 					]
 				},
@@ -1432,15 +1827,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "localhost"
@@ -1452,14 +1847,21 @@
 							"value": "::1"
 						},
 						{
-							"value": "test"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"test": {
-					"p": true
+				"query": {
+					"result": [
+						{
+							"x": true
+						}
+					]
 				}
 			}
 		}

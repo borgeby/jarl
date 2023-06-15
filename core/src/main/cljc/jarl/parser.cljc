@@ -25,10 +25,11 @@
   (fn [state]
     (eval/eval-AssignVarStmt source target state)))
 
-(defn make-AssignVarOnceStmt [{:strs [target source]}]
+(defn make-AssignVarOnceStmt [{:strs [target source file row col]}]
   (log/debug "making AssignVarOnceStmt stmt")
   (fn [state]
-    (eval/eval-AssignVarOnceStmt source target state)))
+    (let [location (state/->location file row col state)]
+      (eval/eval-AssignVarOnceStmt source target location state))))
 
 (defn make-BlockStmt [{:strs [blocks] :as stmt-info}]
   (log/debug "making BlockStmt stmt")
@@ -261,7 +262,7 @@
     [name (fn [info input data]
             (let [state (state/init-state info input data)]
               (log/debugf "Plan - executing '%s'" name)
-              (let [state (blocks state)
+              (let [state      (blocks state)
                     result-set (get state :result-set)
                     result-set (align-result-set result-set)]
                 (log/debugf "Plan - result-set: %s" result-set)
@@ -271,11 +272,12 @@
   (log/debug "making plans")
   (mapv make-plan plans))
 
-(defn make-func [{:strs [name path params] return-index "return" blocks-info "blocks"}]
+(defn make-func [{:strs [name path params file row col] return-index "return" blocks-info "blocks"}]
   (let [blocks (make-blocks blocks-info)]
     (log/debugf "making func <%s>" name)
     [name path (fn [args state]
-                 (eval/eval-func name params return-index blocks args state))]))
+                 (let [location (state/->location file row col state)]
+                   (eval/eval-func name params return-index blocks args location state)))]))
 
 (defn make-funcs [{:strs [funcs]}]
   (log/debug "making funcs")
@@ -284,13 +286,14 @@
                        (-> func-map (assoc name func) (assoc path func))))]
     (reduce assoc-func {} funcs)))
 
-(defn make-builtin-func [{:strs [name]} builtin-resolver]
+(defn make-builtin-func [{:strs [name file row col]} builtin-resolver]
   (let [builtin-func (builtin-resolver name)]
     (log/debugf "making built-in func <%s>" name)
     (if (nil? builtin-func)
       (throw (ex-info (sprintf "unknown function '%s'" name) {:type :parser-exception}))
       [name (fn [args state]
-              (eval/eval-builtin-func name builtin-func args state))])))
+              (let [location (state/->location file row col state)]
+                (eval/eval-builtin-func name builtin-func args location state)))])))
 
 (defn make-builtin-funcs [builtin-funcs-info builtin-resolver]
   (log/debug "making built-in funcs")

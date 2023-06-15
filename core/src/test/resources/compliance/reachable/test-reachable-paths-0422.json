@@ -4,7 +4,8 @@
 			"note": "reachable_paths/empty",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths({}, {\"a\"}, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths({}, {\"a\"}, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"want_result": [
@@ -13,7 +14,7 @@
 				}
 			],
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -25,7 +26,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -34,7 +35,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 4
 											},
@@ -43,7 +44,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 5
 											},
@@ -52,12 +53,12 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"set": 5,
 												"value": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												}
 											},
 											"type": "SetAddStmt"
@@ -75,7 +76,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 6,
 												"row": 4
@@ -85,7 +86,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -98,7 +99,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -115,7 +116,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -124,7 +125,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -141,7 +142,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -159,6 +160,132 @@
 								"g0",
 								"reachable",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 2
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -198,7 +325,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -210,7 +337,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -359,7 +486,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -433,7 +560,10 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
@@ -441,20 +571,24 @@
 							"value": "result"
 						},
 						{
-							"value": "p"
-						},
-						{
 							"value": "a"
 						},
 						{
-							"value": "reachable"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": []
+				"query": {
+					"result": [
+						{
+							"x": []
+						}
+					]
 				}
 			}
 		},
@@ -462,7 +596,8 @@
 			"note": "reachable_paths/cycle",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": {\"b\"}, \"b\": {\"c\"}, \"c\": {\"a\"}, }, \"initial\": {\"a\"} }",
@@ -478,7 +613,7 @@
 				}
 			],
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -490,7 +625,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -499,10 +634,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -516,7 +651,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -529,10 +664,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -546,7 +681,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -569,7 +704,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -579,7 +714,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -592,7 +727,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -609,7 +744,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -618,7 +753,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -635,7 +770,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -653,6 +788,132 @@
 								"g0",
 								"reachable",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -692,7 +953,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -704,7 +965,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -853,7 +1114,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -927,15 +1188,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -944,19 +1205,26 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": [
-						[
-							"a",
-							"b",
-							"c"
-						]
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"a",
+									"b",
+									"c"
+								]
+							]
+						}
 					]
 				}
 			}
@@ -965,7 +1233,8 @@
 			"note": "reachable_paths/components",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": {\"b\", \"c\"}, \"b\": {\"d\"}, \"c\": {\"d\"}, \"d\": set(), \"e\": {\"f\"}, \"f\": {\"e\"}, \"x\": {\"x\"}, }, \"initial\": { \"b\", \"e\" } }",
@@ -984,7 +1253,7 @@
 				}
 			],
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -996,7 +1265,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -1005,10 +1274,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -1022,7 +1291,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -1035,10 +1304,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -1052,7 +1321,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -1075,7 +1344,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -1085,7 +1354,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -1098,7 +1367,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -1115,7 +1384,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -1124,7 +1393,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -1141,7 +1410,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -1159,6 +1428,132 @@
 								"g0",
 								"reachable",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -1198,7 +1593,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -1210,7 +1605,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -1359,7 +1754,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -1433,15 +1828,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -1450,22 +1845,29 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": [
-						[
-							"b",
-							"d"
-						],
-						[
-							"e",
-							"f"
-						]
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"b",
+									"d"
+								],
+								[
+									"e",
+									"f"
+								]
+							]
+						}
 					]
 				}
 			}
@@ -1474,7 +1876,8 @@
 			"note": "reachable_paths/arrays",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": [\"b\"], \"b\": [\"c\"], \"c\": [\"a\"], }, \"initial\": [\"a\"] }",
@@ -1490,7 +1893,7 @@
 				}
 			],
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -1502,7 +1905,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -1511,10 +1914,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -1528,7 +1931,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -1541,10 +1944,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -1558,7 +1961,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -1581,7 +1984,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -1591,7 +1994,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -1604,7 +2007,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -1621,7 +2024,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -1630,7 +2033,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -1647,7 +2050,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -1665,6 +2068,132 @@
 								"g0",
 								"reachable",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -1704,7 +2233,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -1716,7 +2245,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -1865,7 +2394,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -1939,15 +2468,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -1956,19 +2485,26 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": [
-						[
-							"a",
-							"b",
-							"c"
-						]
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"a",
+									"b",
+									"c"
+								]
+							]
+						}
 					]
 				}
 			}
@@ -1977,14 +2513,15 @@
 			"note": "reachable_paths/malformed 1",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": 1, \"initial\": [1] }",
 			"want_error_code": "eval_type_error",
 			"strict_error": true,
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -1996,7 +2533,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -2005,10 +2542,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -2022,7 +2559,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -2035,10 +2572,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -2052,7 +2589,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -2075,7 +2612,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -2085,7 +2622,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -2098,11 +2635,124 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
 													"value": 9
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.reachable.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"reachable",
+								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": {
+													"type": "bool",
+													"value": true
 												},
 												"target": 3
 											},
@@ -2150,15 +2800,15 @@
 									]
 								}
 							],
-							"name": "g0.data.reachable.p",
+							"name": "g0.data.query.result",
 							"params": [
 								0,
 								1
 							],
 							"path": [
 								"g0",
-								"reachable",
-								"p"
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -2198,7 +2848,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -2210,7 +2860,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -2246,7 +2896,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 4
+																							"value": 3
 																						},
 																						"row": 0,
 																						"source": {
@@ -2359,7 +3009,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -2433,15 +3083,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -2450,20 +3100,19 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "query"
 						}
 					]
 				}
 			},
-			"want_plan_result": {
-				"reachable": {}
-			}
+			"want_plan_result": null
 		},
 		{
 			"note": "reachable_paths/malformed 2",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": null }, \"initial\": [\"a\"] }",
@@ -2477,7 +3126,7 @@
 				}
 			],
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -2489,7 +3138,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -2498,10 +3147,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -2515,7 +3164,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -2528,10 +3177,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -2545,7 +3194,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -2568,7 +3217,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -2578,7 +3227,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -2591,7 +3240,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -2608,7 +3257,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -2617,7 +3266,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -2634,7 +3283,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -2652,6 +3301,132 @@
 								"g0",
 								"reachable",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -2691,7 +3466,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -2703,7 +3478,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -2852,7 +3627,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -2926,15 +3701,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -2943,17 +3718,24 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": [
-						[
-							"a"
-						]
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"a"
+								]
+							]
+						}
 					]
 				}
 			}
@@ -2962,14 +3744,15 @@
 			"note": "reachable_paths/malformed 3",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": [] }, \"initial\": \"a\" }",
 			"want_error_code": "eval_type_error",
 			"strict_error": true,
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -2981,7 +3764,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -2990,10 +3773,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -3007,7 +3790,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -3020,10 +3803,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -3037,7 +3820,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -3060,7 +3843,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -3070,7 +3853,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -3083,11 +3866,124 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
 													"value": 9
+												},
+												"target": 3
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 3
+											},
+											"type": "IsDefinedStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": {
+													"type": "local",
+													"value": 3
+												},
+												"target": 2
+											},
+											"type": "AssignVarOnceStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.reachable.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"reachable",
+								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": {
+													"type": "bool",
+													"value": true
 												},
 												"target": 3
 											},
@@ -3135,15 +4031,15 @@
 									]
 								}
 							],
-							"name": "g0.data.reachable.p",
+							"name": "g0.data.query.result",
 							"params": [
 								0,
 								1
 							],
 							"path": [
 								"g0",
-								"reachable",
-								"p"
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -3183,7 +4079,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -3195,7 +4091,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -3231,7 +4127,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 4
+																							"value": 3
 																						},
 																						"row": 0,
 																						"source": {
@@ -3344,7 +4240,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -3418,15 +4314,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -3435,20 +4331,19 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "query"
 						}
 					]
 				}
 			},
-			"want_plan_result": {
-				"reachable": {}
-			}
+			"want_plan_result": null
 		},
 		{
 			"note": "reachable_paths/multiple_paths",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": [\"b\", \"c\"], \"b\": [\"c\"], \"c\": [], }, \"initial\": {\"a\"} }",
@@ -3468,7 +4363,7 @@
 				}
 			],
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -3480,7 +4375,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -3489,10 +4384,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -3506,7 +4401,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -3519,10 +4414,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -3536,7 +4431,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -3559,7 +4454,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -3569,7 +4464,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -3582,7 +4477,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -3599,7 +4494,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -3608,7 +4503,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -3625,7 +4520,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -3643,6 +4538,132 @@
 								"g0",
 								"reachable",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -3682,7 +4703,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -3694,7 +4715,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -3843,7 +4864,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -3917,15 +4938,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -3934,23 +4955,30 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": [
-						[
-							"a",
-							"b",
-							"c"
-						],
-						[
-							"a",
-							"c"
-						]
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"a",
+									"b",
+									"c"
+								],
+								[
+									"a",
+									"c"
+								]
+							]
+						}
 					]
 				}
 			}
@@ -3959,7 +4987,8 @@
 			"note": "reachable_paths/invalid_end",
 			"query": "data.reachable.p = x",
 			"modules": [
-				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n"
+				"package reachable\n\np = result {\n  graph.reachable_paths(input.graph, input.initial, result)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.reachable.p = x\n}\n"
 			],
 			"data": {},
 			"input_term": "{ \"graph\": { \"a\": [\"b\"], \"b\": [\"nonexistent\"], }, \"initial\": {\"a\", \"b\"} }",
@@ -3977,7 +5006,7 @@
 				}
 			],
 			"entrypoints": [
-				"reachable"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -3989,7 +5018,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -3998,10 +5027,10 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"row": 4,
 												"source": {
@@ -4015,7 +5044,7 @@
 										{
 											"stmt": {
 												"col": 25,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -4028,10 +5057,10 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												},
 												"row": 4,
 												"source": {
@@ -4045,7 +5074,7 @@
 										{
 											"stmt": {
 												"col": 38,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -4068,7 +5097,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "graph.reachable_paths",
 												"result": 8,
 												"row": 4
@@ -4078,7 +5107,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -4091,7 +5120,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -4108,7 +5137,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -4117,7 +5146,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -4134,7 +5163,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -4152,6 +5181,132 @@
 								"g0",
 								"reachable",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.reachable.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 3
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -4191,7 +5346,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.reachable.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -4203,7 +5358,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -4352,7 +5507,7 @@
 									]
 								}
 							],
-							"name": "reachable"
+							"name": "query"
 						}
 					]
 				},
@@ -4426,15 +5581,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "graph"
@@ -4443,21 +5598,28 @@
 							"value": "initial"
 						},
 						{
-							"value": "reachable"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"reachable": {
-					"p": [
-						[
-							"a",
-							"b"
-						],
-						[
-							"b"
-						]
+				"query": {
+					"result": [
+						{
+							"x": [
+								[
+									"a",
+									"b"
+								],
+								[
+									"b"
+								]
+							]
+						}
 					]
 				}
 			}

@@ -4,7 +4,8 @@
 			"note": "jwtencodesign/https://tools.ietf.org/html/rfc7515#appendix-A.2",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np = x {\n  io.jwt.encode_sign({\"alg\": \"RS256\"}, {\"aud\": [\"bob\", \"saul\"], \"exp\": 1300819380, \"http://example.com/is_root\": true, \"iss\": \"joe\", \"privateParams\": {\"private_one\": \"one\", \"private_two\": \"two\"}}, {\"d\": \"Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ\", \"dp\": \"BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0\", \"dq\": \"h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU\", \"e\": \"AQAB\", \"kty\": \"RSA\", \"n\": \"ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ\", \"p\": \"4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc\", \"q\": \"uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc\", \"qi\": \"IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U\"}, x)\n}\n"
+				"package generated\n\np = x {\n  io.jwt.encode_sign({\"alg\": \"RS256\"}, {\"aud\": [\"bob\", \"saul\"], \"exp\": 1300819380, \"http://example.com/is_root\": true, \"iss\": \"joe\", \"privateParams\": {\"private_one\": \"one\", \"private_two\": \"two\"}}, {\"d\": \"Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ\", \"dp\": \"BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0\", \"dq\": \"h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU\", \"e\": \"AQAB\", \"kty\": \"RSA\", \"n\": \"ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ\", \"p\": \"4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc\", \"q\": \"uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc\", \"qi\": \"IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U\"}, x)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.generated.p = x\n}\n"
 			],
 			"data": {},
 			"want_result": [
@@ -13,7 +14,7 @@
 				}
 			],
 			"entrypoints": [
-				"generated"
+				"query"
 			],
 			"plan": {
 				"funcs": {
@@ -25,7 +26,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"target": 3
 											},
@@ -34,7 +35,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 4
 											},
@@ -43,16 +44,16 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 2
+													"value": 1
 												},
 												"object": 4,
 												"row": 4,
 												"value": {
 													"type": "string_index",
-													"value": 3
+													"value": 2
 												}
 											},
 											"type": "ObjectInsertStmt"
@@ -60,7 +61,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 5
 											},
@@ -70,7 +71,7 @@
 											"stmt": {
 												"capacity": 2,
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 6
 											},
@@ -80,7 +81,20 @@
 											"stmt": {
 												"array": 6,
 												"col": 3,
-												"file": 0,
+												"file": 1,
+												"row": 4,
+												"value": {
+													"type": "string_index",
+													"value": 4
+												}
+											},
+											"type": "ArrayAppendStmt"
+										},
+										{
+											"stmt": {
+												"array": 6,
+												"col": 3,
+												"file": 1,
 												"row": 4,
 												"value": {
 													"type": "string_index",
@@ -91,24 +105,11 @@
 										},
 										{
 											"stmt": {
-												"array": 6,
 												"col": 3,
-												"file": 0,
-												"row": 4,
-												"value": {
-													"type": "string_index",
-													"value": 6
-												}
-											},
-											"type": "ArrayAppendStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 4
+													"value": 3
 												},
 												"object": 5,
 												"row": 4,
@@ -121,9 +122,9 @@
 										},
 										{
 											"stmt": {
-												"Index": 8,
+												"Index": 7,
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 7
 											},
@@ -132,10 +133,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 7
+													"value": 6
 												},
 												"object": 5,
 												"row": 4,
@@ -149,10 +150,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 9
+													"value": 8
 												},
 												"object": 5,
 												"row": 4,
@@ -166,16 +167,16 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 10
+													"value": 9
 												},
 												"object": 5,
 												"row": 4,
 												"value": {
 													"type": "string_index",
-													"value": 11
+													"value": 10
 												}
 											},
 											"type": "ObjectInsertStmt"
@@ -183,7 +184,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 8
 											},
@@ -192,44 +193,44 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 13
-												},
-												"object": 8,
-												"row": 4,
-												"value": {
-													"type": "string_index",
-													"value": 14
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 15
-												},
-												"object": 8,
-												"row": 4,
-												"value": {
-													"type": "string_index",
-													"value": 16
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
 													"value": 12
+												},
+												"object": 8,
+												"row": 4,
+												"value": {
+													"type": "string_index",
+													"value": 13
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 14
+												},
+												"object": 8,
+												"row": 4,
+												"value": {
+													"type": "string_index",
+													"value": 15
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"key": {
+													"type": "string_index",
+													"value": 11
 												},
 												"object": 5,
 												"row": 4,
@@ -243,7 +244,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"target": 9
 											},
@@ -252,101 +253,101 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
+													"type": "string_index",
+													"value": 16
+												},
+												"object": 9,
+												"row": 4,
+												"value": {
 													"type": "string_index",
 													"value": 17
-												},
-												"object": 9,
-												"row": 4,
-												"value": {
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"key": {
 													"type": "string_index",
 													"value": 18
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
-												"key": {
+												},
+												"object": 9,
+												"row": 4,
+												"value": {
 													"type": "string_index",
 													"value": 19
-												},
-												"object": 9,
-												"row": 4,
-												"value": {
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"key": {
 													"type": "string_index",
 													"value": 20
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
-												"key": {
+												},
+												"object": 9,
+												"row": 4,
+												"value": {
 													"type": "string_index",
 													"value": 21
-												},
-												"object": 9,
-												"row": 4,
-												"value": {
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"key": {
 													"type": "string_index",
 													"value": 22
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
-												"key": {
+												},
+												"object": 9,
+												"row": 4,
+												"value": {
 													"type": "string_index",
 													"value": 23
-												},
-												"object": 9,
-												"row": 4,
-												"value": {
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"key": {
 													"type": "string_index",
 													"value": 24
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
-												"key": {
+												},
+												"object": 9,
+												"row": 4,
+												"value": {
 													"type": "string_index",
 													"value": 25
-												},
-												"object": 9,
-												"row": 4,
-												"value": {
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"key": {
 													"type": "string_index",
 													"value": 26
-												}
-											},
-											"type": "ObjectInsertStmt"
-										},
-										{
-											"stmt": {
-												"col": 3,
-												"file": 0,
-												"key": {
-													"type": "string_index",
-													"value": 27
 												},
 												"object": 9,
 												"row": 4,
 												"value": {
 													"type": "string_index",
-													"value": 28
+													"value": 27
 												}
 											},
 											"type": "ObjectInsertStmt"
@@ -354,10 +355,10 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
-													"value": 1
+													"value": 28
 												},
 												"object": 9,
 												"row": 4,
@@ -371,7 +372,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
 													"value": 30
@@ -388,7 +389,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"key": {
 													"type": "string_index",
 													"value": 32
@@ -419,7 +420,7 @@
 													}
 												],
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"func": "io.jwt.encode_sign",
 												"result": 10,
 												"row": 4
@@ -429,7 +430,7 @@
 										{
 											"stmt": {
 												"col": 3,
-												"file": 0,
+												"file": 1,
 												"row": 4,
 												"source": {
 													"type": "local",
@@ -442,7 +443,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -459,7 +460,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 3
 											},
@@ -468,7 +469,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": {
 													"type": "local",
@@ -485,7 +486,7 @@
 										{
 											"stmt": {
 												"col": 1,
-												"file": 0,
+												"file": 1,
 												"row": 3,
 												"source": 2
 											},
@@ -503,6 +504,132 @@
 								"g0",
 								"generated",
 								"p"
+							],
+							"return": 2
+						},
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "local",
+														"value": 0
+													},
+													{
+														"type": "local",
+														"value": 1
+													}
+												],
+												"col": 2,
+												"file": 0,
+												"func": "g0.data.generated.p",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 2,
+												"file": 0,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 34
+												},
+												"object": 6,
+												"row": 3,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.query.result",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -542,7 +669,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -554,7 +681,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -590,7 +717,7 @@
 																						"file": 0,
 																						"key": {
 																							"type": "string_index",
-																							"value": 34
+																							"value": 35
 																						},
 																						"row": 0,
 																						"source": {
@@ -703,7 +830,7 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "query"
 						}
 					]
 				},
@@ -764,15 +891,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "alg"
@@ -856,6 +983,9 @@
 							"value": "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ"
 						},
 						{
+							"value": "p"
+						},
+						{
 							"value": "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc"
 						},
 						{
@@ -871,14 +1001,21 @@
 							"value": "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U"
 						},
 						{
-							"value": "generated"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"generated": {
-					"p": "eyJhbGciOiAiUlMyNTYifQ.eyJhdWQiOiBbImJvYiIsICJzYXVsIl0sICJleHAiOiAxMzAwODE5MzgwLCAiaHR0cDovL2V4YW1wbGUuY29tL2lzX3Jvb3QiOiB0cnVlLCAiaXNzIjogImpvZSIsICJwcml2YXRlUGFyYW1zIjogeyJwcml2YXRlX29uZSI6ICJvbmUiLCAicHJpdmF0ZV90d28iOiAidHdvIn19.ITpfhDICCeVV__1nHRN2CvUFni0yyYESvhNlt4ET0yiySMzJ5iySGynrsM3kgzAv7mVmx5uEtSCs_xPHyLVfVnADKmDFtkZfuvJ8jHfcOe8TUqR1f7j1Zf_kDkdqJAsuGuqkJoFJ3S_gxWcZNwtDXV56O3k_7Mq03Ixuuxtip2oF0X3fB7QtUzjzB8mWPTJDFG2TtLLOYCcobPHmn36aAgesHMzJZj8U8sRLmqPXsIc-Lo_btt8gIUc9zZSgRiy7NOSHxw5mYcIMlKl93qvLXu7AaAcVLvzlIOCGWEnFpGGcRFgSOLnShQX6hDylWavKLQG-VOUJKmtXH99KBK-OYQ"
+				"query": {
+					"result": [
+						{
+							"x": "eyJhbGciOiAiUlMyNTYifQ.eyJhdWQiOiBbImJvYiIsICJzYXVsIl0sICJleHAiOiAxMzAwODE5MzgwLCAiaHR0cDovL2V4YW1wbGUuY29tL2lzX3Jvb3QiOiB0cnVlLCAiaXNzIjogImpvZSIsICJwcml2YXRlUGFyYW1zIjogeyJwcml2YXRlX29uZSI6ICJvbmUiLCAicHJpdmF0ZV90d28iOiAidHdvIn19.ITpfhDICCeVV__1nHRN2CvUFni0yyYESvhNlt4ET0yiySMzJ5iySGynrsM3kgzAv7mVmx5uEtSCs_xPHyLVfVnADKmDFtkZfuvJ8jHfcOe8TUqR1f7j1Zf_kDkdqJAsuGuqkJoFJ3S_gxWcZNwtDXV56O3k_7Mq03Ixuuxtip2oF0X3fB7QtUzjzB8mWPTJDFG2TtLLOYCcobPHmn36aAgesHMzJZj8U8sRLmqPXsIc-Lo_btt8gIUc9zZSgRiy7NOSHxw5mYcIMlKl93qvLXu7AaAcVLvzlIOCGWEnFpGGcRFgSOLnShQX6hDylWavKLQG-VOUJKmtXH99KBK-OYQ"
+						}
+					]
 				}
 			}
 		}

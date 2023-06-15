@@ -93,3 +93,6 @@
           true (assoc :local (cond-> {}
                                      (some? input) (assoc 0 input)
                                      (some? data) (assoc 1 data)))))
+
+(defn ->location [file_index row col state]
+  {:file (get-in state [:static "files" file_index "value"]) :row row :col col})

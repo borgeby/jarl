@@ -4,7 +4,8 @@
 			"note": "regexmatchtemplate/matches wildcard with \u003c\u003e",
 			"query": "data.generated.p = x",
 			"modules": [
-				"package generated\n\np[x] {\n  regex.template_match(\"urn:foo:\u003c.*\u003e\", \"urn:foo:bar:baz\", \"\u003c\", \"\u003e\", x)\n}\n"
+				"package generated\n\np[x] {\n  regex.template_match(\"urn:foo:\u003c.*\u003e\", \"urn:foo:bar:baz\", \"\u003c\", \"\u003e\", x)\n}\n",
+				"package query\n\nresult[{\"x\": x}] {\n\tdata.generated.p = x\n}\n"
 			],
 			"data": {},
 			"want_result": [
@@ -16,11 +17,119 @@
 			],
 			"sort_bindings": true,
 			"entrypoints": [
-				"generated"
+				"query"
 			],
 			"plan": {
 				"funcs": {
 					"funcs": [
+						{
+							"blocks": [
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"target": 2
+											},
+											"type": "MakeSetStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"target": 3
+											},
+											"type": "ResetLocalStmt"
+										},
+										{
+											"stmt": {
+												"args": [
+													{
+														"type": "string_index",
+														"value": 1
+													},
+													{
+														"type": "string_index",
+														"value": 2
+													},
+													{
+														"type": "string_index",
+														"value": 3
+													},
+													{
+														"type": "string_index",
+														"value": 4
+													}
+												],
+												"col": 3,
+												"file": 1,
+												"func": "regex.template_match",
+												"result": 4,
+												"row": 4
+											},
+											"type": "CallStmt"
+										},
+										{
+											"stmt": {
+												"col": 3,
+												"file": 1,
+												"row": 4,
+												"source": {
+													"type": "local",
+													"value": 4
+												},
+												"target": 5
+											},
+											"type": "AssignVarStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 5
+												}
+											},
+											"type": "SetAddStmt"
+										}
+									]
+								},
+								{
+									"stmts": [
+										{
+											"stmt": {
+												"col": 1,
+												"file": 1,
+												"row": 3,
+												"source": 2
+											},
+											"type": "ReturnLocalStmt"
+										}
+									]
+								}
+							],
+							"name": "g0.data.generated.p",
+							"params": [
+								0,
+								1
+							],
+							"path": [
+								"g0",
+								"generated",
+								"p"
+							],
+							"return": 2
+						},
 						{
 							"blocks": [
 								{
@@ -51,25 +160,17 @@
 											"stmt": {
 												"args": [
 													{
-														"type": "string_index",
-														"value": 2
+														"type": "local",
+														"value": 0
 													},
 													{
-														"type": "string_index",
-														"value": 3
-													},
-													{
-														"type": "string_index",
-														"value": 4
-													},
-													{
-														"type": "string_index",
-														"value": 5
+														"type": "local",
+														"value": 1
 													}
 												],
-												"col": 3,
+												"col": 2,
 												"file": 0,
-												"func": "regex.template_match",
+												"func": "g0.data.generated.p",
 												"result": 4,
 												"row": 4
 											},
@@ -77,7 +178,7 @@
 										},
 										{
 											"stmt": {
-												"col": 3,
+												"col": 2,
 												"file": 0,
 												"row": 4,
 												"source": {
@@ -93,10 +194,36 @@
 												"col": 1,
 												"file": 0,
 												"row": 3,
-												"set": 2,
+												"target": 6
+											},
+											"type": "MakeObjectStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"key": {
+													"type": "string_index",
+													"value": 5
+												},
+												"object": 6,
+												"row": 3,
 												"value": {
 													"type": "local",
 													"value": 5
+												}
+											},
+											"type": "ObjectInsertStmt"
+										},
+										{
+											"stmt": {
+												"col": 1,
+												"file": 0,
+												"row": 3,
+												"set": 2,
+												"value": {
+													"type": "local",
+													"value": 6
 												}
 											},
 											"type": "SetAddStmt"
@@ -117,15 +244,15 @@
 									]
 								}
 							],
-							"name": "g0.data.generated.p",
+							"name": "g0.data.query.result",
 							"params": [
 								0,
 								1
 							],
 							"path": [
 								"g0",
-								"generated",
-								"p"
+								"query",
+								"result"
 							],
 							"return": 2
 						}
@@ -165,7 +292,7 @@
 																	],
 																	"col": 0,
 																	"file": 0,
-																	"func": "g0.data.generated.p",
+																	"func": "g0.data.query.result",
 																	"result": 3,
 																	"row": 0
 																},
@@ -177,7 +304,7 @@
 																	"file": 0,
 																	"key": {
 																		"type": "string_index",
-																		"value": 1
+																		"value": 0
 																	},
 																	"object": 2,
 																	"row": 0,
@@ -326,7 +453,7 @@
 									]
 								}
 							],
-							"name": "generated"
+							"name": "query"
 						}
 					]
 				},
@@ -367,15 +494,15 @@
 					],
 					"files": [
 						{
-							"value": "mod_0"
+							"value": "test-1.rego"
+						},
+						{
+							"value": "test-0.rego"
 						}
 					],
 					"strings": [
 						{
 							"value": "result"
-						},
-						{
-							"value": "p"
 						},
 						{
 							"value": "urn:foo:\u003c.*\u003e"
@@ -390,15 +517,22 @@
 							"value": "\u003e"
 						},
 						{
-							"value": "generated"
+							"value": "x"
+						},
+						{
+							"value": "query"
 						}
 					]
 				}
 			},
 			"want_plan_result": {
-				"generated": {
-					"p": [
-						true
+				"query": {
+					"result": [
+						{
+							"x": [
+								true
+							]
+						}
 					]
 				}
 			}
