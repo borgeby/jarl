@@ -135,6 +135,6 @@ jobs:
       working-directory: ./core
     - run: lein cloverage --codecov
       working-directory: ./core
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@v4
       with:
         file: core/target/coverage/codecov.json
